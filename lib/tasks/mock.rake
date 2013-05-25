@@ -26,7 +26,7 @@ namespace :mock do
     FlareSpecification.create({
                                   :capacity_scmh => 500,
                                   :data_location => "/DATA",
-                                  :flare_id => "LFG-FLR1",
+                                  :flare_id => "LFG-FLR10",
                                   :ftp_address => "runflare10.dyndns.org",
                                   :manufacturer_id => Company.find_by_name("ABM Combustible").id,
                                   :manufacturer_product_id => "P2513-01",

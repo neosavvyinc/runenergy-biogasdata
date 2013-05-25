@@ -1,6 +1,6 @@
-.span12
+.span12{'ng-controller' => 'controllers.SiteController'}
   %span Site
-  %button.btn.btn-success SITE SELECTION HERE
+  %re-bootstrap-button-dropdown{'items' => 'flareSpecifications', 'selected-item' => 'selectedFlareSpecification', 'label-field' => 'flare_id'}
 .span12
   %span Date Range
   %span LOW END HERE
