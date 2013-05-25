@@ -9,6 +9,7 @@ gem 'sqlite3'
 gem 'mysql2'
 gem 'roo'
 gem 'activeadmin'
+gem "paperclip", "~> 3.0"
 
 # Gems used only for assets and not required
 # in production environments by default.

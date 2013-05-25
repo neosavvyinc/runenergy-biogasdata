@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130525210425) do
+ActiveRecord::Schema.define(:version => 20130525221124) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -52,6 +52,12 @@ ActiveRecord::Schema.define(:version => 20130525210425) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "countries", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "flare_monitor_data", :force => true do |t|
     t.datetime "date_time_reading"
     t.decimal  "inlet_pressure",                 :precision => 10, :scale => 0
@@ -82,6 +88,28 @@ ActiveRecord::Schema.define(:version => 20130525210425) do
     t.string   "data_location"
     t.datetime "created_at",              :null => false
     t.datetime "updated_at",              :null => false
+  end
+
+  create_table "locations", :force => true do |t|
+    t.string   "site_name"
+    t.text     "address"
+    t.integer  "state_id"
+    t.integer  "country_id"
+    t.string   "lattitude"
+    t.string   "longitude"
+    t.datetime "created_at",                     :null => false
+    t.datetime "updated_at",                     :null => false
+    t.string   "google_earth_file_file_name"
+    t.string   "google_earth_file_content_type"
+    t.integer  "google_earth_file_file_size"
+    t.datetime "google_earth_file_updated_at"
+  end
+
+  create_table "states", :force => true do |t|
+    t.string   "name"
+    t.string   "postal_code"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
 end
