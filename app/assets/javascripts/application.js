@@ -12,7 +12,7 @@
 //
 //= require jquery
 //= require jquery_ujs
+//= require twitter/bootstrap
+//= require hamlcoffee
+//= require angular
 //= require_tree .
-//= require angular.min
-//= require angle-up
-//= require_tree ./angular

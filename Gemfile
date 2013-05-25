@@ -14,6 +14,8 @@ group :assets do
   gem 'sass-rails',   '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
   gem "angular-rails"
+  gem "twitter-bootstrap-rails"
+  gem 'haml_coffee_assets'
 
   # See https://github.com/sstephenson/execjs#readme for more supported runtimes
   # gem 'therubyracer', :platforms => :ruby
@@ -26,6 +28,7 @@ end
 gem 'haml'
 gem 'haml-rails'
 gem 'jquery-rails'
+gem "angularjs-rails"
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

@@ -1,7 +1,7 @@
 Biogasdata::Application.routes.draw do
   get "dashboard/login"
 
-  root :to => "dashboard#login"
+  root :to => "dashboard#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
