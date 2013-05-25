@@ -15,18 +15,18 @@ ActiveRecord::Schema.define(:version => 20130525162901) do
 
   create_table "flare_monitor_data", :force => true do |t|
     t.datetime "date_time_reading"
-    t.decimal  "inlet_pressure"
-    t.decimal  "blower_speed"
-    t.decimal  "methane"
-    t.decimal  "flame_temperature"
-    t.decimal  "standard_lfg_flow"
-    t.decimal  "standard_cumulative_lfg_volume"
-    t.decimal  "static_pressure"
-    t.decimal  "lfg_temperature"
-    t.decimal  "standard_lfg_volume"
-    t.decimal  "standard_methane_volume"
-    t.datetime "created_at",                     :null => false
-    t.datetime "updated_at",                     :null => false
+    t.decimal  "inlet_pressure",                 :precision => 10, :scale => 0
+    t.decimal  "blower_speed",                   :precision => 10, :scale => 0
+    t.decimal  "methane",                        :precision => 10, :scale => 0
+    t.decimal  "flame_temperature",              :precision => 10, :scale => 0
+    t.decimal  "standard_lfg_flow",              :precision => 10, :scale => 0
+    t.decimal  "standard_cumulative_lfg_volume", :precision => 10, :scale => 0
+    t.decimal  "static_pressure",                :precision => 10, :scale => 0
+    t.decimal  "lfg_temperature",                :precision => 10, :scale => 0
+    t.decimal  "standard_lfg_volume",            :precision => 10, :scale => 0
+    t.decimal  "standard_methane_volume",        :precision => 10, :scale => 0
+    t.datetime "created_at",                                                    :null => false
+    t.datetime "updated_at",                                                    :null => false
   end
 
 end
