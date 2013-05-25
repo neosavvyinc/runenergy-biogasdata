@@ -3,7 +3,7 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            template: '<div class="span12"><table><re-grid-row ng-repeat="item in data" data-item="item"></re-grid-row></table></div>',
+            template: '<table class="table table-striped"><thead>This is the header</thead><tbody><re-grid-row ng-repeat="item in data" data-item="item"/></tbody></table>',
             scope: {
                 data: "="
             },

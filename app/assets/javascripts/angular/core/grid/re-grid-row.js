@@ -3,7 +3,7 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            template: '<div><span ng-repeat="subItem in item" ng-bind="subItem"></span></div>',
+            template: '<tr class="re-grid-row row-fluid"><td ng-repeat="subItem in item" ng-bind="subItem"></td></tr>',
             scope: {
                 item: "="
             },
