@@ -6,6 +6,12 @@
     %span Date Range
     %span LOW END HERE
     %span HIGH END HERE
-  .span12{'ng-app' => 'dashboard'}
+  .dashboard.span12
     %ng-view
+
+- content_for :javascript do
+  :javascript
+    angular.element(document).ready(function() {
+       angular.bootstrap(document, ['dashboard']);
+     });
 

@@ -3,12 +3,29 @@ RunEnergy.Dashboard = RunEnergy.Dashboard || {};
 
 RunEnergy.Dashboard.Constants = angular.module('runenergy.dashboard.constants', []);
 RunEnergy.Dashboard.Services = angular.module('runenergy.dashboard.services', []);
+RunEnergy.Dashboard.Managers = angular.module('runenergy.dashboard.managers', []);
 RunEnergy.Dashboard.Controllers = angular.module('runenergy.dashboard.controllers', []);
 RunEnergy.Dashboard.Filters = angular.module('runenergy.dashboard.filters', []);
 RunEnergy.Dashboard.Directives = angular.module('runenergy.dashboard.directives', []);
+RunEnergy.Dashboard.Values = angular.module('runenergy.dashboard.values', []);
+
+//Window method for loading haml assets
+var haml = new function () {
+    var methods = [];
+    this.onLoad = function (method) {
+        methods.push(method);
+    };
+    this.load = function () {
+        if (methods && methods.length) {
+            for (var i = 0; i < methods.length; i++) {
+                methods[i]();
+            }
+        }
+    };
+}();
 
 
-angular.module('dashboard', ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers']).
+angular.module('dashboard', ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values']).
     config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.
@@ -24,4 +41,6 @@ angular.module('dashboard', ['runenergy.dashboard.filters', 'runenergy.dashboard
             // Note that we're passing the function fileContent, and not the object
             // returned by its invocation. More on that on Digging Deeper.
         }
+
+        window.haml.load();
     }]);

@@ -3,7 +3,7 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            templateUrl: '',
+            template: '<div>This is a row</div>',
             scope: {
             },
             link: function (scope, element, attrs) {

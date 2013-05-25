@@ -15,4 +15,5 @@
 //= require twitter/bootstrap
 //= require hamlcoffee
 //= require angular
+//= require angular/dashboard
 //= require_tree .

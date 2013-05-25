@@ -1,2 +1,2 @@
-.dashboard
-  This is the dashboard angular partial
+.dashboard{'ng-controller' => 'controllers.DashboardController'}
+  %re-grid{'data' => 'data'}
