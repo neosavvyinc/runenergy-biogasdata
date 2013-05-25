@@ -10,10 +10,12 @@ class DashboardController < ApplicationController
   def read
     @flare_monitor_data = FlareMonitorData.all
 
+    exceptions = [:id, :created_at, :updated_at]
+
     if request.xhr?
       respond_to do |format|
         format.json {
-          render json: @flare_monitor_data.map { |fmd| fmd.as_json.values }
+          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys, :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions).values }}
         }
       end
       return

@@ -1,8 +1,10 @@
 .dashboard{'ng-controller' => 'controllers.DashboardController'}
   %table.table.table-striped
-    %thead This is the header
+    %thead
+      %tr
+        %th{"ng-bind" => "item", 'ng-repeat' => 'item in data.header'}
     %tbody
-      %tr.re-grid-row.row-fluid{"ng-repeat" => "item in data"}
+      %tr.re-grid-row{"ng-repeat" => "item in data.values"}
         %td{"ng-bind" => "subItem", "ng-repeat" => "subItem in item"}
 
 
