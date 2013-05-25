@@ -6,7 +6,8 @@ Biogasdata::Application.routes.draw do
   get "dashboard/login"
 
   #XHR Paths
-  match 'dashboard/flaremonitordata' => 'dashboard#read'
+  match 'dashboard/flarespecifications' => 'dashboard#read_flare_specifications'
+  match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'
 
   root :to => "dashboard#index"
   # The priority is based upon order of creation:

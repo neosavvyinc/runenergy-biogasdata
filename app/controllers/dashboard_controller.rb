@@ -7,7 +7,22 @@ class DashboardController < ApplicationController
     @flare_monitor_data = FlareMonitorData.all
   end
 
-  def read
+  #XHR
+
+  def read_flare_specifications
+    @flare_specifications = FlareSpecification.all
+
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: @flare_specifications
+        }
+      end
+      return
+    end
+  end
+
+  def read_flare_monitor_data
     @flare_monitor_data = FlareMonitorData.all
 
     exceptions = [:id, :created_at, :updated_at]
