@@ -13,7 +13,7 @@ class DashboardController < ApplicationController
     if request.xhr?
       respond_to do |format|
         format.json {
-          render json: @flare_monitor_data
+          render json: @flare_monitor_data.map { |fmd| fmd.as_json.values }
         }
       end
       return

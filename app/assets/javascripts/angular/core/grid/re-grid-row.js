@@ -3,8 +3,9 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            template: '<div>This is a row</div>',
+            template: '<div><span ng-repeat="subItem in item" ng-bind="subItem"></span></div>',
             scope: {
+                item: "="
             },
             link: function (scope, element, attrs) {
 
