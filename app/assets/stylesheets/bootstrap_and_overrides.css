@@ -11,3 +11,11 @@
   width: 90%;
   min-width: 40px;
 }
+
+.flare-table {
+  font-size: 0.8em;
+}
+
+.table th {
+  line-height:1.2em;
+}
