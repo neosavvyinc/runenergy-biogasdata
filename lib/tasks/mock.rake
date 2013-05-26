@@ -61,6 +61,19 @@ namespace :mock do
                                   :username => "runflare10",
                                   :web_address => "runflare10.dyndns.org"
                               })
+    FlareSpecification.create({
+                                  :capacity_scmh => 500,
+                                  :data_location => "/DATA",
+                                  :flare_id => "LFG-FLR6",
+                                  :ftp_address => "runflare6.dyndns.org",
+                                  :manufacturer_id => Company.find_by_name("ABM Combustible").id,
+                                  :manufacturer_product_id => "P2513-01",
+                                  :owner_id => Company.find_by_name("Run Energy").id,
+                                  :password => "run007",
+                                  :purchase_date => Date.new,
+                                  :username => "runflare6",
+                                  :web_address => "runflare6.dyndns.org"
+                              })
     puts "Flare specifications created"
   end
 

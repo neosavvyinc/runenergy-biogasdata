@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130526063200) do
+ActiveRecord::Schema.define(:version => 20130526145004) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -64,6 +64,13 @@ ActiveRecord::Schema.define(:version => 20130526063200) do
     t.string   "name"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "flare_collection_statistics", :force => true do |t|
+    t.date     "last_reading_collected"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.string   "last_csv_read"
   end
 
   create_table "flare_data_mappings", :force => true do |t|
@@ -121,8 +128,9 @@ ActiveRecord::Schema.define(:version => 20130526063200) do
     t.string   "username"
     t.string   "password"
     t.string   "data_location"
-    t.datetime "created_at",              :null => false
-    t.datetime "updated_at",              :null => false
+    t.datetime "created_at",                    :null => false
+    t.datetime "updated_at",                    :null => false
+    t.integer  "flare_collection_statistic_id"
   end
 
   create_table "locations", :force => true do |t|
