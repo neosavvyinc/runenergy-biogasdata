@@ -64,10 +64,10 @@ namespace :mock do
     puts "Flare specifications created"
   end
 
-  task :flare_deployments => [:environment, :flare_specifications] do
+  task :flare_deployments => [:environment, :flare_specifications, :users] do
     FlareDeployment.delete_all
-    FlareDeployment.create(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1")
-    FlareDeployment.create(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-1")
+    FlareDeployment.create(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
+    FlareDeployment.create(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10")
     puts "Flare deployments created"
   end
 

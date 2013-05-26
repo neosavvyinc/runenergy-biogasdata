@@ -3,4 +3,5 @@ class Location < ActiveRecord::Base
   belongs_to :state
   belongs_to :country
   has_attached_file :google_earth_file
+  has_many :flare_deployments
 end
