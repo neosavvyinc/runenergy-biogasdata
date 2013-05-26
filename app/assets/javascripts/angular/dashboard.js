@@ -24,8 +24,9 @@ var haml = new function () {
     };
 }();
 
+RunEnergy.Dashboard.Dependencies = ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values'];
 
-angular.module('dashboard', ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values']).
+angular.module('dashboard', RunEnergy.Dashboard.Dependencies).
     config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.

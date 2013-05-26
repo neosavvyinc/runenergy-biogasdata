@@ -8,23 +8,16 @@ files = [
     JASMINE_ADAPTER,
 
     //libraries
-    'lib/angular/angular.js',
-    'lib/angular/angular-resource.js',
-    'lib/angular/angular-mocks.js',
-    'lib/zepto.min.js',
-    'lib/zepto-jquery-compatibility.js',
-    'lib/strftime-min-1.3.js',
-    'lib/inheritance.js',
+    '../../../../spec/javascripts/lib/angular.js',
+    '../../../../spec/javascripts/lib/angular-resource.js',
+    '../../../../spec/javascripts/lib/angular-mocks.js',
 
     //requirements
-    "application/application.js",
-    "core/**/*.js",
-    "core/**/*.html",
-    "application/**/*.js",
-    "application/**/*.html",
+    'dashboard.js',
+    'core/**/*.js',
 
     //tests
-    '../test/**/*-spec.js'
+    '../../../../spec/javascripts/angular/**/*-spec.js'
 ];
 
 // generate js files from html templates
