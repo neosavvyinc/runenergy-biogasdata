@@ -33,6 +33,13 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                             {flareSpecificationId: flareSpecificationId, start: start, end: end || (parseInt(start) + 1)}
                         )
                     });
+                },
+                sendRowsForCSVExport: function(ids) {
+                    return serviceExtensions.request({
+                        method: 'POST',
+                        url: routes.DASHBOARD.CSV_EXPORT,
+                        data: ids || []
+                    });
                 }
             };
 
