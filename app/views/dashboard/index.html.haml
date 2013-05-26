@@ -4,9 +4,8 @@
   %re-bootstrap-button-dropdown{'items' => 'flareSpecifications | collectionFilterProperty : "location.id" : dashboardHeaderData.site.id', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_id'}
   = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-danger'
 .span12
-  %span Date Range
-  %span LOW END HERE
-  %span HIGH END HERE
+  %re-bootstrap-datepicker{'data-value' => 'dashboardDateData.startDate'}
+  %re-bootstrap-datepicker{'data-value' => 'dashboardDateData.endDate'}
 .span12{'ng-controller' => 'controllers.PageController'}
   %a.btn{'ng-click' => 'onPrevious()'} Prev Page
   %a.btn{'ng-click' => 'onNext()'} Next Page
