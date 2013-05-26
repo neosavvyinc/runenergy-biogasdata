@@ -30,6 +30,8 @@ class DashboardController < ApplicationController
       @locations = Location.all
     end
 
+    @locations = @locations.map { |location|
+      location.as_json.merge({:flare_specifications => location.flare_specifications}) }
 
     if request.xhr?
       respond_to do |format|
