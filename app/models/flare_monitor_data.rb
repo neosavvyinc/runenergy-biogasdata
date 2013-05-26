@@ -5,7 +5,8 @@ class FlareMonitorData < ActiveRecord::Base
   include SmartInitialization
   include SmartAssignment
 
-  attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure
+  attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure, :flare_specification_id
+  belongs_to :flare_specification
 
   DEFAULT_ROW_MAPPING = {
       "blower_speed_hz" => :blower_speed,
@@ -21,25 +22,30 @@ class FlareMonitorData < ActiveRecord::Base
   }
 
   #@TODO, should pass in a flare or mapping in order to determine how this is mapped
-  def self.import(file_path, flare=nil)
-    idx = 0
-    header = nil
-    CSV.foreach(file_path) do |row|
-      if idx == 0
-        header = row.map { |column| column.downcase.strip.gsub(/\s+/, "_") }
-      else
-        row = [header, row].transpose
-        row = Hash[row.map { |key_then_value|
-          unless key_then_value[1]
-            [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1].to_f]
-          else
-            [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1]]
-          end
-        }]
-        flare_monitor_data = new_ignore_unknown(row)
-        flare_monitor_data.save!
+  def self.import(file_path, flare_specification=nil)
+    unless flare_specification.blank?
+      idx = 0
+      header = nil
+      CSV.foreach(file_path) do |row|
+        if idx == 0
+          header = row.map { |column| column.downcase.strip.gsub(/\s+/, "_") }
+        else
+          row = [header, row].transpose
+          row = Hash[row.map { |key_then_value|
+            unless key_then_value[1]
+              [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1].to_f]
+            else
+              [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1]]
+            end
+          }]
+          flare_monitor_data = new_ignore_unknown(row)
+          flare_monitor_data.flare_specification = flare_specification
+          flare_monitor_data.save!
+        end
+        idx += 1
       end
-      idx += 1
+    else
+      raise "You must specify a flare_specification in order to import Flare Monitor Data from a CSV"
     end
   end
 

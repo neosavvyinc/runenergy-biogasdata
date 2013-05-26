@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130526145004) do
+ActiveRecord::Schema.define(:version => 20130526154908) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(:version => 20130526145004) do
     t.decimal  "standard_methane_volume",        :precision => 10, :scale => 0
     t.datetime "created_at",                                                    :null => false
     t.datetime "updated_at",                                                    :null => false
+    t.integer  "flare_specification_id"
   end
 
   create_table "flare_specifications", :force => true do |t|

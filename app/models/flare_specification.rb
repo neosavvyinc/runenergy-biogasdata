@@ -4,21 +4,23 @@ class FlareSpecification < ActiveRecord::Base
   belongs_to :manufacturer, :class_name => 'Company', :foreign_key => 'manufacturer_id'
   belongs_to :flare_collection_statistic
   has_one :flare_deployment
+  has_many :flare_monitor_datas
 
-  def update_statistic(csv_file_name)
+  def update_statistic(csv_file_name, date=nil)
     unless csv_file_name.blank?
-      flare_collection_statistic = self.flare_collection_statistic || FlareCollectionStatistic.new(:flare_specification => self)
-      flare_collection_statistic.last_reading_collected = Date.strptime(csv_file_name.gsub(/[^0-9]/), "%d%m%Y")
+      flare_collection_statistic = self.flare_collection_statistic || FlareCollectionStatistic.new
+      flare_collection_statistic.flare_specification = self
+      flare_collection_statistic.last_reading_collected = date || Date.strptime(csv_file_name.gsub(/[^0-9]/, ""), "%y%m%d")
       flare_collection_statistic.last_csv_read = csv_file_name
-      flare_collection_statistic.save
+      flare_collection_statistic.save!
     else
       raise "You have passed in a blank csv file name for updating, this is invalid"
     end
   end
 
-  def next_csv
+  def next_date
     if self.flare_collection_statistic
-      (self.flare_collection_statistic.last_reading_collected + 1.day).strftime("%d%m%Y") + ".CSV"
+      (self.flare_collection_statistic.last_reading_collected + 1.day)
     else
       nil
     end
