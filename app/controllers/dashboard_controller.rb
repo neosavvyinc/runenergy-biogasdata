@@ -26,10 +26,14 @@ class DashboardController < ApplicationController
   def read_locations
     if current_user.is_customer?
       @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", current_user.id)
+    elsif not request.GET["customerId"].nil?
+      @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", request.GET["customerId"].to_i)
     else
       @locations = Location.all
     end
 
+    @locations = @locations.map { |location|
+      location.as_json.merge({:flare_specifications => location.flare_specifications}) }
 
     if request.xhr?
       respond_to do |format|

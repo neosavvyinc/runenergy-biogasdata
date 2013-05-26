@@ -15,5 +15,6 @@
 //= require twitter/bootstrap
 //= require hamlcoffee
 //= require angular
+//= require bootstrap-datepicker
 //= require angular/dashboard
 //= require_tree .

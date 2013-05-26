@@ -3,27 +3,31 @@ RunEnergy.Dashboard.Controllers.controller('controllers.SiteController',
         function ($scope, $rootScope, dashboardService, dashboardHeaderData) {
             $scope.customers = dashboardService.getCustomers();
             $scope.locations = dashboardService.getEntitledLocations();
-            $scope.flareSpecifications = dashboardService.getEntitledFlareSpecifications();
             $scope.dashboardHeaderData = dashboardHeaderData;
 
-            var dereg = $scope.$watch('flareSpecifications', function (newValue) {
+            //WATCHERS
+            var deregC = $scope.$watch('customers', function (newValue) {
                 if (newValue && newValue.length) {
-                    $scope.selectedFlareSpecification = newValue[0];
-                    dereg();
-                }
-            });
-
-            var deregB = $scope.$watch('locations', function(newValue) {
-                if (newValue && newValue.length) {
-                    $scope.selectedLocation = newValue[0];
-                    deregB();
-                }
-            });
-
-            var deregC = $scope.$watch('customers', function(newValue) {
-                if (newValue && newValue.length) {
-                    $scope.selectedCustomer = newValue[0];
+                    dashboardHeaderData.customer = newValue[0];
                     deregC();
+                }
+            });
+
+            $scope.$watch('locations', function (newValue) {
+                if (newValue && newValue.length) {
+                    dashboardHeaderData.site = newValue[0];
+                }
+            });
+
+            $scope.$watch('dashboardHeaderData.customer', function (newValue) {
+                if (newValue) {
+                    $scope.locations = dashboardService.getEntitledLocations(newValue.id);
+                }
+            });
+
+            $scope.$watch('dashboardHeaderData.site', function (newValue) {
+                if (newValue && newValue.flare_specifications && newValue.flare_specifications.length) {
+                    dashboardHeaderData.flareSpecification = newValue.flare_specifications[0];
                 }
             });
         }]);

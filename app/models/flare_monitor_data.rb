@@ -83,4 +83,9 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
+  def as_json(options=nil)
+    hash = super
+    hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
+    hash
+  end
 end

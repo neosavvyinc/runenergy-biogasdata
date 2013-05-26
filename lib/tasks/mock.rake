@@ -1,6 +1,7 @@
 namespace :mock do
   task :users => :environment do
     User.find_or_create_by_name(:name => "Dr. Rockso", :email => "doctorrockso@gmail.com", :password => "rocksorockso", :user_type_id => UserType.find_by_name("CUSTOMER").id)
+    User.find_or_create_by_name(:name => "George Jones", :email => "georgejones@gmail.com", :password => "jonesjones", :user_type_id => UserType.find_by_name("CUSTOMER").id)
     User.find_or_create_by_name(:name => "Lemmy Kilmister", :email => "lemmy@gmail.com", :password => "lemmylemmy", :user_type_id => UserType.find_by_name("OVERSEER").id)
   end
 
@@ -73,7 +74,7 @@ namespace :mock do
 
   task :flare_deployments => [:environment, :locations, :flare_specifications, :users] do
     FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
-    FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10")
+    FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10", :customer_id => User.find_by_email("georgejones@gmail.com").id)
     puts "Flare deployments created"
   end
 
