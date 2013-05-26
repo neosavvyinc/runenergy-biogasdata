@@ -8,6 +8,7 @@ gem 'rails', '3.2.12'
 gem 'mysql2'
 gem 'roo'
 gem 'activeadmin'
+#gem 'cancan'
 gem "paperclip", "~> 3.0"
 
 # Gems used only for assets and not required
