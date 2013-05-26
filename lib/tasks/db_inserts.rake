@@ -18,7 +18,12 @@ namespace :db_inserts do
     UserType.find_or_create_by_name(:name => "CUSTOMER")
   end
 
-  task :all => [:attribute_name_mappings, :user_types] do
+  task :flare_deployment_statuses => :environment do
+    FlareDeploymentStatusCode.find_or_create_by_name(:name => "CURRENT")
+    FlareDeploymentStatusCode.find_or_create_by_name(:name => "PAST")
+  end
+
+  task :all => [:attribute_name_mappings, :user_types, :flare_deployment_statuses] do
     puts "Running all db insert tasks"
   end
 end
