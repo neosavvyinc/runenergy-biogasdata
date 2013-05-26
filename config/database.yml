@@ -24,8 +24,11 @@ test:
   password:
   socket: /tmp/mysql.sock
 
-production:
-  adapter: sqlite3
-  database: db/production.sqlite3
+test:
+  adapter: mysql2
+  encoding: utf8
+  database: runenergy_biogasdata_production
   pool: 5
-  timeout: 5000
+  username: biogasdata
+  password: gijoeskillz
+  host: 432aff3dded8d43d3be2e8e4cfb449c15c4fcd7e.rackspaceclouddb.com
