@@ -77,7 +77,7 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    flare_specification_id = request.GET.get["flareSpecificationId"]
+    flare_specification_id = request.GET["flareSpecificationId"]
     unless flare_specification_id.nil?
       @flare_monitor_data = FlareMonitorData.where(:flare_specification_id => flare_specification_id)
     else
