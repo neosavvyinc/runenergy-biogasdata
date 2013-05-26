@@ -1,11 +1,11 @@
 .dashboard{'ng-controller' => 'controllers.DashboardController'}
-  %table.table.table-striped.table-condensed.table-bordered
+  %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
         %th{"ng-bind" => "item", 'ng-repeat' => 'item in data.header'}
       %tr
         %th{'ng-repeat' => 'filter in filters'}
-          %input{'ng-model' => 'filter.expression'}
+          %input.filter-field{'ng-model' => 'filter.expression'}
     %tbody
       %tr.re-grid-row{"ng-repeat" => "item in data.values | numericExpression : filters"}
         %td{"ng-bind" => "subItem", "ng-repeat" => "subItem in item"}

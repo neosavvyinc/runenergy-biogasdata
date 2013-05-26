@@ -9,8 +9,8 @@
 .span12{'ng-controller' => 'controllers.PageController'}
   %a.btn{'ng-click' => 'onPrevious()'} Prev Page
   %a.btn{'ng-click' => 'onNext()'} Next Page
-  %a.btn{'ng-click' => 'onExportCSV()'} Export To CSV
-.dashboard.span12
+  %a.btn{'ng-href' => '{{ getExportCSVLink() }}'} Export To CSV
+.dashboard.container-fluid
   %ng-view
 
 - content_for :javascript do
