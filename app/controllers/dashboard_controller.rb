@@ -77,25 +77,25 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    flare_specification_id = request.GET["flareSpecificationId"]
-    unless flare_specification_id.nil?
-      @flare_monitor_data = FlareMonitorData.where(:flare_specification_id => flare_specification_id)
-    else
-      @flare_monitor_data = FlareMonitorData.all
-    end
-
-    #Paging Support
-    @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(100)
+    @flare_monitor_data = FlareMonitorData.filter_data(params)
 
     exceptions = [:id, :created_at, :updated_at]
 
     if request.xhr?
       respond_to do |format|
         format.json {
+          #Paging Support
+          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(100)
+
           render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }, :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions).values }}
         }
       end
       return
+    else
+      respond_to do |format|
+        flare_monitor_csv = FlareMonitorData.to_csv(@flare_monitor_data, exceptions)
+        format.csv { send_data flare_monitor_csv }
+      end
     end
   end
 end

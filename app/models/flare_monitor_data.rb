@@ -58,4 +58,29 @@ class FlareMonitorData < ActiveRecord::Base
     AttributeNameMapping.find_by_attribute_name(field.to_s).try(:display_name) || ""
   end
 
+  def self.filter_data(options, initial_relation = self.scoped)
+    options.inject(initial_relation) do |current_scope, (key, value)|
+      next current_scope if value.blank?
+      case key
+      when 'flareSpecificationId'
+        current_scope.where(:flare_specification_id => options['flareSpecificationId'])
+      else #unknown key
+        current_scope
+      end
+    end
+  end
+
+  def self.to_csv(flare_monitor_data, exceptions = [])
+    CSV.generate do |csv|
+      #remove exception cols
+      csv_cols = column_names.delete_if {|col| exceptions.map(&:to_s).include?(col)}
+      #convert col names to human
+      header_cols = csv_cols.map {|col| display_name_for_field(col)}
+      csv << header_cols
+      flare_monitor_data.each do |flare_monitor_datum|
+        csv << flare_monitor_datum.attributes.values_at(*csv_cols)
+      end
+    end
+  end
+
 end
