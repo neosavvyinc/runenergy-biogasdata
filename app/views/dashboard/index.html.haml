@@ -1,4 +1,5 @@
 .span12{'ng-controller' => 'controllers.SiteController'}
+  %re-bootstrap-button-dropdown{'items' => 'customers', 'selected-item' => 'selectedCustomer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s}
   %re-bootstrap-button-dropdown{'items' => 'locations', 'selected-item' => 'selectedLocation', 'label-field' => 'site_name'}
   %re-bootstrap-button-dropdown{'items' => 'flareSpecifications', 'selected-item' => 'selectedFlareSpecification', 'label-field' => 'flare_id'}
   = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-danger'

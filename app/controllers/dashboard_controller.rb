@@ -7,6 +7,22 @@ class DashboardController < ApplicationController
   end
 
   #XHR
+  def read_customers
+    customers = nil
+    unless current_user.is_customer?
+      customers = User.where(:user_type_id => UserType.CUSTOMER.id)
+    end
+
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: customers
+        }
+      end
+      return
+    end
+  end
+
   def read_locations
     if current_user.is_customer?
       @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", current_user.id)
