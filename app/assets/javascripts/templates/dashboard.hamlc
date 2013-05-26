@@ -1,5 +1,5 @@
 .dashboard{'ng-controller' => 'controllers.DashboardController'}
-  %table.table.table-striped
+  %table.table.table-striped.table-condensed.table-bordered
     %thead
       %tr
         %th{"ng-bind" => "item", 'ng-repeat' => 'item in data.header'}
