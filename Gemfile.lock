@@ -210,6 +210,7 @@ DEPENDENCIES
   haml-rails
   haml_coffee_assets
   jquery-rails
+  kaminari
   mysql2
   paperclip (~> 3.0)
   rails (= 3.2.12)

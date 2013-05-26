@@ -7,6 +7,9 @@
   %span Date Range
   %span LOW END HERE
   %span HIGH END HERE
+.span12{'ng-controller' => 'controllers.PageController'}
+  %a.btn{'ng-click' => 'onPrevious()'} Prev Page
+  %a.btn{'ng-click' => 'onNext()'} Next Page
 .dashboard.span12
   %ng-view
 

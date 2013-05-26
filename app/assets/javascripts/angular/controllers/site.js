@@ -1,6 +1,6 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.SiteController',
-    ['$scope', '$rootScope', 'service.DashboardService',
-        function ($scope, $rootScope, dashboardService) {
+    ['$scope', '$rootScope', 'service.DashboardService', 'values.DashboardHeaderData',
+        function ($scope, $rootScope, dashboardService, dashboardHeaderData) {
             $scope.customers = dashboardService.getCustomers();
             $scope.locations = dashboardService.getEntitledLocations();
             $scope.flareSpecifications = dashboardService.getEntitledFlareSpecifications();

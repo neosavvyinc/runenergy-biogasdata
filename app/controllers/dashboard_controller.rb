@@ -77,7 +77,7 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    @flare_monitor_data = FlareMonitorData.all
+    @flare_monitor_data = FlareMonitorData.page(request.GET["start"].try(:to_i) || 0).per(100)
 
     exceptions = [:id, :created_at, :updated_at]
 

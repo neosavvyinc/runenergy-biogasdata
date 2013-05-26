@@ -9,6 +9,7 @@ gem 'mysql2'
 gem 'roo'
 gem 'activeadmin'
 gem "paperclip", "~> 3.0"
+gem 'kaminari'
 
 # Gems used only for assets and not required
 # in production environments by default.

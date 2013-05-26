@@ -19,3 +19,21 @@ RunEnergy.Dashboard.Utils.MapUtils = (function () {
         }
     }
 })();
+
+RunEnergy.Dashboard.Utils.RequestUrlUtils = (function () {
+
+    return {
+        withParams: function(url, map) {
+            if (url && map) {
+                for (var key in map) {
+                    if (url.indexOf("?") === -1) {
+                        url += "?";
+                    }
+                    url += key + "=" + map[key] + "&";
+                }
+                return url.indexOf("&") ? url.slice(0, url.length - 1) : url;
+            }
+            return url;
+        }
+    }
+})();

@@ -2,7 +2,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
     ['core.extensions.ServiceExtensions', "constants.Routes",
         function (serviceExtensions, routes) {
             return {
-                getCustomers: function() {
+                getCustomers: function () {
                     return serviceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.CUSTOMERS.READ
@@ -14,7 +14,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         url: routes.DASHBOARD.LOCATIONS.READ
                     });
                 },
-                getEntitledFlareDeployments: function() {
+                getEntitledFlareDeployments: function () {
                     return serviceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.FLARE_DEPLOYMENTS.READ
@@ -26,10 +26,12 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         url: routes.DASHBOARD.FLARE_SPECIFICATIONS.READ
                     });
                 },
-                getAllFlareMonitorData: function () {
+                getAllFlareMonitorData: function (start, end) {
                     return serviceExtensions.request({
                         method: 'GET',
-                        url: routes.DASHBOARD.FLARE_MONITOR_DATA.READ
+                        url: RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(routes.DASHBOARD.FLARE_MONITOR_DATA.READ,
+                            {start: start, end: end || (parseInt(start) + 1)}
+                        )
                     });
                 }
             };
