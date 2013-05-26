@@ -1,5 +1,5 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
-    ['$scope', '$rootScope', "constants.Routes", 'values.DashboardPageData', 'values.DashboardHeaderData',
+    ['$scope', '$rootScope', 'constants.Routes', 'values.DashboardPageData', 'values.DashboardHeaderData',
         function ($scope, $rootScope, routes, dashboardPageData, dashboardHeaderData) {
 
             //ACTION HANDLERS
@@ -17,7 +17,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
             $scope.getExportCSVLink = function () {
                 if (dashboardHeaderData.flareSpecification) {
                     return RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(
-                        routes.CSV_EXPORT.CREATE, {
+                        routes.DASHBOARD.CSV_EXPORT.CREATE, {
                             flareSpecificationId: dashboardHeaderData.flareSpecification.id
                         });
                 }
