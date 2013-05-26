@@ -61,9 +61,9 @@ class DashboardController < ApplicationController
 
   def read_flare_specifications
     if current_user.is_customer?
-      flare_specifications = FlareDeployment.where(:customer_id => current_user.id).map {|fd| fd.flare_specification}
+      flare_specifications = FlareDeployment.where(:customer_id => current_user.id).map { |fd| fd.flare_specification.as_json.merge({:location => fd.location.as_json}) }
     else
-      flare_specifications = FlareSpecification.all
+      flare_specifications = FlareSpecification.all.map {|fs| fs.as_json.merge({:location => fs.flare_deployment.location.as_json}) }
     end
 
     if request.xhr?

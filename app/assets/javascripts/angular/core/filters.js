@@ -25,3 +25,15 @@ RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse
         return [];
     };
 }]);
+
+//Collection
+RunEnergy.Dashboard.Filters.filter('collectionFilterProperty', function () {
+    return function (collection, property, value) {
+        if (collection && value) {
+            return collection.filter(function (item) {
+                return (RunEnergy.Dashboard.Utils.MapUtils.get(item, property) === value);
+            });
+        }
+        return collection;
+    };
+});
