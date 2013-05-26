@@ -58,4 +58,9 @@ class FlareMonitorData < ActiveRecord::Base
     AttributeNameMapping.find_by_attribute_name(field.to_s).try(:display_name) || ""
   end
 
+  def as_json(options=nil)
+    hash = super
+    hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
+    hash
+  end
 end
