@@ -20,8 +20,8 @@ namespace :mock do
 
   task :locations => [:environment, :countries, :states] do
     Location.delete_all
-    Location.create(:site_name => "Elizabeth Drive Landfill", :state_id => State.find_by_name("NSW").id, :lattitude => "33o15'52.33S", :longitude => "150o45'39.26E")
-    Location.create(:site_name => "Stevensons Road Closed Landfill", :state_id => State.find_by_name("VIC").id, :lattitude => "33o15'35.33S", :longitude => "190o45'14.26E")
+    Location.create_or_find_by_site_name(:site_name => "Elizabeth Drive Landfill", :state_id => State.find_by_name("NSW").id, :lattitude => "33o15'52.33S", :longitude => "150o45'39.26E")
+    Location.create_or_find_by_site_name(:site_name => "Stevensons Road Closed Landfill", :state_id => State.find_by_name("VIC").id, :lattitude => "33o15'35.33S", :longitude => "190o45'14.26E")
     puts "Locations created"
   end
 
@@ -35,7 +35,7 @@ namespace :mock do
 
   task :flare_specifications => [:environment, :companies] do
     FlareSpecification.delete_all
-    FlareSpecification.create({
+    FlareSpecification.create_or_find_by_flare_id({
                                   :capacity_scmh => 500,
                                   :data_location => "/DATA",
                                   :flare_id => "LFG-FLR1",
@@ -48,7 +48,7 @@ namespace :mock do
                                   :username => "runflare1",
                                   :web_address => "runflare1.dyndns.org"
                               })
-    FlareSpecification.create({
+    FlareSpecification.create_or_find_by_flare_id({
                                   :capacity_scmh => 500,
                                   :data_location => "/DATA",
                                   :flare_id => "LFG-FLR10",
@@ -61,7 +61,7 @@ namespace :mock do
                                   :username => "runflare10",
                                   :web_address => "runflare10.dyndns.org"
                               })
-    FlareSpecification.create({
+    FlareSpecification.create_or_find_by_flare_id({
                                   :capacity_scmh => 500,
                                   :data_location => "/DATA",
                                   :flare_id => "LFG-FLR6",
@@ -79,8 +79,8 @@ namespace :mock do
 
   task :flare_deployments => [:environment, :flare_specifications, :users] do
     FlareDeployment.delete_all
-    FlareDeployment.create(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
-    FlareDeployment.create(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10")
+    FlareDeployment.create_or_find_by_client_flare_id(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
+    FlareDeployment.create_or_find_by_client_flare_id(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10")
     puts "Flare deployments created"
   end
 

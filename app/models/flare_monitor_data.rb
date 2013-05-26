@@ -8,6 +8,8 @@ class FlareMonitorData < ActiveRecord::Base
   attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure, :flare_specification_id
   belongs_to :flare_specification
 
+  DATE = "date"
+  TIME = "time"
   DEFAULT_ROW_MAPPING = {
       "blower_speed_hz" => :blower_speed,
       "vacuum_kpa" => :inlet_pressure,
@@ -32,13 +34,14 @@ class FlareMonitorData < ActiveRecord::Base
         else
           row = [header, row].transpose
           row = Hash[row.map { |key_then_value|
-            unless key_then_value[1]
-              [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1].to_f]
+            if key_then_value.first == DATE or key_then_value.first == TIME
+              key_then_value
             else
               [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1]]
             end
           }]
           flare_monitor_data = new_ignore_unknown(row)
+          flare_monitor_data.date_time_reading = Date.strptime((row['date'] + " " + row["time"]), "%d/%m/%y %l:%M%S")
           flare_monitor_data.flare_specification = flare_specification
           flare_monitor_data.save!
         end
