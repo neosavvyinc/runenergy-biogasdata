@@ -35,22 +35,27 @@ namespace :data_retrieval do
     end
 
     #Task
-    flare_specifications = FlareSpecification.where(:flare_id => "LFG-FLR1")
+    flare_specifications = FlareDeployment.all.map { |fd| fd.flare_specification }
     flare_specifications.each do |fs|
-      Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
-        ftp.chdir(fs.data_location || '/DATA')
-        files = list_files(ftp.list)
-        unless fs.next_date.nil?
-          next_date = fs.next_date
-          files = files.select {|f| f[:date] >= next_date}
-        end
-        unless files.empty?
-          files.each do |f|
-            import_file(ftp, f, fs)
+      begin
+        Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
+          ftp.chdir(fs.data_location || '/DATA')
+          files = list_files(ftp.list)
+          unless fs.next_date.nil?
+            next_date = fs.next_date
+            files = files.select { |f| f[:date] >= next_date }
           end
-        else
-          puts "No new results found for import on #{fs.flare_id}"
+          unless files.empty?
+            files.each do |f|
+              import_file(ftp, f, fs)
+            end
+          else
+            puts "No new results found for import on #{fs.flare_id}"
+          end
         end
+      rescue
+        FlareImportLog.create(:message => $!, :likely_cause => "The FTP server is unavailable, wrong address, or down.", :flare_specification_id => fs.id)
+        puts "#{fs.flare_id} failed on retrieval with message #{$!}"
       end
     end
   end

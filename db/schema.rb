@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130526154908) do
+ActiveRecord::Schema.define(:version => 20130526232027) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -90,6 +90,15 @@ ActiveRecord::Schema.define(:version => 20130526154908) do
     t.datetime "updated_at",                            :null => false
   end
 
+  create_table "flare_deployment_statuses", :force => true do |t|
+    t.string   "status"
+    t.date     "first_reading"
+    t.date     "last_reading"
+    t.integer  "flare_deployment_id"
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+  end
+
   create_table "flare_deployments", :force => true do |t|
     t.string   "flare_specification_id"
     t.integer  "location_id"
@@ -98,6 +107,14 @@ ActiveRecord::Schema.define(:version => 20130526154908) do
     t.integer  "flare_data_mapping_id"
     t.datetime "created_at",             :null => false
     t.datetime "updated_at",             :null => false
+  end
+
+  create_table "flare_import_logs", :force => true do |t|
+    t.string   "message"
+    t.integer  "flare_specification_id"
+    t.datetime "created_at",             :null => false
+    t.datetime "updated_at",             :null => false
+    t.string   "likely_cause"
   end
 
   create_table "flare_monitor_data", :force => true do |t|
