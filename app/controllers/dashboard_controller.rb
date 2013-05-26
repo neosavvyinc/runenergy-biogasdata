@@ -8,6 +8,18 @@ class DashboardController < ApplicationController
   end
 
   #XHR
+  def read_locations
+    @locations = Location.all
+
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: @locations
+        }
+      end
+      return
+    end
+  end
 
   def read_flare_specifications
     @flare_specifications = FlareSpecification.all
