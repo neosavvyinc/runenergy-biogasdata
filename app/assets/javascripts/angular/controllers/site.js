@@ -6,17 +6,22 @@ RunEnergy.Dashboard.Controllers.controller('controllers.SiteController',
             $scope.dashboardHeaderData = dashboardHeaderData;
 
             //WATCHERS
-            var deregB = $scope.$watch('locations', function (newValue) {
-                if (newValue && newValue.length) {
-                    dashboardHeaderData.site = newValue[0];
-                    deregB();
-                }
-            });
-
             var deregC = $scope.$watch('customers', function (newValue) {
                 if (newValue && newValue.length) {
                     dashboardHeaderData.customer = newValue[0];
                     deregC();
+                }
+            });
+
+            $scope.$watch('locations', function (newValue) {
+                if (newValue && newValue.length) {
+                    dashboardHeaderData.site = newValue[0];
+                }
+            });
+
+            $scope.$watch('dashboardHeaderData.customer', function (newValue) {
+                if (newValue) {
+                    $scope.locations = dashboardService.getEntitledLocations(newValue.id);
                 }
             });
 

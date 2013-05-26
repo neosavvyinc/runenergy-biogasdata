@@ -26,6 +26,8 @@ class DashboardController < ApplicationController
   def read_locations
     if current_user.is_customer?
       @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", current_user.id)
+    elsif not request.GET["customerId"].nil?
+      @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", request.GET["customerId"].to_i)
     else
       @locations = Location.all
     end

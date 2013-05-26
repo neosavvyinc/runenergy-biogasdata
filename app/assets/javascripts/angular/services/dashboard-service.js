@@ -8,10 +8,14 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         url: routes.DASHBOARD.CUSTOMERS.READ
                     });
                 },
-                getEntitledLocations: function () {
+                getEntitledLocations: function (customerId) {
+                    var url = routes.DASHBOARD.LOCATIONS.READ;
+                    if (customerId) {
+                        url = RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(url, {customerId: customerId});
+                    }
                     return serviceExtensions.request({
                         method: 'GET',
-                        url: routes.DASHBOARD.LOCATIONS.READ
+                        url: url
                     });
                 },
                 getEntitledFlareDeployments: function () {
@@ -34,7 +38,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         )
                     });
                 },
-                getCSVExport: function(flareSpecificationId, startDate, endDate) {
+                getCSVExport: function (flareSpecificationId, startDate, endDate) {
                     return serviceExtensions.request({
                         method: 'POST',
                         url: routes.DASHBOARD.CSV_EXPORT,
