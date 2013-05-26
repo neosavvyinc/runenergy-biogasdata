@@ -83,6 +83,23 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
+  #Calculations
+  NET_HEATING_VALUE = 0.0339
+  METHANE_NHV_VALUE = 50
+  METHANE_GWP = 21
+
+  def energy
+    (NET_HEATING_VALUE * methane) || 0
+  end
+
+  def methane_tonne
+    (energy / METHANE_NHV_VALUE) || 0
+  end
+
+  def co2_eqiv
+    (methane_tonne * METHANE_GWP) || 0
+  end
+
   def as_json(options=nil)
     hash = super
     hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
