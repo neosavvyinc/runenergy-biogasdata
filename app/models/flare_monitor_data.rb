@@ -41,7 +41,9 @@ class FlareMonitorData < ActiveRecord::Base
             end
           }]
           flare_monitor_data = new_ignore_unknown(row)
-          flare_monitor_data.date_time_reading = Date.strptime((row['date'] + " " + row["time"]), "%d/%m/%y %l:%M%S")
+          date_with_zeroes = row['date'].gsub(/-/, "/").split("/").map {|p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s}.join("/")
+          time_with_zeroes = row['time'].split(":").map {|p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s}.join(":")
+          flare_monitor_data.date_time_reading = Time.strptime((date_with_zeroes + time_with_zeroes), "%d/%m/%y%H:%M:%S")
           flare_monitor_data.flare_specification = flare_specification
           flare_monitor_data.save!
         end
