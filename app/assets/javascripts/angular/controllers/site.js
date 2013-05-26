@@ -4,9 +4,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.SiteController',
             $scope.customers = dashboardService.getCustomers();
             $scope.locations = dashboardService.getEntitledLocations();
             $scope.flareSpecifications = dashboardService.getEntitledFlareSpecifications();
-            $scope.selectedCustomer = null;
-            $scope.selectedLocation = null;
-            $scope.selectedFlareSpecification = null;
+            $scope.dashboardHeaderData = dashboardHeaderData;
 
             var dereg = $scope.$watch('flareSpecifications', function (newValue) {
                 if (newValue && newValue.length) {

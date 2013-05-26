@@ -63,7 +63,7 @@ class DashboardController < ApplicationController
     if current_user.is_customer?
       flare_specifications = FlareDeployment.where(:customer_id => current_user.id).map { |fd| fd.flare_specification.as_json.merge({:location => fd.location.as_json}) }
     else
-      flare_specifications = FlareSpecification.all.map {|fs| fs.as_json.merge({:location => fs.flare_deployment.location.as_json}) }
+      flare_specifications = FlareSpecification.all.map { |fs| fs.as_json.merge({:location => fs.flare_deployment.location.as_json}) }
     end
 
     if request.xhr?
@@ -77,7 +77,15 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    @flare_monitor_data = FlareMonitorData.page(request.GET["start"].try(:to_i) || 0).per(100)
+    flare_specification_id = request.GET.get["flareSpecificationId"]
+    unless flare_specification_id.nil?
+      @flare_monitor_data = FlareMonitorData.where(:flare_specification_id => flare_specification_id)
+    else
+      @flare_monitor_data = FlareMonitorData.all
+    end
+
+    #Paging Support
+    @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(100)
 
     exceptions = [:id, :created_at, :updated_at]
 

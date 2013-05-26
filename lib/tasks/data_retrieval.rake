@@ -35,7 +35,7 @@ namespace :data_retrieval do
     end
 
     #Task
-    flare_specifications = FlareSpecification.where(:flare_id => "LFG-FLR6")
+    flare_specifications = FlareSpecification.where(:flare_id => "LFG-FLR1")
     flare_specifications.each do |fs|
       Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
         ftp.chdir(fs.data_location || '/DATA')

@@ -26,11 +26,11 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         url: routes.DASHBOARD.FLARE_SPECIFICATIONS.READ
                     });
                 },
-                getAllFlareMonitorData: function (start, end) {
+                getAllFlareMonitorData: function (flareSpecificationId, startDate, endDate, start, end) {
                     return serviceExtensions.request({
                         method: 'GET',
                         url: RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(routes.DASHBOARD.FLARE_MONITOR_DATA.READ,
-                            {start: start, end: end || (parseInt(start) + 1)}
+                            {flareSpecificationId: flareSpecificationId, start: start, end: end || (parseInt(start) + 1)}
                         )
                     });
                 }
