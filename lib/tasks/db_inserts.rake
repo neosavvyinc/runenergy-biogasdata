@@ -12,4 +12,9 @@ namespace :db_inserts do
     AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'standard_methane_volume', :display_name => 'Standard Methane Volume (Month to Date')
     AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'static_pressure', :display_name => 'Static Pressure')
   end
+
+  task :user_types => :environment do
+    UserType.find_or_create_by_name(:name => "OVERSEER")
+    UserType.find_or_create_by_name(:name => "CUSTOMER")
+  end
 end
