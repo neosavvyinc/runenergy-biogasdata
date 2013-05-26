@@ -42,7 +42,7 @@ class DashboardController < ApplicationController
     if request.xhr?
       respond_to do |format|
         format.json {
-          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys, :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions).values }}
+          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map {|attribute| FlareMonitorData.display_name_for_field(attribute)}, :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions).values }}
         }
       end
       return

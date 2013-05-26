@@ -43,4 +43,8 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
+  def self.display_name_for_field(field)
+    AttributeNameMapping.find_by_attribute_name(field.to_s).try(:display_name) || ""
+  end
+
 end
