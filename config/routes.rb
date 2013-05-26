@@ -12,7 +12,7 @@ Biogasdata::Application.routes.draw do
   match 'dashboard/flarespecifications' => 'dashboard#read_flare_specifications'
   match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'
 
-  root :to => "dashboard#index"
+  root :to => "dashboard#login"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

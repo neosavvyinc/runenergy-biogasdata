@@ -10,4 +10,12 @@ class User < ActiveRecord::Base
   belongs_to :user_type
   # attr_accessible :title, :body
 
+  def is_overseer
+    self.user_type == UserType.OVERSEER
+  end
+
+  def is_customer
+    self.user_type == UserType.CUSTOMER
+  end
+
 end

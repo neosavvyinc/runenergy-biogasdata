@@ -1,4 +1,10 @@
 namespace :mock do
+  task :users => :environment do
+    User.delete_all
+    User.create(:email => "doctorrockso@gmail.com", :password => "rocksorockso", :user_type_id => UserType.find_by_name("CUSTOMER").id)
+    User.create(:email => "lemmy@gmail.com", :password => "lemmylemmy", :user_type_id => UserType.find_by_name("OVERSEER").id)
+  end
+
   task :countries => :environment do
     Country.delete_all
     Country.create(:name => "Australia")
