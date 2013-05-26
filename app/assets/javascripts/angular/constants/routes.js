@@ -3,6 +3,9 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
         LOCATIONS: {
             READ: "dashboard/locations"
         },
+        FLARE_DEPLOYMENTS: {
+            READ: "dashboard/flaredeployments"
+        },
         FLARE_SPECIFICATIONS: {
             READ: "dashboard/flarespecifications"
         },

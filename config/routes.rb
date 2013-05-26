@@ -9,6 +9,7 @@ Biogasdata::Application.routes.draw do
 
   #XHR Paths
   match 'dashboard/locations' => 'dashboard#read_locations'
+  match 'dashboard/flaredeployments' => 'dashboard#read_flare_deployments'
   match 'dashboard/flarespecifications' => 'dashboard#read_flare_specifications'
   match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'
 

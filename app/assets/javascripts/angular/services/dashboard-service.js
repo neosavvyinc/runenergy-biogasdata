@@ -8,6 +8,12 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         url: routes.DASHBOARD.LOCATIONS.READ
                     });
                 },
+                getEntitledFlareDeployments: function() {
+                    return serviceExtensions.request({
+                        method: 'GET',
+                        url: routes.DASHBOARD.FLARE_DEPLOYMENTS.READ
+                    });
+                },
                 getEntitledFlareSpecifications: function () {
                     return serviceExtensions.request({
                         method: 'GET',

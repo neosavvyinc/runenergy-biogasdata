@@ -25,13 +25,35 @@ class DashboardController < ApplicationController
     end
   end
 
-  def read_flare_specifications
-    @flare_specifications = FlareSpecification.all
+  #TODO, may be extraneous
+  def read_flare_deployments
+    if current_user.is_customer?
+      flare_deployments = FlareDeployment.where(:customer_id => current_user.id)
+    else
+      flare_deployments = FlareDeployment.all
+    end
 
     if request.xhr?
       respond_to do |format|
         format.json {
-          render json: @flare_specifications
+          render json: flare_deployments
+        }
+      end
+      return
+    end
+  end
+
+  def read_flare_specifications
+    if current_user.is_customer?
+      flare_specifications = FlareDeployment.where(:customer_id => current_user.id).map {|fd| fd.flare_specification}
+    else
+      flare_specifications = FlareSpecification.all
+    end
+
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: flare_specifications
         }
       end
       return
