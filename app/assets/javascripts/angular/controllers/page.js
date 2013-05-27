@@ -8,7 +8,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
             };
 
             $scope.onPrevious = function () {
-                if (dashboardPageData > 0) {
+                if (dashboardPageData.page > 0) {
                     dashboardPageData.page--;
                 }
             };

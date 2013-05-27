@@ -6,7 +6,10 @@ RunEnergy.Dashboard.Controllers.
                 //ACTION HANDLERS
                 function getAllFlareMonitorData() {
                     if (dashboardHeaderData.flareSpecification) {
-                        $scope.data = dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, null, null, dashboardPageData.page, dashboardPageData.page + 1);
+                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, null, null, dashboardPageData.page, dashboardPageData.page + 1).
+                            then(function (result) {
+                                $scope.data = result;
+                            });
                     }
                 }
 
@@ -22,7 +25,15 @@ RunEnergy.Dashboard.Controllers.
                 });
 
                 $scope.$watch('dashboardHeaderData.flareSpecification', getAllFlareMonitorData);
-                $scope.$watch('dashboardPageData.page', getAllFlareMonitorData);
+                $scope.$watch('dashboardPageData.page', function(newValue, oldValue) {
+                    if (newValue > oldValue) {
+                        //Pre-loads the next page for the user
+                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, null, null, dashboardPageData.page + 1, dashboardPageData.page + 2).
+                            then(function (result) {
+                                $scope.data.values = $scope.data.values.concat(result.values);
+                            });
+                    }
+                });
 
                 //INITIALIZATION
                 $scope.filters = [];

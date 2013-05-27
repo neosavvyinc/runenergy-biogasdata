@@ -37,3 +37,15 @@ RunEnergy.Dashboard.Filters.filter('collectionFilterProperty', function () {
         return collection;
     };
 });
+
+RunEnergy.Dashboard.Filters.filter('collectionPage', function () {
+    return function (collection, page, count) {
+        if (collection && collection.length) {
+            if (page !== undefined && count) {
+                var start = page * count;
+                return collection.slice(start, Math.min(start + count, collection.length));
+            }
+        }
+        return collection;
+    };
+});

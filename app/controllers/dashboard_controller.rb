@@ -89,12 +89,12 @@ class DashboardController < ApplicationController
       respond_to do |format|
         format.json {
           #Paging Support
-          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(50)
+          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(250)
 
           #Additional Headings
           calculation_headings = ["Energy GJ/h (NHV)", "Methane (tonne)", "CO2 eqiv"]
 
-          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions).values.concat([fmd.energy, fmd.methane_tonne, fmd.co2_eqiv]) }}
+          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }}
         }
       end
       return

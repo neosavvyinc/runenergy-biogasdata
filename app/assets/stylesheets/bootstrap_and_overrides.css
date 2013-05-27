@@ -19,3 +19,7 @@
 .table th {
   line-height:1.2em;
 }
+
+.btn-group+.btn-group {
+    margin-left: 0;
+}

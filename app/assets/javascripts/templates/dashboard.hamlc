@@ -7,7 +7,7 @@
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression'}
     %tbody
-      %tr.re-grid-row{"ng-repeat" => "item in data.values | numericExpression : filters"}
+      %tr.re-grid-row{"ng-repeat" => "item in data.values | collectionPage : dashboardPageData.page : 50 | numericExpression : filters"}
         %td{"ng-bind" => "subItem", "ng-repeat" => "subItem in item"}
 
 
