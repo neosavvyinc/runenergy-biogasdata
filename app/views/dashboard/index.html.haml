@@ -6,9 +6,19 @@
     %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}
     %re-bootstrap-button-dropdown.location{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name', 'link-class' => 'btn-success'}
     %re-bootstrap-button-dropdown.flare-specifications{'items' => 'dashboardHeaderData.site.flare_specifications', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_id', 'link-class' => 'btn-success'}
-  .container-fluid.control-row
-    -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.startDate'}
-    -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.endDate'}
+  .container-fluid.control-row{'ng-controller' => 'controllers.DateController'}
+    %span.date
+      %span Start Date
+      %re-masked-date-input{'data-date' => 'dashboardDateData.startDate'}
+    %span.date
+      %span End Date
+      %re-masked-date-input{'data-date' => 'dashboardDateData.endDate'}
+    %span.time{'re-disabled' => '!dashboardDateData.startDate || !dashboardDateData.endDate'}
+      %span Start Time
+      %re-masked-time-input{'data-time' => 'dashboardDateData.startTime'}
+    %span.time{'re-disabled' => '!dashboardDateData.startDate || !dashboardDateData.endDate'}
+      %span End Time
+      %re-masked-time-input{'data-time' => 'dashboardDateData.endTime'}
   .container-fluid.control-row{'ng-controller' => 'controllers.PageController'}
     %a.btn.btn-inverse.prev{'ng-click' => 'onPrevious()'} Prev Page
     %a.btn.btn-inverse.next{'ng-click' => 'onNext()'} Next Page

@@ -17,5 +17,6 @@
 //= require angular
 //= require bootstrap-datepicker
 //= require spin.min
+//= require jquery.maskedinput.min
 //= require angular/dashboard
 //= require_tree .
