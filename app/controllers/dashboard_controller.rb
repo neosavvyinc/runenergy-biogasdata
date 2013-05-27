@@ -89,7 +89,7 @@ class DashboardController < ApplicationController
       respond_to do |format|
         format.json {
           #Paging Support
-          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(100)
+          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(50)
 
           #Additional Headings
           calculation_headings = ["Energy GJ/h (NHV)", "Methane (tonne)", "CO2 eqiv"]

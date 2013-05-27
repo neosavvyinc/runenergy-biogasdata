@@ -59,6 +59,19 @@ namespace :mock do
     FlareSpecification.find_or_create_by_flare_id({
                                                       :capacity_scmh => 500,
                                                       :data_location => "/DATA",
+                                                      :flare_id => "LFG-FLR3",
+                                                      :ftp_address => "runflare1.dyndns.org",
+                                                      :manufacturer_id => Company.find_by_name("Gasco").id,
+                                                      :manufacturer_product_id => "P2513-01",
+                                                      :owner_id => Company.find_by_name("Run Energy").id,
+                                                      :password => "run007",
+                                                      :purchase_date => Date.new,
+                                                      :username => "runflare1",
+                                                      :web_address => "runflare1.dyndns.org"
+                                                  })
+    FlareSpecification.find_or_create_by_flare_id({
+                                                      :capacity_scmh => 500,
+                                                      :data_location => "/DATA",
                                                       :flare_id => "LFG-FLR6",
                                                       :ftp_address => "runflare6.dyndns.org",
                                                       :manufacturer_id => Company.find_by_name("ABM Combustible").id,
@@ -74,6 +87,7 @@ namespace :mock do
 
   task :flare_deployments => [:environment, :locations, :flare_specifications, :users] do
     FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.first.id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-1", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
+    FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.all[1].id, :location_id => Location.first.id, :client_flare_id => "LFG-FLR1-1-2", :customer_id => User.find_by_email("doctorrockso@gmail.com").id)
     FlareDeployment.find_or_create_by_client_flare_id(:flare_specification_id => FlareSpecification.last.id, :location_id => Location.last.id, :client_flare_id => "LFG-FLR1-1-10", :customer_id => User.find_by_email("georgejones@gmail.com").id)
     puts "Flare deployments created"
   end
