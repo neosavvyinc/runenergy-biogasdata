@@ -41,8 +41,8 @@ class FlareMonitorData < ActiveRecord::Base
             end
           }]
           flare_monitor_data = new_ignore_unknown(row)
-          date_with_zeroes = row['date'].gsub(/-/, "/").split("/").map {|p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s}.join("/")
-          time_with_zeroes = row['time'].split(":").map {|p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s}.join(":")
+          date_with_zeroes = row['date'].gsub(/-/, "/").split("/").map { |p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s }.join("/")
+          time_with_zeroes = row['time'].split(":").map { |p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s }.join(":")
           flare_monitor_data.date_time_reading = Time.strptime((date_with_zeroes + time_with_zeroes), "%d/%m/%y%H:%M:%S")
           flare_monitor_data.flare_specification = flare_specification
           flare_monitor_data.save!
@@ -62,10 +62,10 @@ class FlareMonitorData < ActiveRecord::Base
     options.inject(initial_relation) do |current_scope, (key, value)|
       next current_scope if value.blank?
       case key
-      when 'flareSpecificationId'
-        current_scope.where(:flare_specification_id => options['flareSpecificationId'])
-      else #unknown key
-        current_scope
+        when 'flareSpecificationId'
+          current_scope.where(:flare_specification_id => options['flareSpecificationId'])
+        else #unknown key
+          current_scope
       end
     end
   end
@@ -73,12 +73,30 @@ class FlareMonitorData < ActiveRecord::Base
   def self.to_csv(flare_monitor_data, exceptions = [])
     CSV.generate do |csv|
       #remove exception cols
-      csv_cols = column_names.delete_if {|col| exceptions.map(&:to_s).include?(col)}
+      csv_cols = column_names.delete_if { |col| exceptions.map(&:to_s).include?(col) }
       #convert col names to human
-      header_cols = csv_cols.map {|col| display_name_for_field(col)}
+      header_cols = csv_cols.map { |col| display_name_for_field(col) }
       csv << header_cols
       flare_monitor_data.each do |flare_monitor_datum|
         csv << flare_monitor_datum.attributes.values_at(*csv_cols)
+      end
+    end
+  end
+
+  def self.date_range(flare_speicification, start_date, end_date, start_time, end_time)
+    query = query || FlareMonitorData.where(:flare_specification_id => flare_speicification.id)
+    if not start_date.blank/
+        unless start_time.blank?
+          query = query.where('date_time_reading >= ?', Date.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
+        else
+          query = query.where('date_time_reading >= ?', Date.strptime(start_date, "%d/%m/%Y"))
+        end
+    end
+    if not end_date.blank?
+      unless end_time.blank?
+        query = query.where('date_time_reading <= ?', Date.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S"))
+      else
+        query = query.where('date_time_reading <= ?', Date.strptime(end_date, "%d/%m/%Y"))
       end
     end
   end

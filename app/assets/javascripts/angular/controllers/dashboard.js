@@ -1,7 +1,14 @@
 RunEnergy.Dashboard.Controllers.
     controller('controllers.DashboardController',
-        ['$scope', '$rootScope', 'constants.Config', 'service.DashboardService', 'values.DashboardHeaderData', 'values.DashboardPageData',
-            function ($scope, $rootScope, config, dashboardService, dashboardHeaderData, dashboardPageData) {
+        ['$scope', '$rootScope', 'constants.Config', 'service.DashboardService', 'values.DashboardDateData', 'values.DashboardHeaderData', 'values.DashboardPageData',
+            function ($scope, $rootScope, config, dashboardService, dashboardDateData, dashboardHeaderData, dashboardPageData) {
+
+                //EVENT LISTENERS
+                $scope.$on(config.EVENTS.APPLY_DATE_FILTERS, function () {
+                    dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, 0, 1).then(function (result) {
+                        $scope.data = result;
+                    });
+                });
 
                 //ACTION HANDLERS
                 function getAllFlareMonitorData() {
@@ -26,10 +33,10 @@ RunEnergy.Dashboard.Controllers.
                 });
 
                 $scope.$watch('dashboardHeaderData.flareSpecification', getAllFlareMonitorData);
-                $scope.$watch('dashboardPageData.page', function(newValue, oldValue) {
+                $scope.$watch('dashboardPageData.page', function (newValue, oldValue) {
                     if (newValue > oldValue) {
                         //Pre-loads the next page for the user
-                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, null, null, dashboardPageData.page + 1, dashboardPageData.page + 2).
+                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startDate, dashboardDateData.endDate, dashboardPageData.page + 1, dashboardPageData.page + 2).
                             then(function (result) {
                                 $scope.data.values = $scope.data.values.concat(result.values);
                             });

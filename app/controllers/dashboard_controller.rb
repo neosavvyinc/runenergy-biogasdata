@@ -81,7 +81,7 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    @flare_monitor_data = FlareMonitorData.filter_data(params)
+    @flare_monitor_data = FlareMonitorData.date_range(params["flareSpecificationId"], params["startDate"], params["endDate"], params["startTime"], params["endTime"])
 
     exceptions = [:id, :created_at, :updated_at]
 
@@ -94,7 +94,7 @@ class DashboardController < ApplicationController
           #Additional Headings
           calculation_headings = ["Energy GJ/h (NHV)", "Methane (tonne)", "CO2 eqiv"]
 
-          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }}
+          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values.concat([fmd.energy, fmd.methane_tonne, fmd.co2_eqiv]) }}
         }
       end
       return
