@@ -15,7 +15,6 @@
 //= require twitter/bootstrap
 //= require hamlcoffee
 //= require angular
-//= require bootstrap-datepicker
 //= require spin.min
 //= require jquery.maskedinput.min
 //= require angular/dashboard
