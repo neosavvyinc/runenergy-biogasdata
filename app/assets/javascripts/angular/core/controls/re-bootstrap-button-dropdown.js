@@ -3,7 +3,7 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            template: '<div class="btn-group"><a class="btn dropdown-toggle" data-toggle="dropdown">{{labelField && selectedItem[labelField] | logicalIif : selectedItem[labelField] : selectedItem}}<span class="caret"></span></a><ul class="dropdown-menu"><li ng-repeat="item in items" ng-click="onClick(item)"><a ng-bind="labelField && item[labelField] | logicalIif : item[labelField] : item"></a></li></ul></div>',
+            template: '<div class="btn-group"><a class="btn dropdown-toggle" ng-class="innerLinkClass" data-toggle="dropdown">{{labelField && selectedItem[labelField] | logicalIif : selectedItem[labelField] : selectedItem}}<span class="caret"></span></a><ul class="dropdown-menu"><li ng-repeat="item in items" ng-click="onClick(item)"><a ng-bind="labelField && item[labelField] | logicalIif : item[labelField] : item"></a></li></ul></div>',
             scope: {
                 items: "=",
                 selectedItem: "=",
@@ -13,6 +13,10 @@ RunEnergy.Dashboard.Directives
                 scope.onClick = function (item) {
                     scope.selectedItem = item;
                 };
+
+                if (attrs.linkClass) {
+                    scope.innerLinkClass = attrs.linkClass;
+                }
             }
         }
     });

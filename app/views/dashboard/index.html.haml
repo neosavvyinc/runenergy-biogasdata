@@ -1,17 +1,20 @@
-.span12{'ng-controller' => 'controllers.SiteController'}
-  %re-bootstrap-button-dropdown{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s}
-  %re-bootstrap-button-dropdown{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name'}
-  %re-bootstrap-button-dropdown{'items' => 'dashboardHeaderData.site.flare_specifications', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_id'}
-  = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-danger'
-.span12
-  -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.startDate'}
-  -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.endDate'}
-.span12{'ng-controller' => 'controllers.PageController'}
-  %a.btn{'ng-click' => 'onPrevious()'} Prev Page
-  %a.btn{'ng-click' => 'onNext()'} Next Page
-  %a.btn{'ng-href' => '{{ getExportCSVLink() }}'} Export To CSV
-.dashboard.container-fluid
-  %ng-view
+.dashboard
+  .container-fluid
+    %h3.title Run Energy
+    = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout'
+  .container-fluid.copntrol-row{'ng-controller' => 'controllers.SiteController'}
+    %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}
+    %re-bootstrap-button-dropdown.location{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name', 'link-class' => 'btn-success'}
+    %re-bootstrap-button-dropdown.flare-specifications{'items' => 'dashboardHeaderData.site.flare_specifications', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_id', 'link-class' => 'btn-success'}
+  .container-fluid.control-row
+    -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.startDate'}
+    -#%re-bootstrap-datepicker{'data-value' => 'dashboardDateData.endDate'}
+  .container-fluid.control-row{'ng-controller' => 'controllers.PageController'}
+    %a.btn.btn-inverse.prev{'ng-click' => 'onPrevious()'} Prev Page
+    %a.btn.btn-inverse.next{'ng-click' => 'onNext()'} Next Page
+    %a.btn.btn-success.export{'ng-href' => '{{ getExportCSVLink() }}'} Export To CSV
+  .dashboard.container-fluid
+    %ng-view
 
 - content_for :javascript do
   :javascript
