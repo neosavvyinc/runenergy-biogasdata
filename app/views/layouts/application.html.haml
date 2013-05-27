@@ -5,6 +5,7 @@
     = stylesheet_link_tag    "application", :media => "all"
     = csrf_meta_tags
   %body
-    = yield
+    .container-fluid
+      = yield
     = javascript_include_tag "application"
     = content_for(:javascript)

@@ -16,5 +16,6 @@
 //= require hamlcoffee
 //= require angular
 //= require bootstrap-datepicker
+//= require spin.min
 //= require angular/dashboard
 //= require_tree .

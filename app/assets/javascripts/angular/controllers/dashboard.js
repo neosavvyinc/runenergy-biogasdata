@@ -1,7 +1,7 @@
 RunEnergy.Dashboard.Controllers.
     controller('controllers.DashboardController',
-        ['$scope', '$rootScope', 'service.DashboardService', 'values.DashboardHeaderData', 'values.DashboardPageData',
-            function ($scope, $rootScope, dashboardService, dashboardHeaderData, dashboardPageData) {
+        ['$scope', '$rootScope', 'constants.Config', 'service.DashboardService', 'values.DashboardHeaderData', 'values.DashboardPageData',
+            function ($scope, $rootScope, config, dashboardService, dashboardHeaderData, dashboardPageData) {
 
                 //ACTION HANDLERS
                 function getAllFlareMonitorData() {
@@ -9,6 +9,7 @@ RunEnergy.Dashboard.Controllers.
                         dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, null, null, dashboardPageData.page, dashboardPageData.page + 1).
                             then(function (result) {
                                 $scope.data = result;
+                                $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
                             });
                     }
                 }
