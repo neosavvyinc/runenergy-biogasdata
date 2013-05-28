@@ -81,7 +81,7 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    @flare_monitor_data = FlareMonitorData.date_range(params["flareSpecificationId"], params["startDate"], params["endDate"], params["startTime"], params["endTime"])
+    @flare_monitor_data = FlareMonitorData.filter_data(params)
 
     exceptions = [:id, :created_at, :updated_at]
 

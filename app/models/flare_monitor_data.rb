@@ -83,9 +83,9 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
-  def self.date_range(flare_speicification, start_date, end_date, start_time, end_time)
-    query = query || FlareMonitorData.where(:flare_specification_id => flare_speicification.id)
-    if not start_date.blank/
+  def self.date_range(flare_speicification_id, start_date, end_date, start_time, end_time)
+    query = FlareMonitorData.where(:flare_specification_id => flare_speicification_id)
+    if not start_date.blank?
         unless start_time.blank?
           query = query.where('date_time_reading >= ?', Date.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
         else
@@ -99,6 +99,7 @@ class FlareMonitorData < ActiveRecord::Base
         query = query.where('date_time_reading <= ?', Date.strptime(end_date, "%d/%m/%Y"))
       end
     end
+    query
   end
 
   #Calculations
