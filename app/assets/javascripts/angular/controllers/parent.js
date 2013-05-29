@@ -1,11 +1,13 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.ParentController',
-    ['$scope', '$rootScope', 'constants.Config',
-        function ($scope, $rootScope, config) {
+    ['$scope', '$rootScope', 'constants.Config', 'values.DashboardPageData',
+        function ($scope, $rootScope, config, pageData) {
             //EVENT LISTENERS
             $scope.$on(config.EVENTS.DASHBOARD_LOADED, function() {
                 $scope.loading = false;
+                pageData.page = 0;
             });
 
-            //INITIALIZATION
-            $scope.loading = true;
+            $scope.$on(config.EVENTS.DASHBOARD_LOADING, function() {
+                $scope.loading = true;
+            });
         }]);

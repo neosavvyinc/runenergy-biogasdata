@@ -63,7 +63,7 @@ class FlareMonitorData < ActiveRecord::Base
       next current_scope if value.blank?
       case key
         when 'flareSpecificationId'
-          current_scope.where(:flare_specification_id => options['flareSpecificationId'])
+          current_scope.where(:flare_specification_id => options['flareSpecificationId']).order("date_time_reading ASC")
         else #unknown key
           current_scope
       end
@@ -87,16 +87,16 @@ class FlareMonitorData < ActiveRecord::Base
     query = filter_data({'flareSpecificationId' => flare_speicification_id})
     if not start_date.blank?
         unless start_time.blank?
-          query = query.where('date_time_reading >= ?', Date.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
+          query = query.where('date_time_reading >= ?', DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
         else
-          query = query.where('date_time_reading >= ?', Date.strptime(start_date, "%d/%m/%Y"))
+          query = query.where('date_time_reading >= ?', DateTime.strptime(start_date, "%d/%m/%Y"))
         end
     end
     if not end_date.blank?
       unless end_time.blank?
-        query = query.where('date_time_reading <= ?', Date.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S"))
+        query = query.where('date_time_reading <= ?', DateTime.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S"))
       else
-        query = query.where('date_time_reading <= ?', Date.strptime(end_date, "%d/%m/%Y"))
+        query = query.where('date_time_reading <= ?', DateTime.strptime(end_date, "%d/%m/%Y"))
       end
     end
     query

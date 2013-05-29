@@ -100,7 +100,7 @@ class DashboardController < ApplicationController
           #Additional Headings
           calculation_headings = ["Energy GJ/h (NHV)", "Methane (tonne)", "CO2 eqiv"]
 
-          render json: {:header => @flare_monitor_data.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }}
+          render json: {:header => FlareMonitorData.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_name_for_field(attribute) }.concat(calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }}
         }
       end
       return
