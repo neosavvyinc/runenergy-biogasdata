@@ -34,7 +34,13 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                     return serviceExtensions.request({
                         method: 'GET',
                         url: RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(routes.DASHBOARD.FLARE_MONITOR_DATA.READ,
-                            {flareSpecificationId: flareSpecificationId, start: start, end: end || (parseInt(start) + 1)}
+                            {flareSpecificationId: flareSpecificationId,
+                                startDate: startDate,
+                                endDate: endDate,
+                                startTime: startTime,
+                                endTime: endTime,
+                                start: start,
+                                end: end || (parseInt(start) + 1)}
                         )
                     });
                 },
