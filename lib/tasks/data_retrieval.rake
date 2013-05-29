@@ -37,25 +37,29 @@ namespace :data_retrieval do
     #Task
     flare_specifications = FlareDeployment.all.map { |fd| fd.flare_specification }
     flare_specifications.each do |fs|
-      begin
-        Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
-          ftp.chdir(fs.data_location || '/DATA')
-          files = list_files(ftp.list)
-          unless fs.next_date.nil?
-            next_date = fs.next_date
-            files = files.select { |f| f[:date] >= next_date }
-          end
-          unless files.empty?
-            files.each do |f|
-              import_file(ftp, f, fs)
+      unless fs.nil?
+        begin
+          Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
+            ftp.chdir(fs.data_location || '/DATA')
+            files = list_files(ftp.list)
+            unless fs.next_date.nil?
+              next_date = fs.next_date
+              files = files.select { |f| f[:date] >= next_date }
             end
-          else
-            puts "No new results found for import on #{fs.flare_id}"
+            unless files.empty?
+              files.each do |f|
+                import_file(ftp, f, fs)
+              end
+            else
+              puts "No new results found for import on #{fs.flare_id}"
+            end
           end
+        rescue
+          FlareImportLog.create(:message => $!, :likely_cause => "The FTP server is unavailable, wrong address, or down.", :flare_specification_id => fs.id)
+          puts "#{fs.flare_id} failed on retrieval with message #{$!}"
         end
-      rescue
-        FlareImportLog.create(:message => $!, :likely_cause => "The FTP server is unavailable, wrong address, or down.", :flare_specification_id => fs.id)
-        puts "#{fs.flare_id} failed on retrieval with message #{$!}"
+      else
+        FlareImportLog.create(:message => "There is a flare deployment without a specifications.", :likely_cause => "There should not be any deployments without specifications.", :flare_specification_id => fs.id)
       end
     end
   end
