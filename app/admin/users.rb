@@ -1,3 +1,3 @@
-ActiveAdmin.register User do
-  
+ActiveAdmin.register User, :as => "Customers/Viewers" do
+  menu :parent => "Users"
 end

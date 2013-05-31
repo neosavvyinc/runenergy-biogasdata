@@ -1,3 +1,3 @@
-ActiveAdmin.register AttributeNameMapping do
+ActiveAdmin.register AttributeNameMapping, :as => "Columns" do
   
 end

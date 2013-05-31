@@ -1,3 +1,3 @@
-ActiveAdmin.register FlareImportLog do
+ActiveAdmin.register FlareImportLog, :as => "Log" do
   
 end

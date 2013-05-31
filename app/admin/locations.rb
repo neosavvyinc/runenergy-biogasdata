@@ -1,3 +1,3 @@
-ActiveAdmin.register Location do
+ActiveAdmin.register Location, :as => "Site" do
   
 end

@@ -1,3 +1,3 @@
-ActiveAdmin.register FlareDataMapping do
-  
+ActiveAdmin.register FlareDataMapping, :as => "Data Mapping" do
+  menu :parent => "Flares"
 end

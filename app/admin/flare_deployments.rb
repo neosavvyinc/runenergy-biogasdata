@@ -1,3 +1,3 @@
-ActiveAdmin.register FlareDeployment do
-  
+ActiveAdmin.register FlareDeployment, :as => "Deployment" do
+
 end
