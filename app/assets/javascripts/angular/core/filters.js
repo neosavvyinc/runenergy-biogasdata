@@ -6,6 +6,15 @@ RunEnergy.Dashboard.Filters.filter('logicalIif', function () {
 });
 
 //Numeric
+RunEnergy.Dashboard.Filters.filter('numericExpressionConversion', ['$interpolate', '$parse', function ($interpolate, $parse) {
+    return function (value) {
+        if (value) {
+            return value.replace(/=/g, "==");
+        }
+        return value;
+    };
+}]);
+
 RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse', function ($interpolate, $parse) {
     return function (data, expressionsAndIndexes) {
         if (data && data.length) {
@@ -13,7 +22,8 @@ RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse
                 return data.filter(function (item) {
                     for (var i = 0; i < expressionsAndIndexes.length; i++) {
                         var expressionAndProperty = expressionsAndIndexes[i];
-                        if (expressionAndProperty.expression && /\d/.test(expressionAndProperty.expression) && !$parse(String(item[parseInt(expressionAndProperty.index)]) + expressionAndProperty.expression)()) {
+                        var expression = expressionAndProperty.expression.replace(/=/g, "==");
+                        if (expression && /\d/.test(expression) && !$parse(String(item[parseInt(expressionAndProperty.index)]) + expression)()) {
                             return false;
                         }
                     }
