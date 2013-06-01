@@ -8,6 +8,7 @@ Biogasdata::Application.routes.draw do
   get "dashboard/login"
 
   #XHR Paths
+  match 'dashboard/user' => 'dashboard#read_current_user'
   match 'dashboard/customers' => 'dashboard#read_customers'
   match 'dashboard/locations' => 'dashboard#read_locations'
   match 'dashboard/flaredeployments' => 'dashboard#read_flare_deployments'

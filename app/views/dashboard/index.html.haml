@@ -1,6 +1,9 @@
 .dashboard{'ng-controller' => 'controllers.ParentController', 're-spinning-overlay' => 'loading'}
   .container-fluid
-    %h3.title Run Energy
+    %h3.title
+      %span.company
+        Run Energy /
+      %span.user{'ng-bind' => 'user.name'}
     = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout'
   .container-fluid.copntrol-row{'ng-controller' => 'controllers.SiteController'}
     %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}

@@ -1,6 +1,6 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.ParentController',
-    ['$scope', '$rootScope', 'constants.Config', 'values.DashboardPageData',
-        function ($scope, $rootScope, config, pageData) {
+    ['$scope', '$rootScope', 'constants.Config', 'values.DashboardPageData', 'service.DashboardService',
+        function ($scope, $rootScope, config, pageData, dashboardService) {
             //EVENT LISTENERS
             $scope.$on(config.EVENTS.DASHBOARD_LOADED, function() {
                 $scope.loading = false;
@@ -10,4 +10,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.ParentController',
             $scope.$on(config.EVENTS.DASHBOARD_LOADING, function() {
                 $scope.loading = true;
             });
+
+            //INITIALIZATION
+            $scope.user = dashboardService.getCurrentUser();
         }]);

@@ -9,6 +9,17 @@ class DashboardController < ApplicationController
   end
 
   #XHR
+  def read_current_user
+    if request.xhr?
+      respond_to do |format|
+        format.json {
+          render json: current_user
+        }
+      end
+      return
+    end
+  end
+
   def read_customers
     customers = nil
     unless current_user.is_customer?

@@ -1,5 +1,8 @@
 RunEnergy.Dashboard.Constants.constant("constants.Routes", {
     DASHBOARD: {
+        USER: {
+            READ: "dashboard/user"
+        },
         CUSTOMERS: {
             READ: "dashboard/customers"
         },

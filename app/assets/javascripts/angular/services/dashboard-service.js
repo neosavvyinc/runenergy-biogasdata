@@ -2,6 +2,12 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
     ['core.extensions.ServiceExtensions', "constants.Routes",
         function (serviceExtensions, routes) {
             return {
+                getCurrentUser: function()  {
+                    return serviceExtensions.request({
+                        method: 'GET',
+                        url: routes.DASHBOARD.USER.READ
+                    });
+                },
                 getCustomers: function () {
                     return serviceExtensions.request({
                         method: 'GET',
