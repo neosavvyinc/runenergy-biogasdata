@@ -26,6 +26,28 @@ RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse
     };
 }]);
 
+RunEnergy.Dashboard.Filters.filter('numericFilterRound', function () {
+    return function (value, significantDigits) {
+        if (value !== undefined && value !== null) {
+            var str = String(Math.round(parseFloat(value) * Math.pow(10, significantDigits)));
+            return significantDigits ? str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length) : str;
+        }
+        return value;
+    };
+});
+
+RunEnergy.Dashboard.Filters.filter('ifNumberNumericFilterRound',
+    ['$filter',
+        function ($filter) {
+            return function (value, significantDigits) {
+                if (RunEnergy.Dashboard.Utils.NumberUtils.isNumber(value)) {
+                    return $filter('numericFilterRound')(value, significantDigits);
+                }
+                return value;
+            };
+        }]);
+
+
 //Collection
 RunEnergy.Dashboard.Filters.filter('collectionFilterProperty', function () {
     return function (collection, property, value) {

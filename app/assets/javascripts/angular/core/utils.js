@@ -23,7 +23,7 @@ RunEnergy.Dashboard.Utils.MapUtils = (function () {
 RunEnergy.Dashboard.Utils.RequestUrlUtils = (function () {
 
     return {
-        withParams: function(url, map) {
+        withParams: function (url, map) {
             if (url && map) {
                 for (var key in map) {
                     if (url.indexOf("?") === -1) {
@@ -34,6 +34,14 @@ RunEnergy.Dashboard.Utils.RequestUrlUtils = (function () {
                 return url.indexOf("&") ? url.slice(0, url.length - 1) : url;
             }
             return url;
+        }
+    }
+})();
+
+RunEnergy.Dashboard.Utils.NumberUtils = (function () {
+    return {
+        isNumber: function isNumber(n) {
+            return !isNaN(parseFloat(n)) && isFinite(n);
         }
     }
 })();

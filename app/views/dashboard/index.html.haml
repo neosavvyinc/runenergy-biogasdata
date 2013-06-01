@@ -5,7 +5,7 @@
   .container-fluid.copntrol-row{'ng-controller' => 'controllers.SiteController'}
     %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}
     %re-bootstrap-button-dropdown.location{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name', 'link-class' => 'btn-success'}
-    %re-bootstrap-button-dropdown.flare-specifications{'items' => 'dashboardHeaderData.site.flare_specifications', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_id', 'link-class' => 'btn-success'}
+    %re-bootstrap-button-dropdown.flare-specifications{'items' => 'dashboardHeaderData.site.flare_specifications', 'selected-item' => 'dashboardHeaderData.flareSpecification', 'label-field' => 'flare_unique_identifier', 'link-class' => 'btn-success'}
   .container-fluid.control-row.date-time{'ng-controller' => 'controllers.DateController'}
     %span.date
       %span Start Date
