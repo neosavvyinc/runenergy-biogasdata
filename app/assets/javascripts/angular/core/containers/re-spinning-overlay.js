@@ -1,7 +1,7 @@
 RunEnergy.Dashboard.Directives
     .directive('reSpinningOverlay',
-        ['$timeout',
-            function ($timeout) {
+        ['$timeout', '$window',
+            function ($timeout, $window) {
                 return {
                     restrict: 'A',
                     scope: false,
@@ -22,6 +22,7 @@ RunEnergy.Dashboard.Directives
                         scope.$watch(attrs.reSpinningOverlay, function (newValue) {
                             if (newValue) {
                                 spinner = new Spinner(opts).spin(element[0]);
+                                $(spinner.el).css('top', String($($window).height() / 2) + "px" );
                             } else if (spinner) {
                                 spinner.stop();
                                 spinner = null;
