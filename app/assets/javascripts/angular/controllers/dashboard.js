@@ -41,10 +41,12 @@ RunEnergy.Dashboard.Controllers.
                 $scope.$watch('dashboardPageData.page', function (newValue, oldValue) {
                     if (newValue > oldValue) {
                         //Pre-loads the next page for the user
-                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, dashboardPageData.page + 1, dashboardPageData.page + 2).
-                            then(function (result) {
-                                $scope.data.values = $scope.data.values.concat(result.values);
-                            });
+                        if ($scope.data) {
+                            dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, dashboardPageData.page + 1, dashboardPageData.page + 2).
+                                then(function (result) {
+                                    $scope.data.values = $scope.data.values.concat(result.values);
+                                });
+                        }
                     }
                 });
 
