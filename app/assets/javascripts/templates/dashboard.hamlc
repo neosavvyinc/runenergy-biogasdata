@@ -2,7 +2,9 @@
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
-        %th{"ng-bind" => "item.display_name", 'ng-repeat' => 'item in data.header'}
+        %th{'ng-repeat' => 'item in data.header'}
+          %p.name{"ng-bind" => "item.display_name"}
+          %p.units{"ng-bind" => "item.units | logicalIif : item.units : ''"}
       %tr
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression'}

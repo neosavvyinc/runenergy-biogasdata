@@ -3,9 +3,9 @@ class AttributeNameMapping < ActiveRecord::Base
 
   def self.calculation_headings
     [
-        {:display_name => "Energy GJ/h (NHV)", :units => "NHV", :significant_digits => 3},
-        {:display_name => "Methane (tonne)", :units => "tonne", :significant_digits => 3},
-        {:display_name => "CO2 eqiv", :units => "eqiv", :significant_digits => 3}
+        {:display_name => "Energy GJ/h", :units => "NHV", :significant_digits => 3},
+        {:display_name => "Methane", :units => "tonne", :significant_digits => 3},
+        {:display_name => "CO2", :units => "eqiv", :significant_digits => 3}
     ]
   end
 
