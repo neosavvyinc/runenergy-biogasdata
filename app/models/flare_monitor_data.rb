@@ -121,6 +121,9 @@ class FlareMonitorData < ActiveRecord::Base
 
   def as_json(options=nil)
     hash = super
+    #Flare Specification Fields
+    hash['flare_specification_id'] = self.flare_specification.try(:flare_unique_identifier)
+    #Formatting
     hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
     hash
   end

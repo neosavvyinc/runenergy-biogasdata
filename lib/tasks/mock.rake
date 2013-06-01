@@ -30,10 +30,10 @@ namespace :mock do
   end
 
   task :flare_specifications => [:environment, :companies] do
-    FlareSpecification.find_or_create_by_flare_id({
+    FlareSpecification.find_or_create_by_flare_unique_identifier({
                                                       :capacity_scmh => 500,
                                                       :data_location => "/DATA",
-                                                      :flare_id => "LFG-FLR1",
+                                                      :flare_unique_identifier => "LFG-FLR1",
                                                       :ftp_address => "runflare6.dyndns.org",
                                                       :manufacturer_id => Company.find_by_name("Gasco").id,
                                                       :manufacturer_product_id => "P2513-01",
@@ -43,10 +43,10 @@ namespace :mock do
                                                       :username => "runflare6",
                                                       :web_address => "runflare6.dyndns.org"
                                                   })
-    FlareSpecification.find_or_create_by_flare_id({
+    FlareSpecification.find_or_create_by_flare_unique_identifier({
                                                       :capacity_scmh => 500,
                                                       :data_location => "/DATA",
-                                                      :flare_id => "LFG-FLR10",
+                                                      :flare_unique_identifier => "LFG-FLR10",
                                                       :ftp_address => "runflare10.dyndns.org",
                                                       :manufacturer_id => Company.find_by_name("ABM Combustible").id,
                                                       :manufacturer_product_id => "P2513-01",
@@ -56,10 +56,10 @@ namespace :mock do
                                                       :username => "runflare10",
                                                       :web_address => "runflare10.dyndns.org"
                                                   })
-    FlareSpecification.find_or_create_by_flare_id({
+    FlareSpecification.find_or_create_by_flare_unique_identifier({
                                                       :capacity_scmh => 500,
                                                       :data_location => "/DATA",
-                                                      :flare_id => "LFG-FLR3",
+                                                      :flare_unique_identifier => "LFG-FLR3",
                                                       :ftp_address => "runflare1.dyndns.org",
                                                       :manufacturer_id => Company.find_by_name("Gasco").id,
                                                       :manufacturer_product_id => "P2513-01",
@@ -69,10 +69,10 @@ namespace :mock do
                                                       :username => "runflare1",
                                                       :web_address => "runflare1.dyndns.org"
                                                   })
-    FlareSpecification.find_or_create_by_flare_id({
+    FlareSpecification.find_or_create_by_flare_unique_identifier({
                                                       :capacity_scmh => 500,
                                                       :data_location => "/DATA",
-                                                      :flare_id => "LFG-FLR6",
+                                                      :flare_unique_identifier => "LFG-FLR6",
                                                       :ftp_address => "runflare6.dyndns.org",
                                                       :manufacturer_id => Company.find_by_name("ABM Combustible").id,
                                                       :manufacturer_product_id => "P2513-01",

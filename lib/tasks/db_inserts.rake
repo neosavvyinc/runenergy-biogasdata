@@ -11,6 +11,7 @@ namespace :db_inserts do
     AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'standard_lfg_volume', :display_name => 'Standard LFG Volume (Month to Date)')
     AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'standard_methane_volume', :display_name => 'Standard Methane Volume (Month to Date')
     AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'static_pressure', :display_name => 'Static Pressure')
+    AttributeNameMapping.find_or_create_by_attribute_name(:applies_to_class => 'FlareMonitorData', :attribute_name => 'flare_specification_id', :display_name => 'Flare')
   end
 
   task :user_types => :environment do
