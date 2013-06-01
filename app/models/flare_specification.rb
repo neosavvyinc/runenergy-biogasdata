@@ -6,6 +6,10 @@ class FlareSpecification < ActiveRecord::Base
   has_one :flare_deployment
   has_many :flare_monitor_datas
 
+  def display_name
+    flare_unique_identifier
+  end
+
   def update_statistic(csv_file_name, date=nil)
     unless csv_file_name.blank?
       flare_collection_statistic = self.flare_collection_statistic || FlareCollectionStatistic.new

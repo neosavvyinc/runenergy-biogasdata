@@ -5,4 +5,8 @@ class Location < ActiveRecord::Base
   has_attached_file :google_earth_file
   has_many :flare_deployments
   has_many :flare_specifications, :through => :flare_deployments
+
+  def display_name
+    site_name || "Unnamed #{state.name}, #{country.name}"
+  end
 end
