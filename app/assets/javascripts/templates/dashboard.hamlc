@@ -2,7 +2,7 @@
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
-        %th{"ng-bind" => "item", 'ng-repeat' => 'item in data.header'}
+        %th{"ng-bind" => "item.display_name", 'ng-repeat' => 'item in data.header'}
       %tr
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression'}

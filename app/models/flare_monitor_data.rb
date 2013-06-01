@@ -58,6 +58,10 @@ class FlareMonitorData < ActiveRecord::Base
     AttributeNameMapping.find_by_attribute_name(field.to_s).try(:display_name) || ""
   end
 
+  def self.display_object_for_field(field)
+    AttributeNameMapping.find_by_attribute_name(field.to_s) || {}
+  end
+
   def self.filter_data(options, initial_relation = self.scoped)
     options.inject(initial_relation) do |current_scope, (key, value)|
       next current_scope if value.blank?
