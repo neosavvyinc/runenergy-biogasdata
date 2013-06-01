@@ -1,4 +1,5 @@
 .dashboard{'ng-controller' => 'controllers.DashboardController'}
+  %label{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr

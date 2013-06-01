@@ -13,10 +13,16 @@ RunEnergy.Dashboard.Controllers.
                     if (dashboardHeaderData.flareSpecification) {
                         $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADING);
                         dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, 0, 1).
-                            then(function (result) {
+                            then(
+                            function (result) {
                                 $scope.data = result;
                                 $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
-                            });
+                            },
+                            function (result) {
+                                $scope.message = "There is no monitor data for this flare deployment.";
+                                $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
+                            }
+                        );
                     }
                 }
 
@@ -43,7 +49,7 @@ RunEnergy.Dashboard.Controllers.
                 });
 
                 //GETTERS
-                $scope.getSignificantDigits = function(index) {
+                $scope.getSignificantDigits = function (index) {
                     var significantDigits = $scope.data.header[index].significant_digits;
                     return RunEnergy.Dashboard.Utils.NumberUtils.isNumber(significantDigits) ? significantDigits : 2;
                 };
