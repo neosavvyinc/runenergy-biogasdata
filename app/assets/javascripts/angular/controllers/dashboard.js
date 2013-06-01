@@ -42,6 +42,12 @@ RunEnergy.Dashboard.Controllers.
                     }
                 });
 
+                //GETTERS
+                $scope.getSignificantDigits = function(index) {
+                    var significantDigits = $scope.data.header[index].significant_digits;
+                    return RunEnergy.Dashboard.Utils.NumberUtils.isNumber(significantDigits) ? significantDigits : 2;
+                };
+
                 //INITIALIZATION
                 $scope.filters = [];
                 $scope.dashboardHeaderData = dashboardHeaderData;

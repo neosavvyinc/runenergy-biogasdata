@@ -67,4 +67,19 @@ describe('RunEnergy.Dashboard.Filters', function () {
             expect(filter(data, expressionsAndIndexes)).toEqual([]);
         });
     });
+
+    describe('numericFilterRound', function () {
+        beforeEach(function () {
+            inject(function ($injector) {
+                filter = $filter('numericFilterRound');
+            });
+        });
+
+        it('Should play nice with 0 significant digits', function () {
+            expect(filter(24, 0)).toEqual("24");
+            expect(filter("256.009", 0)).toEqual("256");
+            expect(filter(25.1, 0)).toEqual("25");
+        });
+
+    });
 });
