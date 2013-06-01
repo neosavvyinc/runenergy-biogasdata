@@ -19,7 +19,7 @@ RunEnergy.Dashboard.Controllers.
                                 $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
                             },
                             function (result) {
-                                $scope.message = "There is no monitor data for this flare deployment.";
+                                $scope.message = "There is no monitor data for this flare deployment";
                                 $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
                             }
                         );
