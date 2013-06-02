@@ -79,7 +79,15 @@ class FlareMonitorData < ActiveRecord::Base
       #remove exception cols
       csv_cols = column_names.delete_if { |col| exceptions.map(&:to_s).include?(col) }
       #convert col names to human
-      header_cols = csv_cols.map { |col| display_name_for_field(col) }
+      header_cols = csv_cols.map {
+          |col|
+        display = display_object_for_field(col)
+        unless display.units.blank?
+          "#{display.try(:display_name)} (#{display.try(:units)})"
+        else
+          display.try(:display_name)
+        end
+      }
       csv << header_cols
       flare_monitor_data.each do |flare_monitor_datum|
         csv << flare_monitor_datum.attributes.values_at(*csv_cols)
@@ -90,11 +98,11 @@ class FlareMonitorData < ActiveRecord::Base
   def self.date_range(flare_speicification_id, start_date, end_date, start_time, end_time)
     query = filter_data({'flareSpecificationId' => flare_speicification_id})
     if not start_date.blank?
-        unless start_time.blank?
-          query = query.where('date_time_reading >= ?', DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
-        else
-          query = query.where('date_time_reading >= ?', DateTime.strptime(start_date, "%d/%m/%Y"))
-        end
+      unless start_time.blank?
+        query = query.where('date_time_reading >= ?', DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
+      else
+        query = query.where('date_time_reading >= ?', DateTime.strptime(start_date, "%d/%m/%Y"))
+      end
     end
     if not end_date.blank?
       unless end_time.blank?

@@ -4,8 +4,7 @@ class DashboardController < ApplicationController
   before_filter :authenticate_user!
 
   def index
-    #FlareMonitorData.import('/NEOSAVVY/work/runenergy/runenergy-biogasdata/db/spreadsheets/test_a.csv')
-    @flare_monitor_data = FlareMonitorData.all
+    #Serves up the index page, nothing else
   end
 
   #XHR
