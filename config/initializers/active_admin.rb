@@ -206,5 +206,6 @@ ActiveAdmin.setup do |config|
   #
   # config.filters = true
 
+  config.before_filter :left_sidebar!
 
 end

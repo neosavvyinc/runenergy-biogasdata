@@ -8,6 +8,7 @@ gem 'rails', '3.2.12'
 gem 'mysql2'
 gem 'roo'
 gem 'activeadmin'
+gem 'active_admin_sidebar'
 gem "paperclip", "~> 3.0"
 gem 'kaminari'
 
