@@ -37,7 +37,7 @@ namespace :data_retrieval do
     #Task
     flare_specifications = FlareDeployment.all.map { |fd| fd.flare_specification }
     flare_specifications.each do |fs|
-      unless fs.nil?
+      unless fs.nil? or fs.paused?
         begin
           Net::FTP.open(fs.ftp_address, fs.username, fs.password) do |ftp|
             ftp.chdir(fs.data_location || '/DATA')
