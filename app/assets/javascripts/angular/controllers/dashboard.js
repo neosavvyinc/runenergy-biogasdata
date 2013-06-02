@@ -4,9 +4,8 @@ RunEnergy.Dashboard.Controllers.
             function ($scope, $rootScope, config, dashboardService, dashboardDateData, dashboardHeaderData, dashboardPageData) {
 
                 //EVENT LISTENERS
-                $scope.$on(config.EVENTS.APPLY_DATE_FILTERS, function () {
-                    getAllFlareMonitorData();
-                });
+                $scope.$on(config.EVENTS.APPLY_DATE_FILTERS, getAllFlareMonitorData);
+                $scope.$on(config.EVENTS.CLEAR_FILTERS, getAllFlareMonitorData);
 
                 //ACTION HANDLERS
                 function getAllFlareMonitorData() {

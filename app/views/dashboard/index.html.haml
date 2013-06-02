@@ -23,6 +23,7 @@
       %span End Time
       %re-masked-time-input{'data-time' => 'dashboardDateData.endTime'}
     %a.btn{'ng-click' => 'onApplyDateTimeFilters()'} Apply Date/Time Filters
+    %a.btn.btn-inverse{'ng-click' => 'onClear()'} Clear
   .container-fluid.control-row{'ng-controller' => 'controllers.PageController'}
     %a.btn.btn-inverse.prev{'ng-click' => 'onPrevious()'} Prev Page
     %a.btn.btn-inverse.next{'ng-click' => 'onNext()'} Next Page
