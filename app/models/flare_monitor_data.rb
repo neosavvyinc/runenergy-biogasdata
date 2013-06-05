@@ -95,8 +95,10 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
-  def self.date_range(flare_deployment, flare_speicification_id, start_date, end_date, start_time, end_time)
+  #@TODO, slight refactor here
+  def self.date_range(user_type, flare_deployment, flare_speicification_id, start_date, end_date, start_time, end_time)
     query = filter_data({'flareSpecificationId' => flare_speicification_id})
+    date_time = nil
     if not start_date.blank?
       unless start_time.blank?
         date_time = DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S")
@@ -105,11 +107,17 @@ class FlareMonitorData < ActiveRecord::Base
       end
     end
 
-    min_date = flare_deployment.min_date(date_time)
+    if user_type == UserType.OVERSEER
+      min_date = date_time
+    else
+      min_date = flare_deployment.min_date(date_time)
+    end
+
     unless min_date.blank?
       query = query.where('date_time_reading >= ?', min_date)
     end
 
+    date_time = nil
     if not end_date.blank?
       unless end_time.blank?
         date_time = DateTime.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S")
@@ -118,7 +126,12 @@ class FlareMonitorData < ActiveRecord::Base
       end
     end
 
-    max_date = flare_deployment.max_date(date_time)
+    if user_type == UserType.OVERSEER
+      max_date = date_time
+    else
+      max_date = flare_deployment.max_date(date_time)
+    end
+
     unless max_date.blank?
       query = query.where('date_time_reading <= ?', max_date)
     end
