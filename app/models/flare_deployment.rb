@@ -5,17 +5,43 @@ class FlareDeployment < ActiveRecord::Base
   belongs_to :customer, :class_name => 'User', :foreign_key => 'customer_id'
   belongs_to :flare_deployment_status_code
 
+  validates_presence_of :flare_specification
+  after_create :apply_unique_identifier
   before_save :apply_deployment_status
 
   def current?
     flare_deployment_status_code == FlareDeploymentStatusCode.CURRENT
   end
 
+  def apply_unique_identifier
+    update_attribute(:client_flare_unique_identifier, "#{self.flare_specification.flare_unique_identifier}-#{id}")
+  end
+
   def apply_deployment_status
     if last_reading.blank?
-      flare_deployment_status_code = FlareDeploymentStatusCode.CURRENT
+      self.flare_deployment_status_code = FlareDeploymentStatusCode.CURRENT
     else
-      flare_deployment_status_code = FlareDeploymentStatusCode.PAST
+      self.flare_deployment_status_code = FlareDeploymentStatusCode.PAST
+    end
+  end
+
+  def min_date(date_time)
+    if date_time.blank?
+      self.first_reading
+    elsif self.first_reading.blank?
+      date_time
+    else
+      [self.first_reading, date_time].max
+    end
+  end
+
+  def max_date(date_time)
+    if date_time.blank?
+      self.last_reading + 1.day - 1.minute
+    elsif self.last_reading.blank?
+      date_time
+    else
+      [self.last_reading + 1.day - 1.minute, date_time].min
     end
   end
 end

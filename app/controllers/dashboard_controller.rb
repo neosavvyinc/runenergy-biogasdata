@@ -93,7 +93,9 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
-    @flare_monitor_data = FlareMonitorData.date_range(params[:flareSpecificationId],
+    flare_deployment = FlareDeployment.where(:customer_id => current_user.id, :flare_specification_id => params[:flareSpecificationId]).first
+    @flare_monitor_data = FlareMonitorData.date_range(flare_deployment,
+                                                      params[:flareSpecificationId],
                                                       ajax_value_or_nil(params[:startDate]),
                                                       ajax_value_or_nil(params[:endDate]),
                                                       ajax_value_or_nil(params[:startTime]),

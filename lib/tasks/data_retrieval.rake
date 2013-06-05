@@ -51,12 +51,12 @@ namespace :data_retrieval do
                 import_file(ftp, f, fs)
               end
             else
-              puts "No new results found for import on #{fs.flare_id}"
+              puts "No new results found for import on #{fs.flare_unique_identifier}"
             end
           end
         rescue
           FlareImportLog.create(:message => $!, :likely_cause => "The FTP server is unavailable, wrong address, or down.", :flare_specification_id => fs.id)
-          puts "#{fs.flare_id} failed on retrieval with message #{$!}"
+          puts "#{fs.flare_unique_identifier} failed on retrieval with message #{$!}"
         end
       else
         FlareImportLog.create(:message => "There is a flare deployment without a specifications.", :likely_cause => "There should not be any deployments without specifications.", :flare_specification_id => fs.id)

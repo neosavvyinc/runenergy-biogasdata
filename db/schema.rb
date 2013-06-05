@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130602204718) do
+ActiveRecord::Schema.define(:version => 20130605042328) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -121,18 +121,18 @@ ActiveRecord::Schema.define(:version => 20130602204718) do
 
   create_table "flare_monitor_data", :force => true do |t|
     t.datetime "date_time_reading"
-    t.decimal  "inlet_pressure",                 :precision => 10, :scale => 0
-    t.decimal  "blower_speed",                   :precision => 10, :scale => 0
-    t.decimal  "methane",                        :precision => 10, :scale => 0
-    t.decimal  "flame_temperature",              :precision => 10, :scale => 0
-    t.decimal  "standard_lfg_flow",              :precision => 10, :scale => 0
-    t.decimal  "standard_cumulative_lfg_volume", :precision => 10, :scale => 0
-    t.decimal  "static_pressure",                :precision => 10, :scale => 0
-    t.decimal  "lfg_temperature",                :precision => 10, :scale => 0
-    t.decimal  "standard_lfg_volume",            :precision => 10, :scale => 0
-    t.decimal  "standard_methane_volume",        :precision => 10, :scale => 0
-    t.datetime "created_at",                                                    :null => false
-    t.datetime "updated_at",                                                    :null => false
+    t.decimal  "inlet_pressure",                 :precision => 20, :scale => 10
+    t.decimal  "blower_speed",                   :precision => 20, :scale => 10
+    t.decimal  "methane",                        :precision => 20, :scale => 10
+    t.decimal  "flame_temperature",              :precision => 20, :scale => 10
+    t.decimal  "standard_lfg_flow",              :precision => 20, :scale => 10
+    t.decimal  "standard_cumulative_lfg_volume", :precision => 20, :scale => 10
+    t.decimal  "static_pressure",                :precision => 20, :scale => 10
+    t.decimal  "lfg_temperature",                :precision => 20, :scale => 10
+    t.decimal  "standard_lfg_volume",            :precision => 20, :scale => 10
+    t.decimal  "standard_methane_volume",        :precision => 20, :scale => 10
+    t.datetime "created_at",                                                     :null => false
+    t.datetime "updated_at",                                                     :null => false
     t.integer  "flare_specification_id"
   end
 

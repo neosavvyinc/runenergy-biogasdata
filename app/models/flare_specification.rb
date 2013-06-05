@@ -6,6 +6,9 @@ class FlareSpecification < ActiveRecord::Base
   has_one :flare_deployment
   has_many :flare_monitor_datas
 
+  validates_presence_of :flare_unique_identifier
+  validates_uniqueness_of :flare_unique_identifier
+
   def display_name
     flare_unique_identifier
   end

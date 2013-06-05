@@ -95,22 +95,34 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
-  def self.date_range(flare_speicification_id, start_date, end_date, start_time, end_time)
+  def self.date_range(flare_deployment, flare_speicification_id, start_date, end_date, start_time, end_time)
     query = filter_data({'flareSpecificationId' => flare_speicification_id})
     if not start_date.blank?
       unless start_time.blank?
-        query = query.where('date_time_reading >= ?', DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S"))
+        date_time = DateTime.strptime(start_date + start_time, "%d/%m/%Y%H:%M:%S")
       else
-        query = query.where('date_time_reading >= ?', DateTime.strptime(start_date, "%d/%m/%Y"))
+        date_time = DateTime.strptime(start_date, "%d/%m/%Y")
       end
     end
+
+    min_date = flare_deployment.min_date(date_time)
+    unless min_date.blank?
+      query = query.where('date_time_reading >= ?', min_date)
+    end
+
     if not end_date.blank?
       unless end_time.blank?
-        query = query.where('date_time_reading <= ?', DateTime.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S"))
+        date_time = DateTime.strptime(end_date + end_time, "%d/%m/%Y%H:%M:%S")
       else
-        query = query.where('date_time_reading <= ?', DateTime.strptime(end_date, "%d/%m/%Y"))
+        date_time = DateTime.strptime(end_date, "%d/%m/%Y")
       end
     end
+
+    max_date = flare_deployment.max_date(date_time)
+    unless max_date.blank?
+      query = query.where('date_time_reading <= ?', max_date)
+    end
+
     query
   end
 
