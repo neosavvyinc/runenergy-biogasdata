@@ -94,13 +94,13 @@ class DashboardController < ApplicationController
 
   def read_flare_monitor_data
     flare_deployment = FlareDeployment.where(:customer_id => current_user.id, :flare_specification_id => params[:flareSpecificationId]).first
-    @flare_monitor_data = FlareMonitorData.date_range(current_user.user_type,
-                                                      flare_deployment,
-                                                      params[:flareSpecificationId],
-                                                      ajax_value_or_nil(params[:startDate]),
-                                                      ajax_value_or_nil(params[:endDate]),
-                                                      ajax_value_or_nil(params[:startTime]),
-                                                      ajax_value_or_nil(params[:endTime]))
+    flare_monitor_data = FlareMonitorData.date_range(current_user.user_type,
+                                                     flare_deployment,
+                                                     params[:flareSpecificationId],
+                                                     ajax_value_or_nil(params[:startDate]),
+                                                     ajax_value_or_nil(params[:endDate]),
+                                                     ajax_value_or_nil(params[:startTime]),
+                                                     ajax_value_or_nil(params[:endTime]))
 
     exceptions = [:id, :created_at, :updated_at]
 
@@ -108,14 +108,20 @@ class DashboardController < ApplicationController
       respond_to do |format|
         format.json {
           #Paging Support
-          @flare_monitor_data = @flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(250)
-          render json: {:header => FlareMonitorData.first.as_json(:except => exceptions).keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.concat(AttributeNameMapping.calculation_headings), :values => @flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }}
+          flare_monitor_data = flare_monitor_data.page(request.GET["start"].try(:to_i) || 0).per(250)
+          header = FlareMonitorData.first.as_json(:except => exceptions).keys.
+              map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
+              sort_by{ |display_object| (display_object[:column_weight] or 0)}.
+              concat(AttributeNameMapping.calculation_headings)
+          values = flare_monitor_data.map { |fmd| fmd.as_json(:except => exceptions,
+                                                              :methods => ['energy', 'methane_tonne', 'co2_eqiv']).values }
+          render json: {:header => header, :values => values}
         }
       end
       return
     else
       respond_to do |format|
-        flare_monitor_csv = FlareMonitorData.to_csv(@flare_monitor_data, exceptions)
+        flare_monitor_csv = FlareMonitorData.to_csv(flare_monitor_data, exceptions)
         format.csv { send_data flare_monitor_csv }
       end
     end

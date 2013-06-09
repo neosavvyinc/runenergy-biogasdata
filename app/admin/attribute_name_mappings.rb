@@ -6,6 +6,7 @@ ActiveAdmin.register AttributeNameMapping, :as => "Columns" do
     column :display_name
     column :units
     column :significant_digits
+    column :column_weight
     default_actions
   end
 end
