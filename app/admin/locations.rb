@@ -4,7 +4,7 @@ ActiveAdmin.register Location, :as => "Site" do
   index do
     column :site_name
     column :address
-    column :lattitu
+    column :lattitude
     column :longitude
     default_actions
   end
