@@ -36,10 +36,10 @@ class FlareDeployment < ActiveRecord::Base
   end
 
   def max_date(date_time)
-    if date_time.blank?
-      self.last_reading + 1.day - 1.minute
-    elsif self.last_reading.blank?
+    if self.last_reading.blank?
       date_time
+    elsif date_time.blank?
+      self.last_reading + 1.day - 1.minute
     else
       [self.last_reading + 1.day - 1.minute, date_time].min
     end
