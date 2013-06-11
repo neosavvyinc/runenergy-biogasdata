@@ -180,6 +180,6 @@ class FlareMonitorData < ActiveRecord::Base
     hash.each do |key, value|
       values.push({:value => value, :column_weight => FlareMonitorData.column_weight_for_field(key)})
     end
-    values
+    values.sort_by {|value| (value[:column_weight] or 0)}
   end
 end

@@ -16,14 +16,15 @@ RunEnergy.Dashboard.Filters.filter('numericExpressionConversion', ['$interpolate
 }]);
 
 RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse', function ($interpolate, $parse) {
-    return function (data, expressionsAndIndexes) {
+    return function (data, expressionsAndIndexes, property) {
         if (data && data.length) {
             if (expressionsAndIndexes && expressionsAndIndexes.length) {
                 return data.filter(function (item) {
                     for (var i = 0; i < expressionsAndIndexes.length; i++) {
                         var expressionAndProperty = expressionsAndIndexes[i];
                         var expression = expressionAndProperty.expression.replace(/=/g, "==");
-                        if (expression && /\d/.test(expression) && !$parse(String(item[parseInt(expressionAndProperty.index)]) + expression)()) {
+                        var value = (property ? item[parseInt(expressionAndProperty.index)][property] : item[parseInt(expressionAndProperty.index)]);
+                        if (expression && /\d/.test(expression) && !$parse(String(value) + expression)()) {
                             return false;
                         }
                     }
