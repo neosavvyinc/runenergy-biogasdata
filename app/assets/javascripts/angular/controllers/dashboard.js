@@ -55,6 +55,10 @@ RunEnergy.Dashboard.Controllers.
                     return RunEnergy.Dashboard.Utils.NumberUtils.isNumber(significantDigits) ? significantDigits : 2;
                 };
 
+                $scope.getColumnSort = function(column) {
+
+                };
+
                 //INITIALIZATION
                 $scope.filters = [];
                 $scope.dashboardHeaderData = dashboardHeaderData;

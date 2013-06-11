@@ -23,6 +23,8 @@ class FlareMonitorData < ActiveRecord::Base
       "ch4_flow_mtd_m3" => :standard_methane_volume
   }
 
+  @@column_weights = {}
+
   #@TODO, should pass in a flare or mapping in order to determine how this is mapped
   def self.import(file_path, flare_specification=nil)
     unless flare_specification.blank?
@@ -59,7 +61,14 @@ class FlareMonitorData < ActiveRecord::Base
   end
 
   def self.display_object_for_field(field)
-    AttributeNameMapping.find_by_attribute_name(field.to_s) || {}
+    AttributeNameMapping.find_by_attribute_name(field.to_s) or {}
+  end
+
+  def self.column_weight_for_field(field)
+    if @@column_weights[field.to_sym].nil?
+      @@column_weights[field.to_sym] = FlareMonitorData.display_object_for_field(field)[:column_weight]
+    end
+    @@column_weights[field.to_sym]
   end
 
   def self.filter_data(options, initial_relation = self.scoped)
@@ -163,5 +172,14 @@ class FlareMonitorData < ActiveRecord::Base
     #Formatting
     hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
     hash
+  end
+
+  def as_json_ordered_values(options=nil)
+    hash = as_json(options)
+    values = []
+    hash.each do |key, value|
+      values.push({:value => value, :column_weight => FlareMonitorData.column_weight_for_field(key)})
+    end
+    values
   end
 end
