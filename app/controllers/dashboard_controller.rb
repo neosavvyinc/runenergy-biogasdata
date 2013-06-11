@@ -108,7 +108,7 @@ class DashboardController < ApplicationController
       respond_to do |format|
         format.json {
           #Paging Support
-          flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(250)
+          flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(600)
           header = FlareMonitorData.first.as_json(:except => exceptions).keys.
               map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
               sort_by { |display_object| (display_object[:column_weight] or 0) }.

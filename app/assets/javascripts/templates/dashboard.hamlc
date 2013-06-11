@@ -10,7 +10,7 @@
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression'}
     %tbody
-      %tr.re-grid-row{"ng-repeat" => "item in data.values | collectionPage : dashboardPageData.page : 50 | numericExpression : filters : 'value'"}
+      %tr.re-grid-row{"ng-repeat" => "item in data.values | collectionPage : dashboardPageData.page : 300 | numericExpression : filters : 'value'"}
         %td{"ng-bind" => "subItem.value | ifNumberNumericFilterRound : getSignificantDigits($index)", "ng-repeat" => "subItem in item"}
 
 
