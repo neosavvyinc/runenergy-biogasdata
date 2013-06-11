@@ -113,7 +113,7 @@ class DashboardController < ApplicationController
               map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
               sort_by { |display_object| (display_object[:column_weight] or 0) }.
               concat(AttributeNameMapping.calculation_headings)
-          values = flare_monitor_data.map { |fmd| fmd.as_json_ordered_values({:except => exceptions, :methods => ['energy', 'methane_tonne', 'co2_eqiv']}) }
+          values = flare_monitor_data.map { |fmd| fmd.as_json_ordered_values({:except => exceptions, :methods => ['energy', 'methane_tonne']}) }
           render json: {:header => header, :values => values}
         }
       end
