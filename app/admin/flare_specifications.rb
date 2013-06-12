@@ -17,6 +17,7 @@ ActiveAdmin.register FlareSpecification do
       f.input :capacity_scmh
       f.input :web_address
       f.input :ftp_address
+      f.input :data_location
       f.input :username
       f.input :password
       f.input :pause, :as => :boolean
