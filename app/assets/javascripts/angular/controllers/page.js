@@ -1,6 +1,6 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
-    ['$scope', '$rootScope', 'constants.Routes', 'values.DashboardPageData', 'values.DashboardHeaderData',
-        function ($scope, $rootScope, routes, dashboardPageData, dashboardHeaderData) {
+    ['$scope', '$rootScope', 'constants.Routes', 'values.DashboardPageData', 'values.DashboardHeaderData', 'service.DashboardService',
+        function ($scope, $rootScope, routes, dashboardPageData, dashboardHeaderData, dashboardService) {
 
             //ACTION HANDLERS
             $scope.onNext = function () {
@@ -11,6 +11,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
                 if (dashboardPageData.page > 0) {
                     dashboardPageData.page--;
                 }
+            };
+
+            $scope.onExportCSV = function () {
+                dashboardService.getCSVExport(dashboardHeaderData.flareSpecification.id);
             };
 
             //GETTERS
