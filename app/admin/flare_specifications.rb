@@ -18,6 +18,7 @@ ActiveAdmin.register FlareSpecification do
       f.input :web_address
       f.input :ftp_address
       f.input :data_location
+      f.input :flare_data_mapping, :as => :select, :collection => FlareDataMapping.all
       f.input :username
       f.input :password
       f.input :pause, :as => :boolean

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613211634) do
+ActiveRecord::Schema.define(:version => 20130613213000) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -96,6 +96,7 @@ ActiveRecord::Schema.define(:version => 20130613211634) do
     t.string   "standard_cumulative_lfg_volume_column"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
+    t.string   "name"
   end
 
   create_table "flare_deployment_status_codes", :force => true do |t|
@@ -158,6 +159,7 @@ ActiveRecord::Schema.define(:version => 20130613211634) do
     t.datetime "updated_at",                    :null => false
     t.integer  "flare_collection_statistic_id"
     t.boolean  "pause"
+    t.integer  "flare_data_mapping_id"
   end
 
   create_table "locations", :force => true do |t|
