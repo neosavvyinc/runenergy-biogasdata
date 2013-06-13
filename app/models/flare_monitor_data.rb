@@ -86,7 +86,8 @@ class FlareMonitorData < ActiveRecord::Base
   def self.to_csv(flare_monitor_data, exceptions = [])
     CSV.generate do |csv|
       #remove exception cols
-      csv_cols = column_names.delete_if { |col| exceptions.map(&:to_s).include?(col) }
+      csv_cols = column_names.delete_if { |col| exceptions.map(&:to_s).include?(col) }.
+          sort_by { |col| (FlareMonitorData.column_weight_for_field(col) or 0) }
       #convert col names to human
       header_cols = csv_cols.map {
           |col|
@@ -180,6 +181,6 @@ class FlareMonitorData < ActiveRecord::Base
     hash.each do |key, value|
       values.push({:value => value, :column_weight => FlareMonitorData.column_weight_for_field(key)})
     end
-    values.sort_by {|value| (value[:column_weight] or 0)}
+    values.sort_by { |value| (value[:column_weight] or 0) }
   end
 end
