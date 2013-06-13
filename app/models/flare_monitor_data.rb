@@ -24,6 +24,7 @@ class FlareMonitorData < ActiveRecord::Base
   }
 
   @@column_weights = {}
+  @@significant_digits = {}
 
   #@TODO, should pass in a flare or mapping in order to determine how this is mapped
   def self.import(file_path, flare_specification=nil)
@@ -71,6 +72,13 @@ class FlareMonitorData < ActiveRecord::Base
     @@column_weights[field.to_sym]
   end
 
+  def self.significant_digits_for_field(field)
+    if @@significant_digits[field.to_sym].nil?
+      @@significant_digits[field.to_sym] = FlareMonitorData.display_object_for_field(field)[:significant_digits]
+    end
+    @@significant_digits[field.to_sym]
+  end
+
   def self.filter_data(options, initial_relation = self.scoped)
     options.inject(initial_relation) do |current_scope, (key, value)|
       next current_scope if value.blank?
@@ -100,7 +108,7 @@ class FlareMonitorData < ActiveRecord::Base
       }
       csv << header_cols
       flare_monitor_data.each do |flare_monitor_datum|
-        csv << flare_monitor_datum.as_json.values_at(*csv_cols)
+        csv << flare_monitor_datum.as_json_significant_digits.values_at(*csv_cols)
       end
     end
   end
@@ -172,6 +180,20 @@ class FlareMonitorData < ActiveRecord::Base
     hash['flare_specification_id'] = self.flare_specification.try(:flare_unique_identifier)
     #Formatting
     hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
+    hash
+  end
+
+  def as_json_significant_digits (options=nil)
+    hash = as_json(options)
+    hash.each do |key, value|
+      unless value.to_s.nan?
+        significant_digits = FlareMonitorData.significant_digits_for_field(key)
+        unless significant_digits.nil?
+          power = (10 ** significant_digits)
+          hash[key] = ((value.to_f * power).round.to_f / power)
+        end
+      end
+    end
     hash
   end
 
