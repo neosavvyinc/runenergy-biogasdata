@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130608133531) do
+ActiveRecord::Schema.define(:version => 20130613211634) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -69,6 +69,11 @@ ActiveRecord::Schema.define(:version => 20130608133531) do
     t.datetime "updated_at", :null => false
   end
 
+  create_table "csv_mapping_pairs", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "flare_collection_statistics", :force => true do |t|
     t.date     "last_reading_collected"
     t.datetime "created_at",             :null => false
@@ -77,18 +82,18 @@ ActiveRecord::Schema.define(:version => 20130608133531) do
   end
 
   create_table "flare_data_mappings", :force => true do |t|
-    t.integer  "date_reading_column"
-    t.integer  "time_reading_column"
-    t.integer  "inlet_pressure_column"
-    t.integer  "blower_speed_column"
-    t.integer  "methane_column"
-    t.integer  "flame_temperature_column"
-    t.integer  "static_pressure_column"
-    t.integer  "lfg_temperature_column"
-    t.integer  "standard_methane_volume_column"
-    t.integer  "standard_lfg_flow_column"
-    t.integer  "standard_lfg_volume_column"
-    t.integer  "standard_cumulative_lfg_volume_column"
+    t.string   "date_reading_column"
+    t.string   "time_reading_column"
+    t.string   "inlet_pressure_column"
+    t.string   "blower_speed_column"
+    t.string   "methane_column"
+    t.string   "flame_temperature_column"
+    t.string   "static_pressure_column"
+    t.string   "lfg_temperature_column"
+    t.string   "standard_methane_volume_column"
+    t.string   "standard_lfg_flow_column"
+    t.string   "standard_lfg_volume_column"
+    t.string   "standard_cumulative_lfg_volume_column"
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
   end
