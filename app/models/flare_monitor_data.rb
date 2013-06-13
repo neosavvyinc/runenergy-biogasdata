@@ -100,7 +100,7 @@ class FlareMonitorData < ActiveRecord::Base
       }
       csv << header_cols
       flare_monitor_data.each do |flare_monitor_datum|
-        csv << flare_monitor_datum.attributes.values_at(*csv_cols)
+        csv << flare_monitor_datum.as_json.values_at(*csv_cols)
       end
     end
   end
