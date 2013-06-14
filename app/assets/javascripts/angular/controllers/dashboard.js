@@ -8,20 +8,43 @@ RunEnergy.Dashboard.Controllers.
                 $scope.$on(config.EVENTS.CLEAR_FILTERS, getAllFlareMonitorData);
 
                 //ACTION HANDLERS
+                function dateRangeValid(startDate, startTime, endDate, endTime) {
+                    if (startDate && endDate) {
+                        var DATE_FORMAT = "DD/MM/YYYY";
+                        var startMoment = moment(startDate, DATE_FORMAT);
+                        var endMoment = moment(endDate, DATE_FORMAT);
+                        if (startMoment.toDate().getTime() > endMoment.toDate().getTime()) {
+                            return false;
+                        } else if (startTime && endTime &&
+                            startMoment.toDate().getTime() === endMoment.toDate().getTime()) {
+                            var DATE_TIME_FORMAT = DATE_FORMAT + " HH:mm:ss";
+                            startMoment = moment(startDate + " " + startTime, DATE_TIME_FORMAT);
+                            endMoment = moment(endDate + " " + endTime, DATE_TIME_FORMAT);
+                            return (startMoment.toDate().getTime() <= endMoment.toDate().getTime());
+                        }
+                    }
+                    return true;
+                }
+
                 function getAllFlareMonitorData() {
                     if (dashboardHeaderData.flareSpecification) {
-                        $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADING);
-                        dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, 0, 1).
-                            then(
-                            function (result) {
-                                $scope.data = result;
-                                $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
-                            },
-                            function (result) {
-                                $scope.message = "There is no monitor data for this flare deployment";
-                                $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
-                            }
-                        );
+                        $scope.message = "";
+                        if (dateRangeValid(dashboardDateData.startDate, dashboardDateData.startTime, dashboardDateData.endDate, dashboardDateData.endTime)) {
+                            $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADING);
+                            dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, 0, 1).
+                                then(
+                                function (result) {
+                                    $scope.data = result;
+                                    $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
+                                },
+                                function (result) {
+                                    $scope.message = "There is no monitor data for this flare deployment";
+                                    $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
+                                }
+                            );
+                        } else {
+                            $scope.message = "Please specify a valid date range";
+                        }
                     }
                 }
 
@@ -55,7 +78,7 @@ RunEnergy.Dashboard.Controllers.
                     return RunEnergy.Dashboard.Utils.NumberUtils.isNumber(significantDigits) ? significantDigits : 2;
                 };
 
-                $scope.getColumnSort = function(column) {
+                $scope.getColumnSort = function (column) {
 
                 };
 

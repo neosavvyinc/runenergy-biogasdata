@@ -17,5 +17,6 @@
 //= require angular
 //= require spin.min
 //= require jquery.maskedinput.min
+//= require moment.min
 //= require angular/dashboard
 //= require_tree .
