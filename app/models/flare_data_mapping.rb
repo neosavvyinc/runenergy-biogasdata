@@ -1,6 +1,6 @@
 class FlareDataMapping < ActiveRecord::Base
   attr_accessible :name, :blower_speed_column, :flame_temperature_column, :inlet_pressure_column, :lfg_temperature_column, :methane_column, :standard_cumulative_lfg_volume_column, :standard_lfg_flow_column, :standard_lfg_volume_column, :standard_methane_volume_column, :static_pressure_column
-  validates_presence_of (self.column_names - ["id"])
+  validates_presence_of :name
   before_save :sanitize_values
 
   def sanitize_values
