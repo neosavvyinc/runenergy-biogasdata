@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130613213000) do
+ActiveRecord::Schema.define(:version => 20130614022520) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -82,8 +82,6 @@ ActiveRecord::Schema.define(:version => 20130613213000) do
   end
 
   create_table "flare_data_mappings", :force => true do |t|
-    t.string   "date_reading_column"
-    t.string   "time_reading_column"
     t.string   "inlet_pressure_column"
     t.string   "blower_speed_column"
     t.string   "methane_column"

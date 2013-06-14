@@ -59,7 +59,7 @@ namespace :data_retrieval do
           puts "#{fs.flare_unique_identifier} failed on retrieval with message #{$!}"
         end
       else
-        FlareImportLog.create(:message => "There is a flare deployment without a specifications.", :likely_cause => "There should not be any deployments without specifications.", :flare_specification_id => fs.id)
+        FlareImportLog.create(:message => "There is a flare deployment without a specifications.", :likely_cause => "There should not be any deployments without specifications.", :flare_specification_id => fs.try(:id))
       end
     end
   end

@@ -31,6 +31,7 @@ class FlareMonitorData < ActiveRecord::Base
     unless flare_specification.blank?
       idx = 0
       header = nil
+      custom_mapping = flare_specification.flare_data_mapping.try(:values_to_attributes)
       CSV.foreach(file_path) do |row|
         if idx == 0
           header = row.map { |column| column.downcase.strip.gsub(/\s+/, "_") }
@@ -39,6 +40,8 @@ class FlareMonitorData < ActiveRecord::Base
           row = Hash[row.map { |key_then_value|
             if key_then_value.first == DATE or key_then_value.first == TIME
               key_then_value
+            elsif not custom_mapping.nil?
+              [custom_mapping[key_then_value[0]], key_then_value[1]]
             else
               [DEFAULT_ROW_MAPPING[key_then_value[0]], key_then_value[1]]
             end
