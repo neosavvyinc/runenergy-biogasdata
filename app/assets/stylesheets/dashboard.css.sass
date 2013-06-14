@@ -12,11 +12,18 @@
       font-style: italic
   min-height: 500px
   .title
-    text-transform: uppercase
     float: left
     span
       float: left
       margin-right: 10px
+      &.slash, &.user
+        margin-top: 8px
+      &.slash
+        margin-right: 14px
+      &.company
+        width: 144px
+        height: 56px
+        background: transparent image-url('logo.jpg') top left
       &.user
         min-width: 650px
         color: #5AB45A
