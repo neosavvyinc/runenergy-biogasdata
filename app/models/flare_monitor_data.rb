@@ -5,7 +5,7 @@ class FlareMonitorData < ActiveRecord::Base
   include SmartInitialization
   include SmartAssignment
 
-  attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure, :flare_specification_id
+  attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure, :flame_trap_temperature, :flare_run_hours, :flare_specification_id
   belongs_to :flare_specification
 
   DATE = "date"
@@ -20,7 +20,9 @@ class FlareMonitorData < ActiveRecord::Base
       "gas_static_press" => :static_pressure,
       "gas_temp" => :lfg_temperature,
       "gas_flow_mtd_m3" => :standard_lfg_volume,
-      "ch4_flow_mtd_m3" => :standard_methane_volume
+      "ch4_flow_mtd_m3" => :standard_methane_volume,
+      "flame_trap_temp" => :flame_trap_temperature,
+      "flare_run_hr" => :flare_run_hours
   }
 
   @@column_weights = {}
