@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130616145825) do
+ActiveRecord::Schema.define(:version => 20130616151359) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -95,6 +95,8 @@ ActiveRecord::Schema.define(:version => 20130616145825) do
     t.datetime "created_at",                            :null => false
     t.datetime "updated_at",                            :null => false
     t.string   "name"
+    t.string   "flame_trap_temperature_column"
+    t.string   "flare_run_hours_column"
   end
 
   create_table "flare_deployment_status_codes", :force => true do |t|
