@@ -109,11 +109,15 @@ class DashboardController < ApplicationController
         format.json {
           #Paging Support
           flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(600)
-          header = FlareMonitorData.first.as_json(:except => exceptions).keys.
-              map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
-              sort_by { |display_object| (display_object[:column_weight] or 0) }.
+          keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
+              sort_by { |attribute|
+            (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)
+          }
+          header = keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
               concat(AttributeNameMapping.calculation_headings)
-          values = flare_monitor_data.map { |fmd| fmd.as_json_ordered_values({:except => exceptions, :methods => ['energy', 'methane_tonne']}) }
+          methods = [:energy, :methane_tonne]
+          all_keys = keys.concat(methods)
+          values = flare_monitor_data.map { |fmd| fmd.as_json_from_keys(all_keys, {:except => exceptions, :methods => methods}) }
           render json: {:header => header, :values => values}
         }
       end

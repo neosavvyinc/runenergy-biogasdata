@@ -210,4 +210,8 @@ class FlareMonitorData < ActiveRecord::Base
     end
     values.sort_by { |value| (value[:column_weight] or 0) }
   end
+
+  def as_json_from_keys(keys, options=nil)
+    as_json(options).values_at(*keys)
+  end
 end
