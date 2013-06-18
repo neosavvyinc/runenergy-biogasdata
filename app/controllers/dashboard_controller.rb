@@ -104,7 +104,7 @@ class DashboardController < ApplicationController
 
     exceptions = [:id, :created_at, :updated_at]
 
-    if request.xhr?
+    if request.xhr? and not request.path.include?('.csv')
       respond_to do |format|
         format.json {
           #Paging Support

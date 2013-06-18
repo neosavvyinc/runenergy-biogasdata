@@ -53,7 +53,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                 getCSVExport: function (flareSpecificationId, startDate, endDate, startTime, endTime, filters) {
                     return serviceExtensions.request({
                         method: 'POST',
-                        url: routes.DASHBOARD.CSV_EXPORT,
+                        url: routes.DASHBOARD.CSV_EXPORT.CREATE,
                         data: {
                             flareSpecificationId: flareSpecificationId,
                             startDate: startDate,

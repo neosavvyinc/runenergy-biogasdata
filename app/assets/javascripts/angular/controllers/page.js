@@ -15,12 +15,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
 
             $scope.onExportCSV = function () {
                 dashboardService.getCSVExport(
-                    dashboardHeaderData.flareSpecification.id,
-                    dashboardDateData.startDate,
-                    dashboardDateData.endDate,
-                    dashboardDateData.startTime,
-                    dashboardDateData.endTime,
-                    dashboardData.filters);
+                        dashboardHeaderData.flareSpecification.id,
+                        dashboardDateData.startDate,
+                        dashboardDateData.endDate,
+                        dashboardDateData.startTime,
+                        dashboardDateData.endTime,
+                        dashboardData.filters).then(function (result) {
+                        window.open("data:text/csv;charset=utf-8," + escape(result));
+                    });
             };
 
             //GETTERS

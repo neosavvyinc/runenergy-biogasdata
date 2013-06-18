@@ -31,7 +31,11 @@ angular.module('dashboard', RunEnergy.Dashboard.Dependencies).
         function ($routeProvider) {
             $routeProvider.
                 otherwise({templateUrl: 'dashboard'});
-        }]).run(['$window', '$templateCache', function ($window, $templateCache) {
+        }]).run(['$window', '$templateCache', '$http', function ($window, $templateCache, $http) {
+        RunEnergy.Dashboard.CSRF_TOKEN = RunEnergy.Dashboard.Utils.DomUtils.getElementsByAttribute("meta", "name", "csrf-token")[0].content;
+        $http.defaults.headers.post["X-CSRF-Token"] = RunEnergy.Dashboard.CSRF_TOKEN;
+        $http.defaults.headers.put["X-CSRF-Token"] = RunEnergy.Dashboard.CSRF_TOKEN;
+
         var templates = $window.JST,
             fileName,
             fileContent;
