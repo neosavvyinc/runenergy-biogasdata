@@ -50,7 +50,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                         )
                     });
                 },
-                getCSVExport: function (flareSpecificationId, startDate, endDate, filters) {
+                getCSVExport: function (flareSpecificationId, startDate, endDate, startTime, endTime, filters) {
                     return serviceExtensions.request({
                         method: 'POST',
                         url: routes.DASHBOARD.CSV_EXPORT,
@@ -58,6 +58,8 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                             flareSpecificationId: flareSpecificationId,
                             startDate: startDate,
                             endDate: endDate,
+                            startTime: startTime,
+                            endTime: endTime,
                             filters: filters
                         }
                     });

@@ -1,3 +1,4 @@
 RunEnergy.Dashboard.Values.value('values.DashboardData', {
-    flareMonitorData: null
+    flareMonitorData: null,
+    filters: []
 });

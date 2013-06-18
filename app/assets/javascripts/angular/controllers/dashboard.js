@@ -1,7 +1,7 @@
 RunEnergy.Dashboard.Controllers.
     controller('controllers.DashboardController',
-        ['$scope', '$rootScope', 'constants.Config', 'service.DashboardService', 'values.DashboardDateData', 'values.DashboardHeaderData', 'values.DashboardPageData',
-            function ($scope, $rootScope, config, dashboardService, dashboardDateData, dashboardHeaderData, dashboardPageData) {
+        ['$scope', '$rootScope', 'constants.Config', 'service.DashboardService', 'values.DashboardData', 'values.DashboardDateData', 'values.DashboardHeaderData', 'values.DashboardPageData',
+            function ($scope, $rootScope, config, dashboardService, dashboardData, dashboardDateData, dashboardHeaderData, dashboardPageData) {
 
                 //EVENT LISTENERS
                 $scope.$on(config.EVENTS.APPLY_DATE_FILTERS, getAllFlareMonitorData);
@@ -52,7 +52,7 @@ RunEnergy.Dashboard.Controllers.
                 var dereg = $scope.$watch('data.header', function (newValue) {
                     if (newValue && newValue.length) {
                         //Instantiates array of same size for filters
-                        $scope.filters = newValue.map(function (item, index) {
+                        $scope.dashboardData.filters = newValue.map(function (item, index) {
                             return {expression: "", index: index};
                         });
                         dereg();
@@ -83,7 +83,7 @@ RunEnergy.Dashboard.Controllers.
                 };
 
                 //INITIALIZATION
-                $scope.filters = [];
+                $scope.dashboardData = dashboardData;
                 $scope.dashboardHeaderData = dashboardHeaderData;
                 $scope.dashboardPageData = dashboardPageData;
                 getAllFlareMonitorData();
