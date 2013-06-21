@@ -5,7 +5,8 @@ RunEnergy.Dashboard.Directives
             replace: true,
             template: '<input class="re-masked-date-input" ng-model="date"></input>',
             scope: {
-                date: "="
+                date: "=",
+                selectionEnabled: "@"
             },
             link: function (scope, element, attrs) {
                 $.mask.definitions['1'] = "[0-1]";
@@ -19,6 +20,19 @@ RunEnergy.Dashboard.Directives
                         });
                     }
                 });
+
+                //WATCHERS
+                var dereg = scope.$watch('selectionEnabled', function (newValue) {
+                    if (newValue && newValue !== 'false') {
+                        //$(element[0]).datepicker();
+                        dereg();
+                    }
+                });
+
+                //GETTERS
+                scope.getPickerVisibility = function () {
+                    return scope.selectionEnabled && scope.selectionEnabled !== 'false';
+                };
             }
         }
     }]);

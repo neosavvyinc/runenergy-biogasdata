@@ -13,10 +13,10 @@
   .container-fluid.control-row.date-time{'ng-controller' => 'controllers.DateController'}
     %span.date
       %span Start Date
-      %re-masked-date-input{'data-date' => 'dashboardDateData.startDate'}
+      %re-masked-date-input{'data-date' => 'dashboardDateData.startDate', 'data-selection-enabled' => 'true'}
     %span.date
       %span End Date
-      %re-masked-date-input{'data-date' => 'dashboardDateData.endDate'}
+      %re-masked-date-input{'data-date' => 'dashboardDateData.endDate', 'data-selection-enabled' => 'true'}
     %span.time{'re-disabled' => '!dashboardDateData.startDate || !dashboardDateData.endDate'}
       %span Start Time
       %re-masked-time-input{'data-time' => 'dashboardDateData.startTime'}
