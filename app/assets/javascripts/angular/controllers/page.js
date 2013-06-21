@@ -14,13 +14,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
             };
 
             $scope.onExportCSV = function () {
+                var filters = _.zipObject(
+                    _.collect(dashboardData.flareMonitorData.header, 'attribute_name'),
+                    _.collect(dashboardData.filters, 'expression')
+                );
                 dashboardService.getCSVExport(
                         dashboardHeaderData.flareSpecification.id,
                         dashboardDateData.startDate,
                         dashboardDateData.endDate,
                         dashboardDateData.startTime,
                         dashboardDateData.endTime,
-                        dashboardData.filters).then(function (result) {
+                        filters).
+                    then(function (result) {
                         window.open("data:text/csv;charset=utf-8," + escape(result));
                     });
             };

@@ -18,5 +18,6 @@
 //= require spin.min
 //= require jquery.maskedinput.min
 //= require moment.min
+//= require lodash.min
 //= require angular/dashboard
 //= require_tree .

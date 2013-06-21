@@ -34,7 +34,7 @@ RunEnergy.Dashboard.Controllers.
                             dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, 0, 1).
                                 then(
                                 function (result) {
-                                    $scope.data = result;
+                                    $scope.dashboardData.flareMonitorData = result;
                                     $rootScope.$broadcast(config.EVENTS.DASHBOARD_LOADED);
                                 },
                                 function (result) {
@@ -49,7 +49,7 @@ RunEnergy.Dashboard.Controllers.
                 }
 
                 //WATCHERS
-                var dereg = $scope.$watch('data.header', function (newValue) {
+                var dereg = $scope.$watch('dashboardData.flareMonitorData.header', function (newValue) {
                     if (newValue && newValue.length) {
                         //Instantiates array of same size for filters
                         $scope.dashboardData.filters = newValue.map(function (item, index) {
@@ -63,10 +63,10 @@ RunEnergy.Dashboard.Controllers.
                 $scope.$watch('dashboardPageData.page', function (newValue, oldValue) {
                     if (newValue > oldValue) {
                         //Pre-loads the next page for the user
-                        if ($scope.data) {
+                        if ($scope.dashboardData.flareMonitorData) {
                             dashboardService.getAllFlareMonitorData(dashboardHeaderData.flareSpecification.id, dashboardDateData.startDate, dashboardDateData.endDate, dashboardDateData.startTime, dashboardDateData.endTime, dashboardPageData.page + 1, dashboardPageData.page + 2).
                                 then(function (result) {
-                                    $scope.data.values = $scope.data.values.concat(result.values);
+                                    $scope.dashboardData.flareMonitorData.values = $scope.dashboardData.flareMonitorData.values.concat(result.values);
                                 });
                         }
                     }
@@ -74,7 +74,7 @@ RunEnergy.Dashboard.Controllers.
 
                 //GETTERS
                 $scope.getSignificantDigits = function (index) {
-                    var significantDigits = $scope.data.header[index].significant_digits;
+                    var significantDigits = $scope.dashboardData.flareMonitorData.header[index].significant_digits;
                     return RunEnergy.Dashboard.Utils.NumberUtils.isNumber(significantDigits) ? significantDigits : 2;
                 };
 

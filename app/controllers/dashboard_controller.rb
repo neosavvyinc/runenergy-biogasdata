@@ -101,6 +101,7 @@ class DashboardController < ApplicationController
                                                      ajax_value_or_nil(params[:endDate]),
                                                      ajax_value_or_nil(params[:startTime]),
                                                      ajax_value_or_nil(params[:endTime]))
+    flare_monitor_data = FlareMonitorData.with_filters(flare_monitor_data, params[:filters])
 
     exceptions = [:id, :created_at, :updated_at]
 

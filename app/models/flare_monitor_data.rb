@@ -162,6 +162,21 @@ class FlareMonitorData < ActiveRecord::Base
     query
   end
 
+  #@TODO, add some SQL injection protection. Check for regex
+  def self.with_filters(query, attributes_to_filters=nil)
+    unless attributes_to_filters.nil? or attributes_to_filters.empty?
+      builder = FlareMonitorDataQueryBuilder.new(query)
+      attributes_to_filters.each do |attr, filter|
+        unless filter.blank?
+          builder.where_filter(attr, filter)
+        end
+      end
+      builder.query
+    else
+      query
+    end
+  end
+
   #Calculations
   NET_HEATING_VALUE = 0.0339
   METHANE_NHV_VALUE = 50
