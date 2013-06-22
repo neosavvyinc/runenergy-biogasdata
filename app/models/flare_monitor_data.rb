@@ -62,10 +62,6 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
-  def self.display_name_for_field(field)
-    AttributeNameMapping.find_by_attribute_name(field.to_s).try(:display_name) || ""
-  end
-
   def self.display_object_for_field(field)
     AttributeNameMapping.find_by_attribute_name(field.to_s) or {}
   end
@@ -183,15 +179,11 @@ class FlareMonitorData < ActiveRecord::Base
   METHANE_GWP = 21
 
   def energy
-    (NET_HEATING_VALUE * methane) || 0
+    NET_HEATING_VALUE * (methane || 0)
   end
 
   def methane_tonne
-    (energy / METHANE_NHV_VALUE) || 0
-  end
-
-  def co2_eqiv
-    (methane_tonne * METHANE_GWP) || 0
+    ((energy || 0) / METHANE_NHV_VALUE)
   end
 
   def as_json(options=nil)
@@ -199,7 +191,7 @@ class FlareMonitorData < ActiveRecord::Base
     #Flare Specification Fields
     hash['flare_specification_id'] = self.flare_specification.try(:flare_unique_identifier)
     #Formatting
-    hash['date_time_reading'] = date_time_reading.strftime("%d/%m/%Y %H:%M:%S")
+    hash['date_time_reading'] = self.date_time_reading.try(:strftime, "%d/%m/%Y %H:%M:%S")
     hash
   end
 
@@ -215,15 +207,6 @@ class FlareMonitorData < ActiveRecord::Base
       end
     end
     hash
-  end
-
-  def as_json_ordered_values(options=nil)
-    hash = as_json(options)
-    values = []
-    hash.each do |key, value|
-      values.push({:value => value, :column_weight => FlareMonitorData.column_weight_for_field(key)})
-    end
-    values.sort_by { |value| (value[:column_weight] or 0) }
   end
 
   def as_json_from_keys(keys, options=nil)
