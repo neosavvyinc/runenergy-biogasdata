@@ -81,5 +81,16 @@ describe('RunEnergy.Dashboard.Filters', function () {
             expect(filter(25.1, 0)).toEqual("25");
         });
 
+        it('Should append a zero the front of a decimal number', function () {
+            expect(filter(101.675, 1)).toEqual("101.7");
+        });
+
+        it('Should round to the significant digits', function () {
+            expect(filter(.009876, 4)).toEqual("0.0099");
+        });
+
+        it('Should add a zero for two significant digit decimals', function () {
+            expect(filter(.234, 2)).toEqual("0.23");
+        });
     });
 });

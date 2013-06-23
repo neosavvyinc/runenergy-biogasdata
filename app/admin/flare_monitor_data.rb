@@ -5,7 +5,9 @@ ActiveAdmin.register FlareMonitorData do
     column :flare_specification
     column :date_time_reading
     column :blower_speed
+    column :flare_run_hours
     column :flame_temperature
+    column :flame_trap_temperature
     column :inlet_pressure
     column :lfg_temperature
     column :methane

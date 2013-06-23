@@ -42,6 +42,30 @@ RunEnergy.Dashboard.Utils.NumberUtils = (function () {
     return {
         isNumber: function isNumber(n) {
             return !isNaN(parseFloat(n)) && isFinite(n);
+        },
+        withLeadingZeroes: function (n, digits) {
+            if (n != undefined && n != null) {
+                if (digits == undefined || digits == null) {
+                    digits = 2;
+                }
+                var s = String(n);
+                var negative = (s.charAt(0) == "-");
+                if (negative) {
+                    s = s.slice(1);
+                }
+                var split = s.split(".");
+                if (split.length == 2) {
+                    s = split[0];
+                }
+                while (s.length < digits) {
+                    s = "0" + s;
+                }
+                if (split.length == 2) {
+                    s += "." + split[1];
+                }
+                return negative ? "-" + s : s;
+            }
+            return n;
         }
     }
 })();

@@ -42,7 +42,15 @@ RunEnergy.Dashboard.Filters.filter('numericFilterRound', function () {
         if (value !== undefined && value !== null) {
             var rounded = Math.round(parseFloat(value) * Math.pow(10, significantDigits));
             var str = String(rounded);
-            return rounded && significantDigits ? str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length) : str;
+            if (rounded && significantDigits) {
+                if ((str.length - significantDigits) <= 0) {
+                    return "0" + "." + RunEnergy.Dashboard.Utils.NumberUtils.withLeadingZeroes(str, significantDigits);
+                } else {
+                    return str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length);
+                }
+            } else {
+                return str;
+            }
         }
         return value;
     };
