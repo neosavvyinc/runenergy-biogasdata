@@ -105,22 +105,30 @@ class DashboardController < ApplicationController
 
     exceptions = [:id, :created_at, :updated_at]
 
-    if request.xhr? and not request.path.include?('.csv')
-      respond_to do |format|
-        format.json {
-          #Paging Support
-          flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(600)
-          keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
-              sort_by { |attribute|
-            (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)
+    if request.xhr?
+      if request.path.include?('.csv')
+        respond_to do |format|
+          format.json {
+            render json: {:success => true}
           }
-          header = keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
-              concat(AttributeNameMapping.calculation_headings)
-          methods = [:energy, :methane_tonne]
-          all_keys = keys.concat(methods)
-          values = flare_monitor_data.map { |fmd| fmd.as_json_from_keys(all_keys, {:except => exceptions, :methods => methods}) }
-          render json: {:header => header, :values => values}
-        }
+        end
+      else
+        respond_to do |format|
+          format.json {
+            #Paging Support
+            flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(600)
+            keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
+                sort_by { |attribute|
+              (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)
+            }
+            header = keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
+                concat(AttributeNameMapping.calculation_headings)
+            methods = [:energy, :methane_tonne]
+            all_keys = keys.concat(methods)
+            values = flare_monitor_data.map { |fmd| fmd.as_json_from_keys(all_keys, {:except => exceptions, :methods => methods}) }
+            render json: {:header => header, :values => values}
+          }
+        end
       end
       return
     else
