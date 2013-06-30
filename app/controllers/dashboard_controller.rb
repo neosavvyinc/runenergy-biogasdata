@@ -93,15 +93,16 @@ class DashboardController < ApplicationController
   end
 
   def read_flare_monitor_data
+    session[:constraints] ||= params_to_session(params)
     flare_deployment = FlareDeployment.where(:customer_id => current_user.id, :flare_specification_id => params[:flareSpecificationId]).first
     flare_monitor_data = FlareMonitorData.date_range(current_user.user_type,
                                                      flare_deployment,
                                                      params[:flareSpecificationId],
-                                                     ajax_value_or_nil(params[:startDate]),
-                                                     ajax_value_or_nil(params[:endDate]),
-                                                     ajax_value_or_nil(params[:startTime]),
-                                                     ajax_value_or_nil(params[:endTime]))
-    flare_monitor_data = FlareMonitorData.with_filters(flare_monitor_data, params[:filters])
+                                                     session[:constraints][:start_date],
+                                                     session[:constraints][:end_date],
+                                                     session[:constraints][:start_time],
+                                                     session[:constraints][:end_time])
+    flare_monitor_data = FlareMonitorData.with_filters(flare_monitor_data, session[:constraints][:filters])
 
     exceptions = [:id, :created_at, :updated_at]
 
@@ -113,6 +114,9 @@ class DashboardController < ApplicationController
           }
         end
       else
+        #Clear out session constraints
+        session[:constraints] = nil
+
         respond_to do |format|
           format.json {
             #Paging Support
@@ -132,10 +136,24 @@ class DashboardController < ApplicationController
       end
       return
     else
+      #Clear out session constraints
+      session[:constraints] = nil
+
       respond_to do |format|
         flare_monitor_csv = FlareMonitorData.to_csv(flare_monitor_data, exceptions)
         format.csv { send_data flare_monitor_csv }
       end
     end
+  end
+
+  protected
+  def params_to_session(params)
+    {
+        :start_date => ajax_value_or_nil(params[:startDate]),
+        :end_date => ajax_value_or_nil(params[:endDate]),
+        :start_time => ajax_value_or_nil(params[:startTime]),
+        :end_time => ajax_value_or_nil(params[:endTime]),
+        :filters => params[:filters]
+    }
   end
 end
