@@ -26,7 +26,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
                         dashboardDateData.endTime,
                         filters).
                     then(function (result) {
-                        window.open("data:text/csv;charset=utf-8," + escape(result));
+                        //window.open("data:text/csv;charset=utf-8," + escape(result));
+                        if (navigator.appName !== "Microsoft Internet Explorer") {
+                            window.open("data:text/csv;charset=utf-8;base64," + Base64.encode(result));
+                        } else {
+                            var popup = window.open('', 'csv', '');
+                            popup.document.body.innerHTML = '<pre>' + result + '</pre>';
+                        }
                     });
             };
 
