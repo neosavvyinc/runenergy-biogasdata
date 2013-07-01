@@ -14,6 +14,7 @@ Biogasdata::Application.routes.draw do
   match 'dashboard/flaredeployments' => 'dashboard#read_flare_deployments'
   match 'dashboard/flarespecifications' => 'dashboard#read_flare_specifications'
   match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'
+  match 'dashboard/flaremonitordata/session/create' => 'dashboard#create_session'
 
   root :to => "dashboard#login"
   # The priority is based upon order of creation:

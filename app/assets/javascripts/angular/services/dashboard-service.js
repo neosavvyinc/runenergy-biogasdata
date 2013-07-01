@@ -2,7 +2,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
     ['core.extensions.ServiceExtensions', "constants.Routes",
         function (serviceExtensions, routes) {
             return {
-                getCurrentUser: function()  {
+                getCurrentUser: function () {
                     return serviceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.USER.READ
@@ -54,6 +54,9 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                     return serviceExtensions.request({
                         method: 'POST',
                         url: routes.DASHBOARD.CSV_EXPORT.CREATE,
+                        headers: {
+                            Accept: 'application/json, text/javascript, */*'
+                        },
                         data: {
                             flareSpecificationId: flareSpecificationId,
                             startDate: startDate,

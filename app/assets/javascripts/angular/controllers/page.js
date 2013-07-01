@@ -37,7 +37,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
             $scope.getExportCSVLink = function () {
                 if (dashboardHeaderData.flareSpecification) {
                     return RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(
-                        routes.DASHBOARD.CSV_EXPORT.CREATE, {
+                        routes.DASHBOARD.CSV_EXPORT.READ, {
                             flareSpecificationId: dashboardHeaderData.flareSpecification.id
                         });
                 }
