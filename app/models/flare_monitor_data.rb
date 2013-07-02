@@ -85,7 +85,7 @@ class FlareMonitorData < ActiveRecord::Base
       next current_scope if value.blank?
       case key
         when 'flareSpecificationId'
-          current_scope.where(:flare_specification_id => options['flareSpecificationId']).order("date_time_reading ASC")
+          current_scope.where(:flare_specification_id => options['flareSpecificationId']).order("date_time_reading DESC")
         else #unknown key
           current_scope
       end
