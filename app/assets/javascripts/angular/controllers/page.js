@@ -46,6 +46,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
 
             //INITIALIZATION
             $scope.dashboardPageData = dashboardPageData;
-
+            $scope.exportingCSV = false;
 
         }]);
