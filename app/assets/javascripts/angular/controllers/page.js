@@ -13,7 +13,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
                 }
             };
 
-            $scope.onExportCSV = function () {
+            $scope.onExportCSV = function (e) {
+                e.preventDefault();
                 var filters = _.zipObject(
                     _.collect(dashboardData.flareMonitorData.header, 'attribute_name'),
                     _.collect(dashboardData.filters, 'expression')
@@ -27,8 +28,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
                         filters).
                     then(function (result) {
                         //window.open("data:text/csv;charset=utf-8," + escape(result));
-                        if (!result.success) {
+                        if (!result.constraints) {
                             throw "There has been an issue with the CSV exporting and filters.";
+                        } else {
+                            window.location = $(e.target).attr('href');
                         }
                     });
             };

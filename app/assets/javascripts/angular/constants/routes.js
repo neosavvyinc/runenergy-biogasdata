@@ -20,7 +20,7 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
         },
         CSV_EXPORT: {
             READ: "/dashboard/flaremonitordata.csv",
-            CREATE: "/dashboard/flaremonitordata/session/create"
+            CREATE: "dashboard/constraints"
         }
     }
 });

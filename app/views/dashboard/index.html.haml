@@ -28,7 +28,7 @@
   .container-fluid.control-row{'ng-controller' => 'controllers.PageController'}
     %a.btn.btn-inverse.prev{'ng-click' => 'onPrevious()'} Prev Page
     %a.btn.btn-inverse.next{'ng-click' => 'onNext()'} Next Page
-    %a.btn.btn-success.export{'ng-click' => 'onExportCSV()', 'ng-href' => '{{ getExportCSVLink() }}'} Export To CSV
+    %a.btn.btn-success.export{'ng-click' => 'onExportCSV($event)', 'ng-href' => '{{ getExportCSVLink() }}'} Export To CSV
     %span.export-loader{'re-spinning-overlay' => 'exportingCSV', 're-spinner-radius' => '2', 're-spinning-overlay-length' => '5', 're-spinner-width' => '1', 're-spinner-trail' => '80', 're-spinner-size-to-window' => 'false', 're-spinner-shadow' => 'false'}
   .dashboard.container-fluid
     %ng-view
