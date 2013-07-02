@@ -116,6 +116,7 @@ class DashboardController < ApplicationController
                                                      session[:constraints][:end_date],
                                                      session[:constraints][:start_time],
                                                      session[:constraints][:end_time])
+    logger.info session[:constraints]
     flare_monitor_data = FlareMonitorData.with_filters(flare_monitor_data, session[:constraints][:filters])
 
     exceptions = [:id, :created_at, :updated_at]
