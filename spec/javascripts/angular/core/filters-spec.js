@@ -92,5 +92,18 @@ describe('RunEnergy.Dashboard.Filters', function () {
         it('Should add a zero for two significant digit decimals', function () {
             expect(filter(.234, 2)).toEqual("0.23");
         });
+
+        it('Should play nice with negative numbers', function () {
+            expect(filter(-20.92, 0)).toEqual("-21");
+        });
+
+        it('Should play nice with negative decimal numbers', function () {
+            expect(filter(-678.98354, 3)).toEqual("-678.984");
+        });
+
+        it('Should play nice with negative decimal numbers less than absolute value of 1', function () {
+            expect(filter(-0.378, 1)).toEqual("-0.4");
+            expect(filter(-0.390, 4)).toEqual("-0.3900");
+        });
     });
 });

@@ -12,7 +12,7 @@ Biogasdata::Application.configure do
   config.serve_static_assets = false
 
   # Compress JavaScripts and CSS
-  config.assets.compress = false
+  config.assets.compress = true
   config.assets.js_compressor = Sprockets::LazyCompressor.new {
     Uglifier.new(:mangle => false)
   }

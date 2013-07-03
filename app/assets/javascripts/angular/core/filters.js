@@ -40,14 +40,19 @@ RunEnergy.Dashboard.Filters.filter('numericExpression', ['$interpolate', '$parse
 RunEnergy.Dashboard.Filters.filter('numericFilterRound', function () {
     return function (value, significantDigits) {
         if (value !== undefined && value !== null) {
-            var rounded = Math.round(parseFloat(value) * Math.pow(10, significantDigits));
+            var negative = parseFloat(value) < 0;
+            var rounded = Math.round(parseFloat(Math.abs(value)) * Math.pow(10, significantDigits));
             var str = String(rounded);
             if (rounded && significantDigits) {
                 if ((str.length - significantDigits) <= 0) {
-                    return "0" + "." + RunEnergy.Dashboard.Utils.NumberUtils.withLeadingZeroes(str, significantDigits);
+                    str = "0" + "." + RunEnergy.Dashboard.Utils.NumberUtils.withLeadingZeroes(str, significantDigits);
                 } else {
-                    return str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length);
+                    str = str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length);
                 }
+                if (negative) {
+                    return ("-" + str);
+                }
+                return str;
             } else {
                 return str;
             }
