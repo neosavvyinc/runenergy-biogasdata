@@ -54,7 +54,7 @@ RunEnergy.Dashboard.Filters.filter('numericFilterRound', function () {
                 }
                 return str;
             } else {
-                return str;
+                return negative ? "-" + str : str;
             }
         }
         return value;
