@@ -13,10 +13,16 @@
   .container-fluid.control-row.date-time{'ng-controller' => 'controllers.DateController'}
     %span.date
       %span Start Date
-      %re-masked-date-input{'data-date' => 'dashboardDateData.startDate', 'data-selection-enabled' => 'true'}
+      .control-group.input-append
+        %input{"bs-datepicker" => "", "data-date-format" => "dd/mm/yyyy", "ng-model" => "dashboardDateData.startDate", :type => "text"}/
+        %button.btn{"data-toggle" => "datepicker", :type => "button"}
+          %i.icon-calendar
     %span.date
       %span End Date
-      %re-masked-date-input{'data-date' => 'dashboardDateData.endDate', 'data-selection-enabled' => 'true'}
+      .control-group.input-append
+        %input{"bs-datepicker" => "", "data-date-format" => "dd/mm/yyyy", "ng-model" => "dashboardDateData.endDate", :type => "text"}/
+        %button.btn{"data-toggle" => "datepicker", :type => "button"}
+          %i.icon-calendar
     %span.time{'re-disabled' => '!dashboardDateData.startDate || !dashboardDateData.endDate'}
       %span Start Time
       %re-masked-time-input{'data-time' => 'dashboardDateData.startTime'}
