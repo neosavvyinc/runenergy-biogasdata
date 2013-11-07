@@ -41,7 +41,7 @@ class FlareDeployment < ActiveRecord::Base
     elsif date_time.blank?
       self.last_reading + 1.day - 1.minute
     else
-      [self.last_reading + 1.day - 1.minute, date_time].min
+      [self.last_reading + 1.day - 1.minute, date_time.to_time].min
     end
   end
 end
