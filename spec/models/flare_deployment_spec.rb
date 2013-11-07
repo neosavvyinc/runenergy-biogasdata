@@ -104,11 +104,21 @@ describe FlareDeployment do
     end
 
     it 'should return the minimum of the last_reading plus a day minus a minute vs. the date_time passed in' do
-
+      max_date = flare_deployment.max_date(Date.parse("30-10-2010"))
+      max_date.year.should eq 2010
+      max_date.month.should eq 10
+      max_date.day.should eq 30
+      max_date.hour.should eq 0
+      max_date.min.should eq 0
     end
 
     it 'should return the reverse of the prior minimum' do
-
+      max_date = flare_deployment.max_date(Date.parse("01-11-2010"))
+      max_date.year.should eq 2010
+      max_date.month.should eq 10
+      max_date.day.should eq 31
+      max_date.hour.should eq 23
+      max_date.min.should eq 59
     end
   end
 
