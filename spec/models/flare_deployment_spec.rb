@@ -41,4 +41,75 @@ describe FlareDeployment do
 
   end
 
+  describe 'apply_deployment_status' do
+
+    it 'should set the flare_deployment_status to current if the last reading is blank' do
+      flare_deployment.apply_deployment_status
+      flare_deployment.flare_deployment_status_code.should eq FlareDeploymentStatusCode.CURRENT
+    end
+
+    it 'should set the flare_deployment_status to past if the last reading is not blank' do
+      flare_deployment.last_reading = Date.new
+      flare_deployment.save
+      flare_deployment.apply_deployment_status
+      flare_deployment.flare_deployment_status_code.should eq FlareDeploymentStatusCode.PAST
+    end
+
+  end
+
+  describe 'min_date' do
+
+    before(:each) do
+      flare_deployment.first_reading = Date.parse("31-10-2010")
+      flare_deployment.save
+    end
+
+    it 'should return the first_reading property if the date_time is blank' do
+      flare_deployment.min_date(nil).should eq Date.parse("31-10-2010")
+    end
+
+    it 'should return the date_time if the first_reading is blank' do
+      flare_deployment.first_reading = nil
+      flare_deployment.min_date(Date.parse('18-09-2007')).should eq Date.parse('18-09-2007')
+    end
+
+    it 'should return the max between the date_time and the first_reading if both are set' do
+      flare_deployment.min_date(Date.parse('18-09-2007')).should eq Date.parse("31-10-2010")
+    end
+
+    it 'should return the max in the reverse case' do
+      flare_deployment.min_date(Date.parse('18-09-2011')).should eq Date.parse('18-09-2011')
+    end
+
+  end
+
+  describe 'max_date' do
+    before(:each) do
+      flare_deployment.last_reading = Date.parse("31-10-2010")
+      flare_deployment.save
+    end
+
+    it 'should return the date_time passed in if the last_reading is blank' do
+      flare_deployment.last_reading = nil
+      flare_deployment.max_date(Date.parse("13-08-2009")).should eq Date.parse("13-08-2009")
+    end
+
+    it 'should return the last reading + a day minus a minute if the passed in date_time is blank' do
+      max_date = flare_deployment.max_date(nil)
+      max_date.year.should eq 2010
+      max_date.month.should eq 10
+      max_date.day.should eq 31
+      max_date.hour.should eq 23
+      max_date.min.should eq 59
+    end
+
+    it 'should return the minimum of the last_reading plus a day minus a minute vs. the date_time passed in' do
+
+    end
+
+    it 'should return the reverse of the prior minimum' do
+
+    end
+  end
+
 end
