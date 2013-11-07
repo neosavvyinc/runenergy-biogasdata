@@ -31,6 +31,7 @@ end
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'guard-rspec', require: false
+  gem 'simplecov', :require => false
 end
 
 gem 'haml'
