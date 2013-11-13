@@ -49,7 +49,7 @@ describe FlareDeployment do
     end
 
     it 'should set the flare_deployment_status to past if the last reading is not blank' do
-      flare_deployment.last_reading = Date.new
+      flare_deployment.last_reading = Date.today
       flare_deployment.save
       flare_deployment.apply_deployment_status
       flare_deployment.flare_deployment_status_code.should eq FlareDeploymentStatusCode.PAST

@@ -36,7 +36,7 @@ describe FlareSpecification do
 
     it 'should use the existing flare_collection_statistic' do
       existing_id = flare_collection_statistic.id
-      flare_specification.update_statistic("SOME_NAME", Date.new)
+      flare_specification.update_statistic("SOME_NAME", Date.today)
       flare_collection_statistic.last_csv_read.should eq "SOME_NAME"
     end
 
