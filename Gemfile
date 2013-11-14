@@ -13,6 +13,7 @@ gem "paperclip", "~> 3.0"
 gem 'kaminari', '~> 0.14.1'
 gem 'ffi', '~> 1.0.9'
 gem 'classy_enum', '~> 3.3.1'
+gem 'grape', '~> 0.6.1'
 
 # Gems used only for assets and not required
 # in production environments by default.

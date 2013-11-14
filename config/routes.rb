@@ -4,7 +4,10 @@ Biogasdata::Application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+  #Field Api
+  mount Field::API => '/field/'
 
+  #Dashboard
   get "dashboard/login"
 
   #XHR Paths
