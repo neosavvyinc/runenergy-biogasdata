@@ -247,27 +247,27 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  active_admin_sidebar
-  activeadmin
-  angular-rails
-  angularjs-rails
-  classy_enum
+  active_admin_sidebar (~> 0.0.4)
+  activeadmin (~> 0.6.0)
+  angular-rails (~> 0.0.12)
+  angularjs-rails (~> 1.0.7)
+  classy_enum (~> 3.3.1)
   coffee-rails (~> 3.2.1)
-  factory_girl
+  factory_girl (~> 4.2.0)
   ffi (~> 1.0.9)
-  guard-rspec
-  haml
-  haml-rails
-  haml_coffee_assets
+  guard-rspec (~> 3.0.2)
+  haml (~> 4.0.3)
+  haml-rails (~> 0.4)
+  haml_coffee_assets (~> 1.12.0)
   jquery-rails (~> 2.3.0)
-  jquery-ui-rails
-  kaminari
-  mysql2
+  jquery-ui-rails (~> 4.0.3)
+  kaminari (~> 0.14.1)
+  mysql2 (~> 0.3.11)
   paperclip (~> 3.0)
   rails (= 3.2.12)
-  roo
+  roo (~> 1.11.2)
   rspec-rails (~> 2.0)
   sass-rails (~> 3.2.3)
-  simplecov
-  twitter-bootstrap-rails
+  simplecov (~> 0.7.1)
+  twitter-bootstrap-rails (~> 2.2.7)
   uglifier (>= 1.0.3)
