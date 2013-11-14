@@ -12,6 +12,7 @@ gem 'active_admin_sidebar'
 gem "paperclip", "~> 3.0"
 gem 'kaminari'
 gem 'ffi', '~> 1.0.9'
+gem 'classy_enum'
 
 # Gems used only for assets and not required
 # in production environments by default.

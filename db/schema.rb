@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130630065941) do
+ActiveRecord::Schema.define(:version => 20131114024327) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -177,6 +177,32 @@ ActiveRecord::Schema.define(:version => 20130630065941) do
     t.string   "google_earth_file_content_type"
     t.integer  "google_earth_file_file_size"
     t.datetime "google_earth_file_updated_at"
+  end
+
+  create_table "monitor_classes", :force => true do |t|
+    t.string   "name"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "monitor_limits", :force => true do |t|
+    t.decimal  "limit",      :precision => 10, :scale => 10
+    t.datetime "created_at",                                 :null => false
+    t.datetime "updated_at",                                 :null => false
+  end
+
+  create_table "monitor_points", :force => true do |t|
+    t.string   "name"
+    t.string   "unit"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
+  create_table "readings", :force => true do |t|
+    t.datetime "taken_at"
+    t.string   "data"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "sessions", :force => true do |t|

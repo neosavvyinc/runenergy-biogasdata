@@ -54,6 +54,8 @@ GEM
       sass (>= 3.2.0)
       thor
     builder (3.0.4)
+    classy_enum (3.3.1)
+      rails (>= 3.0)
     climate_control (0.0.3)
       activesupport (>= 3.0)
     cocaine (0.5.1)
@@ -249,6 +251,7 @@ DEPENDENCIES
   activeadmin
   angular-rails
   angularjs-rails
+  classy_enum
   coffee-rails (~> 3.2.1)
   factory_girl
   ffi (~> 1.0.9)
