@@ -1,0 +1,3 @@
+group :vendor, :assets_path => "assets/javascripts" do
+    asset "neosavvy-javascript-angular-core", "0.1.0"
+end

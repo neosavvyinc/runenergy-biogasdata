@@ -1,0 +1,6 @@
+{
+  "name": "dsl-generated dependencies",
+  "dependencies": {
+    "neosavvy-javascript-angular-core": "0.1.0"
+  }
+}

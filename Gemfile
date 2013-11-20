@@ -9,7 +9,7 @@ gem 'mysql2', '~> 0.3.11'
 gem 'roo', '~> 1.11.2'
 gem 'activeadmin', '~> 0.6.0'
 gem 'active_admin_sidebar', '~> 0.0.4'
-gem "paperclip", "~> 3.0"
+gem 'paperclip', '~> 3.0'
 gem 'kaminari', '~> 0.14.1'
 gem 'ffi', '~> 1.0.9'
 gem 'classy_enum', '~> 3.3.1'
@@ -29,6 +29,7 @@ group :assets do
 
   gem 'uglifier', '>= 1.0.3'
   gem 'factory_girl', '~> 4.2.0'
+  gem 'bower-rails', '~> 0.5.0'
 end
 
 group :development, :test do
