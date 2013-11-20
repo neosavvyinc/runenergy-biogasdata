@@ -8,7 +8,7 @@ Biogasdata::Application.routes.draw do
   mount Field::API => '/field/'
 
   #Dashboard
-  get "dashboard/login"
+  get 'dashboard/login'
 
   #XHR Paths
   match 'dashboard/user' => 'dashboard#read_current_user'
@@ -19,7 +19,11 @@ Biogasdata::Application.routes.draw do
   match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'
   match 'dashboard/constraints' => 'dashboard#create_session'
 
-  root :to => "dashboard#login"
+  #Data Input
+  match 'data_input/create', :to => 'data_input#create', :as => 'data_input_create'
+  match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
+
+  root :to => 'dashboard#login'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -67,11 +71,11 @@ Biogasdata::Application.routes.draw do
   #     resources :products
   #   end
 
-  # You can have the root of your site routed with "root"
+  # You can have the root of your site routed with 'root'
   # just remember to delete public/index.html.
   # root :to => 'welcome#index'
 
-  # See how all your routes lay out with "rake routes"
+  # See how all your routes lay out with 'rake routes'
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.
   # Note: This route will make all actions in every controller accessible via GET requests.
