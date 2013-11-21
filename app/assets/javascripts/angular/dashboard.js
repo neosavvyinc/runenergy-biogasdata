@@ -24,7 +24,8 @@ var haml = new function () {
     };
 }();
 
-RunEnergy.Dashboard.Dependencies = ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values'];
+RunEnergy.Dashboard.Dependencies = Neosavvy.AngularCore.Dependencies.
+    concat(['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values']);
 
 angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('$strap.directives')).
     config(['$routeProvider',
