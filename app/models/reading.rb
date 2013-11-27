@@ -3,4 +3,8 @@ class Reading < ActiveRecord::Base
   belongs_to :location
   belongs_to :monitor_class
   belongs_to :field_log
+
+  def as_json(options={})
+    super(options).merge(:data => JSON.parse(self.data))
+  end
 end
