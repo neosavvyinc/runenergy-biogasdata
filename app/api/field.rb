@@ -16,5 +16,35 @@ module Field
       end
     end
 
+    resource :readings do
+      params do
+        requires :site_id, type: String
+        requires :class_id, type: String
+      end
+      get do
+        Reading
+        .where(:location_id => params[:site_id].to_i)
+        .where(:monitor_class_id => params[:class_id].to_i)
+      end
+
+      params do
+        requires :site_id, type: String
+        requires :class_id
+        requires :field_log
+        requires :reading
+      end
+      post '/create' do
+        field_log = FieldLog.create({
+            :data => JSON.dump(params[:field_log])
+                        })
+        Reading.create({
+            :location_id => params[:site_id].to_i,
+            :monitor_class_id => params[:class_id].to_i,
+            :field_log_id => field_log.id,
+            :data => JSON.dump(params[:reading])
+                       })
+      end
+    end
+
   end
 end

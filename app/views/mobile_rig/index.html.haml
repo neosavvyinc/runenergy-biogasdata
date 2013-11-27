@@ -13,4 +13,7 @@
       %label{'ng-bind' => 'mp.name'}
       %input
     .submission
-      %a.btn.btn-success Send
+      %a.btn.btn-success{'ng-click' => 'onSend()'} Send
+    .readings
+      .reading{'ng-repeat' => 'reading in readings'}
+        %label{'ng-bind' => 'reading.value'}

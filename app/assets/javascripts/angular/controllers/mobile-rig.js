@@ -5,12 +5,20 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
             $scope.selectedLocation = null;
             $scope.locations = null;
 
-            fieldApi.getSites().then(function(result) {
+            function _getReadings() {
+                if ($scope.selectedLocation && $scope.selectedMonitorClass) {
+                    fieldApi.getReadings($scope.selectedLocation.id, $scope.selectedMonitorClass.id).then(function (result) {
+                        $scope.readings = result;
+                    });
+                }
+            }
+
+            fieldApi.getSites().then(function (result) {
                 $scope.locations = result;
                 if ($scope.locations && $scope.locations.length) {
                     $scope.selectedLocation = $scope.locations[0];
                 }
-            });
+            }).then(_getReadings);
 
             $scope.selectedMonitorClass = null;
             $scope.monitorClasses = null;
@@ -20,5 +28,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
                 if ($scope.monitorClasses && $scope.monitorClasses.length) {
                     $scope.selectedMonitorClass = $scope.monitorClasses[0];
                 }
-            });
+            }).then(_getReadings);
+
+            $scope.readings = null;
+
+            $scope.onSend = function () {
+                if ($scope.selectedLocation && $scope.selectedMonitorClass) {
+                    fieldApi.createReading($scope.selectedLocation.id,
+                        $scope.selectedMonitorClass.id,
+                        {name: "Harold"},
+                        {methane: 50, oxygen: 90.78}).then(_getReadings);
+                }
+            };
+
+
         }]);
