@@ -1,0 +1,9 @@
+.mobile-rig{'ng-app' => 'dashboard', 'ng-controller' => 'controllers.MobileRigController'}
+  %ns-serialize{'data' => @locations.to_json.html_safe, 'property' => 'locations'}
+  %ns-serialize{'data' => @monitor_classes.to_json(:include => :monitor_points).html_safe, 'property' => 'monitorClasses'}
+  %re-bootstrap-button-dropdown{'items' => 'locations', 'selected-item' => 'selectedLocation', 'label-field' => 'site_name'}
+  %re-bootstrap-button-dropdown{'items' => 'monitorClasses', 'selected-item' => 'selectedMonitorClass', 'label-field' => 'name'}
+  %form.form-inline
+    .monitor-point.ng-cloak{'ng-repeat' => 'mp in selectedMonitorClass.monitor_points'}
+      %label{'ng-bind' => 'mp.name'}
+      %input

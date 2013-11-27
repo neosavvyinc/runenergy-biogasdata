@@ -23,6 +23,9 @@ Biogasdata::Application.routes.draw do
   match 'data_input/create', :to => 'data_input#create', :as => 'data_input_create'
   match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
 
+  #Mobile Rig
+  match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'
+
   root :to => 'dashboard#login'
   # The priority is based upon order of creation:
   # first created -> highest priority.
