@@ -15,5 +15,8 @@
     .submission
       %a.btn.btn-success{'ng-click' => 'onSend()'} Send
     .readings
+      %h5 Readings
       .reading{'ng-repeat' => 'reading in readings'}
-        %label{'ng-bind' => 'reading.value'}
+        .point{'ng-repeat' => '(key, value) in reading.data'}
+          %span{'ng-bind' => 'key + ": "'}
+          %span{'ng-bind' => 'value'}
