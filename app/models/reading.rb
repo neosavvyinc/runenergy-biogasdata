@@ -5,6 +5,9 @@ class Reading < ActiveRecord::Base
   belongs_to :field_log
 
   def as_json(options={})
-    super(options).merge(:data => JSON.parse(self.data))
+    super(options).merge({
+                             :data => JSON.parse(self.data),
+                             :field_log => self.field_log.as_json
+                         })
   end
 end

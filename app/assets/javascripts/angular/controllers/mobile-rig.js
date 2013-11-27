@@ -2,6 +2,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
     ['$scope', 'services.FieldApiService',
         function ($scope, fieldApi) {
 
+            $scope.currentFieldLog = {};
+            $scope.currentReading = {};
+
             $scope.selectedLocation = null;
             $scope.locations = null;
 
@@ -33,11 +36,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
             $scope.readings = null;
 
             $scope.onSend = function () {
-                if ($scope.selectedLocation && $scope.selectedMonitorClass) {
+                if ($scope.selectedLocation &&
+                    $scope.selectedMonitorClass &&
+                    _.keys($scope.currentFieldLog).length &&
+                    _.keys($scope.currentReading).length) {
                     fieldApi.createReading($scope.selectedLocation.id,
                         $scope.selectedMonitorClass.id,
-                        {name: "Harold"},
-                        {methane: 50, oxygen: 90.78}).then(_getReadings);
+                        $scope.currentFieldLog,
+                        $scope.currentReading).then(_getReadings);
                 }
             };
 

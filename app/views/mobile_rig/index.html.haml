@@ -7,16 +7,25 @@
     %h5 Field Log
     .field-log.ng-clock{'ng-repeat' => 'flp in selectedMonitorClass.field_log_points'}
       %label{'ng-bind' => 'flp.name'}
-      %input
+      %input{'ng-model' => 'currentFieldLog[flp.name]'}
     %h5 Monitor Points
     .monitor-point.ng-cloak{'ng-repeat' => 'mp in selectedMonitorClass.monitor_points'}
       %label{'ng-bind' => 'mp.name'}
-      %input
+      %input{'ng-model' => 'currentReading[mp.name]'}
     .submission
       %a.btn.btn-success{'ng-click' => 'onSend()'} Send
     .readings
       %h5 Readings
       .reading{'ng-repeat' => 'reading in readings'}
-        .point{'ng-repeat' => '(key, value) in reading.data'}
-          %span{'ng-bind' => 'key + ": "'}
-          %span{'ng-bind' => 'value'}
+        .fieldlog
+          %span
+            %i Field Log:
+          .log{'ng-repeat' => '(key, value) in reading.field_log.data'}
+            %span{'ng-bind' => 'key + ": "'}
+            %span{'ng-bind' => 'value'}
+        .data
+          %span
+            %i Reading:
+          .point{'ng-repeat' => '(key, value) in reading.data'}
+            %span{'ng-bind' => 'key + ": "'}
+            %span{'ng-bind' => 'value'}
