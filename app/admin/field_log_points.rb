@@ -1,5 +1,5 @@
-ActiveAdmin.register MonitorPoint do
+ActiveAdmin.register FieldLogPoint do
 
   menu :parent => 'Monitored Settings'
-
+  
 end

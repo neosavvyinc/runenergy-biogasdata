@@ -5,4 +5,8 @@ class MobileRigController < ApplicationController
     @locations = Location.all
     @monitor_classes = MonitorClass.all
   end
+
+  def documentation
+
+  end
 end

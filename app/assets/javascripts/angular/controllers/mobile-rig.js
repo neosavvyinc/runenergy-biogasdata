@@ -1,25 +1,24 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
-    ['$scope',
-        function ($scope) {
+    ['$scope', 'services.FieldApiService',
+        function ($scope, fieldApi) {
 
             $scope.selectedLocation = null;
             $scope.locations = null;
 
+            fieldApi.getSites().then(function(result) {
+                $scope.locations = result;
+                if ($scope.locations && $scope.locations.length) {
+                    $scope.selectedLocation = $scope.locations[0];
+                }
+            });
+
             $scope.selectedMonitorClass = null;
             $scope.monitorClasses = null;
 
-            var deregLocations = $scope.$watch('locations', function(val) {
-                if (val && val.length) {
-                    $scope.selectedLocation = val[0];
-                    deregLocations();
+            fieldApi.getMonitorClasses().then(function (result) {
+                $scope.monitorClasses = result;
+                if ($scope.monitorClasses && $scope.monitorClasses.length) {
+                    $scope.selectedMonitorClass = $scope.monitorClasses[0];
                 }
             });
-
-            var deregMonitorClasses = $scope.$watch('monitorClasses', function(val) {
-                if (val && val.length) {
-                    $scope.selectedMonitorClass = val[0];
-                    deregMonitorClasses();
-                }
-            });
-
         }]);

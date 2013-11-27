@@ -25,6 +25,7 @@ Biogasdata::Application.routes.draw do
 
   #Mobile Rig
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'
+  match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
   root :to => 'dashboard#login'
   # The priority is based upon order of creation:
