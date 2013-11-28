@@ -4,6 +4,15 @@ module Field
     version 'v1'
     format :json
 
+    resource :sync do
+      params do
+        requires :uid, type: String
+      end
+      get do
+
+      end
+    end
+
     resource :sites do
       get do
         Location.all
@@ -35,13 +44,13 @@ module Field
       end
       post '/create' do
         field_log = FieldLog.create({
-            :data => JSON.dump(params[:field_log])
-                        })
+                                        :data => JSON.dump(params[:field_log])
+                                    })
         Reading.create({
-            :location_id => params[:site_id].to_i,
-            :monitor_class_id => params[:class_id].to_i,
-            :field_log_id => field_log.id,
-            :data => JSON.dump(params[:reading])
+                           :location_id => params[:site_id].to_i,
+                           :monitor_class_id => params[:class_id].to_i,
+                           :field_log_id => field_log.id,
+                           :data => JSON.dump(params[:reading])
                        })
       end
     end
