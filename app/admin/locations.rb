@@ -9,6 +9,24 @@ ActiveAdmin.register Location, :as => "Site" do
     default_actions
   end
 
+  show do
+    panel "User Groups" do
+      table_for site.user_groups do
+        column :name
+      end
+    end
+    panel "Users" do
+      table_for site.users do
+        column :name
+        column :email
+      end
+    end
+    panel "Details" do
+      h6 "Created At: #{site.created_at}"
+      h6 "Updated At: #{site.updated_at}"
+    end
+  end
+
   form do |f|
     f.inputs "Site" do
       f.input :site_name

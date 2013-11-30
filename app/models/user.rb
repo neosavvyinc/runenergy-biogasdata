@@ -12,8 +12,8 @@ class User < ActiveRecord::Base
   has_many :user_groups, :through => :user_groups_users
   has_many :device_profiles_users
   has_many :device_profiles, :through => :device_profiles_users
-  has_many :locations_user_groups
-  has_many :locations, :through => :locations_user_groups
+  has_many :locations_users
+  has_many :locations, :through => :locations_users
   # attr_accessible :title, :body
 
   def is_overseer?
@@ -29,7 +29,7 @@ class User < ActiveRecord::Base
   end
 
   def sites
-    locations.try(:as_json, :monitor_classes)
+    locations.try(:as_json, {:include => [:monitor_classes]})
   end
 
 end
