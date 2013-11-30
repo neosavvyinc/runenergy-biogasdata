@@ -12,6 +12,8 @@ class User < ActiveRecord::Base
   has_many :user_groups, :through => :user_groups_users
   has_many :device_profiles_users
   has_many :device_profiles, :through => :device_profiles_users
+  has_many :locations_user_groups
+  has_many :locations, :through => :locations_user_groups
   # attr_accessible :title, :body
 
   def is_overseer?
@@ -24,6 +26,10 @@ class User < ActiveRecord::Base
 
   def is_worker?
     self.user_type == UserType.WORKER
+  end
+
+  def sites
+    locations.try(:as_json, :monitor_classes)
   end
 
 end

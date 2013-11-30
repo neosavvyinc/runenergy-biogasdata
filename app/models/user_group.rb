@@ -4,4 +4,6 @@ class UserGroup < ActiveRecord::Base
   has_many :users, :through => :user_groups_users
   has_many :device_profiles_user_groups
   has_many :device_profiles, :through => :device_profiles_user_groups
+  has_many :locations_user_groups
+  has_many :locations, :through => :locations_user_groups
 end

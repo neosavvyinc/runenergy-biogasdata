@@ -1,5 +1,5 @@
 class DeviceProfile < ActiveRecord::Base
-  attr_accessible :name, :uid
+  attr_accessible :name, :uid, :user_group_ids, :user_ids
   has_many :device_profiles_users
   has_many :users, :through => :device_profiles_users
   has_many :device_profiles_user_groups

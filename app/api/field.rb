@@ -9,11 +9,11 @@ module Field
         requires :uid, type: String
       end
       get do
-        device_profile = DeviceProfile.where(:uid => params[uid]).first
+        device_profile = DeviceProfile.where(:uid => params[:uid]).first
         if device_profile
-
+          device_profile.unique_users.as_json(:include => [:sites])
         else
-          !error('No device exists for the requested UID', 404)
+          error!('MODELNOTFOUND', 404)
         end
       end
     end
