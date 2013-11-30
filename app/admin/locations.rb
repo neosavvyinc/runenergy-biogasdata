@@ -18,6 +18,8 @@ ActiveAdmin.register Location, :as => "Site" do
       f.input :lattitude
       f.input :longitude
       f.input :google_earth_file, :as => :file
+      f.input :user_groups, :as => :select, :collection => UserGroup.all
+      f.input :users, :as => :select, :collection => User.all
     end
     f.actions
   end
