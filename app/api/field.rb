@@ -20,7 +20,7 @@ module Field
 
     resource :sites do
       get do
-        Location.all.as_json(:methods => [:monitor_classes_with_points])
+        Location.all.as_json(:methods => [:monitor_class_ids])
       end
     end
 
