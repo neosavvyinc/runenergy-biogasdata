@@ -10,13 +10,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
             $scope.selectedLocation = null;
             $scope.locations = null;
 
-            function _getReadings() {
+            var _getReadings = _.debounce(function() {
                 if ($scope.selectedLocation && $scope.selectedMonitorClass) {
                     fieldApi.getReadings($scope.selectedLocation.id, $scope.selectedMonitorClass.id).then(function (result) {
                         $scope.readings = result;
                     });
                 }
-            }
+            }, 1000);
 
             fieldApi.getSites().then(function (result) {
                 $scope.locations = result;
