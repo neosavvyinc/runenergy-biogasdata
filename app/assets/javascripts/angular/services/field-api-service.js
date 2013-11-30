@@ -3,6 +3,14 @@ RunEnergy.Dashboard.Services.factory('services.FieldApiService',
         function (nsServiceExtensions) {
             var apiPrefix = 'field/v1/';
             return {
+                sync: function (deviceUid) {
+                    return nsServiceExtensions.request({
+                        method: 'GET',
+                        url: new Neosavvy.Core.Builders.RequestUrlBuilder(apiPrefix + 'sync')
+                            .addParam('uid', deviceUid)
+                            .build()
+                    });
+                },
                 getSites: function () {
                     return nsServiceExtensions.request({
                         method: 'GET',

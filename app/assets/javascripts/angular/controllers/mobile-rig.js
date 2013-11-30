@@ -2,6 +2,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
     ['$scope', 'services.FieldApiService',
         function ($scope, fieldApi) {
 
+            $scope.deviceUid = null;
+
             $scope.currentFieldLog = {};
             $scope.currentReading = {};
 
@@ -44,6 +46,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
                         $scope.selectedMonitorClass.id,
                         $scope.currentFieldLog,
                         $scope.currentReading).then(_getReadings);
+                }
+            };
+
+            $scope.onSync = function() {
+                if ($scope.deviceUid) {
+                    fieldApi.sync($scope.deviceUid).then(function(result) {
+
+                    });
                 }
             };
 

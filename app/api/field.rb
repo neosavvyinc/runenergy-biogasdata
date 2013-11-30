@@ -9,7 +9,12 @@ module Field
         requires :uid, type: String
       end
       get do
+        device_profile = DeviceProfile.where(:uid => params[uid]).first
+        if device_profile
 
+        else
+          !error('No device exists for the requested UID', 404)
+        end
       end
     end
 

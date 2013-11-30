@@ -22,4 +22,8 @@ class User < ActiveRecord::Base
     self.user_type == UserType.CUSTOMER
   end
 
+  def is_worker?
+    self.user_type == UserType.WORKER
+  end
+
 end

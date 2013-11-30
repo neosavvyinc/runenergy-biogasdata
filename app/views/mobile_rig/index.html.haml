@@ -1,4 +1,11 @@
 .mobile-rig{'ng-app' => 'dashboard', 'ng-controller' => 'controllers.MobileRigController'}
+  %h5 Device
+  %form.form-inline
+    .sync
+      %label UID
+      %input{'ng-model' => 'deviceUid'}
+    .sync-button
+      %a.btn.success{'ng-click' => 'onSync()'} Sync
   %h5 Site
   %re-bootstrap-button-dropdown{'items' => 'locations', 'selected-item' => 'selectedLocation', 'label-field' => 'site_name'}
   %h5 Monitor Class
