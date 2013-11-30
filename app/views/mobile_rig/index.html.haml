@@ -6,33 +6,37 @@
       %input{'ng-model' => 'deviceUid'}
     .sync-button
       %a.btn.success{'ng-click' => 'onSync()'} Sync
-  %h5 Site
-  %re-bootstrap-button-dropdown{'items' => 'locations', 'selected-item' => 'selectedLocation', 'label-field' => 'site_name'}
-  %h5 Monitor Class
-  %re-bootstrap-button-dropdown{'items' => 'monitorClasses', 'selected-item' => 'selectedMonitorClass', 'label-field' => 'name'}
-  %form.form-inline
-    %h5 Field Log
-    .field-log.ng-clock{'ng-repeat' => 'flp in selectedMonitorClass.field_log_points'}
-      %label{'ng-bind' => 'flp.name'}
-      %input{'ng-model' => 'currentFieldLog[flp.name]'}
-    %h5 Monitor Points
-    .monitor-point.ng-cloak{'ng-repeat' => 'mp in selectedMonitorClass.monitor_points'}
-      %label{'ng-bind' => 'mp.name'}
-      %input{'ng-model' => 'currentReading[mp.name]'}
-    .submission
-      %a.btn.btn-success{'ng-click' => 'onSend()'} Send
-    .readings
-      %h5 Readings
-      .reading{'ng-repeat' => 'reading in readings'}
-        .fieldlog
-          %span
-            %i Field Log:
-          .log{'ng-repeat' => '(key, value) in reading.field_log.data'}
-            %span{'ng-bind' => 'key + ": "'}
-            %span{'ng-bind' => 'value'}
-        .data
-          %span
-            %i Reading:
-          .point{'ng-repeat' => '(key, value) in reading.data'}
-            %span{'ng-bind' => 'key + ": "'}
-            %span{'ng-bind' => 'value'}
+    %label{'ng-bind' => 'error', 'ng-show' => 'error'}
+  .inteface{'ng-show' => 'showInterface', 'style' => 'display: none;'}
+    %h5 User
+    %re-bootstrap-button-dropdown{'items' => 'users', 'selected-item' => 'selectedUser', 'label-field' => 'name'}
+    %h5 Site
+    %re-bootstrap-button-dropdown{'items' => 'locations | nsCollectionFilterProperties : "id" : selectedUser.entitled_site_ids', 'selected-item' => 'selectedLocation', 'label-field' => 'site_name'}
+    %h5 Monitor Class
+    %re-bootstrap-button-dropdown{'items' => 'monitorClasses | nsCollectionFilterProperties : "id" : selectedLocation.monitor_class_ids', 'selected-item' => 'selectedMonitorClass', 'label-field' => 'name'}
+    %form.form-inline
+      %h5 Field Log
+      .field-log.ng-clock{'ng-repeat' => 'flp in selectedMonitorClass.field_log_points'}
+        %label{'ng-bind' => 'flp.name'}
+        %input{'ng-model' => 'currentFieldLog[flp.name]'}
+      %h5 Monitor Points
+      .monitor-point.ng-cloak{'ng-repeat' => 'mp in selectedMonitorClass.monitor_points'}
+        %label{'ng-bind' => 'mp.name'}
+        %input{'ng-model' => 'currentReading[mp.name]'}
+      .submission
+        %a.btn.btn-success{'ng-click' => 'onSend()'} Send
+      .readings
+        %h5 Readings
+        .reading{'ng-repeat' => 'reading in readings'}
+          .fieldlog
+            %span
+              %i Field Log:
+            .log{'ng-repeat' => '(key, value) in reading.field_log.data'}
+              %span{'ng-bind' => 'key + ": "'}
+              %span{'ng-bind' => 'value'}
+          .data
+            %span
+              %i Reading:
+            .point{'ng-repeat' => '(key, value) in reading.data'}
+              %span{'ng-bind' => 'key + ": "'}
+              %span{'ng-bind' => 'value'}

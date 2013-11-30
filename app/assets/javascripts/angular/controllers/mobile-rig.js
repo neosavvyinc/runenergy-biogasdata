@@ -2,7 +2,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
     ['$scope', 'services.FieldApiService',
         function ($scope, fieldApi) {
 
-            $scope.deviceUid = null;
+            $scope.deviceUid = "uid400";
 
             $scope.currentFieldLog = {};
             $scope.currentReading = {};
@@ -49,11 +49,23 @@ RunEnergy.Dashboard.Controllers.controller('controllers.MobileRigController',
                 }
             };
 
-            $scope.onSync = function() {
+            $scope.showInterface = false;
+            $scope.users = null;
+            $scope.onSync = function () {
                 if ($scope.deviceUid) {
-                    fieldApi.sync($scope.deviceUid).then(function(result) {
-
-                    });
+                    $scope.showInterface = false;
+                    fieldApi.sync($scope.deviceUid).then(
+                        function (result) {
+                            $scope.users = result;
+                            $scope.showInterface = true;
+                            $scope.error = null;
+                            if ($scope.users && $scope.users.length) {
+                                $scope.selectedUser = $scope.users[0];
+                            }
+                        },
+                        function (result) {
+                            $scope.error = "UID not found, check your spelling.";
+                        });
                 }
             };
 
