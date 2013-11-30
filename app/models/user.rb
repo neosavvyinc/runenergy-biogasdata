@@ -28,8 +28,8 @@ class User < ActiveRecord::Base
     self.user_type == UserType.WORKER
   end
 
-  def sites
-    locations.try(:as_json, {:include => [:monitor_classes]})
+  def entitled_site_ids
+    (locations + user_groups.collect {|ug| ug.locations}.flatten).collect {|l| l.id}
   end
 
 end

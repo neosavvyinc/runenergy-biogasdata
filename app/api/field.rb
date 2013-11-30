@@ -11,7 +11,7 @@ module Field
       get do
         device_profile = DeviceProfile.where(:uid => params[:uid]).first
         if device_profile
-          device_profile.unique_users.as_json(:methods => [:sites])
+          device_profile.unique_users.as_json(:methods => [:entitled_site_ids])
         else
           error!('MODELNOTFOUND', 404)
         end
