@@ -20,7 +20,7 @@ module Field
 
     resource :sites do
       get do
-        Location.all
+        Location.all.as_json(:methods => [:monitor_classes_with_points])
       end
     end
 
@@ -36,9 +36,11 @@ module Field
         requires :class_id, type: String
       end
       get do
+        count = params[:count].try(:to_i) || 25
         Reading
         .where(:location_id => params[:site_id].to_i)
         .where(:monitor_class_id => params[:class_id].to_i)
+        .limit(count)
       end
 
       params do

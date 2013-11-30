@@ -21,6 +21,11 @@ ActiveAdmin.register Location, :as => "Site" do
         column :email
       end
     end
+    panel "Monitor Classes" do
+      table_for site.monitor_classes do
+        column :name
+      end
+    end
     panel "Details" do
       h6 "Created At: #{site.created_at}"
       h6 "Updated At: #{site.updated_at}"
@@ -38,6 +43,7 @@ ActiveAdmin.register Location, :as => "Site" do
       f.input :google_earth_file, :as => :file
       f.input :user_groups, :as => :select, :collection => UserGroup.all
       f.input :users, :as => :select, :collection => User.all
+      f.input :monitor_classes, :as => :select, :collection => MonitorClass.all
     end
     f.actions
   end

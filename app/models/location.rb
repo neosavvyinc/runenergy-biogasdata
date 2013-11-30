@@ -1,5 +1,5 @@
 class Location < ActiveRecord::Base
-  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids
+  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids, :monitor_class_ids
   belongs_to :state
   belongs_to :country
   belongs_to :company
@@ -15,5 +15,9 @@ class Location < ActiveRecord::Base
 
   def display_name
     site_name || "Unnamed #{state.name}, #{country.name}"
+  end
+
+  def monitor_classes_with_points
+    monitor_classes.try(:as_json, {:include => [:monitor_points, :field_log_points]})
   end
 end
