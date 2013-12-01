@@ -36,7 +36,7 @@ module Field
         requires :class_id, type: String
       end
       get do
-        count = params[:count].try(:to_i) || 25
+        count = params[:count].try(:to_i) || 10
         Reading
         .where(:location_id => params[:site_id].to_i)
         .where(:monitor_class_id => params[:class_id].to_i)

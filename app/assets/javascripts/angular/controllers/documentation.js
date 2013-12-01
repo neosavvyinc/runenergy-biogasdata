@@ -34,8 +34,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DocumentationController'
                     "method": "POST",
                     "payload": {"site_id": "7",
                         "class_id": "2",
-                        "field_log": {"Name":"Charlie Watts"},
-                        "reading": {"Methane":"89","Carbon Dioxide":"567","Oxygen":"8","Pressure":"78"}}
+                        "field_log": {"Name": "Charlie Watts"},
+                        "reading": {"Methane": String(parseInt(Math.random() * 100)),
+                            "Carbon Dioxide": String(parseInt(Math.random() * 100)),
+                            "Oxygen": String(parseInt(Math.random() * 100)),
+                            "Pressure": String(parseInt(Math.random() * 100))}}
                 }
             ];
 
