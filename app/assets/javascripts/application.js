@@ -24,6 +24,7 @@
 //= require angular-strap
 //= require bower_components/neosavvy-javascript-core/neosavvy-javascript-core
 //= require bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core
+//= require neosavvy/ns-api-doc
 //= require angular/dashboard
 //= require_tree ./templates
 //= require_tree ./angular
