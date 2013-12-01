@@ -1,8 +1,12 @@
 .mobile-rig-documentation{'ng-app' => 'dashboard', 'ng-controller' => 'controllers.DocumentationController'}
   %h5 API Documentation
-  %ul
+  %ul{'style' => 'list-style-type: none;'}
     %li{'ng-repeat' => 'call in api'}
       %ns-api-doc{'endpoint' => 'call'}
+        %h5 {{call.name}}
         %label Path: {{call.path}}
-        %label Params:
-        %label{'ng-repeat' => '(key, value) in call.params'} {{key}} : {{value}}
+        %label Method: {{call.method}}
+        %label{'ng-show' => 'call.params'} Params:
+        %label{'ng-repeat' => '(key, value) in call.params'} {{key}} => {{value}}
+        .code
+          %pre{'ng-bind' => 'call.response'}

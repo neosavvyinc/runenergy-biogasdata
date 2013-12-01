@@ -25,9 +25,15 @@ Neosavvy.ApiDoc.Directives.directive('nsApiDoc', function ($http) {
 
             scope.status = 'ok';
 
-            $http({method: scope.method, url: scope.path, data: scope.payload}).then(function (resp) {
+            var urlBuilder = new Neosavvy.Core.Builders.RequestUrlBuilder(scope.path);
+            if (scope.params && _.keys(scope.params).length) {
+                urlBuilder = urlBuilder.addParam(scope.params);
+            }
+
+            $http({method: scope.method, url: urlBuilder.build(), data: scope.payload}).then(function (resp) {
                 scope.response = JSON.stringify(resp.data, undefined, 4);
-                
+                scope.endpoint.response = scope.response;
+
                 return resp.data;
             });
         }
