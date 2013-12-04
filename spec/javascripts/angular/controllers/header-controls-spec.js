@@ -12,4 +12,13 @@ describe("controllers.HeaderControlsController", function () {
             controller = $injector.get('$controller')("controllers.HeaderControlsController", {$scope: $scope});
         });
     });
+
+    describe('Initialization', function () {
+        it('Should initialize the dataInputViews as follows', function () {
+            expect($scope.dataInputViews).toEqual([
+                "Add Data",
+                "Import Data"
+            ]);
+        });
+    });
 });

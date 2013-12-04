@@ -1,3 +1,3 @@
 .data-input.create{'ng-app' => 'dashboard'}
-  %ns-serialize{'inject' => 'values.DashboardHeaderData', 'data' => @monitor_classes.to_json.html_safe, 'property' => 'monitorClasses'}
+  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :monitor_classes => @monitor_classes, :sections => @sections
   This is the create view!

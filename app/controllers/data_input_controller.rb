@@ -4,15 +4,18 @@ class DataInputController < ApplicationController
   before_filter :authenticate_user!
 
   def create
-    all_monitor_classes
+    all_view_classes
   end
 
   def import
-    all_monitor_classes
+    all_view_classes
   end
 
   protected
-  def all_monitor_classes
+  def all_view_classes
+    @landfill_operators = User.all
+    @sites = Location.all
     @monitor_classes = MonitorClass.all
+    @sections = Section.all
   end
 end

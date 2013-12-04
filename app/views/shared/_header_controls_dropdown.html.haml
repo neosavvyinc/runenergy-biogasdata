@@ -1,0 +1,6 @@
+.btn-group{:class => base_class}
+  %a.btn.dropdown-toggle{"data-toggle" => "dropdown"} #{name} <span class="caret"></span>
+  %ul.dropdown-menu
+    - links.each do |l|
+      %li
+        %a{:href => l[:href]} #{l[:label]}
