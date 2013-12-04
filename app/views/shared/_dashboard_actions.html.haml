@@ -3,3 +3,7 @@
   %ns-serialize{'data' => sites.to_json.html_safe, 'property' => 'sites'}
   %ns-serialize{'data' => monitor_classes.to_json.html_safe, 'property' => 'monitorClasses'}
   %ns-serialize{'data' => sections.to_json.html_safe, 'property' => 'sections'}
+  %re-bootstrap-button-dropdown.location{'items' => 'landfillOperators', 'selected-item' => 'newDataValues.selectedLandfillOperator', 'label-field' => 'name', 'link-class' => 'btn-success'}
+  %re-bootstrap-button-dropdown.location{'items' => 'sites', 'selected-item' => 'newDataValues.selectedSite', 'label-field' => 'site_name', 'link-class' => 'btn-success'}
+  %re-bootstrap-button-dropdown.location{'items' => 'monitorClasses', 'selected-item' => 'newDataValues.selectedMonitorClass', 'label-field' => 'name', 'link-class' => 'btn-success'}
+  %re-bootstrap-button-dropdown.location{'items' => 'sections', 'selected-item' => 'newDataValues.selectedSection', 'label-field' => 'name', 'link-class' => 'btn-success'}

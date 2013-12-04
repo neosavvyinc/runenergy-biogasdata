@@ -8,4 +8,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             $scope.sections = null;
             $scope.newDataValues = newDataValues;
 
+            //Watchers
+            function initValue(prop, dereg) {
+                return function (val) {
+                    if (val && val.length) {
+                        Neosavvy.Core.Utils.MapUtils.applyTo($scope, prop, val[0]);
+                        dereg[dereg]();
+                    }
+                };
+            }
+
+            var dereg = {};
+            dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'da'));
+            dereg.db = $scope.$watch('sites', initValue('newDataValues.selectedSite', 'db'));
+
         }]);

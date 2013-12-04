@@ -1,0 +1,27 @@
+{"created_at": "2013-12-04T02:06:28Z", "data": {
+    "Carbon Dioxide": "367",
+    "Oxygen": "89"
+}, "field_log_id": 31, "id": 30, "location_id": 7, "monitor_class_id": 3, "taken_at": null, "updated_at": "2013-12-04T02:06:28Z", "location": {
+    "address": "Wytes Gully Resourse Recovery Park rnReddalls Road rnKembla Grange rn2526",
+    "company_id": null,
+    "country_id": 1,
+    "created_at": "2013-06-11T18:55:48Z",
+    "google_earth_file_content_type": null,
+    "google_earth_file_file_name": null,
+    "google_earth_file_file_size": null,
+    "google_earth_file_updated_at": null,
+    "id": 7,
+    "lattitude": "",
+    "longitude": "",
+    "site_name": "Whytes Gully Landfill",
+    "state_id": 53,
+    "updated_at": "2013-06-11T19:04:24Z"
+}, "field_log": {
+    "created_at": "2013-12-04T02:05:00Z",
+    "data": {
+        "Name": "Jordan Frankfurt 2"
+    },
+    "id": 31,
+    "taken_at": null,
+    "updated_at": "2013-12-04T02:05:00Z"
+}}
