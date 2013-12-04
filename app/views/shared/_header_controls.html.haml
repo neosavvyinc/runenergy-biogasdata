@@ -1,11 +1,11 @@
-.header-controls.row-fluid
+.header-controls.row-fluid{'ng-controller' => 'controllers.HeaderControlsController'}
   %h3.title.span4
     %span.company
       &nbsp;
     %span.slash{'ng-bind' => "'/'", 'ng-show' => 'user.name'}
     %span.user{'ng-bind' => 'user.name'}
   %a.btn.span1 Home
-  %a.btn.span2 Data Input
+  %re-bootstrap-button-dropdown.span2{'items' => 'dataInputViews', 'default' => 'Data Input', 'link-class' => 'span12'}
   %a.btn.span2 Data Analysis
   %a.btn.span1 Setup
   %a.btn.span2 Log Out
