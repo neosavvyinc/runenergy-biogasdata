@@ -1,11 +1,5 @@
 .dashboard{'ng-controller' => 'controllers.ParentController', 're-spinning-overlay' => 'loading'}
-  .container-fluid
-    %h3.title
-      %span.company
-        &nbsp;
-      %span.slash{'ng-bind' => "'/'", 'ng-show' => 'user.name'}
-      %span.user{'ng-bind' => 'user.name'}
-    = link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout'
+  = render "shared/header_controls"
   .container-fluid.copntrol-row{'ng-controller' => 'controllers.SiteController'}
     %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}
     %re-bootstrap-button-dropdown.location{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name', 'link-class' => 'btn-success'}

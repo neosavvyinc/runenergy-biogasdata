@@ -2,6 +2,8 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
+@import core
+
 .dashboard
   .label-important
     font-size: 27px
@@ -11,22 +13,25 @@
       font-weight: normal
       font-style: italic
   min-height: 500px
-  .title
-    float: left
-    span
+  .header-controls
+    .title
       float: left
-      margin-right: 10px
-      &.slash, &.user
-        margin-top: 8px
-      &.slash
-        margin-right: 14px
-      &.company
-        width: 144px
-        height: 56px
-        background: transparent image-url('logo.jpg') top left
-      &.user
-        min-width: 650px
-        color: #5AB45A
+      span
+        float: left
+        margin-right: 10px
+        &.slash, &.user
+          margin-top: 8px
+        &.slash
+          margin-right: 14px
+        &.company
+          width: 144px
+          height: 56px
+          background: transparent image-url('logo.jpg') top left
+        &.user
+          @include truncate(200px)
+          color: #5AB45A
+    .btn
+      margin-top: 23px
   .logout
     float: right
     margin: 20px 0
