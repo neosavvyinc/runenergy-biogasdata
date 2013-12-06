@@ -1,5 +1,5 @@
 ActiveAdmin.register FieldLogPoint do
 
-  menu :parent => 'Monitored Settings'
+  menu :parent => 'Site Management'
   
 end

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20131130155022) do
+ActiveRecord::Schema.define(:version => 20131206003703) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -51,6 +51,13 @@ ActiveRecord::Schema.define(:version => 20131130155022) do
     t.integer  "section_id"
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
+  end
+
+  create_table "assets_monitor_classes", :id => false, :force => true do |t|
+    t.integer  "asset_id"
+    t.integer  "monitor_class_id"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
   end
 
   create_table "attribute_name_mappings", :force => true do |t|
@@ -282,9 +289,9 @@ ActiveRecord::Schema.define(:version => 20131130155022) do
 
   create_table "sections", :force => true do |t|
     t.string   "name"
-    t.integer  "monitor_class_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
+    t.integer  "location_id"
   end
 
   create_table "sessions", :force => true do |t|
