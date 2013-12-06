@@ -1,5 +1,4 @@
 .dashboard{'ng-controller' => 'controllers.ParentController', 're-spinning-overlay' => 'loading'}
-  = render "shared/header_controls"
   .container-fluid.copntrol-row{'ng-controller' => 'controllers.SiteController'}
     %re-bootstrap-button-dropdown.customer{'items' => 'customers', 'selected-item' => 'dashboardHeaderData.customer', 'label-field' => 'name', 'ng-show' => (not current_user.is_customer?).to_s, 'link-class' => 'btn-success'}
     %re-bootstrap-button-dropdown.location{'items' => 'locations', 'selected-item' => 'dashboardHeaderData.site', 'label-field' => 'site_name', 'link-class' => 'btn-success'}
@@ -32,10 +31,4 @@
     %span.export-loader{'re-spinning-overlay' => 'exportingCSV', 're-spinner-radius' => '2', 're-spinning-overlay-length' => '5', 're-spinner-width' => '1', 're-spinner-trail' => '80', 're-spinner-size-to-window' => 'false', 're-spinner-shadow' => 'false'}
   .dashboard.container-fluid
     %ng-view
-
-- content_for :javascript do
-  :javascript
-    angular.element(document).ready(function() {
-       angular.bootstrap(document, ['dashboard']);
-     });
 

@@ -4,8 +4,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
 
             $scope.landfillOperators = null;
             $scope.sites = null;
-            $scope.monitorClasses = null;
             $scope.sections = null;
+            $scope.assets = null;
+            $scope.monitorClasses = null;
             $scope.newDataValues = newDataValues;
 
             //Watchers

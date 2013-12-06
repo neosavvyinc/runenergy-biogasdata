@@ -15,6 +15,15 @@ describe("controllers.DashboardActionController", function () {
         });
     });
 
+    describe('Watchers', function () {
+        it('Should set the newDataValues.selectedLandFillOperator to the first one in the list when it is initialized', function () {
+            expect(newDataValues.selectedLandfillOperator).toBeNull();
+            $scope.landfillOperators = ["Lemmy", "Ronnie James", "Ozzy"];
+            $scope.$digest();
+            expect(newDataValues.selectedLandfillOperator).toEqual("Lemmy");
+        });
+    });
+
     describe('Initialization', function () {
         it('Should set landfillOperators to null', function () {
             expect($scope.landfillOperators).toBeNull();
@@ -30,6 +39,10 @@ describe("controllers.DashboardActionController", function () {
 
         it('Should set sections to null', function () {
             expect($scope.sections).toBeNull();
+        });
+
+        it('Should set assets to null', function () {
+            expect($scope.assets).toBeNull();
         });
 
         it('Should set newDataValues to the values object', function () {

@@ -4,8 +4,9 @@
     %title Run Energy - Biogasdata
     = stylesheet_link_tag    "application", :media => "all"
     = csrf_meta_tags
-  %body
+  %body{'ng-app' => 'dashboard'}
     .container-fluid
+      = render "shared/header_controls"
       = yield
     = javascript_include_tag "application"
     = content_for(:javascript)
