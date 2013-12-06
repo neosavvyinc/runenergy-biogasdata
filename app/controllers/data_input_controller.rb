@@ -15,7 +15,8 @@ class DataInputController < ApplicationController
   def all_view_classes
     @landfill_operators = User.all
     @sites = Location.all
-    @monitor_classes = MonitorClass.all
     @sections = Section.all
+    @assets = Asset.all
+    @monitor_classes = MonitorClass.all
   end
 end

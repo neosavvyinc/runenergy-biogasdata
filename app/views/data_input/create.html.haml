@@ -1,5 +1,5 @@
 .data-input.create{'ng-app' => 'dashboard'}
-  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :monitor_classes => @monitor_classes, :sections => @sections
+  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
   %h5 Field Log
   .field-log.ng-clock{'ng-repeat' => 'flp in selectedMonitorClass.field_log_points'}
     %label{'ng-bind' => 'flp.name'}

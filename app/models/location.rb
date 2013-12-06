@@ -1,9 +1,10 @@
 class Location < ActiveRecord::Base
-  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids, :monitor_class_ids
+  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids, :monitor_class_ids, :section_ids
   belongs_to :state
   belongs_to :country
   belongs_to :company
   has_attached_file :google_earth_file
+  has_many :sections
   has_many :flare_deployments
   has_many :flare_specifications, :through => :flare_deployments
   has_many :locations_monitor_classes
