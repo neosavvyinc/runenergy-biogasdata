@@ -21,5 +21,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
 
             var dereg = {};
             dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'da'));
+            dereg.db = $scope.$watch('monitorClasses', initValue('newDataValues.selectedMonitorClass', 'db'));
 
         }]);

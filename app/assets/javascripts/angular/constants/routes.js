@@ -22,5 +22,9 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
             READ: "/dashboard/flaremonitordata.csv",
             CREATE: "dashboard/constraints"
         }
+    },
+    DATA_INPUT: {
+        CREATE: "",
+        READINGS: ""
     }
 });

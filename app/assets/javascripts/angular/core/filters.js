@@ -96,3 +96,13 @@ RunEnergy.Dashboard.Filters.filter('collectionPage', function () {
         return collection;
     };
 });
+
+//Text
+RunEnergy.Dashboard.Filters.filter('nsTextProperToSnake', function () {
+    return function (value) {
+        if (!Neosavvy.Core.Utils.StringUtils.isBlank(value)) {
+            return value.replace(/\s{1,}/g, "_").toLowerCase();
+        }
+        return value;
+    };
+});

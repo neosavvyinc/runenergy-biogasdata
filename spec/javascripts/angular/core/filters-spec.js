@@ -106,4 +106,40 @@ describe('RunEnergy.Dashboard.Filters', function () {
             expect(filter(-0.390, 4)).toEqual("-0.3900");
         });
     });
+
+    describe('nsTextProperToSnake', function () {
+        beforeEach(function () {
+            inject(function ($injector) {
+                filter = $filter('nsTextProperToSnake');
+            });
+        });
+
+        it('Should return undefined if passed undefined', function () {
+            expect(filter(undefined)).toBeUndefined();
+        });
+
+        it('Should return a blank string when passed a blank string', function () {
+            expect(filter("")).toEqual("");
+        });
+
+        it('Should return null when passed null', function () {
+            expect(filter(null)).toBeNull();
+        });
+
+        it('Should play nice with lowercase strings', function () {
+            expect(filter("something i learned today")).toEqual("something_i_learned_today");
+        });
+
+        it('Should play nice with camelcase strings', function () {
+            expect(filter("SomethingILearned Today")).toEqual("somethingilearned_today");
+        });
+
+        it('Should play nice with multi white spaces', function () {
+            expect(filter("Something  I  Learned Today")).toEqual("something_i_learned_today");
+        });
+
+        it('Should play nice with uppercase strings', function () {
+            expect(filter("SOMETHINGNEW  FOOOLS 50")).toEqual("somethingnew_foools_50");
+        });
+    });
 });
