@@ -9,14 +9,7 @@ class DashboardController < ApplicationController
 
   #XHR
   def read_current_user
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: current_user
-        }
-      end
-      return
-    end
+    render json: current_user
   end
 
   def read_customers
@@ -25,21 +18,14 @@ class DashboardController < ApplicationController
       customers = User.where(:user_type_id => UserType.CUSTOMER.id)
     end
 
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: customers
-        }
-      end
-      return
-    end
+    render json: customers
   end
 
   def read_locations
     if current_user.is_customer?
-      @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", current_user.id)
-    elsif not request.GET["customerId"].nil?
-      @locations = Location.joins(:flare_deployments).where("flare_deployments.customer_id = ?", request.GET["customerId"].to_i)
+      @locations = Location.joins(:flare_deployments).where('flare_deployments.customer_id = ?', current_user.id)
+    elsif not request.GET['customerId'].nil?
+      @locations = Location.joins(:flare_deployments).where('flare_deployments.customer_id = ?', request.GET['customerId'].to_i)
     else
       @locations = Location.all
     end
@@ -47,17 +33,9 @@ class DashboardController < ApplicationController
     @locations = @locations.map { |location|
       location.as_json.merge({:flare_specifications => location.flare_specifications}) }
 
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: @locations
-        }
-      end
-      return
-    end
+    render json: @locations
   end
 
-  #TODO, may be extraneous
   def read_flare_deployments
     if current_user.is_customer?
       flare_deployments = FlareDeployment.where(:customer_id => current_user.id)
@@ -65,14 +43,7 @@ class DashboardController < ApplicationController
       flare_deployments = FlareDeployment.all
     end
 
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: flare_deployments
-        }
-      end
-      return
-    end
+    render json: flare_deployments
   end
 
   def read_flare_specifications
@@ -82,14 +53,7 @@ class DashboardController < ApplicationController
       flare_specifications = FlareSpecification.all.map { |fs| fs.as_json.merge({:location => fs.flare_deployment.location.as_json}) }
     end
 
-    if request.xhr?
-      respond_to do |format|
-        format.json {
-          render json: flare_specifications
-        }
-      end
-      return
-    end
+    render json: flare_specifications
   end
 
   def create_session
@@ -128,7 +92,7 @@ class DashboardController < ApplicationController
       respond_to do |format|
         format.json {
           #Paging Support
-          flare_monitor_data = flare_monitor_data.page((request.GET["start"].try(:to_i) or 0)).per(600)
+          flare_monitor_data = flare_monitor_data.page((request.GET['start'].try(:to_i) or 0)).per(600)
           keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
               sort_by { |attribute|
             (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)

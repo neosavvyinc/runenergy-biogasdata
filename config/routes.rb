@@ -13,7 +13,7 @@ Biogasdata::Application.routes.draw do
   #XHR Paths
   match 'dashboard/user' => 'dashboard#read_current_user'
   match 'dashboard/customers' => 'dashboard#read_customers'
-  match 'dashboard/locations' => 'dashboard#read_locations'
+  match 'dashboard/locations' => 'dashboard#read_locations', :as => 'dashboard_locations'
   match 'dashboard/flaredeployments' => 'dashboard#read_flare_deployments'
   match 'dashboard/flarespecifications' => 'dashboard#read_flare_specifications'
   match 'dashboard/flaremonitordata' => 'dashboard#read_flare_monitor_data'

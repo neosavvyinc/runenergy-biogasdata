@@ -9,8 +9,11 @@ FactoryGirl.define do
     before :create do |flare_deployment|
       if flare_deployment.flare_specification.blank?
         flare_deployment.flare_specification = FactoryGirl.create(:flare_specification)
-        flare_deployment.save
       end
+      if flare_deployment.location.blank?
+        flare_deployment.location = FactoryGirl.create(:location)
+      end
+      flare_deployment.save
     end
   end
 end
