@@ -1,5 +1,5 @@
-class FieldLog < ActiveRecord::Base
-  attr_accessible :data, :taken_at
+class FieldLog < DataAsStringModel
+  attr_accessible :taken_at
   has_many :readings
 
   def as_json(options={})

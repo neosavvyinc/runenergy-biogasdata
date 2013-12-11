@@ -1,5 +1,5 @@
-ActiveAdmin.register FlareImportLog, :as => "Log" do
-  menu :parent => "Flares"
+ActiveAdmin.register FlareImportLog, :as => 'Log' do
+  menu :parent => 'Flares'
 
   index do
     column :flare_unique_identifier

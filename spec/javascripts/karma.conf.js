@@ -16,6 +16,7 @@ module.exports = function (config) {
         files: [
             'lib/angular.js',
             'lib/angular-*.js',
+            'lib/test-helpers.js',
             '../../vendor/assets/javascripts/bower_components/jquery/jquery.js',
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
