@@ -59,15 +59,7 @@ class DashboardController < ApplicationController
   def create_session
     session[:constraints] = params_to_session(params)
 
-    respond_to do |format|
-      format.js {
-        render json: {:constraints => session[:constraints]}
-      }
-      format.json {
-        render json: {:constraints => session[:constraints]}
-      }
-    end
-    return
+    render json: {:constraints => session[:constraints]}
   end
 
   def read_flare_monitor_data
@@ -89,23 +81,18 @@ class DashboardController < ApplicationController
     session[:constraints] = nil
 
     if request.xhr?
-      respond_to do |format|
-        format.json {
-          #Paging Support
-          flare_monitor_data = flare_monitor_data.page((request.GET['start'].try(:to_i) or 0)).per(600)
-          keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
-              sort_by { |attribute|
-            (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)
-          }
-          header = keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
-              concat(AttributeNameMapping.calculation_headings)
-          methods = [:energy, :methane_tonne]
-          all_keys = keys.concat(methods)
-          values = flare_monitor_data.map { |fmd| fmd.as_json_from_keys(all_keys, {:except => exceptions, :methods => methods}) }
-          render json: {:header => header, :values => values}
-        }
-      end
-      return
+      #Paging Support
+      flare_monitor_data = flare_monitor_data.page((request.GET['start'].try(:to_i) or 0)).per(600)
+      keys = FlareMonitorData.first.as_json(:except => exceptions).keys.
+          sort_by { |attribute|
+        (FlareMonitorData.display_object_for_field(attribute).try(:column_weight) or 0)
+      }
+      header = keys.map { |attribute| FlareMonitorData.display_object_for_field(attribute) }.
+          concat(AttributeNameMapping.calculation_headings)
+      methods = [:energy, :methane_tonne]
+      all_keys = keys.concat(methods)
+      values = flare_monitor_data.map { |fmd| fmd.as_json_from_keys(all_keys, {:except => exceptions, :methods => methods}) }
+      render json: {:header => header, :values => values}
     else
       respond_to do |format|
         flare_monitor_csv = FlareMonitorData.to_csv(flare_monitor_data, exceptions)

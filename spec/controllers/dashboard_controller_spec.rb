@@ -19,6 +19,20 @@ describe DashboardController do
        FactoryGirl.create(:flare_deployment, :customer => trevor)]
     end
 
+    let :trevors_data do
+      [
+          FactoryGirl.create(:flare_monitor_data, :flare_specification => flare_deployments[1].flare_specification),
+          FactoryGirl.create(:flare_monitor_data, :flare_specification => flare_deployments[1].flare_specification),
+      ]
+    end
+
+    let :jordans_data do
+      [
+          FactoryGirl.create(:flare_monitor_data, :flare_specification => flare_deployments[0].flare_specification),
+          FactoryGirl.create(:flare_monitor_data, :flare_specification => flare_deployments[0].flare_specification),
+      ]
+    end
+
     before :each do
       flare_deployments.should_not be_nil
     end
@@ -31,6 +45,43 @@ describe DashboardController do
       it 'should return the current_user object as json' do
         xhr :get, :read_current_user
         response.body.should eq trevor.to_json
+      end
+    end
+
+    describe 'create_session' do
+      before(:each) do
+        sign_in jordan
+      end
+
+      it 'should add the params to the :constraints key in the session' do
+        xhr :post, :create_session, :startDate => 5, :endDate => 4, :startTime => 3, :endTime => 2, :filters => 'Buzz'
+        parsed_response = JSON.parse response.body
+        parsed_response['constraints'].should_not be_nil
+        session[:constraints][:start_date].should eq '5'
+        session[:constraints][:end_date].should eq '4'
+        session[:constraints][:start_time].should eq '3'
+        session[:constraints][:end_time].should eq '2'
+        session[:constraints][:filters].should eq 'Buzz'
+      end
+    end
+
+    describe 'read_flare_monitor_data' do
+      before(:each) do
+        trevors_data.should_not be_nil
+        jordans_data.should_not be_nil
+        sign_in trevor
+      end
+
+      describe 'xhr' do
+        it 'should return two items for the customer that is logged in with a valid flareSpecificationId' do
+          xhr :get, :read_flare_monitor_data, :flareSpecificationId => flare_deployments[1].flare_specification.id
+          parsed_response = JSON.parse response.body
+          parsed_response.size.should eq 2
+        end
+      end
+
+      describe 'csv' do
+
       end
     end
 
