@@ -1,4 +1,4 @@
-require "spec_helper"
+require 'spec_helper'
 
 describe FlareMonitorData do
 
@@ -19,7 +19,9 @@ describe FlareMonitorData do
   end
 
   let :attribute_name_mapping_a do
-    FactoryGirl.create(:attribute_name_mapping, :attribute_name => "flame_temperature", :display_name => "Flame Temperature + Something", :column_weight => 8, :significant_digits => 42)
+    mapping = AttributeNameMapping.find_by_attribute_name('flame_temperature')
+    mapping.update_attributes(:display_name => 'Flame Temperature + Something', :column_weight => 8, :significant_digits => 42)
+    mapping
   end
 
   before(:each) do
@@ -29,10 +31,10 @@ describe FlareMonitorData do
     attribute_name_mapping_a.should_not be_nil
   end
 
-  describe "self" do
-    describe "display_object_for_field" do
+  describe 'self' do
+    describe 'display_object_for_field' do
       it 'should return the display_name property of the attribute found' do
-        FlareMonitorData.display_object_for_field("flame_temperature").should eq(attribute_name_mapping_a)
+        FlareMonitorData.display_object_for_field('flame_temperature').should eq(attribute_name_mapping_a)
       end
 
       it 'should return a blank string if the attribute is not found' do
@@ -40,29 +42,29 @@ describe FlareMonitorData do
       end
     end
 
-    describe "column_weight_for_field" do
+    describe 'column_weight_for_field' do
       it 'should return undefined if the column weight is not defined' do
-        FlareMonitorData.column_weight_for_field("three_pointers").should be_nil
+        FlareMonitorData.column_weight_for_field('three_pointers').should be_nil
       end
 
       it 'should return and cache the column weight if it exists' do
-        FlareMonitorData.column_weight_for_field("flame_temperature").should eq(8)
+        FlareMonitorData.column_weight_for_field('flame_temperature').should eq(8)
         FlareMonitorData.class_variable_get(:@@column_weights)[:flame_temperature].should eq(8)
       end
     end
 
-    describe "significant_digits_for_field" do
+    describe 'significant_digits_for_field' do
       it 'should return nil if the the field is not defined' do
-        FlareMonitorData.significant_digits_for_field("green_indian_fusion").should be_nil
+        FlareMonitorData.significant_digits_for_field('green_indian_fusion').should be_nil
       end
 
       it 'should return and cache the significant digits if the field is defined' do
-        FlareMonitorData.significant_digits_for_field("flame_temperature").should eq(42)
+        FlareMonitorData.significant_digits_for_field('flame_temperature').should eq(42)
         FlareMonitorData.class_variable_get(:@@significant_digits)[:flame_temperature].should eq(42)
       end
     end
 
-    describe "filter_data" do
+    describe 'filter_data' do
       it 'should filter and sort when flareSpecificationId is specified' do
         query = FlareMonitorData.filter_data({'flareSpecificationId' => primary_flare_specification.id})
         query.length.should eq(2)
@@ -77,7 +79,7 @@ describe FlareMonitorData do
       end
     end
 
-    describe "with_filters" do
+    describe 'with_filters' do
       it 'should return the original query if no filters are passed in' do
         query = FlareMonitorData.all
         FlareMonitorData.with_filters(query).should eq(query)
@@ -89,15 +91,15 @@ describe FlareMonitorData do
       end
 
       it 'should match the filters to the columns' do
-        query = FlareMonitorData.with_filters(FlareMonitorData, {:blower_speed => "> -1", :lfg_temperature => "<= 7"})
+        query = FlareMonitorData.with_filters(FlareMonitorData, {:blower_speed => '> -1', :lfg_temperature => '<= 7'})
         query.length.should eq(1)
         query.first.should eq(flare_data_c)
       end
     end
   end
 
-  describe "instance" do
-    describe "energy" do
+  describe 'instance' do
+    describe 'energy' do
       it 'should return 0 when methane is nil' do
         flare_data_a.methane = nil
         flare_data_a.energy.should eq(0)
@@ -109,7 +111,7 @@ describe FlareMonitorData do
       end
     end
 
-    describe "methane_tonne" do
+    describe 'methane_tonne' do
       it 'should return 0 when methane is nil' do
         flare_data_c.methane = nil
         flare_data_c.methane_tonne.should eq(0)
@@ -121,7 +123,7 @@ describe FlareMonitorData do
       end
     end
 
-    describe "as_json" do
+    describe 'as_json' do
       it 'should specify the flare_specification_id as the flare_unique_identifier of the specification' do
         flare_data_c.as_json['flare_specification_id'].should eq(primary_flare_specification.flare_unique_identifier)
       end
@@ -131,11 +133,11 @@ describe FlareMonitorData do
       end
     end
 
-    describe "as_json_significant_digits" do
+    describe 'as_json_significant_digits' do
 
     end
 
-    describe "as_json_from_keys" do
+    describe 'as_json_from_keys' do
       it 'should return the values for the specified keys' do
         flare_data_a.as_json_from_keys(['lfg_temperature', 'flare_specification_id']).should eq([flare_data_a.lfg_temperature, primary_flare_specification.flare_unique_identifier])
       end
