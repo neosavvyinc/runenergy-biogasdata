@@ -109,19 +109,47 @@ describe DataInputController do
     describe 'POST' do
 
       it 'should return a 400 when the request is missing the asset_id' do
-
+        xhr :post, :create, :monitor_class_id => 24, :field_log => {:name => 'Steve'}, :reading => {:methan => 32}
+        response.status.should eq(400)
       end
 
       it 'should return a 400 when the request is missing a monitor_class_id' do
-
+        xhr :post, :create, :asset_id => 24, :field_log => {:name => 'Steve'}, :reading => {:methan => 32}
+        response.status.should eq(400)
       end
 
       it 'should return a 400 when the request is missing a reading' do
-
+        xhr :post, :create, :asset_id => 22, :monitor_class_id => 24, :field_log => {:name => 'Steve'}
+        response.status.should eq(400)
       end
 
       it 'should return a 400 when the request is missing a field_log' do
+        xhr :post, :create, :asset_id => 22, :monitor_class_id => 24, :reading => {:methan => 32}
+        response.status.should eq(400)
+      end
 
+      it 'should create and return a field_log passed in' do
+        FieldLog.all.size.should eq(0)
+        xhr :post, :create, :asset_id => asset_b.id,
+            :monitor_class_id => asset_b.monitor_classes.first.id,
+            :field_log => {:name => 'Steve'},
+            :reading => {:methane => 32}
+        parsed_response = JSON.parse response.body
+        parsed_response['field_log']['id'].should be > 0
+        parsed_response['field_log']['data']['name'].should eq('Steve')
+        FieldLog.all.size.should eq(1)
+      end
+
+      it 'should create and return the reading passed in' do
+        Reading.all.size.should eq(7)
+        xhr :post, :create, :asset_id => asset_b.id,
+            :monitor_class_id => asset_b.monitor_classes.first.id,
+            :field_log => {:name => 'Steve'},
+            :reading => {:methane => 65}
+        parsed_response = JSON.parse response.body
+        parsed_response['reading']['id'].should be > 0
+        parsed_response['reading']['data']['methane'].should eq('65')
+        Reading.all.size.should eq(8)
       end
 
     end
