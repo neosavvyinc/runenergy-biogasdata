@@ -6,7 +6,7 @@
     %span.user{'ng-bind' => 'user.name'}
   %a.btn.span1{:href => '/'} Home
   = render 'shared/header_controls_dropdown', :base_class => 'span2', :name => 'Data Input', :links => [{:label => 'Add Data', :href => data_input_create_path}, {:label => 'Import Data', :href => data_input_import_path}]
-  %a.btn.span2 Data Analysis
+  %a.btn.span2{:href => '/data_analysis'} Data Analysis
   %a.btn.span1 Setup
-  %a.btn.span2 Log Out
-  //= link_to "Log Out", destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout'
+  = link_to 'Logout', destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout span2'
+
