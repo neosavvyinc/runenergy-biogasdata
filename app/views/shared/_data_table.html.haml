@@ -1,12 +1,12 @@
 .data-table{'ng-controller' => angular_controller}
   %ns-serialize{'data'=> data.to_json.html_safe, 'property' => 'data'}
-  %ns-serialize{'data'=> keys_to_display_names.to_json.html_safe, 'property' => 'keysToDisplayNames'}
+  %ns-serialize{'data'=> monitor_class.to_json.html_safe, 'property' => 'monitorClass'}
   %label.label.label-important{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
         %th{'ng-repeat' => 'item in header'}
-          %p.name{'ng-bind' => 'getDisplayName(key)'}
+          %p.name{'ng-bind' => 'item'}
           %p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
       %tr
         %th{'ng-repeat' => 'filter in filters'}
