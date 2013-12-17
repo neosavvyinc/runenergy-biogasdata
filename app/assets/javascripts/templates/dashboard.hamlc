@@ -4,13 +4,13 @@
     %thead
       %tr
         %th{'ng-repeat' => 'item in dashboardData.flareMonitorData.header'}
-          %p.name{"ng-bind" => "item.display_name"}
-          %p.units{"ng-bind" => "item.units | logicalIif : item.units : ''"}
+          %p.name{'ng-bind' => 'item.display_name'}
+          %p.units{'ng-bind' => 'item.units | logicalIif : item.units : '''}
       %tr
         %th{'ng-repeat' => 'filter in dashboardData.filters'}
           %input.filter-field{'ng-model' => 'filter.expression'}
     %tbody
-      %tr.re-grid-row{"ng-repeat" => "item in dashboardData.flareMonitorData.values | collectionPage : dashboardPageData.page : 300 | numericExpression : dashboardData.filters"}
-        %td{"ng-bind" => "subItem | ifNumberNumericFilterRound : getSignificantDigits($index)", "ng-repeat" => "subItem in item"}
+      %tr.re-grid-row{'ng-repeat' => 'item in dashboardData.flareMonitorData.values | collectionPage : dashboardPageData.page : 300 | numericExpression : dashboardData.filters'}
+        %td{'ng-bind' => 'subItem | ifNumberNumericFilterRound : getSignificantDigits($index)', 'ng-repeat' => 'subItem in item'}
 
 
