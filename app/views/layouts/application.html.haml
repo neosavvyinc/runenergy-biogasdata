@@ -1,12 +1,13 @@
 !!!
-%html{'xmlns:ng' => "http://angularjs.org"}
+%html{'xmlns:ng' => 'http://angularjs.org'}
   %head
     %title Run Energy - Biogasdata
-    = stylesheet_link_tag    "application", :media => "all"
+    = stylesheet_link_tag    'application', :media => 'all'
     = csrf_meta_tags
   %body{'ng-app' => 'dashboard'}
     .container-fluid
-      = render "shared/header_controls"
+      - unless current_user.nil?
+        = render 'shared/header_controls'
       = yield
-    = javascript_include_tag "application"
+    = javascript_include_tag 'application'
     = content_for(:javascript)
