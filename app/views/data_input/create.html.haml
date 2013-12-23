@@ -7,7 +7,7 @@
         %label{'ng-bind' => 'flp.name'}
         %input{'ng-model' => 'currentFieldLog[flp.name]'}
       %h5 Data
-      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedMonitorClass.monitor_points'}
+      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedAsset.monitor_points'}
         %label{'ng-bind' => 'mp.name'}
         %input{'ng-model' => 'currentReading[mp.name]'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add

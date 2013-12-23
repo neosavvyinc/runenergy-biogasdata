@@ -19,8 +19,27 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 };
             }
 
+            function resetValuesBelow(propName) {
+                return function () {
+                    switch (propName) {
+                        case "newDataValues.selectedLandfillOperator":
+                            newDataValues.selectedSite = null;
+                        case "newDataValues.selectedSite":
+                            newDataValues.selectedMonitorClass = null;
+                        case "newDataValues.selectedMonitorClass":
+                            newDataValues.selectedSection = null;
+                        case "newDataValues.selectedSection":
+                            newDataValues.selectedAsset = null;
+                    }
+                };
+            }
+
             var dereg = {};
             dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'da'));
-            dereg.db = $scope.$watch('monitorClasses', initValue('newDataValues.selectedMonitorClass', 'db'));
+
+            $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
+            $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
+            $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
+            $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
 
         }]);
