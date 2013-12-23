@@ -5,6 +5,7 @@ class Location < ActiveRecord::Base
   belongs_to :company
   has_attached_file :google_earth_file
   has_many :sections
+  has_many :readings, :through => :sections
   has_many :flare_deployments
   has_many :flare_specifications, :through => :flare_deployments
   has_many :locations_monitor_classes

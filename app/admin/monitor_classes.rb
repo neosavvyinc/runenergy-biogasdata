@@ -25,13 +25,6 @@ ActiveAdmin.register MonitorClass do
       f.input :name
       f.input :monitor_points, :as => :select, :collection => MonitorPoint.all
       f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all
-      #f.has_many :monitor_points do |mp|
-      #  mp.inputs 'Monitor Points' do
-      #    mp.input :name
-      #    mp.input :unit
-      #    #repeat as necessary for all fields
-      #  end
-      #end
     end
     f.actions
   end

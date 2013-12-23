@@ -25,7 +25,7 @@ Biogasdata::Application.routes.draw do
   match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
 
   #Data Analysis
-  match 'data_analysis/readings', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
+  match 'data_analysis/readings/:site_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
   match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
 
   #Mobile Rig

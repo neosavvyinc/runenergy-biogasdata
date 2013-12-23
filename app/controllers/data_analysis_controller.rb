@@ -7,11 +7,8 @@ class DataAnalysisController < ApplicationController
   end
 
   def readings
-    if not ajax_value_or_nil(params[:landfill_operator_id]).nil? and
-        not ajax_value_or_nil(params[:site_id]).nil? and
-        not ajax_value_or_nil(params[:section_id]).nil? and
-        not ajax_value_or_nil(params[:monitor_class_id]).nil?
-      readings = Reading.where(:monitor_class_id => params[:monitor_class_id].to_i)
+    unless ajax_value_or_nil(params[:site_id]).nil?
+      readings = Location.find(params[:site_id].to_i).readings
       render json: {:readings => readings}
     else
       render json: {:error => 'You must pass valid parameter to retrieve readings for analysis'}, :status => 400

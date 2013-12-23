@@ -1,16 +1,16 @@
 .data-table{'ng-controller' => angular_controller}
   %ns-serialize{'data'=> data.to_json.html_safe, 'property' => 'data'}
-  %ns-serialize{'data'=> monitor_class.to_json.html_safe, 'property' => 'monitorClass'}
+  //%ns-serialize{'data'=> monitor_class.to_json.html_safe, 'property' => 'monitorClass'}
   %label.label.label-important{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
-        %th{'ng-repeat' => 'item in header'}
-          %p.name{'ng-bind' => 'item'}
-          %p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
+        %th{'ng-repeat' => '(key, value) in data[0]'}
+          %p.name{'ng-bind' => 'key'}
+          //%p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
       %tr
-        %th{'ng-repeat' => 'filter in filters'}
-          %input.filter-field{'ng-model' => 'filter.expression'}
+        %th{'ng-repeat' => '(key, value) in filters'}
+          %input.filter-field{'ng-model' => 'filters[key]'}
     %tbody
-      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionNumericExpression : filters'}
-        %td{'ng-bind' => 'subItem | ifNumberNumericFilterRound : getSignificantDigits($index)', 'ng-repeat' => 'subItem in item'}
+      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters'}
+        %td{'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item'}

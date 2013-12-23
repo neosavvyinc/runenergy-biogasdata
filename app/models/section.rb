@@ -2,6 +2,7 @@ class Section < ActiveRecord::Base
   attr_accessible :location_id, :name
   belongs_to :location
   has_many :assets
+  has_many :readings, :through => :assets
 
   def display_name
     unless location.nil?
