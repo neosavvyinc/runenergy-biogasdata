@@ -1,4 +1,4 @@
-.dashboard-actions{'ng-controller' => 'controllers.DashboardActionController'}
+.dashboard-actions{'ng-controller' => 'controllers.DashboardActionController', 'ng-click' => 'onFirstUserInteract()'}
   %ns-serialize{'data' => landfill_operators.to_json(:methods => [:location_ids]).html_safe, 'property' => 'landfillOperators'}
   %ns-serialize{'data' => sites.to_json(:methods => [:section_ids, :monitor_class_ids]).html_safe, 'property' => 'sites'}
   %ns-serialize{'data' => sections.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'sections'}

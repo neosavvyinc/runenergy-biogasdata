@@ -31,16 +31,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             var resetTakingPlace = false;
 
             function resetValuesBelow(propName) {
-                return function () {
-                    switch (propName) {
-                        case "newDataValues.selectedLandfillOperator":
-                            newDataValues.selectedSite = null;
-                        case "newDataValues.selectedSite":
-                            newDataValues.selectedMonitorClass = null;
-                        case "newDataValues.selectedMonitorClass":
-                            newDataValues.selectedSection = null;
-                        case "newDataValues.selectedSection":
-                            newDataValues.selectedAsset = null;
+                return function (newVal, oldVal) {
+                    if (oldVal.id !== newVal.id) {
+                        switch (propName) {
+                            case "newDataValues.selectedLandfillOperator":
+                                newDataValues.selectedSite = null;
+                            case "newDataValues.selectedSite":
+                                newDataValues.selectedMonitorClass = null;
+                            case "newDataValues.selectedMonitorClass":
+                                newDataValues.selectedSection = null;
+                            case "newDataValues.selectedSection":
+                                newDataValues.selectedAsset = null;
+                        }
                     }
                 };
             }
@@ -52,10 +54,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             dereg.dd = $scope.$watch('sections', initValue('newDataValues.selectedSection', 'section', 'dd'));
             dereg.de = $scope.$watch('assets', initValue('newDataValues.selectedAsset', 'asset', 'de'));
 
-            //Need to find out when to add this behavior
-//            $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
-//            $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
-//            $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
-//            $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
+            //Action Handlers
+            $scope.onFirstUserInteract = function () {
+                $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
+                $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
+                $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
+                $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
+                $scope.onFirstUserInteract = function () {
+                };
+            };
 
         }]);

@@ -12,5 +12,5 @@
         %input{'ng-model' => 'currentReading[mp.name]'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    .span8
+    .span8{'ng-show' => 'newDataValues.selectedAsset != null'}
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'
