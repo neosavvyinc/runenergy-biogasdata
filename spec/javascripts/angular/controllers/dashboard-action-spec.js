@@ -22,6 +22,11 @@ describe("controllers.DashboardActionController", function () {
             $scope.$digest();
             expect(newDataValues.selectedLandfillOperator).toEqual("Lemmy");
         });
+
+        describe('resetValuesBelow', function () {
+            //This is pretty tricky to test
+        });
+
     });
 
     describe('Initialization', function () {

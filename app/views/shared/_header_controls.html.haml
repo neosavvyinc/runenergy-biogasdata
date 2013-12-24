@@ -5,8 +5,8 @@
     %span.slash{'ng-bind' => "'/'", 'ng-show' => 'user.name'}
     %span.user{'ng-bind' => 'user.name'}
   %a.btn.span1{:href => '/'} Home
-  = render 'shared/header_controls_dropdown', :base_class => 'span2', :name => 'Data Input', :links => [{:label => 'Add Data', :href => data_input_create_path}, {:label => 'Import Data', :href => data_input_import_path}]
-  %a.btn.span2{:href => '/data_analysis'} Data Analysis
+  = render 'shared/header_controls_dropdown', :base_class => 'span2', :name => 'Data Input', :links => [{:label => 'Add Data', :href => '{{getDataCreateLink()}}'}, {:label => 'Import Data', :href => data_input_import_path}]
+  %a.btn.span2{:href => '{{getDataAnalysisLink()}}'} Data Analysis
   %a.btn.span1 Setup
   = link_to 'Logout', destroy_user_session_path, :method => :delete, :class => 'btn btn-inverse logout span2'
 

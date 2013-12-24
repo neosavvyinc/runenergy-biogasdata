@@ -1,7 +1,8 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionController',
-    ['$scope', 'values.NewDataValues',
-        function ($scope, newDataValues) {
+    ['$scope', 'values.NewDataValues', '$location',
+        function ($scope, newDataValues, $location) {
 
+            //Initialization
             $scope.landfillOperators = null;
             $scope.sites = null;
             $scope.sections = null;
@@ -9,15 +10,25 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             $scope.monitorClasses = null;
             $scope.newDataValues = newDataValues;
 
+
             //Watchers
-            function initValue(prop, d) {
+            function initValue(prop, locationProp, d, firstElement) {
                 return function (val) {
                     if (val && val.length) {
-                        Neosavvy.Core.Utils.MapUtils.applyTo($scope, prop, val[0]);
+                        if ($location.search()[locationProp]) {
+                            var id = parseInt($location.search()[locationProp]);
+                            Neosavvy.Core.Utils.MapUtils.applyTo($scope, prop,
+                                Neosavvy.Core.Utils.CollectionUtils.itemByProperty(val, "id", id)
+                            );
+                        } else if (firstElement) {
+                            Neosavvy.Core.Utils.MapUtils.applyTo($scope, prop, val[0]);
+                        }
                         dereg[d]();
                     }
                 };
             }
+
+            var resetTakingPlace = false;
 
             function resetValuesBelow(propName) {
                 return function () {
@@ -35,11 +46,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             }
 
             var dereg = {};
-            dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'da'));
+            dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'operator', 'da', true));
+            dereg.db = $scope.$watch('sites', initValue('newDataValues.selectedSite', 'site', 'db'));
+            dereg.dc = $scope.$watch('monitorClasses', initValue('newDataValues.selectedMonitorClass', 'monitor_class', 'dc'));
+            dereg.dd = $scope.$watch('sections', initValue('newDataValues.selectedSection', 'section', 'dd'));
+            dereg.de = $scope.$watch('assets', initValue('newDataValues.selectedAsset', 'asset', 'de'));
 
-            $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
-            $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
-            $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
-            $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
+            //Need to find out when to add this behavior
+//            $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
+//            $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
+//            $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
+//            $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
 
         }]);
