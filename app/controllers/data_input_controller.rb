@@ -1,4 +1,4 @@
-class DataInputController < ApplicationController
+class DataInputController < DataInterfaceController
   include AjaxHelp
 
   before_filter :authenticate_user!
@@ -17,12 +17,15 @@ class DataInputController < ApplicationController
       if not ajax_value_or_nil(params[:asset_id]).nil? and
           not ajax_value_or_nil(params[:monitor_class_id]).nil? and
           not ajax_value_or_nil(params[:field_log]).nil? and
-          not ajax_value_or_nil(params[:reading]).nil?
+          not ajax_value_or_nil(params[:reading]).nil? and
+          not ajax_value_or_nil(params[:date]).nil?
         field_log = FieldLog.find_or_create_by_data(params[:field_log])
         reading = Reading.create({:data => params[:reading],
                                   :asset_id => params[:asset_id].to_i,
                                   :monitor_class_id => params[:monitor_class_id].to_i,
-                                  :field_log_id => field_log.id})
+                                  :field_log_id => field_log.id,
+                                  :taken_at => date_time_from_js(params[:date],
+                                                                 ajax_value_or_nil(params[:time]))})
         render json: {:field_log => field_log, :reading => reading}
       else
         render json: {:error => 'Invalid param for reading create request.'}, :status => 400

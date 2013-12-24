@@ -2,6 +2,10 @@
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
     %form.span4.form-inline{'ng-show' => 'newDataValues.selectedAsset != null', :style => 'display: none;'}
+      %h5 Date
+      %input{'ng-model' => 'readingDate', 'type' => 'text', 'date-format' => 'dd/mm/yyyy', 'bs-datepicker' => true}
+      %h5 Time
+      %re-masked-time-input{'time' => 'readingTime'}
       %h5 Field Log
       .field-log{'ng-repeat' => 'flp in newDataValues.selectedMonitorClass.field_log_points'}
         %label{'ng-bind' => 'flp.name'}

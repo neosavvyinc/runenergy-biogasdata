@@ -3,7 +3,7 @@ RunEnergy.Dashboard.Directives
         return {
             restrict: 'E',
             replace: true,
-            template: '<input class="re-masked-time-input" ng-model="time"></input>',
+            template: '<input class="re-masked-time-input" ng-model="time" type="text"></input>',
             scope: {
                 time: "="
             },

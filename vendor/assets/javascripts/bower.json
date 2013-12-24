@@ -1,6 +1,9 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "neosavvy-javascript-angular-core": "0.1.0"
+    "neosavvy-javascript-angular-core": "0.1.4",
+    "angular-macgyver": "0.1.25",
+    "jqui-datepicker": "*",
+    "angular-strap": "*"
   }
 }

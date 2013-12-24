@@ -1,0 +1,3 @@
+class DataInterfaceController < ApplicationController
+
+end

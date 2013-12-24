@@ -1,3 +1,6 @@
 group :vendor, :assets_path => "assets/javascripts" do
-    asset "neosavvy-javascript-angular-core", "0.1.0"
+    asset "neosavvy-javascript-angular-core", "0.1.4"
+    asset "angular-macgyver", "0.1.25"
+    asset "jqui-datepicker", "*"
+    asset "angular-strap", "*"
 end

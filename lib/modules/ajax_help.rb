@@ -6,4 +6,13 @@ module AjaxHelp
       value
     end
   end
+
+  def date_time_from_js(date, time=nil)
+    date = date.gsub(/T.*/, '')
+    if time.nil?
+      DateTime.strptime(date, '%Y-%m-%d')
+    else
+      DateTime.strptime(date + time, '%Y-%m-%d%H:%M:%S')
+    end
+  end
 end

@@ -7,6 +7,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             $scope.currentReading = {};
             $scope.newDataValues = newDataValues;
             $scope.data = [];
+            $scope.readingDate = null;
+            $scope.readingTime = null;
 
             //Watchers
             function _getReadings() {
@@ -41,7 +43,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                         newDataValues.selectedAsset.id,
                         newDataValues.selectedMonitorClass.id,
                         $scope.currentFieldLog,
-                        $scope.currentReading).then(_getReadings);
+                        $scope.currentReading,
+                        $scope.readingDate,
+                        $scope.readingTime).then(_getReadings);
                 } else {
                     $scope.error = "Please fill in all fields for the reading.";
                 }

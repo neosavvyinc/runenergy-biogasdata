@@ -1,4 +1,4 @@
-class DataAnalysisController < ApplicationController
+class DataAnalysisController < DataInterfaceController
   include AjaxHelp
   before_filter :authenticate_user!
 

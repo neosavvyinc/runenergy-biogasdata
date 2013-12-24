@@ -2,7 +2,7 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
     ['nsServiceExtensions', 'constants.Routes', 'services.transformer.DataInputCreateTransformer',
         function (nsServiceExtensions, routes) {
             return {
-                createReading: function (assetId, monitorClassId, fieldLog, reading) {
+                createReading: function (assetId, monitorClassId, fieldLog, reading, date, time) {
                     return nsServiceExtensions.request({
                         method: 'POST',
                         url: routes.DATA_INPUT.CREATE,
@@ -10,7 +10,9 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             asset_id: assetId,
                             monitor_class_id: monitorClassId,
                             field_log: fieldLog,
-                            reading: reading
+                            reading: reading,
+                            date: date,
+                            time: time
                         }
                     });
                 },
