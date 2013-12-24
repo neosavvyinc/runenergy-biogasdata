@@ -7,6 +7,10 @@ describe DataInputController do
     FactoryGirl.create(:user, :user_type => UserType.OVERSEER)
   end
 
+  let :customer do
+    FactoryGirl.create(:user, :user_type => UserType.CUSTOMER)
+  end
+
   let :asset_a do
     FactoryGirl.create(:asset)
   end
@@ -17,22 +21,23 @@ describe DataInputController do
 
   let :readings_a do
     [
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_classes[0]),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_classes[0]),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_classes[0]),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_classes[0])
+        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class)
     ]
   end
 
   let :readings_b do
     [
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_classes[0]),
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_classes[0]),
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_classes[0])
+        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class),
+        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class),
+        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class)
     ]
   end
 
   before(:each) do
+    customer.should_not be_nil
     readings_a.should_not be_nil
     readings_b.should_not be_nil
 
@@ -51,18 +56,18 @@ describe DataInputController do
     end
 
     it 'should return a 400 error when there is no asset_id specified' do
-      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_classes.first.id, :asset_id => 'null'
+      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :asset_id => 'null'
       response.status.should eq(400)
     end
 
     it 'should return a max of 15 readings for the monitor_class and asset specified' do
-      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_classes.first.id, :asset_id => asset_a.id
+      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :asset_id => asset_a.id
       parsed_response = JSON.parse response.body
       parsed_response.size.should eq(4)
     end
 
     it 'should return no readings when teh asset and monitor class dont both match' do
-      xhr :get, 'readings', :monitor_class_id => asset_b.monitor_classes.first.id, :asset_id => asset_a.id
+      xhr :get, 'readings', :monitor_class_id => asset_b.monitor_class.id, :asset_id => asset_a.id
       parsed_response = JSON.parse response.body
       parsed_response.size.should eq(0)
     end
@@ -104,6 +109,12 @@ describe DataInputController do
         var.should_not be_nil
         var.size.should be > 0
       end
+
+      it 'should define @filter_types' do
+        var = controller.instance_variable_get(:@filter_types)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
     end
 
     describe 'POST' do
@@ -131,9 +142,10 @@ describe DataInputController do
       it 'should create and return a field_log passed in' do
         FieldLog.all.size.should eq(0)
         xhr :post, :create, :asset_id => asset_b.id,
-            :monitor_class_id => asset_b.monitor_classes.first.id,
+            :monitor_class_id => asset_b.monitor_class.id,
             :field_log => {:name => 'Steve'},
-            :reading => {:methane => 32}
+            :reading => {:methane => 32},
+            :date => '2013-09-10'
         parsed_response = JSON.parse response.body
         parsed_response['field_log']['id'].should be > 0
         parsed_response['field_log']['data']['name'].should eq('Steve')
@@ -143,9 +155,10 @@ describe DataInputController do
       it 'should create and return the reading passed in' do
         Reading.all.size.should eq(7)
         xhr :post, :create, :asset_id => asset_b.id,
-            :monitor_class_id => asset_b.monitor_classes.first.id,
+            :monitor_class_id => asset_b.monitor_class.id,
             :field_log => {:name => 'Steve'},
-            :reading => {:methane => 65}
+            :reading => {:methane => 65},
+            :date => '2010-11-20'
         parsed_response = JSON.parse response.body
         parsed_response['reading']['id'].should be > 0
         parsed_response['reading']['data']['methane'].should eq('65')

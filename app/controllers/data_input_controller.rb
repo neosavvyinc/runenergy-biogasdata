@@ -39,13 +39,4 @@ class DataInputController < DataInterfaceController
     all_view_classes
   end
 
-  protected
-  def all_view_classes
-    @landfill_operators = User.where(:user_type_id => UserType.CUSTOMER.id)
-    @sites = Location.all
-    @sections = Section.all
-    @assets = Asset.all
-    @monitor_classes = MonitorClass.all
-  end
-
 end
