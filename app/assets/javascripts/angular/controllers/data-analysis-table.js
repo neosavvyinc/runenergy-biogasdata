@@ -12,7 +12,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                             _hpGet(newDataValues, 'selectedSection.id'),
                             _hpGet(newDataValues, 'selectedAsset.id')
                         ).then(function (result) {
-                            $scope.data = result ? _.map(result.readings, 'data') : null;
+                            $scope.data = result ? _.map(result.readings, function(reading) {
+                                reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
+                                return reading.data;
+                            }) : null;
                         });
                 }
             };

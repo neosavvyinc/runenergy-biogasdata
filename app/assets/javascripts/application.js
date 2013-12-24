@@ -21,6 +21,7 @@
 //= require moment.min
 //= require lodash.min
 //= require base64.min
+//= require bower_components/momentjs/moment
 //= require bower_components/angular-strap/dist/angular-strap
 //= require bower_components/neosavvy-javascript-core/neosavvy-javascript-core
 //= require bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core
