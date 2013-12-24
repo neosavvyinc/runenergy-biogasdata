@@ -41,9 +41,9 @@ ActiveAdmin.register Location, :as => 'Site' do
       f.input :lattitude
       f.input :longitude
       f.input :google_earth_file, :as => :file
-      f.input :user_groups, :as => :select, :collection => UserGroup.all
-      f.input :users, :as => :select, :collection => User.all
-      f.input :monitor_classes, :as => :select, :collection => MonitorClass.all
+      f.input :user_groups, :as => :select, :collection => UserGroup.all, :input_html => {:style => 'height: 100px; width: 300px;'}
+      f.input :users, :as => :select, :collection => User.where(:user_type_id => UserType.CUSTOMER.id), :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :monitor_classes, :as => :select, :collection => MonitorClass.all, :input_html => {:style => 'height: 100px; width: 300px;'}
     end
     f.actions
   end

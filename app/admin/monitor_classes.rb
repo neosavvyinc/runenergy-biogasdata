@@ -2,29 +2,34 @@ ActiveAdmin.register MonitorClass do
 
   menu :parent => 'Site Management'
 
+  index do
+    column :name
+    column 'Field Log Points' do |mc|
+      mc.field_log_points.map {|flp| flp.name}
+    end
+    column 'Sites' do |mc|
+      mc.locations.map {|l| l.site_name}
+    end
+    default_actions
+  end
+
   show do
+    panel 'Details' do
+      h6 monitor_class.name
+      h6 "Created At: #{monitor_class.created_at}"
+      h6 "Updated At: #{monitor_class.updated_at}"
+    end
     panel 'Field Log Points' do
       table_for monitor_class.field_log_points do
         column :name
       end
-    end
-    panel 'Monitor Points' do
-      table_for monitor_class.monitor_points do
-        column :name
-        column :unit
-      end
-    end
-    panel 'Details' do
-      h6 'Created At: #{monitor_class.created_at}'
-      h6 'Updated At: #{monitor_class.updated_at}'
     end
   end
 
   form do |f|
     f.inputs 'Monitor Class' do
       f.input :name
-      f.input :monitor_points, :as => :select, :collection => MonitorPoint.all
-      f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all
+      f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 300px; width: 300px;'}
     end
     f.actions
   end
