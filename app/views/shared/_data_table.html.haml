@@ -1,6 +1,4 @@
-.data-table{'ng-controller' => angular_controller}
-  %ns-serialize{'data'=> data.to_json.html_safe, 'property' => 'data'}
-  //%ns-serialize{'data'=> monitor_class.to_json.html_safe, 'property' => 'monitorClass'}
+.data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length', :style => 'display: none;'}
   %label.label.label-important{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead

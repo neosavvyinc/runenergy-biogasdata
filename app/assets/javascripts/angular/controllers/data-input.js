@@ -6,12 +6,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             $scope.currentFieldLog = {};
             $scope.currentReading = {};
             $scope.newDataValues = newDataValues;
-            $scope.readings = [];
+            $scope.data = [];
 
             //Watchers
             function _getReadings() {
                 if (newDataValues.selectedAsset && newDataValues.selectedMonitorClass) {
-                    $scope.readings = dataInputService.readings(newDataValues.selectedAsset.id, newDataValues.selectedMonitorClass.id);
+                    dataInputService.readings(newDataValues.selectedAsset.id, newDataValues.selectedMonitorClass.id).then(function(result) {
+                        $scope.data = _.map(result,'data');
+                    });
                 }
             }
 

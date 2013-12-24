@@ -1,28 +1,16 @@
 .data-input.create
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
-    %form.span6.form-inline{'ng-show' => 'newDataValues.selectedMonitorClass != null'}
+    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedAsset != null', :style => 'display: none;'}
       %h5 Field Log
       .field-log{'ng-repeat' => 'flp in newDataValues.selectedMonitorClass.field_log_points'}
         %label{'ng-bind' => 'flp.name'}
-        %input{'ng-model' => 'currentFieldLog[flp.name]'}
+        %input{'ng-model' => 'currentFieldLog[flp.name]', 'type' => 'checkbox'}
       %h5 Data
       .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedAsset.monitor_points'}
         %label{'ng-bind' => 'mp.name'}
         %input{'ng-model' => 'currentReading[mp.name]'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    .readings.span6
-      .reading{'ng-repeat' => 'reading in readings'}
-        .fieldlog
-          %span
-            %i Field Log:
-          .log{'ng-repeat' => '(key, value) in reading.field_log.data'}
-            %span{'ng-bind' => 'key + ": "'}
-            %span{'ng-bind' => 'value'}
-        .data
-          %span
-            %i Reading:
-          .point{'ng-repeat' => '(key, value) in reading.data'}
-            %span{'ng-bind' => 'key + ": "'}
-            %span{'ng-bind' => 'value'}
+    .span8
+      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'
