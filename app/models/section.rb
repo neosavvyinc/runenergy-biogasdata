@@ -1,5 +1,5 @@
 class Section < ActiveRecord::Base
-  attr_accessible :location_id, :name
+  attr_accessible :location_id, :name, :asset_ids
   belongs_to :location
   has_many :assets
   has_many :readings, :through => :assets

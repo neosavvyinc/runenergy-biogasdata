@@ -29,7 +29,8 @@ ActiveAdmin.register MonitorClass do
   form do |f|
     f.inputs 'Monitor Class' do
       f.input :name
-      f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 100px; width: 300px;'}
+      f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
     end
     f.actions
   end

@@ -4,6 +4,7 @@ ActiveAdmin.register Asset do
   index do
     column :name
     column :section
+    column :monitor_class
     column 'Monitor Points' do |asset|
       asset.monitor_points.map {|mp| "#{mp.name}"}
     end
@@ -30,8 +31,8 @@ ActiveAdmin.register Asset do
     f.inputs 'Asset' do
       f.input :name
       f.input :section, :as => :select, :collection => asset.available_sections
-      f.input :monitor_classes, :as => :select, :collection => MonitorClass.all
-      f.input :monitor_points, :as => :select, :collection => MonitorPoint.all
+      f.input :monitor_class, :as => :select, :collection => MonitorClass.all
+      f.input :monitor_points, :as => :select, :collection => MonitorPoint.all, :input_html => {:style => 'height: 400px; width: 300px;'}
     end
     f.actions
   end
