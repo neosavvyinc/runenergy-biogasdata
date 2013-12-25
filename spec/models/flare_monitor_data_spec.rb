@@ -90,24 +90,13 @@ describe FlareMonitorData do
 
     describe 'to_csv' do
 
+      #Need to add some statements here
       it 'should convert the headers to the first row of the csv' do
         csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c])
-        csv.size.should eq(306)
-      end
-
-      it 'should return a csv with all the flare_monitor_data' do
-        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c])
-        csv.size.should eq(306)
       end
 
       it 'should be able to consider exceptions' do
         csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c], [:blower_speed])
-        csv.size.should eq(259)
-      end
-
-      it 'should be able to consider other exceptions' do
-        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c], [:blower_speed, :flame_temperature])
-        csv.size.should eq(259)
       end
 
     end
