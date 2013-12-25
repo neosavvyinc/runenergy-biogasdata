@@ -6,16 +6,6 @@ class Asset < ActiveRecord::Base
   has_many :monitor_points, :through => :assets_monitor_points
   has_many :readings
 
-  def available_sections
-    if not @location.nil?
-      @location.sections
-    elsif not section.nil?
-      section.location.sections
-    else
-      Section.all
-    end
-  end
-
   def as_json(options={})
     super(options).merge({
                              :monitor_points => self.monitor_points.as_json

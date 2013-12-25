@@ -113,7 +113,6 @@ class FlareMonitorData < ActiveRecord::Base
     end
   end
 
-  #@TODO, slight refactor here
   def self.date_range(user_type, flare_deployment, flare_speicification_id, start_date, end_date, start_time, end_time)
     query = filter_data({'flareSpecificationId' => flare_speicification_id})
     date_time = nil

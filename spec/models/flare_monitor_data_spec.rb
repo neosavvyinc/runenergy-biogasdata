@@ -20,7 +20,7 @@ describe FlareMonitorData do
 
   let :attribute_name_mapping_a do
     mapping = AttributeNameMapping.find_by_attribute_name('flame_temperature')
-    mapping.update_attributes(:display_name => 'Flame Temperature + Something', :column_weight => 8, :significant_digits => 42)
+    mapping.update_attributes(:display_name => 'Flame Temperature + Something', :column_weight => 8, :significant_digits => 2, :units => 'Inches')
     mapping
   end
 
@@ -36,7 +36,7 @@ describe FlareMonitorData do
     describe 'import' do
       it 'should raise an error if a flare_specification argument is not specified' do
         expect {
-            FlareMonitorData.import('1/2/3/fake.path', nil)
+          FlareMonitorData.import('1/2/3/fake.path', nil)
         }.to raise_error
       end
     end
@@ -68,8 +68,8 @@ describe FlareMonitorData do
       end
 
       it 'should return and cache the significant digits if the field is defined' do
-        FlareMonitorData.significant_digits_for_field('flame_temperature').should eq(42)
-        FlareMonitorData.class_variable_get(:@@significant_digits)[:flame_temperature].should eq(42)
+        FlareMonitorData.significant_digits_for_field('flame_temperature').should eq(2)
+        FlareMonitorData.class_variable_get(:@@significant_digits)[:flame_temperature].should eq(2)
       end
     end
 
@@ -97,6 +97,94 @@ describe FlareMonitorData do
 
       it 'should be able to consider exceptions' do
         csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c], [:blower_speed])
+      end
+
+    end
+
+    describe 'date_range' do
+
+      let :flare_deployment do
+        FactoryGirl.create(:flare_deployment, :first_reading => DateTime.new(2012, 1, 1), :last_reading => DateTime.new(2012, 11, 1))
+      end
+
+      before(:each) do
+        flare_data_a.date_time_reading = DateTime.new(2011, 2, 1)
+        flare_data_b.date_time_reading = DateTime.new(2012, 2, 1)
+        flare_data_b.flare_specification = primary_flare_specification
+        flare_data_c.date_time_reading = DateTime.new(2013, 2, 1)
+        flare_data_a.save
+        flare_data_b.save
+        flare_data_c.save
+      end
+
+      it 'should return flare_monitor_data where the date_time_reading is more than the min date passed in' do
+        data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, '01/01/2012', nil, nil, nil)
+        data.size.should eq(2)
+        data.include?(flare_data_b).should be_true
+        data.include?(flare_data_c).should be_true
+      end
+
+      it 'should return flare_monitor_data where the date_time_reading is less than the max date' do
+        data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, nil, '01/01/2013', nil, nil)
+        data.size.should eq(2)
+        data.include?(flare_data_a).should be_true
+        data.include?(flare_data_b).should be_true
+      end
+
+      it 'should be able to do a date range' do
+        data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, '01/01/2012', '01/01/2013', nil, nil)
+        data.size.should eq(1)
+        data.include?(flare_data_b).should be_true
+      end
+
+      it 'should honor all parameters for overseers' do
+        data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, '01/01/2012', '01/01/2013', nil, nil)
+        data.size.should eq(1)
+        data.include?(flare_data_b).should be_true
+      end
+
+      it 'should use the minimum date of the deployment for a customer' do
+        data = FlareMonitorData.date_range(UserType.CUSTOMER, flare_deployment, primary_flare_specification.id, '01/01/2011', nil, nil, nil)
+        data.size.should eq(1)
+        data.include?(flare_data_b).should be_true
+      end
+
+      it 'should use the maximum date of a deployment for a customer' do
+        data = FlareMonitorData.date_range(UserType.CUSTOMER, flare_deployment, primary_flare_specification.id, nil, '01/01/2013', nil, nil)
+        data.size.should eq(1)
+        data.include?(flare_data_b).should be_true
+      end
+
+      describe 'time' do
+        before(:each) do
+          flare_data_a.date_time_reading = DateTime.new(2012, 2, 1, 10)
+          flare_data_b.date_time_reading = DateTime.new(2012, 2, 1, 11)
+          flare_data_b.flare_specification = primary_flare_specification
+          flare_data_c.date_time_reading = DateTime.new(2012, 2, 1, 12)
+          flare_data_a.save
+          flare_data_b.save
+          flare_data_c.save
+        end
+
+        it 'should be able to factor in min time' do
+          data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, '01/02/2012', nil, '10:30:00', nil)
+          data.size.should eq(2)
+          data.include?(flare_data_b).should be_true
+          data.include?(flare_data_c).should be_true
+        end
+
+        it 'should be able to factor in max time' do
+          data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, nil, '01/02/2012', nil, '11:30:00')
+          data.size.should eq(2)
+          data.include?(flare_data_a).should be_true
+          data.include?(flare_data_b).should be_true
+        end
+
+        it 'should be able to do a date and time range' do
+          data = FlareMonitorData.date_range(UserType.OVERSEER, nil, primary_flare_specification.id, '01/02/2012', '01/02/2012', '10:30:00', '11:30:00')
+          data.size.should eq(1)
+          data.include?(flare_data_b).should be_true
+        end
       end
 
     end
@@ -156,7 +244,11 @@ describe FlareMonitorData do
     end
 
     describe 'as_json_significant_digits' do
-
+      it 'should truncate values to the significant digits defined' do
+        flare_data_a.flame_temperature = 57.00987623
+        flare_data_a.save
+        flare_data_a.as_json_significant_digits['flame_temperature'].should eq(57.01)
+      end
     end
 
     describe 'as_json_from_keys' do
