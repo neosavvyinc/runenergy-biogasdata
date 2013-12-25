@@ -8,27 +8,26 @@ class FlareMonitorData < ActiveRecord::Base
   attr_accessible :blower_speed, :date_time_reading, :flame_temperature, :inlet_pressure, :lfg_temperature, :methane, :standard_cumulative_lfg_volume, :standard_lfg_flow, :standard_lfg_volume, :standard_methane_volume, :static_pressure, :flame_trap_temperature, :flare_run_hours, :flare_specification_id
   belongs_to :flare_specification
 
-  DATE = "date"
-  TIME = "time"
+  DATE = 'date'
+  TIME = 'time'
   DEFAULT_ROW_MAPPING = {
-      "blower_speed_hz" => :blower_speed,
-      "vacuum_kpa" => :inlet_pressure,
-      "methane_lvl_pcnt" => :methane,
-      "flame_temp_degc" => :flame_temperature,
-      "gas_inst_flow" => :standard_lfg_flow,
-      "gas_total_flow" => :standard_cumulative_lfg_volume,
-      "gas_static_press" => :static_pressure,
-      "gas_temp" => :lfg_temperature,
-      "gas_flow_mtd_m3" => :standard_lfg_volume,
-      "ch4_flow_mtd_m3" => :standard_methane_volume,
-      "flame_trap_temp" => :flame_trap_temperature,
-      "flare_run_hr" => :flare_run_hours
+      'blower_speed_hz' => :blower_speed,
+      'vacuum_kpa' => :inlet_pressure,
+      'methane_lvl_pcnt' => :methane,
+      'flame_temp_degc' => :flame_temperature,
+      'gas_inst_flow' => :standard_lfg_flow,
+      'gas_total_flow' => :standard_cumulative_lfg_volume,
+      'gas_static_press' => :static_pressure,
+      'gas_temp' => :lfg_temperature,
+      'gas_flow_mtd_m3' => :standard_lfg_volume,
+      'ch4_flow_mtd_m3' => :standard_methane_volume,
+      'flame_trap_temp' => :flame_trap_temperature,
+      'flare_run_hr' => :flare_run_hours
   }
 
   @@column_weights = {}
   @@significant_digits = {}
 
-  #@TODO, should pass in a flare or mapping in order to determine how this is mapped
   def self.import(file_path, flare_specification=nil)
     unless flare_specification.blank?
       idx = 0
@@ -36,7 +35,7 @@ class FlareMonitorData < ActiveRecord::Base
       custom_mapping = flare_specification.flare_data_mapping.try(:values_to_attributes)
       CSV.foreach(file_path) do |row|
         if idx == 0
-          header = row.map { |column| column.downcase.strip.gsub(/\s+/, "_") }
+          header = row.map { |column| column.downcase.strip.gsub(/\s+/, '_') }
         else
           row = [header, row].transpose
           row = Hash[row.map { |key_then_value|
@@ -49,21 +48,21 @@ class FlareMonitorData < ActiveRecord::Base
             end
           }]
           flare_monitor_data = new_ignore_unknown(row)
-          date_with_zeroes = row['date'].gsub(/-/, "/").split("/").map { |p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s }.join("/")
-          time_with_zeroes = row['time'].split(":").map { |p| (p.to_s.length == 1) ? "0" + p.to_s : p.to_s }.join(":")
-          flare_monitor_data.date_time_reading = Time.strptime((date_with_zeroes + time_with_zeroes), "%d/%m/%y%H:%M:%S")
+          date_with_zeroes = row['date'].gsub(/-/, '/').split('/').map { |p| (p.to_s.length == 1) ? '0' + p.to_s : p.to_s }.join('/')
+          time_with_zeroes = row['time'].split(':').map { |p| (p.to_s.length == 1) ? '0' + p.to_s : p.to_s }.join(':')
+          flare_monitor_data.date_time_reading = Time.strptime((date_with_zeroes + time_with_zeroes), '%d/%m/%y%H:%M:%S')
           flare_monitor_data.flare_specification = flare_specification
           flare_monitor_data.save!
         end
         idx += 1
       end
     else
-      raise "You must specify a flare_specification in order to import Flare Monitor Data from a CSV"
+      raise 'You must specify a flare_specification in order to import Flare Monitor Data from a CSV'
     end
   end
 
   def self.display_object_for_field(field)
-    AttributeNameMapping.find_by_attribute_name(field.to_s) or {}
+    AttributeNameMapping.find_by_attribute_name(field.to_s) or AttributeNameMapping.new
   end
 
   def self.column_weight_for_field(field)

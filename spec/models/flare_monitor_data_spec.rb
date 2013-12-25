@@ -32,13 +32,22 @@ describe FlareMonitorData do
   end
 
   describe 'self' do
+
+    describe 'import' do
+      it 'should raise an error if a flare_specification argument is not specified' do
+        expect {
+            FlareMonitorData.import('1/2/3/fake.path', nil)
+        }.to raise_error
+      end
+    end
+
     describe 'display_object_for_field' do
       it 'should return the display_name property of the attribute found' do
         FlareMonitorData.display_object_for_field('flame_temperature').should eq(attribute_name_mapping_a)
       end
 
       it 'should return a blank string if the attribute is not found' do
-        FlareMonitorData.display_object_for_field(:touchdowns).should eq({})
+        FlareMonitorData.display_object_for_field(:touchdowns).id.should eq(AttributeNameMapping.new.id)
       end
     end
 
@@ -77,6 +86,30 @@ describe FlareMonitorData do
         query = FlareMonitorData.filter_data({})
         query.length.should eq(3)
       end
+    end
+
+    describe 'to_csv' do
+
+      it 'should convert the headers to the first row of the csv' do
+        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c])
+        csv.size.should eq(306)
+      end
+
+      it 'should return a csv with all the flare_monitor_data' do
+        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c])
+        csv.size.should eq(306)
+      end
+
+      it 'should be able to consider exceptions' do
+        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c], [:blower_speed])
+        csv.size.should eq(259)
+      end
+
+      it 'should be able to consider other exceptions' do
+        csv = FlareMonitorData.to_csv([flare_data_a, flare_data_b, flare_data_c], [:blower_speed, :flame_temperature])
+        csv.size.should eq(259)
+      end
+
     end
 
     describe 'with_filters' do
