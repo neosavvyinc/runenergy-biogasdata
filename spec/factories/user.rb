@@ -7,7 +7,8 @@ FactoryGirl.define do
     sequence(:password) {|n| "whatsmynumber66"}
     sequence(:password_confirmation) {|n| "whatsmynumber66"}
 
-    UserType.OVERSEER or FactoryGirl.create(:user_type, :name => "OVERSEER")
-    UserType.CUSTOMER or FactoryGirl.create(:user_type, :name => "CUSTOMER")
+    UserType.OVERSEER or FactoryGirl.create(:user_type, :name => 'OVERSEER')
+    UserType.CUSTOMER or FactoryGirl.create(:user_type, :name => 'CUSTOMER')
+    UserType.WORKER or FactoryGirl.create(:user_type, :name => 'WORKER')
   end
 end
