@@ -11,11 +11,21 @@ Biogasdata::Application.configure do
   # Disable Rails's static asset server (Apache or nginx will already do this)
   config.serve_static_assets = false
 
+  class NoCompression
+    def compress(string)
+      # do nothing
+      string
+    end
+  end
+
   # Compress JavaScripts and CSS
   config.assets.compress = true
-  config.assets.js_compressor = Sprockets::LazyCompressor.new {
-    Uglifier.new(:mangle => false)
-  }
+  config.assets.compress = true
+  config.assets.js_compressor = NoCompression.new
+  #SHOULD COME BACK TO THIS IN FINAL PROD
+  #config.assets.js_compressor = Sprockets::LazyCompressor.new {
+  #  Uglifier.new(:mangle => false)
+  #}
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
