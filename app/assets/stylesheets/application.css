@@ -12,6 +12,7 @@
  *= require bootstrap-datepicker
  *= require bootstrap-timepicker
  *= require jquery.ui.datepicker
+ *= require ng-grid.min
  *= require core
  *= require_tree .
  */

@@ -23,6 +23,7 @@
 //= require base64.min
 //= require bower_components/momentjs/moment
 //= require bower_components/angular-strap/dist/angular-strap
+//= require bower_components/ng-grid/ng-grid-2.0.7.min
 //= require bower_components/neosavvy-javascript-core/neosavvy-javascript-core
 //= require bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core
 //= require neosavvy/ns-api-doc

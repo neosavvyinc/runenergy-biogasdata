@@ -1,10 +1,10 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "neosavvy-javascript-angular-core": "0.1.4",
+    "neosavvy-javascript-angular-core": "0.1.5",
     "angular-macgyver": "0.1.25",
-    "jqui-datepicker": "*",
-    "angular-strap": "*",
-    "momentjs": "*"
+    "angular-strap": "0.7.8",
+    "momentjs": "2.5.0",
+    "ng-grid": "2.0.7"
   }
 }

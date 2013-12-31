@@ -1,12 +1,13 @@
 {
-  "name": "runenergy-dashboard",
-  "version": "1.0.1",
-  "description": "The RunEnergy flare, leachate, and gas dashboard.",
-  "repository": "",
-  "author": "Trevor Ewen, Neosavvy",
-  "devDependencies": {
-    "karma": "~0.10.5",
-    "karma-jasmine": "~0.1.3",
-    "karma-chrome-launcher": "~0.1.0"
-  }
+    "name": "runenergy-dashboard",
+    "version": "1.0.1",
+    "description": "The RunEnergy flare, leachate, and gas dashboard.",
+    "repository": "",
+    "author": "Trevor Ewen, Neosavvy",
+    "devDependencies": {
+        "karma": "~0.10.5",
+        "karma-jasmine": "~0.1.3",
+        "karma-chrome-launcher": "~0.1.0",
+        "karma-coverage": "~0.1.0"
+    }
 }

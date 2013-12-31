@@ -51,7 +51,7 @@ describe("controllers.DataInputController", function () {
                 $scope.currentFieldLog.name = "Travis";
                 $scope.currentReading.temperature = 678;
                 $scope.onAdd();
-                expect(dataInputServiceCreateSpy).toHaveBeenCalledWith(24, 19, {name: "Travis"}, {temperature: 678});
+                expect(dataInputServiceCreateSpy).toHaveBeenCalledWith(24, 19, {name: "Travis"}, {temperature: 678}, null, null);
             });
 
             it('Should update the readings by getting all the readings from the server after a successful create call', function () {

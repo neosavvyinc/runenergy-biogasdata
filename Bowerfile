@@ -1,6 +1,7 @@
 group :vendor, :assets_path => "assets/javascripts" do
-    asset "neosavvy-javascript-angular-core", "0.1.4"
+    asset "neosavvy-javascript-angular-core", "0.1.5"
     asset "angular-macgyver", "0.1.25"
     asset "angular-strap", "0.7.8"
     asset "momentjs", "2.5.0"
+    asset "ng-grid", "2.0.7"
 end

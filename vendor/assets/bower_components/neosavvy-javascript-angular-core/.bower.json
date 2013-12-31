@@ -1,6 +1,6 @@
 {
   "name": "neosavvy-javascript-angular-core",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "authors": [
     "Neosavvy, Inc."
   ],
@@ -40,13 +40,13 @@
     "angular-sanitize": "1.2.4",
     "angular-touch": "1.2.4"
   },
-  "_release": "0.1.4",
+  "_release": "0.1.5",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.4",
-    "commit": "f39630a169f609d1d7f420aa8ae3fa484503d749"
+    "tag": "0.1.5",
+    "commit": "52f57643e70beae9e23a285b0c2aff195aed60ec"
   },
   "_source": "git://github.com/neosavvyinc/bower-neosavvy-javascript-angular-core.git",
-  "_target": "0.1.4",
+  "_target": "0.1.5",
   "_originalSource": "neosavvy-javascript-angular-core"
 }
