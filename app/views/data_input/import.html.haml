@@ -1,2 +1,6 @@
 .data-input.import
-  This is the import view!
+  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
+  .content{'ng-controller' => 'controllers.DataInputImportController'}
+    %form{'name' => 'form'}
+      = file_field(:post, :csv)
+      %a.btn.success{'ng-click' => 'onImport(form)'} Import

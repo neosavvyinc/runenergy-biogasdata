@@ -36,7 +36,11 @@ class DataInputController < DataInterfaceController
   end
 
   def import
-    all_view_classes
+    if request.method === 'POST'
+      puts 'POST!'
+    else
+      all_view_classes
+    end
   end
 
 end
