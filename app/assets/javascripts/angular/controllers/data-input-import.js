@@ -1,16 +1,13 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportController',
-    ['$scope', 'services.DataInputService',
-        function ($scope, dataInputService) {
-            $scope.onImport = function () {
-                if ($scope.form) {
-                    $scope.form.submit(function() {
-                        var data = this.serialize();
-                        dataInputService.importCsv(data).then(function(result) {
+    ['$scope', 'services.DataInputService', 'services.transformer.UniversalReadingResponseTransformer',
+        function ($scope, dataInputService, readingTransformer) {
 
-                        });
-                        //Prevents default behavior
-                        return false;
-                    });
+            //Watchers
+            var dereg = $scope.$watch('data', function(val) {
+                if (val && val.length) {
+                    $scope.data = readingTransformer(val);
+                    dereg();
                 }
-            };
+            })
+
         }]);

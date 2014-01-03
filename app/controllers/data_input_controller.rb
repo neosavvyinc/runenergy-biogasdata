@@ -36,11 +36,11 @@ class DataInputController < DataInterfaceController
   end
 
   def import
+    @readings = nil
     if request.method === 'POST'
-      puts 'POST!'
-    else
-      all_view_classes
+      @readings = Reading.process_csv(params[:files][:csv])
     end
+    all_view_classes
   end
 
 end

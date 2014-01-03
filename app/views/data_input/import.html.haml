@@ -1,6 +1,10 @@
 .data-input.import
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
   .content{'ng-controller' => 'controllers.DataInputImportController'}
-    %form{'action' => data_input_import_path, 'method' => 'post', 'ns-retrieve-element' => 'form'}
-      = file_field(:post, :csv)
-      %a.btn{'ng-click' => 'onImport()'} Import
+    - unless @readings.nil?
+      %ns-serialize{'data' => @readings.try(:to_json).try(:html_safe), 'property' => 'data'}
+    = form_tag data_input_import_path, multipart: true do
+      = file_field(:files, :csv, 'ns-retrieve-element' =>'fileInput')
+      %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
+      = submit_tag 'Import'
+      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'
