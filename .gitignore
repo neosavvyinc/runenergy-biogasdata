@@ -25,6 +25,7 @@ db/*.sqlite3
 /config/database.yml
 /coverage.data
 /coverage/
+/spec/javascripts/coverage/
 /db/*.javadb/
 /db/*.sqlite3
 /doc/api/
