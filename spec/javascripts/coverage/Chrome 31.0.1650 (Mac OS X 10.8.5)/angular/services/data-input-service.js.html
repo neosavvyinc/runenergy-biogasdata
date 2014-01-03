@@ -179,20 +179,20 @@
     </style>
 </head>
 <body>
-<div class="header medium">
+<div class="header high">
     <h1>Code coverage report for <span class="entity">angular/services/data-input-service.js</span></h1>
     <h2>
         
-        Statements: <span class="metric">50% <small>(2 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Statements: <span class="metric">100% <small>(5 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
         Branches: <span class="metric">100% <small>(0 / 0)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Functions: <span class="metric">33.33% <small>(1 / 3)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Functions: <span class="metric">100% <small>(4 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
         
-        Lines: <span class="metric">50% <small>(2 / 4)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
+        Lines: <span class="metric">100% <small>(5 / 5)</small></span> &nbsp;&nbsp;&nbsp;&nbsp;
         
     </h2>
     <div class="path"><a href="../../index.html">All files</a> &#187; <a href="index.html">angular/services/</a> &#187; data-input-service.js</div>
@@ -226,27 +226,41 @@
 25
 26
 27
-28</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
+28
+29
+30
+31
+32
+33
+34
+35</td><td class="line-coverage"><span class="cline-any cline-yes">1</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">8</span>
+<span class="cline-any cline-yes">14</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -257,8 +271,8 @@
     ['nsServiceExtensions', 'constants.Routes', 'services.transformer.DataInputCreateTransformer',
         function (nsServiceExtensions, routes) {
             return {
-                createReading: <span class="fstat-no" title="function not covered" >function (assetId, monitorClassId, fieldLog, reading, date, time) {</span>
-<span class="cstat-no" title="statement not covered" >                    return nsServiceExtensions.request({</span>
+                createReading: function (assetId, monitorClassId, fieldLog, reading, date, time) {
+                    return nsServiceExtensions.request({
                         method: 'POST',
                         url: routes.DATA_INPUT.CREATE,
                         data: {
@@ -271,12 +285,19 @@
                         }
                     });
                 },
-                readings: <span class="fstat-no" title="function not covered" >function (assetId, monitorClassId) {</span>
-<span class="cstat-no" title="statement not covered" >                    return nsServiceExtensions.request({</span>
+                readings: function (assetId, monitorClassId) {
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DATA_INPUT.READINGS).
                             paramReplace({':asset_id': assetId, ':monitor_class_id': monitorClassId}).
                             build()
+                    });
+                },
+                importCsv: function(data) {
+                    return nsServiceExtensions.request({
+                        method: 'POST',
+                        url: routes.DATA_INPUT.IMPORT,
+                        data: data
                     });
                 }
             };
@@ -285,7 +306,7 @@
 
 </div>
 <div class="footer">
-    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Tue Dec 31 2013 11:28:18 GMT-0500 (EST)</div>
+    <div class="meta">Generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Thu Jan 02 2014 20:53:33 GMT-0500 (EST)</div>
 </div>
 
 <script src="../../prettify.js"></script>

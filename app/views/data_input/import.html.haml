@@ -1,6 +1,6 @@
 .data-input.import
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
   .content{'ng-controller' => 'controllers.DataInputImportController'}
-    %form{'name' => 'form'}
+    %form{'action' => data_input_import_path, 'method' => 'post', 'ns-retrieve-element' => 'form'}
       = file_field(:post, :csv)
-      %a.btn.success{'ng-click' => 'onImport(form)'} Import
+      %a.btn{'ng-click' => 'onImport()'} Import

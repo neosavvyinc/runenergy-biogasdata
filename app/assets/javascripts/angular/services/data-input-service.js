@@ -23,6 +23,13 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             paramReplace({':asset_id': assetId, ':monitor_class_id': monitorClassId}).
                             build()
                     });
+                },
+                importCsv: function(data) {
+                    return nsServiceExtensions.request({
+                        method: 'POST',
+                        url: routes.DATA_INPUT.IMPORT,
+                        data: data
+                    });
                 }
             };
         }]);

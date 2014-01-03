@@ -1,7 +1,7 @@
 {
   "name": "dsl-generated dependencies",
   "dependencies": {
-    "neosavvy-javascript-angular-core": "0.1.5",
+    "neosavvy-javascript-angular-core": "0.1.6",
     "angular-macgyver": "0.1.25",
     "angular-strap": "0.7.8",
     "momentjs": "2.5.0",
