@@ -20,7 +20,7 @@ class Reading < DataAsStringModel
         #Sets the header from within the CSV
         if idx == column_definition_row
           header = row
-        elsif not header.nil?
+        elsif not header.nil? and idx >= first_data_row and (last_data_row.nil? or idx <= last_data_row)
           my_reading = Reading.new_from_csv_row(header, row)
           unless my_reading.nil?
             readings << my_reading
