@@ -38,7 +38,17 @@ class DataInputController < DataInterfaceController
   def import
     @readings = nil
     if request.method === 'POST'
-      @readings = Reading.process_csv(params[:files][:csv])
+      unless params[:column_definition_row].blank? or params[:first_data_row].blank?
+        @readings = Reading.process_csv(
+            params[:files][:csv],
+            params[:column_definition_row].to_i,
+            params[:first_data_row].to_i,
+            params[:last_data_row].try(:to_i)
+        )
+      else
+        @error = 'Column Name Row and First Data Row are required for import.'
+        all_view_classes
+      end
     end
     all_view_classes
   end

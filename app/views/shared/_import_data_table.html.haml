@@ -1,0 +1,14 @@
+.data-table{'ng-controller' => 'controllers.ImportTable', 'ng-show' => 'data.length', :style => 'display: none;'}
+  %label.label.label-important{'ng-bind' => 'message'}
+  %table.table.flare-table.table-striped.table-condensed.table-bordered
+    %thead
+      %tr
+        %th{'ng-repeat' => '(key, value) in data[0]'}
+          %p.name{'ng-bind' => 'key'}
+          //%p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
+      %tr
+        %th{'ng-repeat' => '(key, value) in filters'}
+          %input.filter-field{'ng-model' => 'filters[key]'}
+    %tbody
+      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters'}
+        %td{'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item'}

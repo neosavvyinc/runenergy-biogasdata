@@ -3,8 +3,18 @@
   .content{'ng-controller' => 'controllers.DataInputImportController'}
     - unless @readings.nil?
       %ns-serialize{'data' => @readings.try(:to_json).try(:html_safe), 'property' => 'data'}
+    - if @error
+      %label.error #{@error}
     = form_tag data_input_import_path, multipart: true do
-      = file_field(:files, :csv, 'ns-retrieve-element' =>'fileInput')
+      .span3
+        = label_tag(:column_definition_row, 'Column Name Row:')
+        = text_field_tag(:column_definition_row, 1, 'ng-model' => 'columnNameRow')
+        = label_tag(:first_data_row, 'First Data Row:')
+        = text_field_tag(:first_data_row, 2, 'ng-model' => 'firstDataRow')
+        = label_tag(:column_definition_row, 'Last Data Row (defaults to end):')
+        = text_field_tag(:last_data_row)
+      .span4
+        = file_field(:files, :csv, 'ns-retrieve-element' =>'fileInput', 'ng-disabled' => 'requiredFieldsMissing')
       %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
-      = submit_tag 'Import'
-      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'
+      = submit_tag 'Import', 'ng-disabled' => 'requiredFieldsMissing'
+      = render 'shared/import_data_table', :angular_controller => 'controllers.PreviewCreate'

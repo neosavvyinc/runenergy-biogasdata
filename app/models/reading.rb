@@ -7,14 +7,28 @@ class Reading < DataAsStringModel
   belongs_to :field_log
   belongs_to :asset
 
-  def self.process_csv(file)
+  def self.process_csv(file, column_definition_row = nil, first_data_row = nil, last_data_row = nil)
     unless file.nil?
       readings = []
-      CSV.foreach(file.path, headers: true) do |row|
-        my_reading = Reading.new_from_csv_row(row)
-        unless my_reading.nil?
-          readings << my_reading
+
+      #Starts at 1 for human readable form in the UI
+      idx = 1
+      header = nil
+      column_definition_row = column_definition_row || 1
+      first_data_row = first_data_row || 2
+      CSV.foreach(file.path) do |row|
+        #Sets the header from within the CSV
+        if idx == column_definition_row
+          header = row
+        elsif not header.nil?
+          my_reading = Reading.new_from_csv_row(header, row)
+          unless my_reading.nil?
+            readings << my_reading
+          end
         end
+
+        #Increment the idx
+        idx += 1
       end
       readings
     else
@@ -22,11 +36,11 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.new_from_csv_row(row)
-    unless row.empty?
+  def self.new_from_csv_row(header, row)
+    unless header.empty? or row.empty?
       data = {}
-      row.each do |item|
-        data[item[0]] = item[1]
+      header.each_with_index do |item, index|
+        data[header[index]] = row[index]
       end
       Reading.new(:data => data.to_json)
     end
