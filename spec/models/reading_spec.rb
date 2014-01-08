@@ -31,6 +31,17 @@ describe Reading do
                            'age' => 67
                        }.to_json)
     end
+
+    it 'should ignore blank values in the header' do
+      Reading.new_from_csv_row(
+          ['', 'name', 'location', 'age'],
+          [56, 'Charles', 'South America', 67]
+      ).data.should eq({
+                           'name' => 'Charles',
+                           'location' => 'South America',
+                           'age' => 67
+                       }.to_json)
+    end
   end
 
   let :reading do

@@ -5,6 +5,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             //Initialization
             $scope.columnNameRow = 1;
             $scope.firstDataRow = 2;
+            $scope.readingMods = {
+                deletedRowIndices: [],
+                deletedColumns: [],
+                columnToMonitorPointMappings: {}
+            };
 
             //Watchers
             var dereg = $scope.$watch('data', function(val) {
@@ -21,5 +26,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
 
             $scope.$watch('columnNameRow', _checkFieldValidity);
             $scope.$watch('firstDataRow', _checkFieldValidity);
+
+            //Action Handlers
+            $scope.onCompleteImport = function() {
+
+            };
 
         }]);

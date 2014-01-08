@@ -40,7 +40,9 @@ class Reading < DataAsStringModel
     unless header.empty? or row.empty?
       data = {}
       header.each_with_index do |item, index|
-        data[header[index]] = row[index]
+        unless header[index].blank?
+          data[header[index]] = row[index]
+        end
       end
       Reading.new(:data => data.to_json)
     end

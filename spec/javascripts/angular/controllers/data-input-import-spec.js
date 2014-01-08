@@ -31,6 +31,14 @@ describe("controllers.DataInputImportController", function () {
         it('Should set $scope.firstDataRow to 2', function () {
             expect($scope.firstDataRow).toEqual(2);
         });
+
+        it('Should instantiate $scope.readingMods', function () {
+            expect($scope.readingMods).toEqual({
+                deletedRowIndices: [],
+                deletedColumns: [],
+                columnToMonitorPointMappings: {}
+            });
+        });
     });
 
     describe('Watchers', function () {
@@ -78,5 +86,11 @@ describe("controllers.DataInputImportController", function () {
             });
         });
 
+    });
+
+    describe('Action Handlers', function () {
+        describe('onCompleteImport', function () {
+
+        });
     });
 });
