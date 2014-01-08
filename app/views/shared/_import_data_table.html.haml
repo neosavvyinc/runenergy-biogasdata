@@ -4,14 +4,14 @@
     %thead
       %tr
         %th
-        %th{'ng-repeat' => '(key, value) in data[0]'}
+        %th{'ng-repeat' => '(key, value) in data[0]', 'ng-class' => 'getColumnVariation(key, "", "removed-column")'}
           %p.name{'ng-bind' => 'key'}
       %tr
         %th
-        %th{'ng-repeat' => '(key, value) in data[0]'}
-          %a.btn.btn-danger X
+        %th{'ng-repeat' => '(key, value) in data[0]', 'ng-class' => 'getColumnVariation(key, "", "removed-column")'}
+          %a.btn{'ng-click' => 'onRemoveColumn(key)', 'ng-class' => 'getColumnVariation(key, "btn-danger", "btn-inverse")'} {{getColumnVariation(key, "x", "+")}}
     %tbody
       %tr.re-grid-row{'ng-repeat' => 'item in data', 'ng-class' => 'getRowVariation($index + 1, "", "removed-row")'}
         %td
           %a.btn.btn-danger{'ng-click' => 'onRemoveRow($index + 1)', 'ng-class' => 'getRowVariation($index + 1, "btn-danger", "btn-inverse")'} {{getRowVariation($index + 1, "x", "+")}}
-        %td{'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item'}
+        %td{'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item', 'ng-class' => 'getColumnVariation(key, "", "removed-column")'}

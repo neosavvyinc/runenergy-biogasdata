@@ -7,7 +7,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             $scope.firstDataRow = 2;
             $scope.readingMods = {
                 deletedRowIndices: [],
-                deletedColumns: [],
+                deletedColumns: {},
                 columnToMonitorPointMappings: {}
             };
 

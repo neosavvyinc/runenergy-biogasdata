@@ -35,7 +35,7 @@ describe("controllers.DataInputImportController", function () {
         it('Should instantiate $scope.readingMods', function () {
             expect($scope.readingMods).toEqual({
                 deletedRowIndices: [],
-                deletedColumns: [],
+                deletedColumns: {},
                 columnToMonitorPointMappings: {}
             });
         });

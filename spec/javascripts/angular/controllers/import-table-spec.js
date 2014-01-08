@@ -15,7 +15,7 @@ describe("controllers.ImportTable", function () {
             //$Scope values
             $scope.readingMods = {
                 deletedRowIndices: [],
-                deletedColumns: [],
+                deletedColumns: {},
                 columnToMonitorPointMappings: {}
             };
 
@@ -46,7 +46,48 @@ describe("controllers.ImportTable", function () {
         });
 
         describe('onRemoveColumn', function () {
+            it('Should add the column to the the readingMods.deletedColumns hash with a true value', function () {
+                expect($scope.readingMods.deletedColumns["Jerry"]).toBeUndefined();
+                $scope.onRemoveColumn("Jerry");
+                expect($scope.readingMods.deletedColumns["Jerry"]).toBeTruthy();
+            });
 
+            it('Should remove the key from the readingMods.deletedColums hash if it exists', function () {
+                $scope.readingMods.deletedColumns["Georgie"] = true;
+                $scope.onRemoveColumn("Georgie");
+                expect($scope.readingMods.deletedColumns["Georgie"]).toBeUndefined();
+            });
+        });
+    });
+
+    describe('Getters', function () {
+        describe('getRowVariation', function () {
+            it('Should return optionA when deletedRowIndices does not have the index in question', function () {
+                $scope.readingMods.deletedRowIndices = [14,68];
+                expect($scope.getRowVariation(15, "Short", "Tall")).toEqual("Short");
+            });
+
+            it('Should return optionB in the other case', function () {
+                $scope.readingMods.deletedRowIndices = [14,68];
+                expect($scope.getRowVariation(14, "Strawberry", "Blackberry")).toEqual("Blackberry");
+            });
+        });
+
+        describe('getColumnVariation', function () {
+            it('Should return optionA when deletedColumns does not contain the name specified', function () {
+                $scope.readingMods.deletedColumns = {
+                    'Charles': true
+                };
+                expect($scope.getColumnVariation("Georgie", "Running", "Canoeing")).toEqual("Running");
+            });
+
+            it('Should return optionB in the other case', function () {
+                $scope.readingMods.deletedColumns = {
+                    'Charles': true,
+                    'Georgie': true
+                };
+                expect($scope.getColumnVariation("Georgie", 54, 46)).toEqual(46);
+            });
         });
     });
 });
