@@ -44,6 +44,56 @@ describe Reading do
     end
   end
 
+  describe 'self.process_edited_collection' do
+
+    it 'should raise an error if the collection is nil' do
+      expect {
+        Reading.process_edited_collection(nil, {}, {}, [])
+      }.to raise_error
+    end
+
+  end
+
+  describe 'self.map_and_validate_columns' do
+    let :monitor_point do
+      FactoryGirl.create(:monitor_point, :name => 'Sequestration')
+    end
+
+    let :monitor_point_b do
+      FactoryGirl.create(:monitor_point, :name => 'Charles Bronson')
+    end
+
+    it 'should return an empty reading if there is no column to id for the column in the reading' do
+      data = Reading.map_and_validate_columns({'Wind Mill' => 50}, {}, {}, {})
+      data.should eq({})
+    end
+
+    it 'should return an empty reading if the only data element is in the deleted_columnns' do
+      data = Reading.map_and_validate_columns({'Wind Mill' => 50}, {'Wind Mill' => 27}, {'Wind Mill' => true}, {})
+      data.should eq({})
+    end
+
+    it 'should create a new reading with the keys replaced by the monitor points' do
+      data = Reading.map_and_validate_columns(
+          {'Wind Mill' => 67, 'Georgia Mud' => 'Hello Friends'},
+          {'Wind Mill' => monitor_point.id, 'Georgia Mud' => monitor_point_b.id},
+          {},
+          {}
+      )
+      data.should eq({'Sequestration' => 67, 'Charles Bronson' => 'Hello Friends'})
+    end
+
+    it 'should be able to delete a monitor point' do
+      data = Reading.map_and_validate_columns(
+          {'Wind Mill' => 67, 'Georgia Mud' => 'Hello Friends'},
+          {'Wind Mill' => monitor_point.id, 'Georgia Mud' => monitor_point_b.id},
+          {'Wind Mill' => true},
+          {}
+      )
+      data.should eq({'Charles Bronson' => 'Hello Friends'})
+    end
+  end
+
   let :reading do
     FactoryGirl.create(
         :reading,

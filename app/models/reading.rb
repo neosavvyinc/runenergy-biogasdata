@@ -48,6 +48,33 @@ class Reading < DataAsStringModel
     end
   end
 
+  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices)
+    unless readings.nil?
+      column_to_name_cache = {}
+      readings.each_with_index do |data, index|
+        #Index +1 for user readability
+        unless deleted_row_indices.include?(index + 1)
+          Reading.new(:data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache))
+        end
+      end
+    else
+      raise 'You must pass in a collection of readings to process readings.'
+    end
+  end
+
+  def self.map_and_validate_columns(reading, column_to_point_id, deleted_columns, column_to_name_cache)
+    new_reading = {}
+    reading.each do |column, value|
+      unless column_to_point_id[column].blank? or not deleted_columns[column].nil?
+        if column_to_name_cache[column].blank?
+          column_to_name_cache[column] = MonitorPoint.find(column_to_point_id[column].to_i).try(:name)
+        end
+        new_reading[column_to_name_cache[column]] = value
+      end
+    end
+    new_reading
+  end
+
   def as_json(options={})
     super(options).merge({
                              :data => JSON.parse(self.data),
