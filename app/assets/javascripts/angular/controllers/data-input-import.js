@@ -12,7 +12,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             };
 
             //Watchers
-            var dereg = $scope.$watch('data', function(val) {
+            var dereg = $scope.$watch('data', function (val) {
                 if (val && val.length) {
                     $scope.data = readingTransformer(val);
                     dereg();
@@ -28,8 +28,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             $scope.$watch('firstDataRow', _checkFieldValidity);
 
             //Action Handlers
-            $scope.onCompleteImport = function() {
-
+            $scope.onCompleteImport = function () {
+                dataInputService.completeImportCsv(
+                        $scope.data,
+                        $scope.readingMods.columnToMonitorPointMappings,
+                        $scope.readingMods.deletedRowIndices,
+                        $scope.readingMods.deletedColumns
+                    ).then(function (result) {
+                        console.log("RECEIVED DATA!");
+                    });
             };
 
         }]);

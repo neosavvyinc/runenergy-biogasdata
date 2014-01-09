@@ -30,7 +30,9 @@ module.exports = function (config) {
 
         // list of files to exclude
         exclude: [
-
+            //These files do not require unit tests, they are internal or for reference.
+            '../../app/assets/javascripts/angular/controllers/documentation.js',
+            '../../app/assets/javascripts/angular/controllers/mobile-rig.js'
         ],
 
         preprocessors: {

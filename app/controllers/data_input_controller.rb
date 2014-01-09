@@ -39,6 +39,15 @@ class DataInputController < DataInterfaceController
     @readings = nil
     if request.method === 'POST'
       unless params[:column_definition_row].blank? or params[:first_data_row].blank?
+        #Store reading params in session for later use
+        session[:reading_params] = {
+            :file_path => params[:files][:csv],
+            :column_definition_row => params[:column_definition_row].to_i,
+            :first_data_row => params[:first_data_row].to_i,
+            :last_data_row => params[:last_data_row].try(:to_i)
+        }
+
+        #Return readings for editing
         @readings = Reading.process_csv(
             params[:files][:csv],
             params[:column_definition_row].to_i,
@@ -51,6 +60,17 @@ class DataInputController < DataInterfaceController
       end
     end
     all_view_classes
+  end
+
+  def complete_import
+    unless params[:readings].nil? or param[:readings].empty?
+      param[:readings].each do |data|
+        readings = Reading.new(:data => data)
+      end
+      render json: {readings: readings}
+    else
+      render json: {:error => 'The reading params were not set in the session, do not make this request until you have first called the import method.'}, :status => 400
+    end
   end
 
 end

@@ -23,6 +23,7 @@ Biogasdata::Application.routes.draw do
   match 'data_input/readings/:asset_id/:monitor_class_id', :to => 'data_input#readings', :as => 'data_input_readings'
   match 'data_input/create', :to => 'data_input#create', :as => 'data_input_create'
   match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
+  match 'data_input/complete_import', :to => 'data_input#complete_import', :as => 'data_input_complete_import'
 
   #Data Analysis
   match 'data_analysis/readings/:site_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'

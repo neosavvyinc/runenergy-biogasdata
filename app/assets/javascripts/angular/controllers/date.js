@@ -1,6 +1,12 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DateController',
-    ['$scope', '$rootScope', 'constants.Config', 'values.DashboardDateData', 'service.DashboardService', 'values.DashboardHeaderData',
-        function ($scope, $rootScope, config, dashboardDateData, dashboardService, dashboardHeaderData) {
+    ['$scope',
+        '$rootScope',
+        'constants.Config',
+        'values.DashboardDateData', 
+        function ($scope,
+                  $rootScope,
+                  config,
+                  dashboardDateData) {
 
             //ACTION HANDLERS
             $scope.onApplyDateTimeFilters = function () {

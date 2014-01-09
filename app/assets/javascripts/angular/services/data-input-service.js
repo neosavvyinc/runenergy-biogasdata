@@ -1,5 +1,7 @@
 RunEnergy.Dashboard.Services.factory('services.DataInputService',
-    ['nsServiceExtensions', 'constants.Routes', 'services.transformer.DataInputCreateTransformer',
+    ['nsServiceExtensions',
+        'constants.Routes',
+        'services.transformer.DataInputCreateTransformer',
         function (nsServiceExtensions, routes) {
             return {
                 createReading: function (assetId, monitorClassId, fieldLog, reading, date, time) {
@@ -24,12 +26,23 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             build()
                     });
                 },
-                importCsv: function(data) {
-                    return nsServiceExtensions.request({
-                        method: 'POST',
-                        url: routes.DATA_INPUT.IMPORT,
-                        data: data
-                    });
+                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns) {
+                    if (readings && readings.length && columnToMonitorPointMappings) {
+                        return nsServiceExtensions.request({
+                            method: 'POST',
+                            url: routes.DATA_INPUT.COMPLETE_IMPORT,
+                            data: {
+                                readings: readings,
+                                reading_mods: {
+                                    deleted_row_indices: deletedRowIndices,
+                                    deleted_columns: deletedColumns,
+                                    column_to_monitor_point_mappings: columnToMonitorPointMappings
+                                }
+                            }
+                        });
+                    } else {
+                        throw "You must provide a readings collection and a mapping of columns to monitor points in order to complete the import.";
+                    }
                 }
             };
         }]);
