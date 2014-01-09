@@ -169,7 +169,61 @@ describe DataInputController do
   end
 
   describe 'import' do
+    describe 'GET' do
+      before(:each) do
+        get :import
+      end
 
+      it 'should define @landfill_operators' do
+        var = controller.instance_variable_get(:@landfill_operators)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+
+      it 'should define @sites' do
+        var = controller.instance_variable_get(:@sites)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+
+      it 'should define @sections' do
+        var = controller.instance_variable_get(:@sections)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+
+      it 'should define @assets' do
+        var = controller.instance_variable_get(:@assets)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+
+      it 'should define @monitor_classes' do
+        var = controller.instance_variable_get(:@monitor_classes)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+
+      it 'should define @filter_types' do
+        var = controller.instance_variable_get(:@filter_types)
+        var.should_not be_nil
+        var.size.should be > 0
+      end
+    end
+    
+    describe 'POST' do
+
+      it 'should set the error if the :column_definition_row param is blank' do
+        post :import, :first_data_row => 6
+        controller.instance_variable_get(:@error).should_not be_nil
+      end
+
+      it 'should set the error if the :first_data_row is blank' do
+        post :import, :column_definition_row => 89
+        controller.instance_variable_get(:@error).should_not be_nil
+      end
+      
+    end
   end
 
 end

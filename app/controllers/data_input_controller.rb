@@ -39,14 +39,6 @@ class DataInputController < DataInterfaceController
     @readings = nil
     if request.method === 'POST'
       unless params[:column_definition_row].blank? or params[:first_data_row].blank?
-        #Store reading params in session for later use
-        session[:reading_params] = {
-            :file_path => params[:files][:csv],
-            :column_definition_row => params[:column_definition_row].to_i,
-            :first_data_row => params[:first_data_row].to_i,
-            :last_data_row => params[:last_data_row].try(:to_i)
-        }
-
         #Return readings for editing
         @readings = Reading.process_csv(
             params[:files][:csv],

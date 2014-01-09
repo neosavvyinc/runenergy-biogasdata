@@ -16,7 +16,7 @@ class Reading < DataAsStringModel
       header = nil
       column_definition_row = column_definition_row || 1
       first_data_row = first_data_row || 2
-      CSV.foreach(path_or_file(file)) do |row|
+      CSV.foreach(file.path) do |row|
         #Sets the header from within the CSV
         if idx == column_definition_row
           header = row
@@ -45,14 +45,6 @@ class Reading < DataAsStringModel
         end
       end
       Reading.new(:data => data.to_json)
-    end
-  end
-
-  def self.path_or_file(file)
-    begin
-      file.try(:path)
-    rescue
-      file
     end
   end
 

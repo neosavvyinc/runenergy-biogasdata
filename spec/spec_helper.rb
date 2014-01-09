@@ -2,6 +2,7 @@
 require 'simplecov'
 SimpleCov.start 'rails' do
   add_filter '/admin/'
+  add_filter '/controllers/mobile_rig_controller.rb'
 end
 
 ENV["RAILS_ENV"] ||= 'test'

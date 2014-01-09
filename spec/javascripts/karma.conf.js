@@ -19,6 +19,7 @@ module.exports = function (config) {
             'lib/test-helpers.js',
             '../../vendor/assets/javascripts/bower_components/jquery/jquery.js',
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
+            '../../vendor/assets/javascripts/bower_components/momentjs/moment.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core.js',
             '../../vendor/assets/javascripts/neosavvy/ns-api-doc.js',
@@ -32,7 +33,8 @@ module.exports = function (config) {
         exclude: [
             //These files do not require unit tests, they are internal or for reference.
             '../../app/assets/javascripts/angular/controllers/documentation.js',
-            '../../app/assets/javascripts/angular/controllers/mobile-rig.js'
+            '../../app/assets/javascripts/angular/controllers/mobile-rig.js',
+            '../../app/assets/javascripts/angular/services/field-api-service.js'
         ],
 
         preprocessors: {

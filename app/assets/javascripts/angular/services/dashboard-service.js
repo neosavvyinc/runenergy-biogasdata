@@ -1,15 +1,15 @@
 RunEnergy.Dashboard.Services.factory('service.DashboardService',
-    ['core.extensions.ServiceExtensions', "constants.Routes",
-        function (serviceExtensions, routes) {
+    ['nsServiceExtensions', "constants.Routes",
+        function (nsServiceExtensions, routes) {
             return {
                 getCurrentUser: function () {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.USER.READ
                     });
                 },
                 getCustomers: function () {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.CUSTOMERS.READ
                     });
@@ -19,25 +19,25 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                     if (customerId) {
                         url = RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(url, {customerId: customerId});
                     }
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: url
                     });
                 },
                 getEntitledFlareDeployments: function () {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.FLARE_DEPLOYMENTS.READ
                     });
                 },
                 getEntitledFlareSpecifications: function () {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: routes.DASHBOARD.FLARE_SPECIFICATIONS.READ
                     });
                 },
                 getAllFlareMonitorData: function (flareSpecificationId, startDate, endDate, startTime, endTime, start, end) {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'GET',
                         url: RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(routes.DASHBOARD.FLARE_MONITOR_DATA.READ,
                             {flareSpecificationId: flareSpecificationId,
@@ -51,7 +51,7 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                     });
                 },
                 getCSVExport: function (flareSpecificationId, startDate, endDate, startTime, endTime, filters) {
-                    return serviceExtensions.request({
+                    return nsServiceExtensions.request({
                         method: 'POST',
                         url: routes.DASHBOARD.CSV_EXPORT.CREATE,
                         headers: {
