@@ -1,6 +1,8 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
     ['$scope',
-        function ($scope) {
+        'values.NewDataValues',
+        function ($scope,
+                  newDataValues) {
 
             if (!$scope.readingMods) {
                 throw "You must define the readingMods on the scope for the import table.";
@@ -29,7 +31,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
                 return ($scope.readingMods.deletedRowIndices.indexOf(index) === -1 ? optionA : optionB);
             };
 
-            $scope.getColumnVariation = function(key, optionA, optionB) {
+            $scope.getColumnVariation = function (key, optionA, optionB) {
                 return (!$scope.readingMods.deletedColumns[key] ? optionA : optionB);
             };
         }]);

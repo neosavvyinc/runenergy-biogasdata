@@ -14,6 +14,18 @@ RunEnergy.Dashboard.Services.factory('services.AnalysisService',
                     else {
                         throw "You must pass in a siteId to get any arbitrary readings.";
                     }
+                },
+                monitorPoints: function (assetId) {
+                    if (assetId) {
+                        return nsServiceExtensions.request({
+                            method: 'GET',
+                            url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.ANALYSIS.MONITOR_POINTS).
+                                paramReplace(":asset_id", assetId).
+                                build()
+                        });
+                    } else {
+                        throw "You must pass in an assetId to get monitorPoints for an asset.";
+                    }
                 }
             };
         }]);
