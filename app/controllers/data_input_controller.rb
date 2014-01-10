@@ -46,6 +46,7 @@ class DataInputController < DataInterfaceController
             params[:first_data_row].to_i,
             params[:last_data_row].try(:to_i)
         )
+        all_dashboard_action_selections
       else
         @error = 'Column Name Row and First Data Row are required for import.'
         all_view_classes
@@ -55,8 +56,8 @@ class DataInputController < DataInterfaceController
   end
 
   def complete_import
-    unless params[:readings].nil? or param[:readings].empty?
-      param[:readings].each do |data|
+    unless params[:readings].nil? or params[:readings].empty?
+      params[:readings].each do |data|
         readings = Reading.new(:data => data)
       end
       render json: {readings: readings}

@@ -1,6 +1,10 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionController',
-    ['$scope', 'values.NewDataValues', '$location',
-        function ($scope, newDataValues, $location) {
+    ['$scope',
+        'values.NewDataValues',
+        '$location',
+        function ($scope,
+                  newDataValues,
+                  $location) {
 
             //Initialization
             $scope.landfillOperators = null;
@@ -28,8 +32,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 };
             }
 
-            function resetValuesBelow(propName) {
+            function resetValuesBelow(propName, locationProp) {
                 return function (newVal, oldVal) {
+                    //Set url search parameter
+                    if (newVal && newVal.id) {
+                        $location.search(locationProp, newVal.id);
+                    }
+
+                    //Reset values
                     if (oldVal.id !== newVal.id) {
                         switch (propName) {
                             case "newDataValues.selectedLandfillOperator":
@@ -54,10 +64,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {
-                $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator'));
-                $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite'));
-                $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass'));
-                $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection'));
+                $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator', 'operator'));
+                $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite', 'site'));
+                $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass', 'monitor_class'));
+                $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection', 'section'));
+                $scope.$watch('newDataValues.selectedAsset', resetValuesBelow('newDataValues.selectedAsset', 'asset'));
                 $scope.onFirstUserInteract = function () {
                 };
             };

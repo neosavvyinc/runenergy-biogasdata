@@ -6,6 +6,8 @@
         %th
         %th{'ng-repeat' => '(key, value) in data[0]', 'ng-class' => 'getColumnVariation(key, "", "removed-column")'}
           %p.name{'ng-bind' => 'key'}
+          .dropdown{'ng-show' => 'getColumnVariation(key, true, false)'}
+            %re-bootstrap-button-dropdown{'items' => 'monitorPoints', 'selected-item' => 'readingMods.columnToMonitorPointMappings[key]', 'label-field' => 'name'}
       %tr
         %th
         %th{'ng-repeat' => '(key, value) in data[0]', 'ng-class' => 'getColumnVariation(key, "", "removed-column")'}

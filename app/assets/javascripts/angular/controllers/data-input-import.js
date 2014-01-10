@@ -1,6 +1,10 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportController',
-    ['$scope', 'services.DataInputService', 'services.transformer.UniversalReadingResponseTransformer',
-        function ($scope, dataInputService, readingTransformer) {
+    ['$scope',
+        '$location',
+        'services.DataInputService',
+        'services.transformer.UniversalReadingResponseTransformer',
+        'values.NewDataValues',
+        function ($scope, $location, dataInputService, readingTransformer, newDataValues) {
 
             //Initialization
             $scope.columnNameRow = 1;
@@ -10,6 +14,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                 deletedColumns: {},
                 columnToMonitorPointMappings: {}
             };
+            $scope.newDataValues = newDataValues;
 
             //Watchers
             var dereg = $scope.$watch('data', function (val) {
@@ -38,5 +43,21 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                         console.log("RECEIVED DATA!");
                     });
             };
+
+            //Getters
+            $scope.getFormPostUrl = memoize(function (base, newDataValues) {
+                var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
+                try {
+                    return new Neosavvy.Core.Builders.RequestUrlBuilder(base)
+                        .addParam('operator', hpGet(newDataValues, 'selectedLandfillOperator.id'))
+                        .addParam('site', hpGet(newDataValues, 'selectedSite.id'))
+                        .addParam('monitor_class', hpGet(newDataValues, 'selectedMonitorClass.id'))
+                        .addParam('section', hpGet(newDataValues, 'selectedSection.id'))
+                        .addParam('asset', hpGet(newDataValues, 'selectedAsset.id'))
+                        .build();
+                } catch (e) {
+                    return "";
+                }
+            });
 
         }]);

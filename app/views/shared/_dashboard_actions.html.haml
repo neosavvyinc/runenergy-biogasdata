@@ -1,4 +1,14 @@
 .dashboard-actions{'ng-controller' => 'controllers.DashboardActionController', 'ng-click' => 'onFirstUserInteract()'}
+  - unless operator.nil?
+    %ns-serialize{'data' => operator.to_json(:methods => [:location_ids]).html_safe, 'property' => 'newDataValues.selectedLandfillOperator'}
+  - unless site.nil?
+    %ns-serialize{'data' => site.to_json(:methods => [:location_ids, :monitor_class_ids]).html_safe, 'property' => 'newDataValues.selectedSite'}
+  - unless monitor_class.nil?
+    %ns-serialize{'data' => monitor_class.to_json(:include => [:monitor_points, :field_log_points]).html_safe, 'property' => 'newDataValues.selectedMonitorClass'}
+  - unless section.nil?
+    %ns-serialize{'data' => section.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'newDataValues.selectedSection'}
+  - unless asset.nil?
+    %ns-serialize{'data' => section.to_json.html_safe, 'property' => 'newDataValues.selectedAsset'}
   %ns-serialize{'data' => landfill_operators.to_json(:methods => [:location_ids]).html_safe, 'property' => 'landfillOperators'}
   %ns-serialize{'data' => sites.to_json(:methods => [:section_ids, :monitor_class_ids]).html_safe, 'property' => 'sites'}
   %ns-serialize{'data' => sections.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'sections'}

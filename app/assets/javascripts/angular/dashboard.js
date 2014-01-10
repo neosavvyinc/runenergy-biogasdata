@@ -26,7 +26,7 @@ var haml = new function () {
 }();
 
 RunEnergy.Dashboard.Dependencies = Neosavvy.AngularCore.Dependencies.concat(Neosavvy.ApiDoc.Dependencies).
-    concat(['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.transformers', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values']);
+    concat(['angular-cache', 'runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.transformers', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values']);
 
 angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('$strap.directives')).
     config(['$routeProvider',

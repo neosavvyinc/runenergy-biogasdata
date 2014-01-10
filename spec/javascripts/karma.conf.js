@@ -20,6 +20,7 @@ module.exports = function (config) {
             '../../vendor/assets/javascripts/bower_components/jquery/jquery.js',
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
             '../../vendor/assets/javascripts/bower_components/momentjs/moment.js',
+            '../../vendor/assets/javascripts/bower_components/angular-cache/src/angular-cache.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core.js',
             '../../vendor/assets/javascripts/neosavvy/ns-api-doc.js',

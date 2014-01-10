@@ -27,6 +27,7 @@ Biogasdata::Application.routes.draw do
 
   #Data Analysis
   match 'data_analysis/readings/:site_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
+  match 'data_analysis/monitor_points/:asset_id', :to => 'data_analysis#monitor_points', :as => 'data_analysis_monitor_points'
   match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
 
   #Mobile Rig

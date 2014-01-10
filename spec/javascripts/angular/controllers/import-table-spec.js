@@ -2,6 +2,8 @@ describe("controllers.ImportTable", function () {
     var $rootScope,
         $scope,
         $controller,
+        newDataValues,
+        analysisServiceSpy,
         controller;
 
     beforeEach(function () {
@@ -11,6 +13,8 @@ describe("controllers.ImportTable", function () {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             $controller = _$controller_;
+            newDataValues = $injector.get('values.NewDataValues');
+            analysisServiceSpy = spyOnAngularService($injector.get('services.AnalysisService'), 'monitorPoints', {monitor_points: [6, 7, 8]});
 
             //$Scope values
             $scope.readingMods = {
@@ -24,10 +28,44 @@ describe("controllers.ImportTable", function () {
         });
     });
 
-    it('Should throw an error if readingMods is not defined on the $scope', function () {
-        expect(function () {
-            $controller("controllers.ImportTable", {$scope: $rootScope.$new()});
-        }).toThrow();
+    describe('Initialization', function () {
+        it('Should throw an error if readingMods is not defined on the $scope', function () {
+            expect(function () {
+                $controller("controllers.ImportTable", {$scope: $rootScope.$new()});
+            }).toThrow();
+        });
+
+        it('Should define newDataValues on the $scope', function () {
+            expect($scope.newDataValues).toEqual(newDataValues);
+        });
+    });
+
+    describe('Watchers', function () {
+        describe('newDataValues.selectedAsset', function () {
+            it('Should not call the service if the asset is null', function () {
+                newDataValues.selectedAsset = false;
+                $scope.$digest();
+                expect(analysisServiceSpy).not.toHaveBeenCalled();
+            });
+
+            it('Should not call the service if the asset does not have an id', function () {
+                newDataValues.selectedAsset = {name: "Charlie"};
+                $scope.$digest();
+                expect(analysisServiceSpy).not.toHaveBeenCalled();
+            });
+
+            it('Should call the service with the asset id', function () {
+                newDataValues.selectedAsset = {id: 17};
+                $scope.$digest();
+                expect(analysisServiceSpy).toHaveBeenCalledWith(17);
+            });
+
+            it('Should set $scope.monitorPoints to the result of the service call', function () {
+                newDataValues.selectedAsset = {id: 17};
+                $scope.$digest();
+                expect($scope.monitorPoints).toEqual([6, 7, 8]);
+            });
+        });
     });
 
     describe('Action Handlers', function () {

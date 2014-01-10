@@ -1,12 +1,25 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
     ['$scope',
         'values.NewDataValues',
+        'services.AnalysisService',
         function ($scope,
-                  newDataValues) {
+                  newDataValues,
+                  analysisService) {
 
             if (!$scope.readingMods) {
                 throw "You must define the readingMods on the scope for the import table.";
             }
+
+            $scope.newDataValues = newDataValues;
+
+            //Watchers
+            $scope.$watch('newDataValues.selectedAsset', function(val) {
+                if (val && val.id) {
+                    analysisService.monitorPoints(val.id).then(function(result) {
+                        $scope.monitorPoints = result.monitor_points;
+                    });
+                }
+            });
 
             //Action Handlers
             $scope.onRemoveRow = function (index) {
