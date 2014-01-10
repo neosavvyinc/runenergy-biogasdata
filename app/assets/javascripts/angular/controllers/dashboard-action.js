@@ -28,8 +28,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 };
             }
 
-            var resetTakingPlace = false;
-
             function resetValuesBelow(propName) {
                 return function (newVal, oldVal) {
                     if (oldVal.id !== newVal.id) {

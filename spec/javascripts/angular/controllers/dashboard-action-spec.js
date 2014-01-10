@@ -24,7 +24,34 @@ describe("controllers.DashboardActionController", function () {
         });
 
         describe('resetValuesBelow', function () {
-            //This is pretty tricky to test
+            beforeEach(function() {
+                newDataValues.selectedLandfillOperator = {id: 15};
+                newDataValues.selectedSite = {id: 16};
+                newDataValues.selectedMonitorClass = {id: 17};
+                newDataValues.selectedSection = {id: 18};
+                $scope.$digest();
+                $scope.onFirstUserInteract();
+            });
+
+            xit('Should set everything to null when selectedLandfillOperator is changed', function () {
+                $scope.newDataValues.selectedLandfillOperator = {id: 60};
+                $scope.$digest();
+                expect(newDataValues.selectedSite).toBeNull();
+                expect(newDataValues.selectedMonitorClass).toBeNull();
+                expect(newDataValues.selectedAsset).toBeNull();
+            });
+
+            it('Should set monitor class, section and asset to null when site is changed', function () {
+
+            });
+
+            it('Should set section and asset to null when monitor class is changed', function () {
+
+            });
+
+            it('Should set asset to null when section is changed', function () {
+
+            });
         });
 
     });
@@ -52,6 +79,30 @@ describe("controllers.DashboardActionController", function () {
 
         it('Should set newDataValues to the values object', function () {
             expect($scope.newDataValues).toEqual(newDataValues);
+        });
+    });
+
+    describe('Action Handlers', function () {
+        describe('onFirstUserInteract', function () {
+            beforeEach(function() {
+                $scope.onFirstUserInteract();
+            });
+
+            it('Should add a watcher for newDataValues.selectedLandFillOperator', function () {
+                expect(_.map($scope.$$watchers, 'exp')).toContain('newDataValues.selectedLandfillOperator');
+            });
+
+            it('Should add a watcher for newDataValues.selectedSite', function () {
+                expect(_.map($scope.$$watchers, 'exp')).toContain('newDataValues.selectedSite');
+            });
+
+            it('Should add a watcher for newDataValues.selectedMonitorClass', function () {
+                expect(_.map($scope.$$watchers, 'exp')).toContain('newDataValues.selectedMonitorClass');
+            });
+
+            it('Should add a watcher for newDataValues.selectedSection', function () {
+                expect(_.map($scope.$$watchers, 'exp')).toContain('newDataValues.selectedSection');
+            });
         });
     });
 });
