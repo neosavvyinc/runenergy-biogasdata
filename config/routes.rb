@@ -34,6 +34,11 @@ Biogasdata::Application.routes.draw do
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'
   match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
+  unless Rails.env.production?
+    match 'coverage/rails', :to => redirect('/coverage/rails/index.html')
+    match 'coverage/angular', :to => redirect('/coverage/angular/Chrome 31.0.1650 (Mac OS X 10.8.5)/index.html')
+  end
+
   root :to => 'dashboard#login'
   # The priority is based upon order of creation:
   # first created -> highest priority.

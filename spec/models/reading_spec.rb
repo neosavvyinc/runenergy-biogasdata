@@ -45,13 +45,25 @@ describe Reading do
   end
 
   describe 'self.process_edited_collection' do
-
     it 'should raise an error if the collection is nil' do
       expect {
-        Reading.process_edited_collection(nil, {}, {}, [])
+        Reading.process_edited_collection(nil, {}, {}, [], 10, 11, 12)
       }.to raise_error
     end
 
+    it 'should return no readings if all rows passed in ared deleted' do
+      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [1, 2, 3], 7, 8, 9)
+      my_readings.should eq([])
+    end
+
+    it 'should add a row to new readings for each row that is not in a deleted index' do
+      #Stub out method
+      expect(Reading).to receive(:map_and_validate_columns).twice.and_return({'data_no' => rand(30)})
+
+      #Call
+      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [2], 1, 2 ,3)
+      my_readings.size.should eq(2)
+    end
   end
 
   describe 'self.map_and_validate_columns' do
@@ -76,7 +88,7 @@ describe Reading do
     it 'should create a new reading with the keys replaced by the monitor points' do
       data = Reading.map_and_validate_columns(
           {'Wind Mill' => 67, 'Georgia Mud' => 'Hello Friends'},
-          {'Wind Mill' => monitor_point.id, 'Georgia Mud' => monitor_point_b.id},
+          {'Wind Mill' => {'id' => monitor_point.id}, 'Georgia Mud' => {'id' => monitor_point_b.id}},
           {},
           {}
       )
@@ -86,7 +98,7 @@ describe Reading do
     it 'should be able to delete a monitor point' do
       data = Reading.map_and_validate_columns(
           {'Wind Mill' => 67, 'Georgia Mud' => 'Hello Friends'},
-          {'Wind Mill' => monitor_point.id, 'Georgia Mud' => monitor_point_b.id},
+          {'Wind Mill' => {'id' => monitor_point.id}, 'Georgia Mud' => {'id' => monitor_point_b.id}},
           {'Wind Mill' => true},
           {}
       )

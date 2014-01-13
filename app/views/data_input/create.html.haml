@@ -1,5 +1,6 @@
 .data-input.create
-  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes
+  = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
+    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
     %form.span4.form-inline{'ng-show' => 'newDataValues.selectedAsset != null', :style => 'display: none;'}
       %h5 Date

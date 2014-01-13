@@ -26,12 +26,15 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             build()
                     });
                 },
-                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns) {
+                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns, siteId, monitorClassId, assetId) {
                     if (readings && readings.length && columnToMonitorPointMappings) {
                         return nsServiceExtensions.request({
                             method: 'POST',
                             url: routes.DATA_INPUT.COMPLETE_IMPORT,
                             data: {
+                                site_id: siteId,
+                                monitor_class_id: monitorClassId,
+                                asset_id: assetId,
                                 readings: readings,
                                 reading_mods: {
                                     deleted_row_indices: deletedRowIndices,

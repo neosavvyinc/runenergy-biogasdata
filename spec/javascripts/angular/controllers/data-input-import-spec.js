@@ -105,14 +105,14 @@ describe("controllers.DataInputImportController", function () {
             it('Should call the completeImportCsv method on the service with the params', function () {
                 $scope.data = [1, 2, 3, 4];
                 $scope.onCompleteImport();
-                expect(completeImportCsvSpy).toHaveBeenCalledWith($scope.data, $scope.readingMods.columnToMonitorPointMappings, $scope.readingMods.deletedRowIndices, $scope.readingMods.deletedColumns);
+                expect(completeImportCsvSpy).toHaveBeenCalledWith($scope.data, $scope.readingMods.columnToMonitorPointMappings, $scope.readingMods.deletedRowIndices, $scope.readingMods.deletedColumns, undefined, 17, undefined);
             });
         });
     });
 
     describe('Getters', function () {
         describe('getFormPostUrl', function () {
-            beforeEach(function() {
+            beforeEach(function () {
                 newDataValues.selectedLandfillOperator = {id: 15};
                 newDataValues.selectedSite = {id: 16};
                 newDataValues.selectedMonitorClass = {id: 17};

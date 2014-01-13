@@ -34,11 +34,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
 
             //Action Handlers
             $scope.onCompleteImport = function () {
+                var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
                 dataInputService.completeImportCsv(
                         $scope.data,
                         $scope.readingMods.columnToMonitorPointMappings,
                         $scope.readingMods.deletedRowIndices,
-                        $scope.readingMods.deletedColumns
+                        $scope.readingMods.deletedColumns,
+                        hpGet(newDataValues, 'selectedSite.id'),
+                        hpGet(newDataValues, 'selectedMonitorClass.id'),
+                        hpGet(newDataValues, 'selectedAsset.id')
                     ).then(function (result) {
                         console.log("RECEIVED DATA!");
                     });

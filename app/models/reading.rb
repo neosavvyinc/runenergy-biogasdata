@@ -48,15 +48,22 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices)
+  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_id)
     unless readings.nil?
+      new_readings = []
       column_to_name_cache = {}
       readings.each_with_index do |data, index|
         #Index +1 for user readability
-        unless deleted_row_indices.include?(index + 1)
-          Reading.new(:data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache))
+        unless (not deleted_row_indices.nil? and deleted_row_indices.include?(index + 1))
+          new_readings << Reading.create(
+              :location_id => site_id,
+              :monitor_class_id => monitor_class_id,
+              :asset_id => asset_id,
+              :data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache)
+          )
         end
       end
+      new_readings
     else
       raise 'You must pass in a collection of readings to process readings.'
     end
@@ -65,11 +72,13 @@ class Reading < DataAsStringModel
   def self.map_and_validate_columns(reading, column_to_point_id, deleted_columns, column_to_name_cache)
     new_reading = {}
     reading.each do |column, value|
-      unless column_to_point_id[column].blank? or not deleted_columns[column].nil?
-        if column_to_name_cache[column].blank?
-          column_to_name_cache[column] = MonitorPoint.find(column_to_point_id[column].to_i).try(:name)
+      if deleted_columns[column].nil?
+        unless column_to_point_id[column].blank?
+          if column_to_name_cache[column].blank?
+            column_to_name_cache[column] = MonitorPoint.find(column_to_point_id[column]['id'].to_i).try(:name)
+          end
+          new_reading[column_to_name_cache[column]] = value
         end
-        new_reading[column_to_name_cache[column]] = value
       end
     end
     new_reading

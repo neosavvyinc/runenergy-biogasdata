@@ -57,9 +57,14 @@ class DataInputController < DataInterfaceController
 
   def complete_import
     unless params[:readings].nil? or params[:readings].empty?
-      params[:readings].each do |data|
-        readings = Reading.new(:data => data)
-      end
+      readings = Reading.process_edited_collection(params[:readings],
+                                        params[:reading_mods][:column_to_monitor_point_mappings],
+                                        params[:reading_mods][:deleted_columns],
+                                        params[:reading_mods][:deleted_row_indices],
+                                        params[:site_id].to_i,
+                                        params[:monitor_class_id].to_i,
+                                        params[:asset_id].to_i
+      )
       render json: {readings: readings}
     else
       render json: {:error => 'The reading params were not set in the session, do not make this request until you have first called the import method.'}, :status => 400

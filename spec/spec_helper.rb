@@ -1,6 +1,8 @@
 # This file is copied to spec/ when you run 'rails generate rspec:install'
 require 'simplecov'
 SimpleCov.start 'rails' do
+  coverage_dir 'public/coverage/rails'
+
   add_filter '/admin/'
   add_filter '/controllers/mobile_rig_controller.rb'
 end
