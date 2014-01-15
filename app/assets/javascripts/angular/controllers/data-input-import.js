@@ -55,7 +55,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                         $scope.readingMods.deletedColumns,
                         hpGet(newDataValues, 'selectedSite.id'),
                         hpGet(newDataValues, 'selectedMonitorClass.id'),
-                        hpGet(newDataValues, 'selectedAsset.id')
+                        $scope.readingMods.assetColumnName
                     ).then(function (result) {
                         console.log("RECEIVED DATA!");
                     });

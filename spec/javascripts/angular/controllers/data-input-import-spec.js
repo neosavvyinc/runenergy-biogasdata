@@ -122,7 +122,14 @@ describe("controllers.DataInputImportController", function () {
             it('Should call the completeImportCsv method on the service with the params', function () {
                 $scope.data = [1, 2, 3, 4];
                 $scope.onCompleteImport();
-                expect(completeImportCsvSpy).toHaveBeenCalledWith($scope.data, $scope.readingMods.columnToMonitorPointMappings, $scope.readingMods.deletedRowIndices, $scope.readingMods.deletedColumns, undefined, 17, undefined);
+                expect(completeImportCsvSpy).toHaveBeenCalledWith(
+                    $scope.data,
+                    $scope.readingMods.columnToMonitorPointMappings,
+                    $scope.readingMods.deletedRowIndices,
+                    $scope.readingMods.deletedColumns,
+                    undefined,
+                    17,
+                    null);
             });
         });
 
