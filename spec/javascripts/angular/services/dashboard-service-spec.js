@@ -59,4 +59,25 @@ describe("services.DashboardService", function () {
             expect(nsServiceExtensionsSpy.request).toHaveBeenCalledWith({method: 'GET', url: routes.DASHBOARD.FLARE_MONITOR_DATA.READ + "?flareSpecificationId=11&startDate=54&endDate=8989&startTime=18:19&endTime=19:00&start=1&end=7"});
         });
     });
+
+    describe('getCSVExport', function () {
+        it('Should call the POSt service with headers and data', function () {
+            service.getCSVExport(21, "12/12/12", "10/11/12", "05:06:18", "05:06:18", [1, 2, 3]);
+            expect(nsServiceExtensionsSpy.request).toHaveBeenCalledWith({
+                method: 'POST',
+                url: routes.DASHBOARD.CSV_EXPORT.CREATE,
+                headers: {
+                    Accept: 'application/json, text/javascript, */*'
+                },
+                data: {
+                    flareSpecificationId: 21,
+                    startDate: "12/12/12",
+                    endDate: "10/11/12",
+                    startTime: "05:06:18",
+                    endTime: "05:06:18",
+                    filters: [1,2,3]
+                }
+            });
+        });
+    });
 });
