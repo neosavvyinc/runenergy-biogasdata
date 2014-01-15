@@ -17,7 +17,9 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                 getEntitledLocations: function (customerId) {
                     var url = routes.DASHBOARD.LOCATIONS.READ;
                     if (customerId) {
-                        url = RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(url, {customerId: customerId});
+                        url = new Neosavvy.Core.Builders.RequestUrlBuilder(url).
+                            addParam("customerId", customerId).
+                            build();
                     }
                     return nsServiceExtensions.request({
                         method: 'GET',
@@ -39,16 +41,16 @@ RunEnergy.Dashboard.Services.factory('service.DashboardService',
                 getAllFlareMonitorData: function (flareSpecificationId, startDate, endDate, startTime, endTime, start, end) {
                     return nsServiceExtensions.request({
                         method: 'GET',
-                        url: RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(routes.DASHBOARD.FLARE_MONITOR_DATA.READ,
-                            {flareSpecificationId: flareSpecificationId,
+                        url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DASHBOARD.FLARE_MONITOR_DATA.READ).
+                            addParam({flareSpecificationId: flareSpecificationId,
                                 startDate: startDate,
                                 endDate: endDate,
                                 startTime: startTime,
                                 endTime: endTime,
                                 start: start,
-                                end: end || (parseInt(start) + 1)}
-                        )
+                                end: end || (parseInt(start) + 1)}).build()
                     });
+
                 },
                 getCSVExport: function (flareSpecificationId, startDate, endDate, startTime, endTime, filters) {
                     return nsServiceExtensions.request({
