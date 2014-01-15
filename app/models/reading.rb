@@ -55,7 +55,11 @@ class Reading < DataAsStringModel
       readings.each_with_index do |data, index|
         #Index +1 for user readability
         unless (not deleted_row_indices.nil? and deleted_row_indices.include?(index + 1))
-          asset = Asset.find_or_create_by_unique_identifier(data[asset_column_name])
+
+          #Not sure if this will work
+          asset = Asset.find_or_create_by_location_id_and_unique_identifier(site_id, data[asset_column_name])
+
+          #Asset Ids can be duplicated over the course of various sites
           new_readings << Reading.create(
               :location_id => site_id,
               :monitor_class_id => monitor_class_id,

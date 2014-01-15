@@ -1,5 +1,5 @@
 class LocationsMonitorClass < ActiveRecord::Base
-  attr_accessible :location_id, :monitor_class_id, :monitor_point_ids
+  attr_accessible :location_id, :monitor_class_id, :monitor_point_ids, :column_cache
   belongs_to :location
   belongs_to :monitor_class
   has_many :monitor_points_locations_monitor_classes
