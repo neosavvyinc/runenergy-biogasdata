@@ -1,5 +1,5 @@
 class Asset < ActiveRecord::Base
-  attr_accessible :name, :section_id, :monitor_class_id, :monitor_point_ids
+  attr_accessible :name, :section_id, :monitor_class_id, :monitor_point_ids, :unique_identifier
   belongs_to :section
   belongs_to :monitor_class
   has_many :assets_monitor_points

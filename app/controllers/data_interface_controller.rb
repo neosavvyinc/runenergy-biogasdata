@@ -1,11 +1,15 @@
 class DataInterfaceController < ApplicationController
 
   protected
-  def all_view_classes
+  def all_view_classes(sections=true, assets=true)
     @landfill_operators = User.where(:user_type_id => UserType.CUSTOMER.id)
     @sites = Location.all
-    @sections = Section.all
-    @assets = Asset.all
+    if sections
+      @sections = Section.all
+    end
+    if assets
+      @assets = Asset.all
+    end
     @monitor_classes = MonitorClass.all
     @filter_types = DataAnalysisFilter.all.map {
         |d| {:filter => d, :name => d.description}

@@ -49,10 +49,9 @@ class DataInputController < DataInterfaceController
         all_dashboard_action_selections
       else
         @error = 'Column Name Row and First Data Row are required for import.'
-        all_view_classes
       end
     end
-    all_view_classes
+    all_view_classes(false, false)
   end
 
   def complete_import

@@ -48,17 +48,18 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_id)
+  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name)
     unless readings.nil?
       new_readings = []
       column_to_name_cache = {}
       readings.each_with_index do |data, index|
         #Index +1 for user readability
         unless (not deleted_row_indices.nil? and deleted_row_indices.include?(index + 1))
+          asset = Asset.find_or_create_by_unique_identifier(data[asset_column_name])
           new_readings << Reading.create(
               :location_id => site_id,
               :monitor_class_id => monitor_class_id,
-              :asset_id => asset_id,
+              :asset_id => asset.id,
               :data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache)
           )
         end
