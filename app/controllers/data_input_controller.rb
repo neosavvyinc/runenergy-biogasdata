@@ -62,7 +62,7 @@ class DataInputController < DataInterfaceController
                                         params[:reading_mods][:deleted_row_indices],
                                         params[:site_id].to_i,
                                         params[:monitor_class_id].to_i,
-                                        params[:asset_id].to_i
+                                        params[:asset_column_name]
       )
       render json: {readings: readings}
     else

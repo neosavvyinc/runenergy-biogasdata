@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140115023343) do
+ActiveRecord::Schema.define(:version => 20140115224330) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -242,6 +242,7 @@ ActiveRecord::Schema.define(:version => 20140115023343) do
     t.integer "location_id"
     t.integer "monitor_class_id"
     t.string  "column_cache"
+    t.string  "deleted_column_cache"
   end
 
   create_table "locations_user_groups", :force => true do |t|

@@ -22,6 +22,8 @@ class DataInterfaceController < ApplicationController
     @monitor_class = MonitorClass.where(:id => params[:monitor_class]).first
     @section = Section.where(:id => params[:section]).first
     @asset = Asset.where(:id => params[:asset]).first
+
+    @locations_monitor_class = LocationsMonitorClass.where(:location_id => params[:site], :monitor_class_id => params[:monitor_class]).first
   end
 
 end

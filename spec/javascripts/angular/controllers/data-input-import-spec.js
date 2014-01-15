@@ -44,7 +44,8 @@ describe("controllers.DataInputImportController", function () {
             expect($scope.readingMods).toEqual({
                 deletedRowIndices: [],
                 deletedColumns: {},
-                columnToMonitorPointMappings: {}
+                columnToMonitorPointMappings: {},
+                assetColumnName: null
             });
         });
 
@@ -98,6 +99,22 @@ describe("controllers.DataInputImportController", function () {
             });
         });
 
+        describe('newDataValues.selectedLocationsMonitorClass', function () {
+
+            it('Should set the $scope.readingMods.columnToMonitorPointMappings when the value is set', function () {
+                expect($scope.readingMods.columnToMonitorPointMappings).toEqual({});
+                newDataValues.selectedLocationsMonitorClass = {column_cache: {name: 'George', age: 42}};
+                $scope.$digest();
+                expect($scope.readingMods.columnToMonitorPointMappings).toEqual({name: 'George', age: 42});
+            });
+
+            it('Should set the $scope.deletedColumns when the value is set', function () {
+                expect($scope.readingMods.deletedColumns).toEqual({});
+                newDataValues.selectedLocationsMonitorClass = {deleted_column_cache: {name: true, color: true}};
+                $scope.$digest();
+                expect($scope.readingMods.deletedColumns).toEqual({name: true, color: true});
+            });
+        });
     });
 
     describe('Action Handlers', function () {
@@ -106,6 +123,14 @@ describe("controllers.DataInputImportController", function () {
                 $scope.data = [1, 2, 3, 4];
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith($scope.data, $scope.readingMods.columnToMonitorPointMappings, $scope.readingMods.deletedRowIndices, $scope.readingMods.deletedColumns, undefined, 17, undefined);
+            });
+        });
+
+        describe('onSetAssetColumn', function () {
+            it('Should set the $scope.readingMods.assetColumnName to the column passed into the function', function () {
+                expect($scope.readingMods.assetColumnName).toBeNull();
+                $scope.onSetAssetColumn("Identifier 20");
+                expect($scope.readingMods.assetColumnName).toEqual("Identifier 20");
             });
         });
     });

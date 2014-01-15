@@ -5,6 +5,8 @@
     %ns-serialize{'data' => site.to_json(:methods => [:location_ids, :monitor_class_ids]).html_safe, 'property' => 'newDataValues.selectedSite'}
   - unless monitor_class.nil?
     %ns-serialize{'data' => monitor_class.to_json(:include => [:monitor_points, :field_log_points]).html_safe, 'property' => 'newDataValues.selectedMonitorClass'}
+  - unless locations_monitor_class.nil?
+    %ns-serialize{'data' => locations_monitor_class.to_json.html_safe, 'property' => 'newDataValues.selectedLocationsMonitorClass'}
   - unless section.nil?
     %ns-serialize{'data' => section.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'newDataValues.selectedSection'}
   - unless asset.nil?

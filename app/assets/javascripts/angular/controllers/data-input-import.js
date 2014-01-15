@@ -12,7 +12,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             $scope.readingMods = {
                 deletedRowIndices: [],
                 deletedColumns: {},
-                columnToMonitorPointMappings: {}
+                columnToMonitorPointMappings: {},
+                assetColumnName: null
             };
             $scope.newDataValues = newDataValues;
 
@@ -32,6 +33,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             $scope.$watch('columnNameRow', _checkFieldValidity);
             $scope.$watch('firstDataRow', _checkFieldValidity);
 
+            //Load up import column mappings from the cache of the request
+            $scope.$watch('newDataValues.selectedLocationsMonitorClass', function (val) {
+                if (val) {
+                    if (val.column_cache) {
+                        $scope.readingMods.columnToMonitorPointMappings = val.column_cache;
+                    }
+                    if (val.deleted_column_cache) {
+                        $scope.readingMods.deletedColumns = val.deleted_column_cache;
+                    }
+                }
+            });
+
             //Action Handlers
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
@@ -46,6 +59,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     ).then(function (result) {
                         console.log("RECEIVED DATA!");
                     });
+            };
+
+            $scope.onSetAssetColumn = function(column) {
+                $scope.readingMods.assetColumnName = column;
             };
 
             //Getters
