@@ -1,0 +1,51 @@
+describe("controllers.SiteController", function () {
+    var $rootScope,
+        $scope,
+        controller,
+        dashboardHeaderData,
+        dashboardServiceSpy;
+
+    beforeEach(function () {
+        dashboardServiceSpy = jasmine.createSpyObj('Dashboard Service', ['getCustomers', 'getEntitledLocations']);
+        module.apply(this, RunEnergy.Dashboard.Dependencies.concat(function($provide) {
+            $provide.value('service.DashboardService', dashboardServiceSpy);
+        }));
+
+        inject(function ($injector) {
+            $rootScope = $injector.get('$rootScope');
+            $scope = $rootScope.$new();
+            dashboardHeaderData = $injector.get('values.DashboardHeaderData');
+            controller = $injector.get('$controller')("controllers.SiteController", {$scope: $scope});
+        });
+    });
+
+    describe('Initialization', function () {
+        it('Should call dashboardService.getCustomers with nothing', function () {
+            expect(dashboardServiceSpy.getCustomers).toHaveBeenCalledWith();
+        });
+
+        it('Should call dashboardService.getEntitledLocations with nothing', function () {
+            expect(dashboardServiceSpy.getEntitledLocations).toHaveBeenCalledWith();
+        });
+
+        it('Should set $scope.dashboardHeaderData to dashboardHeaderData', function () {
+            expect($scope.dashboardHeaderData).toEqual(dashboardHeaderData);
+        });
+    });
+
+    describe('Watchers', function () {
+        it('Should set the dashboardHeaderData.customer to the first value of the customers', function () {
+            expect(dashboardHeaderData.customer).toBeNull();
+            $scope.customers = ["Mike", "George", "Tom"];
+            $scope.$digest();
+            expect(dashboardHeaderData.customer).toEqual("Mike");
+        });
+
+        it('Should set the dashboardHeaderData.site to the first value of the locations if it is defined', function () {
+            expect(dashboardHeaderData.site).toBeNull();
+            $scope.locations = [1, 2, 3];
+            $scope.$digest();
+            expect(dashboardHeaderData.site).toEqual(1);
+        });
+    });
+});
