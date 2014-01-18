@@ -48,6 +48,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             //Action Handlers
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
+                $scope.error = "";
                 dataInputService.completeImportCsv(
                         $scope.data,
                         $scope.readingMods.columnToMonitorPointMappings,
@@ -56,12 +57,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                         hpGet(newDataValues, 'selectedSite.id'),
                         hpGet(newDataValues, 'selectedMonitorClass.id'),
                         $scope.readingMods.assetColumnName
-                    ).then(function (result) {
+                    ).then(
+                    function (result) {
                         console.log("RECEIVED DATA!");
-                    });
+                    },
+                    function (error) {
+                        $scope.error = "You must select a location, monitor class, and asset column.";
+                    }
+                );
             };
 
-            $scope.onSetAssetColumn = function(column) {
+            $scope.onSetAssetColumn = function (column) {
                 $scope.readingMods.assetColumnName = column;
             };
 

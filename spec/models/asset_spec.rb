@@ -2,8 +2,16 @@ require 'spec_helper'
 
 describe Asset do
 
+  let :location do
+    FactoryGirl.create(:location)
+  end
+
+  let :other_location do
+    FactoryGirl.create(:location)
+  end
+
   let :asset do
-    asset = FactoryGirl.create(:asset)
+    asset = FactoryGirl.create(:asset, :location => location, :unique_identifier => '78HFG')
     asset.monitor_points << FactoryGirl.create(:monitor_point)
     asset.monitor_points << FactoryGirl.create(:monitor_point)
     asset
@@ -11,6 +19,22 @@ describe Asset do
 
   before(:each) do
     asset.should_not be_nil
+  end
+
+  describe 'self.lazy_load' do
+
+    it 'should grab the object from db if it exists' do
+      Asset.lazy_load(location.id, '78HFG').id.should eq(asset.id)
+    end
+
+    it 'should create the object if it does not exist in db' do
+      Asset.lazy_load(other_location.id, '78HFG').id.should_not eq(asset.id)
+    end
+
+    it 'should create the object if it doesnt exist via other field' do
+      Asset.lazy_load(location.id, 'NOTRIGHT').id.should_not eq(asset.id)
+    end
+
   end
 
   describe 'as_json' do

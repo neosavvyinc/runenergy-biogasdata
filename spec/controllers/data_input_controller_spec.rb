@@ -186,18 +186,6 @@ describe DataInputController do
         var.size.should be > 0
       end
 
-      it 'should define @sections' do
-        var = controller.instance_variable_get(:@sections)
-        var.should_not be_nil
-        var.size.should be > 0
-      end
-
-      it 'should define @assets' do
-        var = controller.instance_variable_get(:@assets)
-        var.should_not be_nil
-        var.size.should be > 0
-      end
-
       it 'should define @monitor_classes' do
         var = controller.instance_variable_get(:@monitor_classes)
         var.should_not be_nil

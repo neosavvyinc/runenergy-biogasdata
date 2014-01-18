@@ -49,15 +49,17 @@ class Reading < DataAsStringModel
   end
 
   def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name)
-    unless readings.nil?
+    unless readings.nil? or site_id.blank? or monitor_class_id.blank? or asset_column_name.blank?
       new_readings = []
       column_to_name_cache = {}
       readings.each_with_index do |data, index|
         #Index +1 for user readability
         unless (not deleted_row_indices.nil? and deleted_row_indices.include?(index + 1))
 
-          #Not sure if this will work
-          asset = Asset.find_or_create_by_location_id_and_unique_identifier(site_id, data[asset_column_name])
+          #Lazy load assets into db based on site_id and column value
+          asset = Asset.lazy_load(site_id, data[asset_column_name])
+          asset.monitor_class = MonitorClass.find(monitor_class_id)
+          asset.save
 
           #Asset Ids can be duplicated over the course of various sites
           new_readings << Reading.create(
