@@ -2,12 +2,13 @@ RunEnergy.Dashboard.Services.factory('services.AnalysisService',
     ['nsServiceExtensions', 'constants.Routes',
         function (nsServiceExtensions, routes) {
             return {
-                readings: function (operatorId, siteId, sectionId, assetId) {
-                    if (siteId) {
+                readings: function (siteId, monitorClassId) {
+                    if (siteId && monitorClassId) {
                         return nsServiceExtensions.request({
                             method: 'GET',
                             url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.ANALYSIS.READINGS).
                                 paramReplace(":site_id", siteId).
+                                paramReplace(":monitor_class_id", monitorClassId).
                                 build()
                         });
                     }

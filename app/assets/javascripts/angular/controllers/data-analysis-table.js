@@ -4,13 +4,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             //Getters
             var _getData = function () {
-                var _hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
-                if (newDataValues.selectedSite) {
+                if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
                     analysisService.readings(
-                            _hpGet(newDataValues, 'selectedLandfillOperator.id'),
-                            _hpGet(newDataValues, 'selectedSite.id'),
-                            _hpGet(newDataValues, 'selectedSection.id'),
-                            _hpGet(newDataValues, 'selectedAsset.id')
+                            newDataValues.selectedSite.id,
+                            newDataValues.selectedMonitorClass.id
                         ).then(function (result) {
                             $scope.data = result ? _.map(result.readings, function(reading) {
                                 reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
@@ -29,10 +26,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     }
                 }
             });
-            $scope.$watch('newDataValues.selectedLandfillOperator', _getData);
+
             $scope.$watch('newDataValues.selectedSite', _getData);
-            $scope.$watch('newDataValues.selectedSection', _getData);
-            $scope.$watch('newDataValues.selectedAsset', _getData);
+            $scope.$watch('newDataValues.selectedMonitorClass', _getData);
 
 
             //Initialization
