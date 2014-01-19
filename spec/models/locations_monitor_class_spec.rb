@@ -23,19 +23,24 @@ describe LocationsMonitorClass do
     )
   end
 
+  before(:each) do
+    locations_monitor_class.should_not be_nil
+  end
+
   describe 'self.create_caches' do
     it 'should be able to work with an existing LocationsMonitorClass' do
-      lmc = LocationsMonitorClass.create_caches(location.id, monitor_class.id, {:name => 'Stevie'}, {:hand => true})
+      lmc = LocationsMonitorClass.create_caches(location.id, monitor_class.id, {:name => 'Stevie'}, {:hand => true}, 'huey')
       lmc.id.should eq(locations_monitor_class.id)
-      lmc.column_cache.should eq({:name => 'Stevie'})
-      lmc.deleted_column_cache.should eq({:hand => true})
+      lmc.column_cache.should eq({:name => 'Stevie'}.to_json)
+      lmc.deleted_column_cache.should eq({:hand => true}.to_json)
+      lmc.asset_column_name.should eq('huey')
     end
 
     it 'should be able to create a new LocationsMonitorClass' do
-      lmc = LocationsMonitorClass.create_caches(another_location.id, monitor_class.id, {:name => 'Stevie'}, {:hand => true})
-      lmc.id.should be_nil
-      lmc.column_cache.should eq({:name => 'Stevie'})
-      lmc.deleted_column_cache.should eq({:hand => true})
+      lmc = LocationsMonitorClass.create_caches(another_location.id, monitor_class.id, {:name => 'Stevie'}, {:hand => true}, 'steve')
+      lmc.column_cache.should eq({:name => 'Stevie'}.to_json)
+      lmc.deleted_column_cache.should eq({:hand => true}.to_json)
+      lmc.asset_column_name.should eq('steve')
     end
   end
 

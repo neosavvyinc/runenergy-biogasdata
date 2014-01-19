@@ -36,6 +36,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             //Load up import column mappings from the cache of the request
             $scope.$watch('newDataValues.selectedLocationsMonitorClass', function (val) {
                 if (val) {
+                    if (val.asset_column_name) {
+                        $scope.readingMods.assetColumnName = val.asset_column_name;
+                    }
                     if (val.column_cache) {
                         $scope.readingMods.columnToMonitorPointMappings = val.column_cache;
                     }
