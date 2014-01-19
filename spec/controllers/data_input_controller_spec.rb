@@ -198,7 +198,7 @@ describe DataInputController do
         var.size.should be > 0
       end
     end
-    
+
     describe 'POST' do
 
       it 'should set the error if the :column_definition_row param is blank' do
@@ -209,6 +209,69 @@ describe DataInputController do
       it 'should set the error if the :first_data_row is blank' do
         post :import, :column_definition_row => 89
         controller.instance_variable_get(:@error).should_not be_nil
+      end
+
+    end
+  end
+
+  describe 'complete_import' do
+    let :location do
+      FactoryGirl.create(:location)
+    end
+
+    let :monitor_class do
+      FactoryGirl.create(:monitor_class)
+    end
+
+    it 'should return a status 400 error if readings is nil' do
+      xhr :post, :complete_import, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if readings is empty' do
+      xhr :post, :complete_import, :readings => [], :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if reading_mods is empty' do
+      xhr :post, :complete_import, :readings => readings_b, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if site_id is blank' do
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if monitor_class_id is blank' do
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :asset_column_name => 'Well ID'
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if asset_column_name is blank' do
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id
+      response.status.should eq(400)
+    end
+
+    describe 'valid' do
+
+      it 'should call LocationsMonitorClass.create_caches once' do
+        #Stub out method
+        expect(Reading).to receive(:process_edited_collection).once.and_return(readings_a)
+        expect(LocationsMonitorClass).to receive(:create_caches).once
+
+        xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
+            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+        JSON.parse(response.body)['readings'].should eq(JSON.parse(readings_a.to_json))
+      end
+
+      it 'should call Reading.process_edited_collection with the parameters' do
+        #Stub out method
+        expect(Reading).to receive(:process_edited_collection).once.and_return(readings_a)
+
+        xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
+            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+        JSON.parse(response.body)['readings'].should eq(JSON.parse(readings_a.to_json))
       end
       
     end
