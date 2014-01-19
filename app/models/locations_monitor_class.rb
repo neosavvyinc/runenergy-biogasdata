@@ -12,8 +12,8 @@ class LocationsMonitorClass < ActiveRecord::Base
     if locations_monitor_class.nil?
       locations_monitor_class = LocationsMonitorClass.new(:location_id => location_id, :monitor_class_id => monitor_class_id)
     end
-    locations_monitor_class.column_cache = column_mapping
-    locations_monitor_class.deleted_column_cache = deleted_columns
+    locations_monitor_class.column_cache = column_mapping.to_json
+    locations_monitor_class.deleted_column_cache = deleted_columns.to_json
     locations_monitor_class.save
 
     #Return value
@@ -26,8 +26,8 @@ class LocationsMonitorClass < ActiveRecord::Base
 
   def as_json(options={})
     super(options).merge({
-                             'column_cache' => JSON.parse(self.column_cache),
-                             'deleted_column_cache' => JSON.parse(self.deleted_column_cache)
+                             'column_cache' => (self.column_cache ? JSON.parse(self.column_cache) : nil),
+                             'deleted_column_cache' => (self.deleted_column_cache ? JSON.parse(self.deleted_column_cache) : nil)
                          })
   end
 end

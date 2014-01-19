@@ -9,8 +9,13 @@ class MonitorClass < ActiveRecord::Base
   has_many :field_log_points, through: :monitor_classes_field_log_points
 
   def monitor_points_for_all_locations
-    LocationsMonitorClass.where(:monitor_class_id => self.id).
+    lmcs = LocationsMonitorClass.where(:monitor_class_id => self.id).
         collect { |lmc| lmc.monitor_points }.
         flatten
+    unless lmcs.empty?
+      lmcs
+    else
+      MonitorPoint.all
+    end
   end
 end

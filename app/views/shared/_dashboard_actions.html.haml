@@ -4,7 +4,7 @@
   - unless site.nil?
     %ns-serialize{'data' => site.to_json(:methods => [:location_ids, :monitor_class_ids]).html_safe, 'property' => 'newDataValues.selectedSite'}
   - unless monitor_class.nil?
-    %ns-serialize{'data' => monitor_class.to_json(:include => [:monitor_points, :field_log_points]).html_safe, 'property' => 'newDataValues.selectedMonitorClass'}
+    %ns-serialize{'data' => monitor_class.to_json(:include => [:monitor_points, :field_log_points], :methods => [:monitor_points_for_all_locations]).html_safe, 'property' => 'newDataValues.selectedMonitorClass'}
   - unless locations_monitor_class.nil?
     %ns-serialize{'data' => locations_monitor_class.to_json.html_safe, 'property' => 'newDataValues.selectedLocationsMonitorClass'}
   - unless section.nil?
@@ -17,7 +17,7 @@
     %ns-serialize{'data' => sections.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'sections'}
   - unless assets.nil?
     %ns-serialize{'data' => assets.to_json.html_safe, 'property' => 'assets'}
-  %ns-serialize{'data' => monitor_classes.to_json(:include => [:monitor_points, :field_log_points]).html_safe, 'property' => 'monitorClasses'}
+  %ns-serialize{'data' => monitor_classes.to_json(:include => [:monitor_points, :field_log_points], :methods => [:monitor_points_for_all_locations]).html_safe, 'property' => 'monitorClasses'}
   %re-bootstrap-button-dropdown.location{'items' => 'landfillOperators', 'selected-item' => 'newDataValues.selectedLandfillOperator', 'label-field' => 'name', 'link-class' => 'btn-success', 'default' => 'Choose Landfill Operator'}
   %re-bootstrap-button-dropdown.location{'items' => 'sites | nsCollectionFilterProperties : "id" : newDataValues.selectedLandfillOperator.location_ids', 'selected-item' => 'newDataValues.selectedSite', 'label-field' => 'site_name', 'link-class' => 'btn-success', 'default' => 'Choose Site'}
   %re-bootstrap-button-dropdown.location{'disabled' => '{{newDataValues.selectedSite | nsLogicalIf : "false" : "true"}}', 'items' => 'monitorClasses | nsCollectionFilterProperties : "id" : newDataValues.selectedSite.monitor_class_ids', 'selected-item' => 'newDataValues.selectedMonitorClass', 'label-field' => 'name', 'link-class' => '{{newDataValues.selectedSite | nsLogicalIf : "btn-success" : "btn"}}', 'default' => 'Choose Monitor Class'}

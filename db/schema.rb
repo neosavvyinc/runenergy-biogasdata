@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140119173854) do
+ActiveRecord::Schema.define(:version => 20140119175746) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -242,8 +242,8 @@ ActiveRecord::Schema.define(:version => 20140119173854) do
   create_table "locations_monitor_classes", :force => true do |t|
     t.integer "location_id"
     t.integer "monitor_class_id"
-    t.string  "column_cache"
-    t.string  "deleted_column_cache"
+    t.string  "column_cache",         :limit => 8000
+    t.string  "deleted_column_cache", :limit => 8000
   end
 
   create_table "locations_user_groups", :force => true do |t|
@@ -301,9 +301,9 @@ ActiveRecord::Schema.define(:version => 20140119173854) do
 
   create_table "readings", :force => true do |t|
     t.datetime "taken_at"
-    t.string   "data"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.string   "data",             :limit => 8000
+    t.datetime "created_at",                       :null => false
+    t.datetime "updated_at",                       :null => false
     t.integer  "field_log_id"
     t.integer  "monitor_class_id"
     t.integer  "location_id"

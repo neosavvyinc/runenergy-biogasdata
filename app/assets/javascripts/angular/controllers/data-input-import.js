@@ -72,19 +72,25 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             };
 
             //Getters
-            $scope.getFormPostUrl = memoize(function (base, newDataValues) {
+            $scope.getFormPostUrl = function (base, newDataValues) {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
-                try {
-                    return new Neosavvy.Core.Builders.RequestUrlBuilder(base)
-                        .addParam('operator', hpGet(newDataValues, 'selectedLandfillOperator.id'))
-                        .addParam('site', hpGet(newDataValues, 'selectedSite.id'))
-                        .addParam('monitor_class', hpGet(newDataValues, 'selectedMonitorClass.id'))
-                        .addParam('section', hpGet(newDataValues, 'selectedSection.id'))
-                        .addParam('asset', hpGet(newDataValues, 'selectedAsset.id'))
-                        .build();
-                } catch (e) {
-                    return "";
+                var builder = new Neosavvy.Core.Builders.RequestUrlBuilder(base);
+                if (hpGet(newDataValues, 'selectedLandfillOperator.id')) {
+                    builder.addParam('operator', hpGet(newDataValues, 'selectedLandfillOperator.id'));
                 }
-            });
+                if (hpGet(newDataValues, 'selectedSite.id')) {
+                    builder.addParam('site', hpGet(newDataValues, 'selectedSite.id'));
+                }
+                if (hpGet(newDataValues, 'selectedMonitorClass.id')) {
+                    builder.addParam('monitor_class', hpGet(newDataValues, 'selectedMonitorClass.id'));
+                }
+                if (hpGet(newDataValues, 'selectedSection.id')) {
+                    builder.addParam('section', hpGet(newDataValues, 'selectedSection.id'));
+                }
+                if (hpGet(newDataValues, 'selectedAsset.id')) {
+                    builder.addParam('asset', hpGet(newDataValues, 'selectedAsset.id'));
+                }
+                return builder.build();
+            };
 
         }]);
