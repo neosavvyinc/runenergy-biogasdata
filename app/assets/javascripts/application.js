@@ -27,6 +27,7 @@
 //= require bower_components/angular-cache/src/angular-cache.js
 //= require bower_components/neosavvy-javascript-core/neosavvy-javascript-core
 //= require bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core
+//= require bower_components/angular-macgyver/lib/macgyver.js
 //= require neosavvy/ns-api-doc
 //= require angular/dashboard
 //= require_tree ./templates

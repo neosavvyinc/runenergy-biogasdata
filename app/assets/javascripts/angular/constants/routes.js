@@ -28,7 +28,8 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
     },
     DATA_INPUT: {
         CREATE: "/data_input/create",
-        READINGS: "/data_input/readings/:asset_id/:monitor_class_id",
+        READINGS: "/data_input/readings/site/:site_id/monitorclass/:monitor_class_id",
+        ASSETS: "/data_input/assets/site/:site_id/monitorclass/:monitor_class_id",
         IMPORT: "/data_input/import",
         COMPLETE_IMPORT: "/data_input/complete_import"
     },

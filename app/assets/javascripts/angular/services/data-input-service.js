@@ -4,13 +4,14 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
         'services.transformer.DataInputCreateTransformer',
         function (nsServiceExtensions, routes) {
             return {
-                createReading: function (assetId, monitorClassId, fieldLog, reading, date, time) {
+                createReading: function (siteId, monitorClassId, assetUniqueIdentifier, fieldLog, reading, date, time) {
                     return nsServiceExtensions.request({
                         method: 'POST',
                         url: routes.DATA_INPUT.CREATE,
                         data: {
-                            asset_id: assetId,
+                            site_id: siteId,
                             monitor_class_id: monitorClassId,
+                            asset_unique_identifier: assetUniqueIdentifier,
                             field_log: fieldLog,
                             reading: reading,
                             date: date,
@@ -18,11 +19,11 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                         }
                     });
                 },
-                readings: function (assetId, monitorClassId) {
+                readings: function (siteId, monitorClassId) {
                     return nsServiceExtensions.request({
                         method: 'GET',
                         url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DATA_INPUT.READINGS).
-                            paramReplace({':asset_id': assetId, ':monitor_class_id': monitorClassId}).
+                            paramReplace({':site_id': siteId, ':monitor_class_id': monitorClassId}).
                             build()
                     });
                 },

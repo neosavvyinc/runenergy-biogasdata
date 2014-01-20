@@ -1,8 +1,10 @@
 .data-input.create
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
-    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset
+    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
-    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedAsset != null', :style => 'display: none;'}
+    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedMonitorClass != null', :style => 'display: none;'}
+      %h5 Asset
+      %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
       %input{'ng-model' => 'readingDate', 'type' => 'text', 'date-format' => 'dd/mm/yyyy', 'bs-datepicker' => true}
       %h5 Time
@@ -12,10 +14,10 @@
         %label{'ng-bind' => 'flp.name'}
         %input{'ng-model' => 'currentFieldLog[flp.name]', 'type' => 'checkbox'}
       %h5 Data
-      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedAsset.monitor_points'}
+      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedMonitorClass.monitor_points_for_all_locations'}
         %label{'ng-bind' => 'mp.name'}
         %input{'ng-model' => 'currentReading[mp.name]'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    .span8{'ng-show' => 'newDataValues.selectedAsset != null'}
+    .span8{'ng-show' => 'newDataValues.selectedMonitorClass != null'}
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'

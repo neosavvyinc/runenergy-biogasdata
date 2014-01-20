@@ -4,4 +4,5 @@ group :vendor, :assets_path => "assets/javascripts" do
     asset "angular-strap", "0.7.8"
     asset "momentjs", "2.5.0"
     asset "ng-grid", "2.0.7"
+    asset "angular-macgyver", "0.2.0"
 end
