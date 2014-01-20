@@ -69,7 +69,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             };
 
             $scope.onReset = function () {
-
+                $scope.currentFieldLog = {};
+                $scope.currentReading = {};
             };
 
         }]);
