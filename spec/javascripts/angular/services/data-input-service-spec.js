@@ -13,13 +13,14 @@ describe("services.DataInputService", function () {
 
     describe('createReading', function () {
         it('Should call the requestSpy with the given properties in a post request', function () {
-            service.createReading(9, 7, 5, 4, 3, 1);
+            service.createReading(9, 7, "AWW567", 5, 4, 3, 1);
             expect(requestSpy).toHaveBeenCalledWith({
                 method: 'POST',
                 url: routes.DATA_INPUT.CREATE,
                 data: {
-                    asset_id: 9,
+                    site_id: 9,
                     monitor_class_id: 7,
+                    asset_unique_identifier: "AWW567",
                     field_log: 5,
                     reading: 4,
                     date: 3,
@@ -43,7 +44,7 @@ describe("services.DataInputService", function () {
             expect(requestSpy).toHaveBeenCalledWith({
                 method: 'GET',
                 url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DATA_INPUT.READINGS).
-                    paramReplace({':asset_id': 1005, ':monitor_class_id': 890}).
+                    paramReplace({':site_id': 1005, ':monitor_class_id': 890}).
                     build()
             });
         });

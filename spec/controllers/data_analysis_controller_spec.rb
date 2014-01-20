@@ -19,11 +19,15 @@ describe DataAnalysisController do
     FactoryGirl.create(:asset, :section => section)
   end
 
+  let :monitor_class do
+    FactoryGirl.create(:monitor_class)
+  end
+
   let :readings do
     [
-        FactoryGirl.create(:reading, :asset => asset),
-        FactoryGirl.create(:reading, :asset => asset),
-        FactoryGirl.create(:reading, :asset => asset)
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class),
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class),
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class)
     ]
   end
 
@@ -95,7 +99,7 @@ describe DataAnalysisController do
     end
 
     it 'should return all readings for the site if a valid site_id is passed in' do
-      xhr :get, 'readings', :site_id => location.id
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id
       parsed_response = JSON.parse(response.body)
       parsed_response['readings'].should_not be_nil
       parsed_response['readings'].size.should eq(3)

@@ -21,11 +21,12 @@ describe("services.AnalysisService", function () {
         });
 
         it('Should call the requestSpy with the params expected', function () {
-            factory.readings(11, 23, 4, 35);
+            factory.readings(11, 23);
             expect(requestSpy).toHaveBeenCalledWith({
                 method: 'GET',
                 url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.ANALYSIS.READINGS).
-                    paramReplace(":site_id", 23).
+                    paramReplace(":site_id", 11).
+                    paramReplace(":monitor_class_id", 23).
                     build()
             });
         });

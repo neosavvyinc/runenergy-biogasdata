@@ -1,6 +1,6 @@
 {
   "name": "MacGyver",
-  "version": "0.1.25",
+  "version": "0.2.0",
   "main": [
     "lib/img/ui-bg_flat_0_aaaaaa_40x100.png",
     "lib/img/ui-bg_glass_75_ffffff_1x400.png",
@@ -32,21 +32,24 @@
     ".gitignore"
   ],
   "devDependencies": {
-    "angular": "1.0.7",
+    "angular-mocks": "~1.2.2",
     "underscore.string": "~2.3.3",
     "jquery": "~2.0.3",
-    "angular-mocks": "1.0.7",
     "jquery-file-upload": "~8.8.2",
     "jquery.ui": "~1.10.3"
   },
+  "dependencies": {
+    "angular": "~1.2.2",
+    "angular-animate": "~1.2.2"
+  },
   "homepage": "https://github.com/StartTheShift/MacGyver",
-  "_release": "0.1.25",
+  "_release": "0.2.0",
   "_resolution": {
     "type": "version",
-    "tag": "v0.1.25",
-    "commit": "bbe6e64bcbe37c6e31031ed8c104a353cd7fac60"
+    "tag": "v0.2.0",
+    "commit": "582ec7a19625d8cfab8a479619c32ea2e43fe350"
   },
   "_source": "git://github.com/StartTheShift/MacGyver.git",
-  "_target": "0.1.25",
+  "_target": "0.2.0",
   "_originalSource": "angular-macgyver"
 }

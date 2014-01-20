@@ -3,6 +3,7 @@ mac-scroll-spy
 ===
 Element to spy scroll event on  
   
+  
 ### Parameters
 **mac-scroll-spy-offset**  
 Type: `Integer`  
@@ -16,6 +17,14 @@ mac-scroll-spy-anchor
 Section in the spied element  
   
 ### Parameters
+**id**  
+Type: `String`  
+ID to identify anchor  
+  
+**mac-scroll-spy-anchor**  
+Type: `String`  
+ID to identify anchor (user either id or this attribute)  
+  
 **refresh-scroll-spy**  
 Type: `Event`  
 To refresh the top offset of all scroll spy anchors  

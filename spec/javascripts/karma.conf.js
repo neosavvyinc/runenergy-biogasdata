@@ -21,6 +21,7 @@ module.exports = function (config) {
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
             '../../vendor/assets/javascripts/bower_components/momentjs/moment.js',
             '../../vendor/assets/javascripts/bower_components/angular-cache/src/angular-cache.js',
+            '../../vendor/assets/javascripts/bower_components/angular-strap/dist/angular-strap.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core.js',
             '../../vendor/assets/javascripts/bower_components/angular-macgyver/lib/macgyver.js',

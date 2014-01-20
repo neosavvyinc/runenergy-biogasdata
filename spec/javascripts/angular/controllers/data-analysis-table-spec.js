@@ -34,8 +34,9 @@ describe("controllers.DataAnalysisTable", function () {
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 11};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(11, 45, undefined, undefined);
+                expect(readingsSpy).toHaveBeenCalledWith(45, 11);
             });
         });
 
@@ -48,8 +49,9 @@ describe("controllers.DataAnalysisTable", function () {
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 84};
+                newDataValues.selectedMonitorClass = {id: 14};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(undefined, 84, undefined, undefined);
+                expect(readingsSpy).toHaveBeenCalledWith(84, 14);
             });
         });
 
@@ -66,8 +68,9 @@ describe("controllers.DataAnalysisTable", function () {
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(undefined, 45, 78, undefined);
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17);
             });
         });
 

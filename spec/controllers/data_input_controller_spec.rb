@@ -19,20 +19,28 @@ describe DataInputController do
     FactoryGirl.create(:asset)
   end
 
+  let :location_a do
+    FactoryGirl.create(:location)
+  end
+
+  let :location_b do
+    FactoryGirl.create(:location)
+  end
+
   let :readings_a do
     [
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class),
-        FactoryGirl.create(:reading, :asset => asset_a, :monitor_class => asset_a.monitor_class)
+        FactoryGirl.create(:reading, :location => location_a, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :location => location_a, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :location => location_a, :asset => asset_a, :monitor_class => asset_a.monitor_class),
+        FactoryGirl.create(:reading, :location => location_a, :asset => asset_a, :monitor_class => asset_a.monitor_class)
     ]
   end
 
   let :readings_b do
     [
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class),
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class),
-        FactoryGirl.create(:reading, :asset => asset_b, :monitor_class => asset_b.monitor_class)
+        FactoryGirl.create(:reading, :location => location_b, :asset => asset_b, :monitor_class => asset_b.monitor_class),
+        FactoryGirl.create(:reading, :location => location_b, :asset => asset_b, :monitor_class => asset_b.monitor_class),
+        FactoryGirl.create(:reading, :location => location_b, :asset => asset_b, :monitor_class => asset_b.monitor_class)
     ]
   end
 
@@ -61,13 +69,13 @@ describe DataInputController do
     end
 
     it 'should return a max of 15 readings for the monitor_class and asset specified' do
-      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :asset_id => asset_a.id
+      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :site_id => location_a.id
       parsed_response = JSON.parse response.body
       parsed_response.size.should eq(4)
     end
 
-    it 'should return no readings when teh asset and monitor class dont both match' do
-      xhr :get, 'readings', :monitor_class_id => asset_b.monitor_class.id, :asset_id => asset_a.id
+    it 'should return no readings when the asset and monitor class dont both match' do
+      xhr :get, 'readings', :monitor_class_id => asset_b.monitor_class.id, :site_id => location_a.id
       parsed_response = JSON.parse response.body
       parsed_response.size.should eq(0)
     end
@@ -92,16 +100,14 @@ describe DataInputController do
         var.size.should be > 0
       end
 
-      it 'should define @sections' do
+      it 'should not define @sections' do
         var = controller.instance_variable_get(:@sections)
-        var.should_not be_nil
-        var.size.should be > 0
+        var.should be_nil
       end
 
-      it 'should define @assets' do
+      it 'should not define @assets' do
         var = controller.instance_variable_get(:@assets)
-        var.should_not be_nil
-        var.size.should be > 0
+        var.should be_nil
       end
 
       it 'should define @monitor_classes' do
@@ -141,8 +147,9 @@ describe DataInputController do
 
       it 'should create and return a field_log passed in' do
         FieldLog.all.size.should eq(0)
-        xhr :post, :create, :asset_id => asset_b.id,
+        xhr :post, :create, :asset_unique_identifier => asset_b.id,
             :monitor_class_id => asset_b.monitor_class.id,
+            :site_id => location_b.id,
             :field_log => {:name => 'Steve'},
             :reading => {:methane => 32},
             :date => '2013-09-10'
@@ -154,8 +161,9 @@ describe DataInputController do
 
       it 'should create and return the reading passed in' do
         Reading.all.size.should eq(7)
-        xhr :post, :create, :asset_id => asset_b.id,
+        xhr :post, :create, :asset_unique_identifier => asset_b.id,
             :monitor_class_id => asset_b.monitor_class.id,
+            :site_id => location_b.id,
             :field_log => {:name => 'Steve'},
             :reading => {:methane => 65},
             :date => '2010-11-20'
