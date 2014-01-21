@@ -8,6 +8,20 @@ describe('RunEnergy.Dashboard.Filters', function () {
         });
     });
 
+    describe('numericExpressionConversion', function () {
+        beforeEach(inject(function($filter) {
+            filter = $filter('numericExpressionConversion');
+        }));
+
+        it('Should return the blank value if the value is blank', function () {
+            expect(filter("")).toEqual("");
+        });
+
+        it('Should return single equal signs replaced by doubles', function () {
+            expect(filter("5 = 8")).toEqual("5 == 8");
+        });
+    });
+
     describe('numericExpression', function () {
         beforeEach(function () {
             inject(function ($injector) {
@@ -75,6 +89,14 @@ describe('RunEnergy.Dashboard.Filters', function () {
             });
         });
 
+        it('Should return undefined if the value is', function () {
+            expect(filter(undefined)).toBeUndefined();
+        });
+
+        it('Should return null if the value is', function () {
+            expect(filter(null)).toBeNull();
+        });
+
         it('Should play nice with 0 significant digits', function () {
             expect(filter(24, 0)).toEqual("24");
             expect(filter("256.009", 0)).toEqual("256");
@@ -104,6 +126,20 @@ describe('RunEnergy.Dashboard.Filters', function () {
         it('Should play nice with negative decimal numbers less than absolute value of 1', function () {
             expect(filter(-0.378, 1)).toEqual("-0.4");
             expect(filter(-0.390, 4)).toEqual("-0.3900");
+        });
+    });
+
+    describe('ifNumberNumericFilterRound', function () {
+        beforeEach(inject(function($filter) {
+            filter = $filter('ifNumberNumericFilterRound');
+        }));
+
+        it('Should just return the value if it is not a number', function () {
+            expect(filter("Mike")).toEqual("Mike");
+        });
+
+        it('Should call the other filter to round with significant digits', function () {
+            expect(filter("27.89646", 3)).toEqual('27.896');
         });
     });
 

@@ -54,6 +54,7 @@ describe("controllers.SiteController", function () {
 
         describe('dashboardHeaderData.site', function () {
             it('Should set the dashboardHeaderData.flareSpecification to the first item in the list of flare_specifications', function () {
+                dashboardHeaderData.flareSpecification = null;
                 expect(dashboardHeaderData.flareSpecification).toBeNull();
                 dashboardHeaderData.site = {flare_specifications: [1, 2, 3]};
                 $scope.$digest();

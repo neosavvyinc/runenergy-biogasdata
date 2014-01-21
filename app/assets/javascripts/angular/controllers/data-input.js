@@ -23,6 +23,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 }
             }
 
+            var monitorPointNameToLimits;
+            $scope.$watch('newDataValues.selectedSite', function(val) {
+                if (val && val.monitor_limits && val.monitor_limits.length) {
+                    monitorPointNameToLimits = {};
+                    for (var i = 0; i < val.monitor_limits.length; i++) {
+                        monitorPointNameToLimits[val.monitor_limits[i].monitor_point.name] = val.monitor_limits[i];
+                    }
+                } else {
+                    monitorPointNameToLimits = null;
+                }
+            });
             $scope.$watch('newDataValues.selectedSite', _getReadings);
             $scope.$watch('newDataValues.selectedMonitorClass', _getReadings);
 
@@ -38,19 +49,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 return builder.build();
             });
 
-            //Action Handlers
-            function _allValues(map) {
-                if (map) {
-                    for (var key in map) {
-                        if (Neosavvy.Core.Utils.StringUtils.isBlank(map[key])) {
-                            return false;
-                        }
+            $scope.getMonitorLimitWarning = memoize(function(key, value) {
+                if (monitorPointNameToLimits && key && value) {
+                    if (parseFloat(value) > monitorPointNameToLimits[key].upper_limit) {
+                        return "This value is above the upper limit of " + monitorPointNameToLimits[key].upper_limit;
+                    } else if (parseFloat(value) < monitorPointNameToLimits[key].lower_limit) {
+                        return "This value is below the lower limit of " + monitorPointNameToLimits[key].lower_limit;
                     }
-                    return true;
                 }
-                return false;
-            }
+                return "";
+            });
 
+            //Action Handlers
             $scope.onAdd = function () {
                 if (newDataValues.selectedSite &&
                     newDataValues.selectedMonitorClass) {

@@ -17,6 +17,8 @@
       .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedMonitorClass.monitor_points_for_all_locations'}
         %label{'ng-bind' => 'mp.name'}
         %input{'ng-model' => 'currentReading[mp.name]'}
+        .limit-warning
+          %label{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
     .span8{'ng-show' => 'newDataValues.selectedMonitorClass != null'}
