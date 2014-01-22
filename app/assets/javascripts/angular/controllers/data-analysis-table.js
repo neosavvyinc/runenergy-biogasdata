@@ -17,6 +17,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 }
             };
 
+            $scope.getColumnLabel = memoize(function (key, monitorPoint) {
+                if (key && monitorPoint && monitorPoint.unit) {
+                    return key + " (" + monitorPoint.unit + ")";
+                }
+                return key;
+            });
+
             //Watchers
             $scope.$watch('data', function (val) {
                 if (val && val.length) {
@@ -33,6 +40,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             //Initialization
             $scope.data = [];
+            $scope.monitorPoints = [];
             $scope.monitorClass = null;
             $scope.page = 0;
             $scope.newDataValues = newDataValues;

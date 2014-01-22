@@ -1,10 +1,11 @@
 .data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length', :style => 'display: none;'}
+  %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'monitorPoints'}
   %label.label.label-important{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
         %th{'ng-repeat' => '(key, value) in data[0]'}
-          %p.name{'ng-bind' => 'key'}
+          %p.name{'ng-bind' => 'getColumnLabel(key, monitorPoints[key])'}
           //%p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
       %tr
         %th{'ng-repeat' => '(key, value) in filters'}

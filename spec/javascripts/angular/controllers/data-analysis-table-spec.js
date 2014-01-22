@@ -20,6 +20,30 @@ describe("controllers.DataAnalysisTable", function () {
         });
     });
 
+    describe('Getters', function () {
+        describe('getColumnLabel', function () {
+            it('Should return undefined when passed undefined for the key', function () {
+                expect($scope.getColumnLabel(undefined, "%")).toBeUndefined();
+            });
+
+            it('Should return the key when passed null for the key', function () {
+                expect($scope.getColumnLabel(null, "pH")).toBeNull();
+            });
+
+            it('Should return the key when passed a blank string for the key', function () {
+                expect($scope.getColumnLabel("", "Oz.")).toEqual("");
+            });
+
+            it('Should return just the key', function () {
+                expect($scope.getColumnLabel("Methane", null)).toEqual("Methane");
+            });
+
+            it('Should return the key plus the units if defined', function () {
+                expect($scope.getColumnLabel("Methane", {unit: "%"})).toEqual("Methane (%)");
+            });
+        });
+    });
+
     describe('Watchers', function () {
         describe('newDataValues.selectedLandfillOperator', function () {
             beforeEach(function () {
@@ -107,6 +131,10 @@ describe("controllers.DataAnalysisTable", function () {
 
         it('Should add newDataValues to the $scope', function () {
             expect($scope.newDataValues).toEqual(newDataValues);
+        });
+
+        it('Should set $scope.monitorPoints to an empty array', function () {
+            expect($scope.monitorPoints).toEqual([]);
         });
     });
 });

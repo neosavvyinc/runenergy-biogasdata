@@ -1,4 +1,4 @@
 .data-analysis
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class
-  = render 'shared/data_table', :angular_controller => 'controllers.DataAnalysisTable', :data => [], :monitor_class => @monitor_classes.first
+  = render 'shared/data_table', :angular_controller => 'controllers.DataAnalysisTable', :monitor_points => @monitor_points
