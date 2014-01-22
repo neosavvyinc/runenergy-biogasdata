@@ -47,4 +47,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
             $scope.getColumnVariation = function (key, optionA, optionB) {
                 return (!$scope.readingMods.deletedColumns[key] ? optionA : optionB);
             };
+
+            $scope.monitorPointLabelFunction = function (item) {
+                if (item) {
+                    if (item.name && item.unit) {
+                        return item.name + " (" + item.unit + ")";
+                    }
+                    return item.name;
+                }
+                return "";
+            };
         }]);

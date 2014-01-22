@@ -127,5 +127,27 @@ describe("controllers.ImportTable", function () {
                 expect($scope.getColumnVariation("Georgie", 54, 46)).toEqual(46);
             });
         });
+
+        describe('monitorPointLabelFunction', function () {
+            it('Should return a blank string when passed undefined', function () {
+                expect($scope.monitorPointLabelFunction(undefined)).toEqual("");
+            });
+
+            it('Should return blank string when passed null', function () {
+                expect($scope.monitorPointLabelFunction(null)).toEqual("");
+            });
+
+            it('Should return a blank string when passed one', function () {
+                expect($scope.monitorPointLabelFunction("")).toEqual("");
+            });
+
+            it('Should return item.name if the item is defined', function () {
+                expect($scope.monitorPointLabelFunction({name: "Charles"})).toEqual("Charles");
+            });
+
+            it('Should return item.name (item.unit) if both name and unit are defined', function () {
+                expect($scope.monitorPointLabelFunction({name: "Charles", unit: "No."})).toEqual("Charles (No.)");
+            });
+        });
     });
 });
