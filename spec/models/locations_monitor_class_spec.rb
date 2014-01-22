@@ -27,6 +27,21 @@ describe LocationsMonitorClass do
     locations_monitor_class.should_not be_nil
   end
 
+  describe 'self.lazy_load' do
+
+    it 'should be able to create a new one' do
+      lmc = LocationsMonitorClass.lazy_load(another_location.id, monitor_class.id)
+      lmc.id.should_not be_nil
+      lmc.id.should_not eq(locations_monitor_class.id)
+    end
+
+    it 'should be able to grab existing' do
+      lmc = LocationsMonitorClass.lazy_load(location.id, monitor_class.id)
+      lmc.id.should eq(locations_monitor_class.id)
+    end
+
+  end
+
   describe 'self.create_caches' do
     it 'should be able to work with an existing LocationsMonitorClass' do
       lmc = LocationsMonitorClass.create_caches(location.id, monitor_class.id, {:name => 'Stevie'}, {:hand => true}, 'huey')

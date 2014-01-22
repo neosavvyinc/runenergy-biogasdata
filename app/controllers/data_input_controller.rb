@@ -52,6 +52,24 @@ class DataInputController < DataInterfaceController
     end
   end
 
+  def create_monitor_point
+    unless ajax_value_or_nil(params[:site_id]).nil? or
+        ajax_value_or_nil(params[:monitor_class_id]).nil? or
+        ajax_value_or_nil(params[:name]).nil? or
+        ajax_value_or_nil(params[:unit]).nil?
+      monitor_point = MonitorPoint.create(:name => params[:name], :unit => params[:unit])
+
+      #Add MonitorPoint to the LocationsMonitorClass for the location and monitor class
+      LocationsMonitorClass.
+          lazy_load(params[:site_id], params[:monitor_class_id]).
+          monitor_points << monitor_point
+
+      render json: monitor_point
+    else
+      render json: {:error => 'Invalid params for creating a monitor point.'}, :status => 400
+    end
+  end
+
   def import
     @readings = nil
     if request.method === 'POST'

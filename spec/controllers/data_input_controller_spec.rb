@@ -27,6 +27,10 @@ describe DataInputController do
     FactoryGirl.create(:location)
   end
 
+  let :monitor_class do
+    FactoryGirl.create(:monitor_class)
+  end
+
   let :readings_a do
     [
         FactoryGirl.create(:reading, :location => location_a, :asset => asset_a, :monitor_class => asset_a.monitor_class),
@@ -173,6 +177,48 @@ describe DataInputController do
         Reading.all.size.should eq(8)
       end
 
+    end
+  end
+
+  describe 'create_monitor_point' do
+    it 'should return an error response of status 400 if there is no site_id' do
+      xhr :post, :create_monitor_point, :monitor_class_id => monitor_class.id, :name => 'Spif', :unit => 'Hz.'
+    end
+
+    it 'should return an error response of status 400 if there is no monitor_class_id' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :name => 'Spif', :unit => 'Hz.'
+    end
+
+    it 'should return an error response of status 400 if there is no name' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :unit => 'Hz.'
+      response.status.should eq(400)
+    end
+
+    it 'should return an error respoinse of status 400 if there is no unit' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :name => 'Water Pressure'
+      response.status.should eq(400)
+    end
+
+    it 'should create a new monitor point from the params' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :name => 'Water Pressure', :unit => 'Hz.'
+      JSON.parse(response.body)['id'].should eq(MonitorPoint.last.id)
+    end
+
+    it 'should apply the name to the new monitor point' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :name => 'Volume', :unit => 'Dcb.'
+      JSON.parse(response.body)['name'].should eq('Volume')
+    end
+
+    it 'should apply the name to the new monitor point' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :name => 'Volume', :unit => 'mli.'
+      JSON.parse(response.body)['unit'].should eq('mli.')
+    end
+
+    it 'should add the monitor point to the LocationsMonitClass for the pair' do
+      xhr :post, :create_monitor_point, :site_id => location_a.id, :monitor_class_id => monitor_class.id, :name => 'Volume', :unit => 'mli.'
+      monitor_points = LocationsMonitorClass.where(:location_id => location_a.id, :monitor_class_id => monitor_class.id).first.monitor_points
+      monitor_points.size.should eq(1)
+      monitor_points.first.id.should eq(JSON.parse(response.body)['id'])
     end
   end
 

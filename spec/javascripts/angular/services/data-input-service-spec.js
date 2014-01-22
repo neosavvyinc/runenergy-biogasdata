@@ -38,6 +38,17 @@ describe("services.DataInputService", function () {
         });
     });
 
+    describe('createMonitorPoint', function () {
+        it('Should call the requestSpy with the parameters', function () {
+            service.createMonitorPoint(15, 17, "Methane", "%");
+            expect(requestSpy).toHaveBeenCalledWith({
+                method: 'POST',
+                url: routes.DATA_INPUT.CREATE_MONITOR_POINT,
+                data: {site_id: 15, monitor_class_id: 17, name: "Methane", unit: "%"}
+            });
+        });
+    });
+
     describe('readings', function () {
         it('Should call nsServiceExtensions with the required parameters', function () {
             service.readings(1005, 890);

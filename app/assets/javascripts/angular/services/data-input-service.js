@@ -19,6 +19,18 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                         }
                     });
                 },
+                createMonitorPoint: function (siteId, monitorClassId, name, unit) {
+                    return nsServiceExtensions.request({
+                        method: 'POST',
+                        url: routes.DATA_INPUT.CREATE_MONITOR_POINT,
+                        data: {
+                            site_id: siteId,
+                            monitor_class_id: monitorClassId,
+                            name: name,
+                            unit: unit
+                        }
+                    });
+                },
                 readings: function (siteId, monitorClassId) {
                     return nsServiceExtensions.request({
                         method: 'GET',

@@ -1,0 +1,9 @@
+.create-monitor-point{'ng-controller' => 'controllers.CreateMonitorPoint'}
+  %h4 New Monitor Point
+  %form{'name' => 'monitorPointForm'}
+    %label Name
+    %input{'ng-model' => 'name', 'required' => true}
+    %label Unit
+    %input{'ng-model' => 'unit', 'required' => true}
+    .clearfix
+      %a.btn.btn-primary{'ng-click' => 'onCreateMonitorPoint(monitorPointForm.$valid)'} Create Monitor Point
