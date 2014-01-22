@@ -1,7 +1,7 @@
 class DataInterfaceController < ApplicationController
 
   protected
-  def all_view_classes(sections=true, assets=true)
+  def all_view_classes(sections=true, assets=true, monitor_points=true)
     @landfill_operators = User.where(:user_type_id => UserType.CUSTOMER.id)
     @sites = Location.all
     if sections
@@ -14,6 +14,9 @@ class DataInterfaceController < ApplicationController
     @filter_types = DataAnalysisFilter.all.map {
         |d| {:filter => d, :name => d.description}
     }
+    if monitor_points
+      @monitor_points = MonitorPoint.map_with_key(MonitorPoint.all, :name)
+    end
   end
 
   def all_dashboard_action_selections

@@ -22,4 +22,4 @@
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
     .span8{'ng-show' => 'newDataValues.selectedMonitorClass != null'}
-      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate'
+      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points

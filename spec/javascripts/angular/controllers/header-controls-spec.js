@@ -14,9 +14,16 @@ describe("controllers.HeaderControlsController", function () {
             controller = $injector.get('$controller')("controllers.HeaderControlsController", {$scope: $scope});
         });
     });
+    beforeEach(function () {
+        this.addMatchers({
+           containsUrlParam: function (base, param) {
+               return (this.actual === (base + "?" + param));
+           }
+        });
+    });
 
     describe('Getters', function () {
-        describe('getDataAnalysisLink', function () {
+        describe('getDataAnalysisLink, getDataCreateLink, getDataImportLink', function () {
 
             beforeEach(function () {
                 newDataValues.selectedLandfillOperator = null;
@@ -28,6 +35,8 @@ describe("controllers.HeaderControlsController", function () {
 
             it('Should just return the hashed link if there are no newDataValues', function () {
                 expect($scope.getDataAnalysisLink()).toEqual("/data_analysis#");
+                expect($scope.getDataCreateLink()).toEqual("/data_input/create#");
+                expect($scope.getDataImportLink()).toEqual("/data_input/import#");
             });
 
             it('Should add the operator param when defined', function () {
@@ -37,7 +46,7 @@ describe("controllers.HeaderControlsController", function () {
 
             it('Should add the site param when defined', function () {
                 newDataValues.selectedSite = {id: 82};
-                expect($scope.getDataAnalysisLink()).toEqual("/data_analysis#?site=82");
+                expect($scope.getDataAnalysisLink()).containsUrlParam("/data_analysis#", "site=82");
             });
 
             it('Should add the monitor_class param when defined', function () {

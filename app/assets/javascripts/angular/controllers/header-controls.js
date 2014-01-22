@@ -26,12 +26,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.HeaderControlsController
                 }
             };
 
+            $scope.getDataImportLink = function () {
+                return _buildParameterized('/data_input/import#');
+            };
+
             $scope.getDataCreateLink = function() {
-                return _buildParameterized('/data_input/create#')
+                return _buildParameterized('/data_input/create#');
             };
 
             $scope.getDataAnalysisLink = function () {
-                return _buildParameterized("/data_analysis#")
+                return _buildParameterized("/data_analysis#");
             };
 
 

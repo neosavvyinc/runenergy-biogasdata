@@ -4,7 +4,6 @@ class DataAnalysisController < DataInterfaceController
 
   def index
     all_view_classes
-    @monitor_points = MonitorPoint.map_with_key(MonitorPoint.all, :name)
   end
 
   def readings

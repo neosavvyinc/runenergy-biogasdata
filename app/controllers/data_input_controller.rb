@@ -48,7 +48,7 @@ class DataInputController < DataInterfaceController
         render json: {:error => 'Invalid param for reading create request.'}, :status => 400
       end
     else
-      all_view_classes(false, false)
+      all_view_classes(false, false, false)
     end
   end
 
@@ -86,7 +86,7 @@ class DataInputController < DataInterfaceController
         @error = 'Column Name Row and First Data Row are required for import.'
       end
     end
-    all_view_classes(false, false)
+    all_view_classes(false, false, false)
   end
 
   def complete_import
