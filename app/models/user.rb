@@ -3,10 +3,12 @@ class User < ActiveRecord::Base
   # :token_authenticatable, :confirmable,
   # :lockable, :timeoutable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
+
+  before_save :ensure_authentication_token
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids, :authentication_token
   belongs_to :user_type
   has_many :user_groups_users
   has_many :user_groups, :through => :user_groups_users
@@ -15,6 +17,19 @@ class User < ActiveRecord::Base
   has_many :locations_users
   has_many :locations, :through => :locations_users
   # attr_accessible :title, :body
+
+  def all_locations
+    if is_overseer?
+      Location.all
+    else
+      user_group_locations = (user_groups.map {|ug| ug.locations}).flatten
+      if user_group_locations and user_group_locations.size
+        locations + user_group_locations
+      else
+        locations
+      end
+    end
+  end
 
   def is_overseer?
     self.user_type == UserType.OVERSEER

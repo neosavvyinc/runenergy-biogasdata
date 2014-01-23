@@ -34,6 +34,7 @@ Biogasdata::Application.routes.draw do
 
   #Mobile Rig
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'
+  match 'api/token', :to => 'api::tokens#create', :as => 'token_create'
   match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
   unless Rails.env.production?

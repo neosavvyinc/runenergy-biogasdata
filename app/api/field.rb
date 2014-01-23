@@ -20,7 +20,7 @@ module Field
 
     resource :sites do
       get do
-        Location.all.as_json(:methods => [:monitor_class_ids])
+        current_user.all_locations
       end
     end
 
@@ -59,6 +59,28 @@ module Field
                            :field_log_id => field_log.id,
                            :data => JSON.dump(params[:reading])
                        })
+      end
+    end
+
+    #API Authentication, may make sense to pull out into reusable form
+    helpers do
+      def warden
+        env['warden']
+      end
+
+      def authenticated?
+        if warden.authenticated?
+          return true
+        elsif params[:auth_token] and
+            User.find_by_authentication_token(params[:auth_token])
+          return true
+        else
+          error!({'error' => 'Unauth 401. Token invalid'}, 401)
+        end
+      end
+
+      def current_user
+        warden.user ||  User.find_by_authentication_token(params[:auth_token])
       end
     end
 
