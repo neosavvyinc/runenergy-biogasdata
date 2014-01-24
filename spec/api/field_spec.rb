@@ -4,8 +4,15 @@ describe Field::API do
 
   prefix = '/field/v1/'
 
-  def gimme_monitor_class(mp_count, fl_count)
-    lmc = FactoryGirl.create(:locations_monitor_class)
+  def gimme_monitor_class(location, mp_count, fl_count)
+    lmc = FactoryGirl.create(:locations_monitor_class, :location => location, :monitor_class => FactoryGirl.create(:monitor_class))
+    mp_count.times do
+      lmc.monitor_points << FactoryGirl.create(:monitor_point)
+    end
+    fl_count.times do
+      lmc.field_log_points << FactoryGirl.create(:field_log_point)
+    end
+    lmc
   end
 
   let :user do
@@ -30,9 +37,11 @@ describe Field::API do
     l
   end
 
+  lmc_a = nil, lmc_b = nil
+
   before :each do
-    location_a.should_not be_nil
-    location_b.should_not be_nil
+    lmc_a = gimme_monitor_class(location_a, 3, 7)
+    lmc_b = gimme_monitor_class(location_b, 10, 2)
   end
 
   describe 'sites' do
@@ -53,7 +62,10 @@ describe Field::API do
     end
 
     it 'should include locations_monitor_classes on each location' do
-      
+      get "#{prefix}sites", :authentication_token => user.authentication_token
+      parsed_response = JSON.parse(response.body)
+      parsed_response[0]['locations_monitor_classes'].size.should eq(1)
+      parsed_response[0]['locations_monitor_classes'][0]['id'].should eq(lmc_a.id)
     end
 
     it 'should include monitor_points on each locations_monitor_class' do
