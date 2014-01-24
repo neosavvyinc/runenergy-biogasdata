@@ -15,6 +15,7 @@ class Location < ActiveRecord::Base
   has_many :locations_users
   has_many :users, :through => :locations_users
   has_many :monitor_limits
+  has_many :assets
 
   def display_name
     site_name || "Unnamed #{state.name}, #{country.name}"

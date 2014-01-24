@@ -14,43 +14,43 @@ describe User do
     FactoryGirl.create(:user, :user_type => UserType.WORKER)
   end
 
+  location_a = nil, location_b = nil, location_c = nil
+
+  let :user_a do
+    FactoryGirl.create(:user)
+  end
+
+  let :user_b do
+    FactoryGirl.create(:user)
+  end
+
+  let :user_c do
+    FactoryGirl.create(:user)
+  end
+
+  let :user_group_a do
+    ug = FactoryGirl.create(:user_group)
+    ug.users << user_a
+    ug
+  end
+
+  let :user_group_c do
+    ug = FactoryGirl.create(:user_group)
+    ug.users << user_c
+    ug
+  end
+
+  before(:each) do
+    location_a = FactoryGirl.create(:location, :site_name => 'Stubs Landfill')
+    location_a.user_groups << user_group_a
+    location_b = FactoryGirl.create(:location, :site_name => 'Irish Pub')
+    location_b.users << user_b
+    location_b.user_groups << user_group_c
+    location_c = FactoryGirl.create(:location, :site_name => 'Michael Jordan')
+    location_c.users << user_c
+  end
+
   describe 'all_locations' do
-    location_a = nil, location_b = nil, location_c = nil
-
-    let :user_a do
-      FactoryGirl.create(:user)
-    end
-
-    let :user_b do
-      FactoryGirl.create(:user)
-    end
-
-    let :user_c do
-      FactoryGirl.create(:user)
-    end
-
-    let :user_group_a do
-      ug = FactoryGirl.create(:user_group)
-      ug.users << user_a
-      ug
-    end
-
-    let :user_group_c do
-      ug = FactoryGirl.create(:user_group)
-      ug.users << user_c
-      ug
-    end
-
-    before(:each) do
-      location_a = FactoryGirl.create(:location, :site_name => 'Stubs Landfill')
-      location_a.user_groups << user_group_a
-      location_b = FactoryGirl.create(:location, :site_name => 'Irish Pub')
-      location_b.users << user_b
-      location_b.user_groups << user_group_c
-      location_c = FactoryGirl.create(:location, :site_name => 'Michael Jordan')
-      location_c.users << user_c
-    end
-
     it 'should return all the locations in the db for an overseer' do
       overseer.all_locations.size.should eq(3)
       overseer.all_locations.include?(location_a).should be_true
@@ -79,6 +79,20 @@ describe User do
       locations.size.should eq(2)
       locations[0].site_name.should eq('Michael Jordan')
       locations[1].site_name.should eq('Irish Pub')
+    end
+  end
+
+  describe 'is_entitled_to?' do
+    it 'should return false if there is no location with the id' do
+      user_a.is_entitled_to?(9999).should be_false
+    end
+
+    it 'should return false for nil' do
+      user_b.is_entitled_to?(nil).should be_false
+    end
+
+    it 'should return true for a location the user is entitled to' do
+      user_c.is_entitled_to?(location_c.id.to_s).should be_true
     end
   end
 

@@ -31,6 +31,10 @@ class User < ActiveRecord::Base
     end
   end
 
+  def is_entitled_to?(location_id)
+    all_locations.map {|l| l.id}.include?(location_id.to_i)
+  end
+
   def is_overseer?
     self.user_type == UserType.OVERSEER
   end
