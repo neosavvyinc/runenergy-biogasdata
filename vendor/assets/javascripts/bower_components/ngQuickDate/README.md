@@ -6,8 +6,9 @@ ngQuickDate is an [Angular.js](http://angularjs.org/) Date/Time picker directive
 
 ## Download
 
-* [Version 1.0.0-alpha.2](https://github.com/adamalbrecht/ngQuickDate/archive/v1.0.0-alpha.2.zip) - Compatible with Angular 1.0.x
-* Version 1.2 - Coming soon. Compatible with Angular 1.2.x
+* [Version 1.2.1](https://github.com/adamalbrecht/ngQuickDate/archive/v1.2.1.zip) - Compatible with Angular 1.2.x
+
+* For a version compatible with Angular 1.0.x, checkout the angular-1.0 branch.
 
 You can also install the package using [Bower](http://bower.io).
 
@@ -19,7 +20,7 @@ Or add it to your bower.json file:
 
 ```javascript
 dependencies: {
-  "ngQuickDate": "~1.0.0"
+  "ngQuickDate": "~1.2.0"
 }
 ```
 
@@ -58,6 +59,7 @@ There are a number of options that be configured inline with attributes. Here ar
 | disable-timepicker   | false               | If true, the timepicker will be disabled and the default label format will be just the date |
 | disable-clear-button | false               | If true, the clear button will be removed                                                   |
 | on-change            | null                | Set to a function that will be called when the date is changed                              |
+| init-value           | null                | Set the initial value of the date inline                                                    |
 
 **Example:**
 

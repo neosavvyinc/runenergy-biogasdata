@@ -33,7 +33,7 @@ class DataInputController < DataInterfaceController
           not ajax_value_or_nil(params[:monitor_class_id]).nil? and
           not ajax_value_or_nil(params[:field_log]).nil? and
           not ajax_value_or_nil(params[:reading]).nil? and
-          not ajax_value_or_nil(params[:date]).nil?
+          not ajax_value_or_nil(params[:date_time]).nil?
         field_log = FieldLog.find_or_create_by_data(params[:field_log])
         asset = Asset.lazy_load(params[:site_id], params[:monitor_class_id], params[:asset_unique_identifier])
         reading = Reading.create({:data => params[:reading],
@@ -41,8 +41,7 @@ class DataInputController < DataInterfaceController
                                   :asset_id => asset.id,
                                   :monitor_class_id => params[:monitor_class_id],
                                   :field_log_id => field_log.id,
-                                  :taken_at => date_time_from_js(params[:date],
-                                                                 ajax_value_or_nil(params[:time]))})
+                                  :taken_at => DateTime.strptime(params[:date_time].to_s, '%s')})
         render json: {:field_log => field_log, :reading => reading}
       else
         render json: {:error => 'Invalid param for reading create request.'}, :status => 400

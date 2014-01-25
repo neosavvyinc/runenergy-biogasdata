@@ -1,4 +1,4 @@
-.data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length', :style => 'display: none;'}
+.data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length'}
   %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'monitorPoints'}
   %label.label.label-important{'ng-bind' => 'message'}
   %table.table.flare-table.table-striped.table-condensed.table-bordered

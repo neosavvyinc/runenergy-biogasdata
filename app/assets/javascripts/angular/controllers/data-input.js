@@ -9,7 +9,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             $scope.assetUniqueIdentifier = "";
             $scope.data = [];
             $scope.readingDate = null;
-            $scope.readingTime = null;
 
             //Watchers
             function _getReadings() {
@@ -80,8 +79,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                         $scope.assetUniqueIdentifier,
                         $scope.currentFieldLog,
                         $scope.currentReading,
-                        $scope.readingDate,
-                        $scope.readingTime).then(_getReadings);
+                        $scope.readingDate).then(_getReadings);
                 } else {
                     $scope.error = "Please fill in all fields for the reading.";
                 }

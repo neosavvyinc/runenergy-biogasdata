@@ -23,7 +23,6 @@
 //= require base64.min
 //= require bower_components/momentjs/moment
 //= require bower_components/ngQuickDate/dist/ng-quick-date.js
-//= require bower_components/ng-grid/ng-grid-2.0.7.min
 //= require bower_components/angular-cache/src/angular-cache.js
 //= require bower_components/neosavvy-javascript-core/neosavvy-javascript-core
 //= require bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core

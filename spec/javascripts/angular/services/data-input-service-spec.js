@@ -13,7 +13,8 @@ describe("services.DataInputService", function () {
 
     describe('createReading', function () {
         it('Should call the requestSpy with the given properties in a post request', function () {
-            service.createReading(9, 7, "AWW567", 5, 4, 3, 1);
+            var myDate = new Date();
+            service.createReading(9, 7, "AWW567", 5, 4, myDate);
             expect(requestSpy).toHaveBeenCalledWith({
                 method: 'POST',
                 url: routes.DATA_INPUT.CREATE,
@@ -23,15 +24,14 @@ describe("services.DataInputService", function () {
                     asset_unique_identifier: "AWW567",
                     field_log: 5,
                     reading: 4,
-                    date: 3,
-                    time: 1
+                    date_time: parseInt(myDate.getTime() / 1000)
                 }
             });
         });
 
         it('Should return the value from nsServiceExtensions', function () {
             var myResult;
-            service.createReading(9, 7, 5, 4, 3, 1).then(function (result) {
+            service.createReading(9, 7, 5, 4, 3, new Date()).then(function (result) {
                 myResult = result
             });
             expect(myResult).toEqual([1, 2, 3]);

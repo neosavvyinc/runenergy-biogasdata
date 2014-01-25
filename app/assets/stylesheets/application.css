@@ -11,8 +11,6 @@
  *= require_self
  *= require macgyver
  *= require ng-quick-date
- *= require jquery.ui.datepicker
- *= require ng-grid.min
  *= require core
  *= require_tree .
  */
