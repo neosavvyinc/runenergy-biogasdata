@@ -9,6 +9,8 @@ rm -r vendor/assets/bower_components/angular
 rm -r vendor/assets/javascripts/bower_components/angular
 rm -r vendor/assets/bower_components/angular-route
 rm -r vendor/assets/javascripts/bower_components/angular-route
+rm -r vendor/assets/bower_components/angular-animate
+rm -r vendor/assets/javascripts/bower_components/angular-animate
 rm -r vendor/assets/bower_components/handlebars
 rm -r vendor/assets/javascripts/bower_components/handlebars
 
