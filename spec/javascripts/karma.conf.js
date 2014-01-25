@@ -14,14 +14,17 @@ module.exports = function (config) {
 
         // list of files / patterns to load in the browser
         files: [
-            'lib/angular.js',
-            'lib/angular-*.js',
-            'lib/test-helpers.js',
             '../../vendor/assets/javascripts/bower_components/jquery/jquery.js',
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
             '../../vendor/assets/javascripts/bower_components/momentjs/moment.js',
+            '../../vendor/assets/javascripts/bower_components/angular/angular.js',
+            '../../vendor/assets/javascripts/bower_components/angular-route/angular-route.js',
+            'lib/angular-mocks.js',
+            'lib/angular-resource.js',
+            'lib/test-helpers.js',
             '../../vendor/assets/javascripts/bower_components/angular-cache/src/angular-cache.js',
             '../../vendor/assets/javascripts/bower_components/angular-strap/dist/angular-strap.js',
+            '../../vendor/assets/javascripts/bower_components/ngQuickDate/dist/ng-quick-date.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-core/neosavvy-javascript-core.js',
             '../../vendor/assets/javascripts/bower_components/neosavvy-javascript-angular-core/neosavvy-javascript-angular-core.js',
             '../../vendor/assets/javascripts/bower_components/angular-macgyver/lib/macgyver.js',

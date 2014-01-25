@@ -6,7 +6,7 @@
       %h5 Asset
       %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
-      %input{'ng-model' => 'readingDate', 'type' => 'text', 'date-format' => 'dd/mm/yyyy', 'bs-datepicker' => true}
+      %datepicker{'ng-model' => 'readingDate'}
       %h5 Time
       %re-masked-time-input{'time' => 'readingTime'}
       %h5 Field Log
