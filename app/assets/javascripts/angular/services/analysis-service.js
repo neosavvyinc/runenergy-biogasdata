@@ -2,14 +2,20 @@ RunEnergy.Dashboard.Services.factory('services.AnalysisService',
     ['nsServiceExtensions', 'constants.Routes',
         function (nsServiceExtensions, routes) {
             return {
-                readings: function (siteId, monitorClassId) {
+                readings: function (siteId, monitorClassId, startDateTime, endDateTime) {
                     if (siteId && monitorClassId) {
+                        var builder = new Neosavvy.Core.Builders.RequestUrlBuilder(routes.ANALYSIS.READINGS).
+                            paramReplace(":site_id", siteId).
+                            paramReplace(":monitor_class_id", monitorClassId);
+                        if (startDateTime) {
+                            builder.addParam('start_date_time', parseInt(startDateTime.getTime() / 1000));
+                        }
+                        if (endDateTime) {
+                            builder.addParam('end_date_time', parseInt(endDateTime.getTime() / 1000));
+                        }
                         return nsServiceExtensions.request({
                             method: 'GET',
-                            url: new Neosavvy.Core.Builders.RequestUrlBuilder(routes.ANALYSIS.READINGS).
-                                paramReplace(":site_id", siteId).
-                                paramReplace(":monitor_class_id", monitorClassId).
-                                build()
+                            url: builder.build()
                         });
                     }
                     else {

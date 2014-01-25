@@ -60,7 +60,32 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedSite = {id: 45};
                 newDataValues.selectedMonitorClass = {id: 11};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 11);
+                expect(readingsSpy).toHaveBeenCalledWith(45, 11, null, null);
+            });
+
+            it('Should call with the startDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+            });
+
+            it('Should call with the endDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+            });
+
+            it('Should call with both the start and end dates if they are available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 
@@ -75,7 +100,32 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedSite = {id: 84};
                 newDataValues.selectedMonitorClass = {id: 14};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(84, 14);
+                expect(readingsSpy).toHaveBeenCalledWith(84, 14, null, null);
+            });
+
+            it('Should call with the startDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+            });
+
+            it('Should call with the endDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+            });
+
+            it('Should call with both the start and end dates if they are available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 
@@ -94,7 +144,32 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedSite = {id: 45};
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17);
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, null);
+            });
+
+            it('Should call with the startDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+            });
+
+            it('Should call with the endDate if that is available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+            });
+
+            it('Should call with both the start and end dates if they are available', function () {
+                newDataValues.selectedSite = {id: 45};
+                newDataValues.selectedMonitorClass = {id: 17};
+                $scope.startDateTime = new Date();
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 
@@ -135,6 +210,14 @@ describe("controllers.DataAnalysisTable", function () {
 
         it('Should set $scope.monitorPoints to an empty array', function () {
             expect($scope.monitorPoints).toEqual([]);
+        });
+
+        it('Should set startDateTime to null', function () {
+            expect($scope.startDateTime).toBeNull();
+        });
+
+        it('Should set endDateTime to null', function () {
+            expect($scope.endDateTime).toBeNull();
         });
     });
 });
