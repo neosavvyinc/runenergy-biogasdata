@@ -24,7 +24,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             }
 
             var monitorPointNameToLimits;
-            $scope.$watch('newDataValues.selectedSite', function(val) {
+            $scope.$watch('newDataValues.selectedSite', function (val) {
                 if (val && val.monitor_limits && val.monitor_limits.length) {
                     monitorPointNameToLimits = {};
                     for (var i = 0; i < val.monitor_limits.length; i++) {
@@ -33,9 +33,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 } else {
                     monitorPointNameToLimits = null;
                 }
+
+                //Clear the models
+                $scope.onReset();
+
+                _getReadings();
             });
-            $scope.$watch('newDataValues.selectedSite', _getReadings);
-            $scope.$watch('newDataValues.selectedMonitorClass', _getReadings);
+            $scope.$watch('newDataValues.selectedMonitorClass', function () {
+                //Clear the models
+                $scope.onReset();
+
+                _getReadings();
+            });
 
             //Getters
             $scope.getAssetAutoCompleteUrl = memoize(function(selectedSite, selectedMonitorClass) {
