@@ -38,7 +38,7 @@ describe Field::API do
   end
 
   let :existing_asset do
-    FactoryGirl.create(:asset, :location => location_b, :unique_identifier => '25OR624')
+    FactoryGirl.create(:asset, :location => location_b, :monitor_class => location_b.monitor_classes[0], :unique_identifier => '25OR624')
   end
 
   let :existing_field_log do
@@ -49,9 +49,9 @@ describe Field::API do
 
   before :each do
     existing_field_log.should_not be_nil
-    existing_asset.should_not be_nil
     lmc_a = gimme_monitor_class(location_a, 3, 7)
     lmc_b = gimme_monitor_class(location_b, 10, 2)
+    existing_asset.should_not be_nil
   end
 
   describe 'token' do
