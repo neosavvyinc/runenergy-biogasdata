@@ -2,8 +2,8 @@ class DataInterfaceController < ApplicationController
 
   protected
   def all_view_classes(sections=true, assets=true, monitor_points=true)
-    @landfill_operators = User.where(:user_type_id => UserType.CUSTOMER.id)
-    @sites = Location.all
+    @landfill_operators = current_user.all_operators
+    @sites = current_user.all_locations
     if sections
       @sections = Section.all
     end

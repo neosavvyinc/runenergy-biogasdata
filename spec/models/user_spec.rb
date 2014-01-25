@@ -50,6 +50,61 @@ describe User do
     location_c.users << user_c
   end
 
+  describe 'all_operators' do
+
+    let :user_group do
+      ug = FactoryGirl.create(:user_group)
+      ug.users << worker
+      ug
+    end
+
+    let :location do
+      l = FactoryGirl.create(:location)
+      l.users << customer
+      l.user_groups << user_group
+      l
+    end
+
+    let :location_other do
+      l = FactoryGirl.create(:location)
+      l.users << worker
+      l.users << user_c
+      l
+    end
+
+    let :user_b do
+      FactoryGirl.create(:user, :user_type => UserType.CUSTOMER)
+    end
+
+    let :user_c do
+      FactoryGirl.create(:user, :user_type => UserType.CUSTOMER)
+    end
+
+    before(:each) do
+      customer.should_not be_nil
+      user_b.should_not be_nil
+      user_c.should_not be_nil
+      location.should_not be_nil
+      location_other.should_not be_nil
+    end
+
+    it 'should return all users of type customer for an overseer' do
+      overseer.all_operators.size.should eq(3)
+    end
+
+    it 'should return the customers of locations that the user has access to in another case' do
+      customer.all_operators.size.should eq(1)
+      customer.all_operators[0].should eq(customer)
+    end
+
+    it 'should return the locations customers to which the user has access to for a worker type of user' do
+      worker.all_operators.size.should eq(2)
+      worker.all_operators.include?(customer)
+      worker.all_operators.include?(user_c)
+    end
+
+  end
+  
   describe 'all_locations' do
     it 'should return all the locations in the db for an overseer' do
       overseer.all_locations.size.should eq(3)

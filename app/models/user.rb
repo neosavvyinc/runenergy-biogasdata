@@ -18,6 +18,14 @@ class User < ActiveRecord::Base
   has_many :locations, :through => :locations_users
   # attr_accessible :title, :body
 
+  def all_operators
+    if is_overseer?
+      User.where(:user_type_id => UserType.CUSTOMER.id)
+    else
+      (all_locations.map {|l| l.users}).flatten.uniq.select {|u| u.user_type_id == UserType.CUSTOMER.id}
+    end
+  end
+
   def all_locations
     if is_overseer?
       Location.all
