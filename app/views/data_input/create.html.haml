@@ -2,7 +2,7 @@
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
-    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedMonitorClass != null', :style => 'display: none;'}
+    %form.span4.form-inline
       %h5 Asset
       %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
@@ -21,5 +21,5 @@
           %label{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    .span8{'ng-show' => 'newDataValues.selectedMonitorClass != null'}
+    .span8
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points

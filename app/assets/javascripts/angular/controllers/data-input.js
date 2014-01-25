@@ -92,4 +92,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 $scope.currentReading = {};
             };
 
+
+            //Temp
+            newDataValues.selectedSite = {id: 3};
+            newDataValues.selectedMonitorClass = {id: 5};
+            //_getReadings();
+
         }]);
