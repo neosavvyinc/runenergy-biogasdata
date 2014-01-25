@@ -63,12 +63,12 @@ describe DataInputController do
   describe 'readings' do
 
     it 'should return a 400 error when there is no monitor_class_id specified' do
-      xhr :get, 'readings', :monitor_class_id => 'null', :asset_id => asset_b.id
+      xhr :get, 'readings', :monitor_class_id => 'null', :site_id => location_a.id
       response.status.should eq(400)
     end
 
     it 'should return a 400 error when there is no asset_id specified' do
-      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :asset_id => 'null'
+      xhr :get, 'readings', :monitor_class_id => asset_a.monitor_class.id, :site_id => 'null'
       response.status.should eq(400)
     end
 
@@ -156,7 +156,7 @@ describe DataInputController do
             :site_id => location_b.id,
             :field_log => {:name => 'Steve'},
             :reading => {:methane => 32},
-            :date => '2013-09-10'
+            :date_time => DateTime.new(2010).to_i
         parsed_response = JSON.parse response.body
         parsed_response['field_log']['id'].should be > 0
         parsed_response['field_log']['data']['name'].should eq('Steve')
@@ -170,7 +170,7 @@ describe DataInputController do
             :site_id => location_b.id,
             :field_log => {:name => 'Steve'},
             :reading => {:methane => 65},
-            :date => '2010-11-20'
+            :date_time => DateTime.new(2013).to_i
         parsed_response = JSON.parse response.body
         parsed_response['reading']['id'].should be > 0
         parsed_response['reading']['data']['methane'].should eq('65')
