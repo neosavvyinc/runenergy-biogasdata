@@ -118,7 +118,7 @@ module Field
               Reading.create({
                                  :location_id => params[:site_id],
                                  :monitor_class_id => params[:class_id],
-                                 :asset_id => Asset.lazy_load(params[:site_id], params[:asset_unique_identifier]).id,
+                                 :asset_id => Asset.lazy_load(params[:site_id], params[:class_id], params[:asset_unique_identifier]).id,
                                  :field_log_id => field_log.id,
                                  :data => JSON.dump(params[:reading]),
                                  :taken_at => DateTime.strptime(params[:date_time].to_s, '%s')

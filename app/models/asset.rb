@@ -7,10 +7,12 @@ class Asset < ActiveRecord::Base
   has_many :monitor_points, :through => :assets_monitor_points
   has_many :readings
 
-  def self.lazy_load(location_id, unique_identifier)
+  def self.lazy_load(location_id, monitor_class_id, unique_identifier)
     Asset.where(:location_id => location_id,
+                :monitor_class_id => monitor_class_id,
                 :unique_identifier => unique_identifier).first or
         Asset.create(:location_id => location_id,
+                     :monitor_class_id => monitor_class_id,
                      :unique_identifier => unique_identifier)
   end
 

@@ -35,7 +35,7 @@ class DataInputController < DataInterfaceController
           not ajax_value_or_nil(params[:reading]).nil? and
           not ajax_value_or_nil(params[:date]).nil?
         field_log = FieldLog.find_or_create_by_data(params[:field_log])
-        asset = Asset.lazy_load(params[:site_id], params[:asset_unique_identifier])
+        asset = Asset.lazy_load(params[:site_id], params[:monitor_class_id], params[:asset_unique_identifier])
         reading = Reading.create({:data => params[:reading],
                                   :location_id => params[:site_id],
                                   :asset_id => asset.id,

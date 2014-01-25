@@ -57,7 +57,7 @@ class Reading < DataAsStringModel
         unless (not deleted_row_indices.nil? and deleted_row_indices.include?(index + 1))
 
           #Lazy load assets into db based on site_id and column value
-          asset = Asset.lazy_load(site_id, data[asset_column_name])
+          asset = Asset.lazy_load(site_id, monitor_class_id, data[asset_column_name])
           asset.monitor_class = MonitorClass.find(monitor_class_id)
           asset.save
 
