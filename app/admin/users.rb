@@ -26,17 +26,15 @@ ActiveAdmin.register User, :as => 'Customers/Viewers' do
     f.actions
   end
 
-  def update
-    @user = User.find(params[:id])
-    if params[:user][:password].blank?
-      @user.update_without_password(params[:user])
-    else
-      @user.update_attributes(params[:user])
+  controller do
+
+    def update
+      if params[:customers_viewers][:password].blank?
+        params[:customers_viewers].delete('password')
+        params[:customers_viewers].delete('password_confirmation')
+      end
+      super
     end
-    if @user.errors.blank?
-      redirect_to admin_users_path, :notice => "User updated successfully."
-    else
-      render :edit
-    end
+
   end
 end
