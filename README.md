@@ -25,7 +25,7 @@ MySQL dumps are stored in the db/backups folder. Pull the latest development dum
 be simpler if your database has root as the username and no password:
 
 ```Shell
-mysql -u root runenergy_biogasdata_development << runenergy_biogasdata_development_YYYYMMDD.sql
+mysql -u root runenergy_biogasdata_development < runenergy_biogasdata_development_YYYYMMDD.sql
 ```
 
 ## Tests
