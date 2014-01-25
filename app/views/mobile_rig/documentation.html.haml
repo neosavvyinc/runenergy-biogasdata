@@ -1,4 +1,16 @@
 .mobile-rig-documentation{'ng-controller' => 'controllers.DocumentationController'}
+  %ul{'style' => 'list-style-type: none; margin-bottom: 40px;'}
+    %li
+      %h5 Login
+      .login
+        %label Email
+        %input{'ng-model' => 'user.email'}
+        %label Password
+        %input{'ng-model' => 'user.password', 'type' => 'password'}
+        .submit{:style => 'margin-bottom: 20px;'}
+          %a.btn.btn-primary{'ng-click' => 'onGetToken()'} Get Token
+        %label Authentication Token
+        %h6{'ng-bind' => 'user.authentication_token || error || "Please Login First"'}
   %h5 API Documentation
   %ul{'style' => 'list-style-type: none;'}
     %li{'ng-repeat' => 'call in api'}
