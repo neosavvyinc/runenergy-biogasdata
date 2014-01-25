@@ -4,7 +4,6 @@ mac-modal (element)
 Element directive to define the modal dialog. Modal content is transcluded into a  
 modal template  
   
-  
 ### Parameters
 **mac-modal-keyboard**  
 Type: `Boolean`  
@@ -19,7 +18,7 @@ Type: `Boolean`
 Allow modal to resize on window resize event (default true)  
   
 **mac-modal-open**  
-Type: `Expr`  
+Type: `Function`  
 Callback when the modal is opened  
   
 **mac-modal-topOffset**  
@@ -39,7 +38,7 @@ Type: `String`
 Modal ID to trigger  
   
 **mac-modal-data**  
-Type: `Expr`  
+Type: `Object`  
 Extra data to pass along  
   
 

@@ -6,7 +6,7 @@
       %tr
         %th{'ng-repeat' => '(key, value) in data[0]'}
           %p.name{'ng-bind' => 'getColumnLabel(key, monitorPoints[key])'}
-          //%p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
+          %p.units{'ng-bind' => 'item.units | nsLogicalIf : item.units : '''}
       %tr
         %th{'ng-repeat' => '(key, value) in filters'}
           %input.filter-field{'ng-model' => 'filters[key]'}

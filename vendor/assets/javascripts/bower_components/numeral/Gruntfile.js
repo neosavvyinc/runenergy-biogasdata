@@ -69,17 +69,13 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-jshint');
     grunt.loadNpmTasks('grunt-contrib-concat');
 
-    grunt.registerTask('default', [
-        'test'
-    ]);
-
     grunt.registerTask('test', [
         'jshint',
         'nodeunit'
     ]);
 
     // P
-    grunt.registerTask('build', [
+    grunt.registerTask('release', [
         'jshint',
         'nodeunit',
         'concat',

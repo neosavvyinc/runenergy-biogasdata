@@ -1,6 +1,6 @@
 /*!
  * numeral.js
- * version : 1.5.2
+ * version : 1.5.0
  * author : Adam Draper
  * license : MIT
  * http://adamwdraper.github.com/Numeral-js/
@@ -13,7 +13,7 @@
     ************************************/
 
     var numeral,
-        VERSION = '1.5.2',
+        VERSION = '1.5.0',
         // internal storage for language config files
         languages = {},
         currentLanguage = 'en',
@@ -30,7 +30,7 @@
 
     // Numeral prototype object
     function Numeral (number) {
-        this._value = number;
+        this._n = number;
     }
 
     /**
@@ -39,14 +39,13 @@
      * Fixes binary rounding issues (eg. (0.615).toFixed(2) === '0.61') that present
      * problems for accounting- and finance-related software.
      */
-    function toFixed (value, precision, roundingFunction, optionals) {
+    function toFixed (value, precision, optionals) {
         var power = Math.pow(10, precision),
             optionalsRegExp,
             output;
-            
-        //roundingFunction = (roundingFunction !== undefined ? roundingFunction : Math.round);
+
         // Multiply up by precision, round accurately, then divide and use native toFixed():
-        output = (roundingFunction(value * power) / power).toFixed(precision);
+        output = (Math.round(value * power) / power).toFixed(precision);
 
         if (optionals) {
             optionalsRegExp = new RegExp('0{1,' + optionals + '}$');
@@ -61,18 +60,18 @@
     ************************************/
 
     // determine what type of formatting we need to do
-    function formatNumeral (n, format, roundingFunction) {
+    function formatNumeral (n, format) {
         var output;
 
         // figure out what kind of format we are dealing with
         if (format.indexOf('$') > -1) { // currency!!!!!
-            output = formatCurrency(n, format, roundingFunction);
+            output = formatCurrency(n, format);
         } else if (format.indexOf('%') > -1) { // percentage
-            output = formatPercentage(n, format, roundingFunction);
+            output = formatPercentage(n, format);
         } else if (format.indexOf(':') > -1) { // time
             output = formatTime(n, format);
         } else { // plain ol' numbers or bytes
-            output = formatNumber(n._value, format, roundingFunction);
+            output = formatNumber(n, format);
         }
 
         // return string
@@ -91,10 +90,10 @@
             power;
 
         if (string.indexOf(':') > -1) {
-            n._value = unformatTime(string);
+            n._n = unformatTime(string);
         } else {
             if (string === zeroFormat) {
-                n._value = 0;
+                n._n = 0;
             } else {
                 if (languages[currentLanguage].delimiters.decimal !== '.') {
                     string = string.replace(/\./g,'').replace(languages[currentLanguage].delimiters.decimal, '.');
@@ -116,16 +115,16 @@
                 }
 
                 // do some math to create our number
-                n._value = ((bytesMultiplier) ? bytesMultiplier : 1) * ((stringOriginal.match(thousandRegExp)) ? Math.pow(10, 3) : 1) * ((stringOriginal.match(millionRegExp)) ? Math.pow(10, 6) : 1) * ((stringOriginal.match(billionRegExp)) ? Math.pow(10, 9) : 1) * ((stringOriginal.match(trillionRegExp)) ? Math.pow(10, 12) : 1) * ((string.indexOf('%') > -1) ? 0.01 : 1) * (((string.split('-').length + Math.min(string.split('(').length-1, string.split(')').length-1)) % 2)? 1: -1) * Number(string.replace(/[^0-9\.]+/g, ''));
+                n._n = ((bytesMultiplier) ? bytesMultiplier : 1) * ((stringOriginal.match(thousandRegExp)) ? Math.pow(10, 3) : 1) * ((stringOriginal.match(millionRegExp)) ? Math.pow(10, 6) : 1) * ((stringOriginal.match(billionRegExp)) ? Math.pow(10, 9) : 1) * ((stringOriginal.match(trillionRegExp)) ? Math.pow(10, 12) : 1) * ((string.indexOf('%') > -1) ? 0.01 : 1) * (((string.split('-').length + Math.min(string.split('(').length-1, string.split(')').length-1)) % 2)? 1: -1) * Number(string.replace(/[^0-9\.]+/g, ''));
 
                 // round if we are talking about bytes
-                n._value = (bytesMultiplier) ? Math.ceil(n._value) : n._value;
+                n._n = (bytesMultiplier) ? Math.ceil(n._n) : n._n;
             }
         }
-        return n._value;
+        return n._n;
     }
 
-    function formatCurrency (n, format, roundingFunction) {
+    function formatCurrency (n, format) {
         var prependSymbol = format.indexOf('$') <= 1 ? true : false,
             space = '',
             output;
@@ -142,7 +141,7 @@
         }
 
         // format the number
-        output = formatNumber(n._value, format, roundingFunction);
+        output = formatNumeral(n, format);
 
         // position the symbol
         if (prependSymbol) {
@@ -166,10 +165,9 @@
         return output;
     }
 
-    function formatPercentage (n, format, roundingFunction) {
+    function formatPercentage (n, format) {
         var space = '',
-            output,
-            value = n._value * 100;
+            output;
 
         // check for space before %
         if (format.indexOf(' %') > -1) {
@@ -179,8 +177,8 @@
             format = format.replace('%', '');
         }
 
-        output = formatNumber(value, format, roundingFunction);
-        
+        n._n = n._n * 100;
+        output = formatNumeral(n, format);
         if (output.indexOf(')') > -1 ) {
             output = output.split('');
             output.splice(-1, 0, space + '%');
@@ -188,14 +186,13 @@
         } else {
             output = output + space + '%';
         }
-
         return output;
     }
 
     function formatTime (n) {
-        var hours = Math.floor(n._value/60/60),
-            minutes = Math.floor((n._value - (hours * 60 * 60))/60),
-            seconds = Math.round(n._value - (hours * 60 * 60) - (minutes * 60));
+        var hours = Math.floor(n._n/60/60),
+            minutes = Math.floor((n._n - (hours * 60 * 60))/60),
+            seconds = Math.round(n._n - (hours * 60 * 60) - (minutes * 60));
         return hours + ':' + ((minutes < 10) ? '0' + minutes : minutes) + ':' + ((seconds < 10) ? '0' + seconds : seconds);
     }
 
@@ -219,14 +216,14 @@
         return Number(seconds);
     }
 
-    function formatNumber (value, format, roundingFunction) {
+    function formatNumber (n, format) {
         var negP = false,
             signed = false,
             optDec = false,
             abbr = '',
             bytes = '',
             ord = '',
-            abs = Math.abs(value),
+            abs = Math.abs(n._n),
             suffixes = ['B', 'KB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB'],
             min,
             max,
@@ -238,7 +235,7 @@
             neg = false;
 
         // check if number is zero and a custom zero format has been set
-        if (value === 0 && zeroFormat !== null) {
+        if (n._n === 0 && zeroFormat !== null) {
             return zeroFormat;
         } else {
             // see if we should use parentheses for negative number or if we should prefix with a sign
@@ -264,19 +261,19 @@
                 if (abs >= Math.pow(10, 12)) {
                     // trillion
                     abbr = abbr + languages[currentLanguage].abbreviations.trillion;
-                    value = value / Math.pow(10, 12);
+                    n._n = n._n / Math.pow(10, 12);
                 } else if (abs < Math.pow(10, 12) && abs >= Math.pow(10, 9)) {
                     // billion
                     abbr = abbr + languages[currentLanguage].abbreviations.billion;
-                    value = value / Math.pow(10, 9);
+                    n._n = n._n / Math.pow(10, 9);
                 } else if (abs < Math.pow(10, 9) && abs >= Math.pow(10, 6)) {
                     // million
                     abbr = abbr + languages[currentLanguage].abbreviations.million;
-                    value = value / Math.pow(10, 6);
+                    n._n = n._n / Math.pow(10, 6);
                 } else if (abs < Math.pow(10, 6) && abs >= Math.pow(10, 3)) {
                     // thousand
                     abbr = abbr + languages[currentLanguage].abbreviations.thousand;
-                    value = value / Math.pow(10, 3);
+                    n._n = n._n / Math.pow(10, 3);
                 }
             }
 
@@ -294,10 +291,10 @@
                     min = Math.pow(1024, power);
                     max = Math.pow(1024, power+1);
 
-                    if (value >= min && value < max) {
+                    if (n._n >= min && n._n < max) {
                         bytes = bytes + suffixes[power];
                         if (min > 0) {
-                            value = value / min;
+                            n._n = n._n / min;
                         }
                         break;
                     }
@@ -314,7 +311,7 @@
                     format = format.replace('o', '');
                 }
 
-                ord = ord + languages[currentLanguage].ordinal(value);
+                ord = ord + languages[currentLanguage].ordinal(n._n);
             }
 
             if (format.indexOf('[.]') > -1) {
@@ -322,7 +319,7 @@
                 format = format.replace('[.]', '.');
             }
 
-            w = value.toString().split('.')[0];
+            w = n._n.toString().split('.')[0];
             precision = format.split('.')[1];
             thousands = format.indexOf(',');
 
@@ -330,9 +327,9 @@
                 if (precision.indexOf('[') > -1) {
                     precision = precision.replace(']', '');
                     precision = precision.split('[');
-                    d = toFixed(value, (precision[0].length + precision[1].length), roundingFunction, precision[1].length);
+                    d = toFixed(n._n, (precision[0].length + precision[1].length), precision[1].length);
                 } else {
-                    d = toFixed(value, precision.length, roundingFunction);
+                    d = toFixed(n._n, precision.length);
                 }
 
                 w = d.split('.')[0];
@@ -347,7 +344,7 @@
                     d = '';
                 }
             } else {
-                w = toFixed(value, null, roundingFunction);
+                w = toFixed(n._n, null);
             }
 
             // format number
@@ -413,21 +410,6 @@
 
         return numeral;
     };
-    
-    // This function provides access to the loaded language data.  If
-    // no arguments are passed in, it will simply return the current
-    // global language object.
-    numeral.languageData = function (key) {
-        if (!key) {
-            return languages[currentLanguage];
-        }
-        
-        if (!languages[key]) {
-            throw new Error('Unknown language : ' + key);
-        }
-        
-        return languages[key];
-    };
 
     numeral.language('en', {
         delimiters: {
@@ -480,55 +462,49 @@
             return numeral(this);
         },
 
-        format : function (inputString, roundingFunction) {
-            return formatNumeral(this, 
-                  inputString ? inputString : defaultFormat, 
-                  (roundingFunction !== undefined) ? roundingFunction : Math.round
-              );
+        format : function (inputString) {
+            return formatNumeral(this, inputString ? inputString : defaultFormat);
         },
 
         unformat : function (inputString) {
-            if (Object.prototype.toString.call(inputString) === '[object Number]') { 
-                return inputString; 
-            }
             return unformatNumeral(this, inputString ? inputString : defaultFormat);
         },
 
         value : function () {
-            return this._value;
+            return this._n;
         },
 
         valueOf : function () {
-            return this._value;
+            return this._n;
         },
 
         set : function (value) {
-            this._value = Number(value);
+            this._n = Number(value);
             return this;
         },
 
         add : function (value) {
-            this._value = this._value + Number(value);
+            this._n = this._n + Number(value);
             return this;
         },
 
         subtract : function (value) {
-            this._value = this._value - Number(value);
+            this._n = this._n - Number(value);
             return this;
         },
 
         multiply : function (value) {
-            this._value = this._value * Number(value);
+            this._n = this._n * Number(value);
             return this;
         },
 
         divide : function (value) {
-            this._value = this._value / Number(value);
+            this._n = this._n / Number(value);
             return this;
         },
 
         difference : function (value) {
-            var difference = this._value - Number(value);
+            var difference = this._n - Number(value);
 
             if (difference < 0) {
                 difference = -difference;

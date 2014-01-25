@@ -15,7 +15,7 @@ Neosavvy.ApiDoc.Directives.directive('nsApiDoc', function ($http) {
         },
         link: function (scope, elem, attrs) {
 
-            scope.$watch('endpoint', function (val) {
+            var d = scope.$watch('endpoint', function (val) {
                 if (val) {
                     scope.path = scope.endpoint.path;
                     scope.method = scope.endpoint.method;
@@ -35,6 +35,10 @@ Neosavvy.ApiDoc.Directives.directive('nsApiDoc', function ($http) {
                     $http({method: scope.method, url: urlBuilder.build(), data: scope.payload}).then(function (resp) {
                         scope.response = JSON.stringify(resp.data, undefined, 4);
                         scope.endpoint.response = scope.response;
+
+                        if (scope.response) {
+                            d();
+                        }
 
                         return resp.data;
                     });

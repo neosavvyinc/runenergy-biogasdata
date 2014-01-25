@@ -1,6 +1,6 @@
 {
   "name": "neosavvy-javascript-angular-core",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "authors": [
     "Neosavvy, Inc."
   ],
@@ -28,7 +28,7 @@
     "angular": "1.2.4",
     "angular-route": "1.2.4",
     "angular-cache": "1.2.0",
-    "neosavvy-javascript-core": "0.0.5"
+    "neosavvy-javascript-core": "0.0.7"
   },
   "devDependencies": {
     "angular-animate": "1.2.4",
@@ -40,13 +40,13 @@
     "angular-sanitize": "1.2.4",
     "angular-touch": "1.2.4"
   },
-  "_release": "0.1.6",
+  "_release": "0.1.8",
   "_resolution": {
     "type": "version",
-    "tag": "0.1.6",
-    "commit": "98c796a6a7156ffc61c0bdf03a67865b7f9fc2e9"
+    "tag": "0.1.8",
+    "commit": "af980b80740ba6ef4097da93fd8eb1ec77526221"
   },
   "_source": "git://github.com/neosavvyinc/bower-neosavvy-javascript-angular-core.git",
-  "_target": "0.1.6",
+  "_target": "0.1.8",
   "_originalSource": "neosavvy-javascript-angular-core"
 }

@@ -5,7 +5,6 @@ Directive for proxying jQuery file upload
   
   
 ### Dependencies
-- jQuery  
 - jQuery file upload  
   
 
@@ -36,7 +35,7 @@ List of uploaded files {Array}
   
 **mac-upload-progress**  
 Type: `Function`  
-Upload progress callback (requires mac-upload-previews)  
+Upload progress callback  
   
 **mac-upload-drop-zone**  
 Type: `String`  

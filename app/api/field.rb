@@ -112,7 +112,7 @@ module Field
       post '/create' do
         if authenticated? and current_user.is_entitled_to?(params[:site_id])
           unless LocationsMonitorClass.where(:location_id => params[:site_id], :monitor_class_id => params[:class_id]).empty?
-            if params[:date_time].size == 10 and params[:date_time].numeric?
+            if params[:date_time].to_s.size == 10 and params[:date_time].to_s.numeric?
               field_log = FieldLog
               .find_or_create_by_data(JSON.dump(params[:field_log]))
               Reading.create({

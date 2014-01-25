@@ -7,7 +7,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DocumentationController'
             $scope.user = {
                 email: "",
                 password: "",
-                authentication_token: "D1cbyqySSLbmwREy86NN"
+                authentication_token: ""
             };
 
             $scope.api = [
@@ -21,8 +21,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DocumentationController'
                     "path": apiPrefix + "readings",
                     "method": "GET",
                     "params": {
-                        "site_id": "7",
-                        "class_id": "2",
+                        "site_id": "8",
+                        "class_id": "5",
                         "count": 15
                     }
                 },
@@ -30,13 +30,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DocumentationController'
                     "name": "Create Reading",
                     "path": apiPrefix + "readings/create",
                     "method": "POST",
-                    "payload": {"site_id": "7",
-                        "class_id": "2",
+                    "payload": {
+                        "site_id": "8",
+                        "class_id": "5",
+                        "asset_unique_identifier": "25OR624XYQG",
+                        "date_time": 1390612469,
                         "field_log": {"Name": "Charlie Watts"},
                         "reading": {"Methane": String(parseInt(Math.random() * 100)),
                             "Carbon Dioxide": String(parseInt(Math.random() * 100)),
                             "Oxygen": String(parseInt(Math.random() * 100)),
-                            "Pressure": String(parseInt(Math.random() * 100))}}
+                            "Pressure": String(parseInt(Math.random() * 100))}
+                    }
                 }
             ];
 

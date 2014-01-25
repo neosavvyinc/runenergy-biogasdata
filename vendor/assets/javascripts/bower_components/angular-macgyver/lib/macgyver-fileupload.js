@@ -1,5 +1,5 @@
 /**
- * MacGyver v0.2.0
+ * MacGyver v0.1.28
  * @link http://starttheshift.github.io/MacGyver
  * @license MIT
  */
@@ -8,7 +8,7 @@
  * jQuery UI Core @VERSION
  * http://jqueryui.com
  *
- * Copyright 2013 jQuery Foundation and other contributors
+ * Copyright 2014 jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -329,7 +329,7 @@ $.extend( $.ui, {
  * jQuery UI Widget @VERSION
  * http://jqueryui.com
  *
- * Copyright 2013 jQuery Foundation and other contributors
+ * Copyright 2014 jQuery Foundation and other contributors
  * Released under the MIT license.
  * http://jquery.org/license
  *
@@ -433,7 +433,7 @@ $.widget = function( name, base, prototype ) {
 		// TODO: remove support for widgetEventPrefix
 		// always use the name + a colon as the prefix, e.g., draggable:start
 		// don't prefix for widgets that aren't DOM-based
-		widgetEventPrefix: existingConstructor ? basePrototype.widgetEventPrefix : name
+		widgetEventPrefix: existingConstructor ? (basePrototype.widgetEventPrefix || name) : name
 	}, proxiedPrototype, {
 		constructor: constructor,
 		namespace: namespace,
@@ -642,12 +642,12 @@ $.Widget.prototype = {
 					curOption = curOption[ parts[ i ] ];
 				}
 				key = parts.pop();
-				if ( value === undefined ) {
+				if ( arguments.length === 1 ) {
 					return curOption[ key ] === undefined ? null : curOption[ key ];
 				}
 				curOption[ key ] = value;
 			} else {
-				if ( value === undefined ) {
+				if ( arguments.length === 1 ) {
 					return this.options[ key ] === undefined ? null : this.options[ key ];
 				}
 				options[ key ] = value;
@@ -2191,7 +2191,6 @@ $.each( { show: "fadeIn", hide: "fadeOut" }, function( method, defaultEffect ) {
 Directive for proxying jQuery file upload
 
 @dependencies
-- jQuery
 - jQuery file upload
 
 @param {String}     mac-upload-route      File upload route
@@ -2200,20 +2199,21 @@ Directive for proxying jQuery file upload
 @param {Function}   mac-upload-error      Upload error callback
 @param {Function}   mac-upload-always     Callback for completed (success, abort or error) requests
 @param {Expression} mac-upload-previews   List of uploaded files {Array}
-@param {Function}   mac-upload-progress   Upload progress callback (requires mac-upload-previews)
+@param {Function}   mac-upload-progress   Upload progress callback
 @param {String}     mac-upload-drop-zone  The selector that we can drop files onto
 @param {Expression} mac-upload-form-data  Additional form data {Array|Object|Function|FormData}
 @param {Expression} mac-upload-options    Additional options to pass to jquery fileupload
 */
 
 angular.module("Mac").directive("macUpload", [
-  "$rootScope", "$parse", "$timeout", "$document", "util", function($rootScope, $parse, $timeout, $document, util) {
+  "$rootScope", "$parse", "$timeout", "util", function($rootScope, $parse, $timeout, util) {
     return {
       require: ["macUpload", "?macUploadPreviews"],
       controller: ["$scope", function() {}],
       link: function($scope, element, attrs, ctrls) {
         var applyCallback, defaults, dragoverTimeout, dropZone, extraOptions, options, opts, previewCtrl, setOptions, uploadCtrl;
-        uploadCtrl = ctrls[0], previewCtrl = ctrls[1];
+        uploadCtrl = ctrls[0];
+        previewCtrl = ctrls[1];
         defaults = {
           route: "",
           dropZone: null,
@@ -2232,11 +2232,11 @@ angular.module("Mac").directive("macUpload", [
           }
         };
         applyCallback = function(action, $event, $data) {
-          var capitalized;
-          capitalized = util.capitalize(action);
-          if (attrs["macUpload" + capitalized] != null) {
+          var callbackFn;
+          callbackFn = $parse(opts[action]);
+          if (callbackFn != null) {
             return $scope.$apply(function() {
-              var $response, $status, $xhr, err, responseText, _ref, _ref1;
+              var $response, $status, $xhr, args, err, responseText, _ref, _ref1;
               $xhr = $data.jqXHR;
               $status = (_ref = $data.jqXHR) != null ? _ref.status : void 0;
               responseText = ((_ref1 = $data.jqXHR) != null ? _ref1.responseText : void 0) || "";
@@ -2246,13 +2246,14 @@ angular.module("Mac").directive("macUpload", [
                 err = _error;
                 $response = responseText;
               }
-              return $parse(opts[action])($scope, {
+              args = {
                 $event: $event,
                 $data: $data,
                 $status: $status,
                 $xhr: $xhr,
                 $response: $response
-              });
+              };
+              return callbackFn($scope, args);
             });
           }
         };
@@ -2290,12 +2291,12 @@ angular.module("Mac").directive("macUpload", [
           }
         };
         if (opts.dropZone != null) {
-          $document.bind("drop dragover", function(event) {
+          angular.element(document).bind("drop dragover", function(event) {
             return event.preventDefault();
           });
           dragoverTimeout = null;
           dropZone = element.parents(opts.dropZone);
-          $document.bind("dragover", function(event) {
+          angular.element(document).bind("dragover", function(event) {
             var method, node;
             if (dragoverTimeout != null) {
               $timeout.cancel(dragoverTimeout);
@@ -2305,7 +2306,7 @@ angular.module("Mac").directive("macUpload", [
             dropZone[method]("droppable");
             return dragoverTimeout = $timeout(function() {
               if (dragoverTimeout != null) {
-                $timeout.cancel(dragoverTimeout);
+                clearTimeout(dragoverTimeout);
               }
               return dropZone.removeClass("droppable");
             }, 250, false);
@@ -2339,10 +2340,10 @@ angular.module("Mac").directive("macUpload", [
       require: ["macUploadPreviews", "macUpload"],
       controller: [
         "$scope", "$attrs", "$parse", function($scope, $attrs, $parse) {
-          var previewsGet, previewsSet;
-          previewsGet = $parse($attrs.macUploadPreviews);
-          previewsSet = previewsGet.assign;
           this.previews = function(value) {
+            var previewsGet, previewsSet;
+            previewsGet = $parse($attrs.macUploadPreviews);
+            previewsSet = previewsGet.assign;
             if (value != null) {
               return previewsSet($scope, value);
             } else {
@@ -2398,31 +2399,38 @@ angular.module("Mac").directive("macUpload", [
             return _results;
           };
         }
-      ]
+      ],
+      link: function($scope, element, attrs, ctrls) {
+        var previewCtrl;
+        return previewCtrl = ctrls[0];
+      }
     };
   }
 ]).directive("macUploadProgress", [
   function() {
     return {
       restrict: "A",
-      require: ["macUploadProgress", "macUploadPreviews"],
+      require: ["macUploadProgress", "?macUploadPreviews"],
       controller: [
         "$scope", function($scope) {
-          this.updatePreviewCtrl = function(ctrl) {
-            return ctrl.updateProgress = function(data) {
-              var preview;
-              if ((preview = this.getByFilename(data.files[0].name)) != null) {
-                return preview.progress = parseInt(data.loaded / data.total * 100, 10);
-              }
-            };
+          var updateProgress;
+          updateProgress = function(data) {
+            var preview;
+            preview = this.getByFilename(data.files[0].name);
+            return preview != null ? preview.progress = parseInt(data.loaded / data.total * 100, 10) : void 0;
           };
-          return this;
+          return this.updatePreviewCtrl = function(ctrl) {
+            return ctrl.updateProgress = updateProgress;
+          };
         }
       ],
       link: function($scope, element, attrs, ctrls) {
         var previewsCtrl, progressCtrl;
-        progressCtrl = ctrls[0], previewsCtrl = ctrls[1];
-        return progressCtrl.updatePreviewCtrl(previewsCtrl);
+        progressCtrl = ctrls[0];
+        previewsCtrl = ctrls[1];
+        if ((progressCtrl != null) && (typeof previewCtrl !== "undefined" && previewCtrl !== null)) {
+          return progressCtrl != null ? progressCtrl.updatePreviewCtrl(previewsCtrl) : void 0;
+        }
       }
     };
   }

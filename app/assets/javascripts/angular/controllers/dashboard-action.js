@@ -40,7 +40,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                     }
 
                     //Reset values
-                    if (oldVal.id !== newVal.id) {
+                    if (oldVal && newVal && oldVal.id !== newVal.id) {
                         switch (propName) {
                             case "newDataValues.selectedLandfillOperator":
                                 newDataValues.selectedSite = null;

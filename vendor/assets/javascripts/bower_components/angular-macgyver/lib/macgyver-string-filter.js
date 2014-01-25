@@ -1,5 +1,5 @@
 /**
- * MacGyver v0.2.0
+ * MacGyver v0.1.28
  * @link http://starttheshift.github.io/MacGyver
  * @license MIT
  */

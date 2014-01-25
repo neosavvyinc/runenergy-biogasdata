@@ -1,6 +1,6 @@
 {
   "name": "neosavvy-javascript-core",
-  "version": "0.0.5",
+  "version": "0.0.7",
   "homepage": "http://www.neosavvy.com",
   "authors": [
     "Neosavvy, Inc."
@@ -22,18 +22,18 @@
     "tests"
   ],
   "dependencies": {
-    "lodash": "~2.1.0",
-    "underscore.string": "~2.3.3",
-    "numeral": "~1.5.0",
-    "node-uuid": "~1.4.1"
+    "lodash": "2.1.0",
+    "underscore.string": "2.3.3",
+    "numeral": "1.5.0",
+    "node-uuid": "1.4.1"
   },
-  "_release": "0.0.5",
+  "_release": "0.0.7",
   "_resolution": {
     "type": "version",
-    "tag": "0.0.5",
-    "commit": "5fa8b42ff616e9bcf347f52a81022f312db889cc"
+    "tag": "0.0.7",
+    "commit": "08c41379ac2665bfb4091fe8704fa4d9b479c97b"
   },
   "_source": "git://github.com/neosavvyinc/bower-neosavvy-javascript-core.git",
-  "_target": "0.0.5",
+  "_target": "0.0.7",
   "_originalSource": "neosavvy-javascript-core"
 }
