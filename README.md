@@ -12,6 +12,11 @@ Check out the following for Mac installation instructions: http://railsinstaller
 
 My Rails environment has been installed for a long time, but that resource looks promising.
 
+From the root of the project, run the following command:
+
+```Shell
+bundle install
+```
 
 # MySQL
 You will need to have MySQL installed on your machine. I am running: Ver 14.14 Distrib 5.6.13
