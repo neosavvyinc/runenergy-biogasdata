@@ -80,6 +80,22 @@ describe("controllers.DashboardActionController", function () {
         it('Should set newDataValues to the values object', function () {
             expect($scope.newDataValues).toEqual(newDataValues);
         });
+
+        it('Should set availableSites to null', function () {
+            expect($scope.availableSites).toBeNull();
+        });
+
+        it('Should set availableSections to null', function () {
+            expect($scope.availableSections).toBeNull();
+        });
+
+        it('Should set availableAssets to null', function () {
+            expect($scope.availableAssets).toBeNull();
+        });
+
+        it('Should set availableMonitorClasses to null', function () {
+            expect($scope.availableMonitorClasses).toBeNull();
+        });
     });
 
     describe('Action Handlers', function () {

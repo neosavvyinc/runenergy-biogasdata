@@ -2,16 +2,26 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
     ['$scope',
         'values.NewDataValues',
         '$location',
+        '$filter',
         function ($scope,
                   newDataValues,
-                  $location) {
+                  $location,
+                  $filter) {
 
-            //Initialization
+            //Initialization, Perm Values
             $scope.landfillOperators = null;
             $scope.sites = null;
             $scope.sections = null;
             $scope.assets = null;
             $scope.monitorClasses = null;
+
+            //Transient Values
+            $scope.availableSites = null;
+            $scope.availableSections = null;
+            $scope.availableAssets = null;
+            $scope.availableMonitorClasses = null;
+
+            //Global Values
             $scope.newDataValues = newDataValues;
 
 
@@ -61,6 +71,25 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             dereg.dc = $scope.$watch('monitorClasses', initValue('newDataValues.selectedMonitorClass', 'monitor_class', 'dc'));
             dereg.dd = $scope.$watch('sections', initValue('newDataValues.selectedSection', 'section', 'dd'));
             dereg.de = $scope.$watch('assets', initValue('newDataValues.selectedAsset', 'asset', 'de'));
+
+            var nsCollectionFilterProperties = $filter('nsCollectionFilterProperties');
+            var nsCollectionFilterProperty = $filter('nsCollectionFilterProperty');
+            $scope.$watch('newDataValues.selectedLandfillOperator', function (val) {
+                if (val && val.location_ids && val.location_ids.length && $scope.sites && $scope.sites.length) {
+                    $scope.availableSites = nsCollectionFilterProperties($scope.sites, 'id', val.location_ids);
+                }
+            });
+            $scope.$watch('newDataValues.selectedSite', function (val) {
+                if (val && val.monitor_class_ids && val.monitor_class_ids.length && $scope.monitorClasses && $scope.monitorClasses.length) {
+                    $scope.availableMonitorClasses = nsCollectionFilterProperties($scope.monitorClasses, 'id', val.monitor_class_ids);
+                    $scope.availableSections = nsCollectionFilterProperties($scope.sections, 'id', val.section_ids);
+                }
+            });
+            $scope.$watch('newDataValues.selectedMonitorClass', function (val) {
+                if (val && val.id) {
+                    $scope.availableAssets = nsCollectionFilterProperty($scope.assets, 'monitor_class_id', val.id);
+                }
+            });
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {
