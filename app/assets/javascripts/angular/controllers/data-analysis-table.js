@@ -38,6 +38,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             $scope.$watch('newDataValues.selectedSite', _getData);
             $scope.$watch('newDataValues.selectedMonitorClass', _getData);
+            $scope.$watch('startDateTime.getTime()', _getData);
+            $scope.$watch('endDateTime.getTime()', _getData);
 
 
             //Initialization
