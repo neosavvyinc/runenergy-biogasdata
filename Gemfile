@@ -20,7 +20,6 @@ gem 'grape', '~> 0.6.1'
 group :assets do
   gem 'sass-rails', '~> 3.2.3'
   gem 'coffee-rails', '~> 3.2.1'
-  gem 'angular-rails', '~> 0.0.12'
   gem 'twitter-bootstrap-rails', '~> 2.2.7'
   gem 'haml_coffee_assets', '~> 1.12.0'
 
@@ -42,7 +41,6 @@ gem 'haml', '~> 4.0.3'
 gem 'haml-rails', '~> 0.4'
 gem 'jquery-rails', '~> 2.3.0'
 gem 'jquery-ui-rails', '~> 4.0.3'
-gem 'angularjs-rails', '~> 1.0.7'
 gem 'addressable', '~> 2.3.5'
 
 # To use ActiveModel has_secure_password
