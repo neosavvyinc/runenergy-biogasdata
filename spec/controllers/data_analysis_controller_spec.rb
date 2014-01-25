@@ -25,9 +25,9 @@ describe DataAnalysisController do
 
   let :readings do
     [
-        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class),
-        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class),
-        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class)
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2010)),
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2012)),
+        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2014))
     ]
   end
 
@@ -94,7 +94,12 @@ describe DataAnalysisController do
   describe 'readings' do
 
     it 'should return a 400 error if not passed a site_id in the request' do
-      xhr :get, 'readings', :site_id => 'null'
+      xhr :get, 'readings', :site_id => 'null', :monitor_class_id => monitor_class.id
+      response.status.should eq(400)
+    end
+
+    it 'should return a 400 error if not passed a monitor_class_id in the request' do
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => 'null'
       response.status.should eq(400)
     end
 
@@ -103,6 +108,24 @@ describe DataAnalysisController do
       parsed_response = JSON.parse(response.body)
       parsed_response['readings'].should_not be_nil
       parsed_response['readings'].size.should eq(3)
+    end
+
+    it 'should support time since epoch start date for the readings' do
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id, :start_date_time => DateTime.new(2012).to_i
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].size.should eq(2)
+    end
+
+    it 'should support time since epoch end date for the readings' do
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id, :end_date_time => DateTime.new(2011).to_i
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].size.should eq(1)
+    end
+
+    it 'should support a range between start and end for the date range' do
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id,:start_date_time => DateTime.new(2013).to_i, :end_date_time => DateTime.new(2015).to_i
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].size.should eq(1)
     end
 
   end

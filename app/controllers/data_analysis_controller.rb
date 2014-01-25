@@ -9,6 +9,12 @@ class DataAnalysisController < DataInterfaceController
   def readings
     unless ajax_value_or_nil(params[:site_id]).nil? or ajax_value_or_nil(params[:monitor_class_id]).nil?
       readings = Reading.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id])
+      unless ajax_value_or_nil(params[:start_date_time]).nil?
+        readings = readings.where('taken_at >= ?', DateTime.strptime(params[:start_date_time].to_s, '%s'))
+      end
+      unless ajax_value_or_nil(params[:end_date_time]).nil?
+        readings = readings.where('taken_at <= ?', DateTime.strptime(params[:end_date_time].to_s, '%s'))
+      end
       render json: {:readings => readings}
     else
       render json: {:error => 'You must pass valid parameter to retrieve readings for analysis'}, :status => 400
