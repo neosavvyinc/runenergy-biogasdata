@@ -1,14 +1,13 @@
 Biogasdata::Application.routes.draw do
 
+  root :to => 'data_analysis#index'
+
   devise_for :users
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   #Field Api
   mount Field::API => '/field/'
-
-  #Dashboard
-  get 'dashboard/login'
 
   #XHR Paths
   match 'dashboard/user' => 'dashboard#read_current_user'
@@ -37,12 +36,7 @@ Biogasdata::Application.routes.draw do
   match 'api/token', :to => 'api::tokens#create', :as => 'token_create'
   match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
-  unless Rails.env.production?
-    match 'coverage/rails', :to => redirect('/coverage/rails/index.html')
-    match 'coverage/angular', :to => redirect('/coverage/angular/Chrome 31.0.1650 (Mac OS X 10.8.5)/index.html')
-  end
 
-  root :to => 'dashboard#login'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

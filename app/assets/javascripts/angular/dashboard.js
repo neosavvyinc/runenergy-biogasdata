@@ -49,13 +49,5 @@ angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('ngQuickDate
             // returned by its invocation. More on that on Digging Deeper.
         }
 
-        //Configuration For Angular Strap
-        angular.module('dashboard').value('$strapConfig', {
-            datepicker: {
-                language: 'en',
-                format: 'dd/mm/yyyy'
-            }
-        });
-
         window.haml.load();
     }]);

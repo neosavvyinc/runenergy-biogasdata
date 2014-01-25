@@ -3,4 +3,5 @@ group :vendor, :assets_path => "assets/javascripts" do
     asset "momentjs", "2.5.0"
     asset "angular-macgyver", "0.1.28"
     asset "ngQuickDate", "1.2.1"
+    asset "angular-animate", "1.2.4"
 end

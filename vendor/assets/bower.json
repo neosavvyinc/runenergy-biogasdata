@@ -4,6 +4,7 @@
     "neosavvy-javascript-angular-core": "0.1.8",
     "momentjs": "2.5.0",
     "angular-macgyver": "0.1.28",
-    "ngQuickDate": "1.2.1"
+    "ngQuickDate": "1.2.1",
+    "angular-animate": "1.2.4"
   }
 }

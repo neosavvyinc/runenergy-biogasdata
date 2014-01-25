@@ -68,6 +68,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 return "";
             });
 
+            $scope.getColumnLabel = memoize(function (key, monitorPoint) {
+                if (key && monitorPoint && monitorPoint.unit) {
+                    return key + " (" + monitorPoint.unit + ")";
+                }
+                return key;
+            });
+
             //Action Handlers
             $scope.onAdd = function () {
                 if (newDataValues.selectedSite &&
