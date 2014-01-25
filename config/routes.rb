@@ -1,19 +1,16 @@
 Biogasdata::Application.routes.draw do
 
-  devise_for :users
+  devise_for :users, :controllers => { :registrations => 'registrations' }
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   #Field Api
   mount Field::API => '/field/'
 
-  #Data Analysis
-  get 'data_analysis/login'
-  match 'data_analysis/readings/site/:site_id/monitorclass/:monitor_class_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
-  match 'data_analysis/monitor_points/:asset_id', :to => 'data_analysis#monitor_points', :as => 'data_analysis_monitor_points'
-  match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
-
   #Dashboard
+  get 'dashboard/login'
+
+  #XHR Paths
   match 'dashboard/user' => 'dashboard#read_current_user'
   match 'dashboard/customers' => 'dashboard#read_customers'
   match 'dashboard/locations' => 'dashboard#read_locations', :as => 'dashboard_locations'
@@ -30,6 +27,11 @@ Biogasdata::Application.routes.draw do
   match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
   match 'data_input/complete_import', :to => 'data_input#complete_import', :as => 'data_input_complete_import'
 
+  #Data Analysis
+  match 'data_analysis/readings/site/:site_id/monitorclass/:monitor_class_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
+  match 'data_analysis/monitor_points/:asset_id', :to => 'data_analysis#monitor_points', :as => 'data_analysis_monitor_points'
+  match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
+
   #Mobile Rig
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'
   match 'api/token', :to => 'api::tokens#create', :as => 'token_create'
@@ -40,7 +42,7 @@ Biogasdata::Application.routes.draw do
     match 'coverage/angular', :to => redirect('/coverage/angular/Chrome 31.0.1650 (Mac OS X 10.8.5)/index.html')
   end
 
-  root :to => 'data_analysis#index'
+  root :to => 'dashboard#login'
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
