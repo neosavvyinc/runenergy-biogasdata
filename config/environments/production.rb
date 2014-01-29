@@ -23,12 +23,12 @@ Biogasdata::Application.configure do
   config.assets.compress = true
 
   #Use this for turning off compress
-  #config.assets.js_compressor = NoCompression.new
+  config.assets.js_compressor = NoCompression.new
 
   #SHOULD COME BACK TO THIS IN FINAL PROD
-  config.assets.js_compressor = Sprockets::LazyCompressor.new {
-    Uglifier.new(:mangle => false)
-  }
+  #config.assets.js_compressor = Sprockets::LazyCompressor.new {
+  #  Uglifier.new(:mangle => false)
+  #}
 
   # Don't fallback to assets pipeline if a precompiled asset is missed
   config.assets.compile = false
