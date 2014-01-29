@@ -1,19 +1,19 @@
 ActiveAdmin.register DeviceProfile do
-  menu :parent => "Users"
+  menu :parent => 'Users'
 
   show do
-    panel "User Groups" do
+    panel 'User Groups' do
       table_for device_profile.user_groups do
         column :name
       end
     end
-    panel "Users" do
+    panel 'Users' do
       table_for device_profile.users do
         column :name
         column :email
       end
     end
-    panel "Details" do
+    panel 'Details' do
       h6 "Created At: #{device_profile.created_at}"
       h6 "Updated At: #{device_profile.updated_at}"
     end

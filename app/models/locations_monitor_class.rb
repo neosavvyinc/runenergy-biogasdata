@@ -2,6 +2,7 @@ class LocationsMonitorClass < ActiveRecord::Base
   attr_accessible :location_id, :monitor_class_id, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name
   belongs_to :location
   belongs_to :monitor_class
+  has_many :exception_notifications
   has_many :field_log_points_locations_monitor_classes
   has_many :field_log_points, :through => :field_log_points_locations_monitor_classes
   has_many :monitor_points_locations_monitor_classes
@@ -29,7 +30,7 @@ class LocationsMonitorClass < ActiveRecord::Base
   end
 
   def display_name
-    "#{location.site_name} - #{monitor_class.name.pluralize}"
+    "#{location.try(:site_name)} - #{monitor_class.try(:name).try(:pluralize)}"
   end
 
   def as_json(options={})
