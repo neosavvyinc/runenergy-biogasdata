@@ -19,12 +19,14 @@
           %label{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    %form.span4.form-inline{'ng-if' => 'createLocationsMonitorClass'}
-      %h5 Assign Monitor Points
-      .monitor-point.span8{'ng-repeat' => 'mp in newDataValues.monitorPoints'}
-        %label{:style => 'width: 100%'} {{mp.name + ' (' + mp.unit + ')'}}
-        %a.btn{'ng-class' => 'getMonitorPointAdded(mp) | nsLogicalIf : "btn-success" : "btn-danger"', 'ng-click' => 'onAddOrRemoveMonitorPointFromDefinition(mp)'} {{getMonitorPointAdded(mp) | nsLogicalIf : 'x' : '+'}}
-      .span8
-        %a.btn.btn-primary{'ng-click' => 'onAssign()'} Assign
+    .span4{'ng-if' => 'createLocationsMonitorClass'}
+      = render 'shared/create_monitor_point'
+      %form.span12.form-inline
+        %h5 Assign Monitor Points
+        .monitor-point.span8{'ng-repeat' => 'mp in newDataValues.monitorPoints'}
+          %label{:style => 'width: 100%'} {{mp.name + ' (' + mp.unit + ')'}}
+          %a.btn{'ng-class' => 'getMonitorPointAdded(mp) | nsLogicalIf : "btn-success" : "btn-danger"', 'ng-click' => 'onAddOrRemoveMonitorPointFromDefinition(mp)'} {{getMonitorPointAdded(mp) | nsLogicalIf : 'x' : '+'}}
+        .span8
+          %a.btn.btn-primary{'ng-click' => 'onAssign()'} Assign
     .span8
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points
