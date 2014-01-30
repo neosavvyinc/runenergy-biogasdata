@@ -36,7 +36,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                         newDataValues.selectedLocationsMonitorClass = result !== 'null' ? result : null;
                         return newDataValues.selectedLocationsMonitorClass;
                     }).then(function (result) {
-                        if (!result || !result.monitor_points.length) {
+                        if (!result || !result.monitor_points || !result.monitor_points.length) {
                             $scope.createLocationsMonitorClass = true;
                         }
                     })

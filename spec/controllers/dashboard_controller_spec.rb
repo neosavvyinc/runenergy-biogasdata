@@ -100,7 +100,7 @@ describe DashboardController do
         it 'should return all locations' do
           xhr :get, :read_locations
           parsed_response = JSON.parse response.body
-          parsed_response.size.should eq 3
+          parsed_response.size.should eq 5
         end
 
         it 'should include flare_specifications in each location' do
