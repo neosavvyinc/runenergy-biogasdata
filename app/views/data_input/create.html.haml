@@ -2,7 +2,7 @@
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
-    %form.span4.form-inline{'ng-if' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
+    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
       %h5 Asset
       %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
@@ -10,7 +10,7 @@
       %h5 Field Log
       .field-log{'ng-repeat' => 'flp in newDataValues.selectedLocationsMonitorClass.field_log_points'}
         %label{'ng-bind' => 'flp.name'}
-        %input{'ng-model' => 'currentFieldLog[flp.name]', 'type' => 'checkbox'}
+        %input{'ng-model' => 'currentFieldLog[flp.name]'}
       %h5 Data
       .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedLocationsMonitorClass.monitor_points'}
         %label {{mp.name + ' (' + mp.unit + ')'}}

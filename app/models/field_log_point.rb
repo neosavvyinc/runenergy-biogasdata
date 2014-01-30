@@ -3,6 +3,10 @@ class FieldLogPoint < ActiveRecord::Base
   has_many :monitor_classes_field_log_points
   has_many :monitor_classes, through: :monitor_classes_field_log_points
 
+  def self.RAIN_SINCE_PREVIOUS_READING
+    self.find_or_create_by_name('Rain Since Previous Reading')
+  end
+
   def snake_name
     name.gsub(/\s{1,}/, '_').downcase
   end

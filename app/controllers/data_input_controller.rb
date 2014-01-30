@@ -30,6 +30,7 @@ class DataInputController < DataInterfaceController
     unless ajax_value_or_nil(params[:site_id]).nil? or ajax_value_or_nil(params[:monitor_class_id]).nil?
       if request.method == 'POST'
         lmc = LocationsMonitorClass.lazy_load(params[:site_id], params[:monitor_class_id])
+        lmc.field_log_points << FieldLogPoint.RAIN_SINCE_PREVIOUS_READING
         params[:monitor_points].each do |p|
           lmc.monitor_points << MonitorPoint.lazy_load_from_schema(p)
         end

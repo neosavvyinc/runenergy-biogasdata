@@ -130,6 +130,14 @@ describe DataInputController do
         JSON.parse(response.body)['id'].should eq(locations_monitor_class.id)
       end
 
+      it 'should automagically add the RAIN SINCE PREVIOUS READING field log point to the locations monitor class' do
+        xhr :post, 'locations_monitor_class', :site_id => locations_monitor_class.location.id,
+            :monitor_class_id => locations_monitor_class.monitor_class.id,
+            :monitor_points => [{:name => 'Uranium'}]
+        LocationsMonitorClass.last.field_log_points.size.should eq(1)
+        LocationsMonitorClass.last.field_log_points.first.id.should eq(FieldLogPoint.RAIN_SINCE_PREVIOUS_READING.id)
+      end
+
       it 'should apply monitor_points lazy loaded to the locations monitor class' do
         xhr :post, 'locations_monitor_class', :site_id => locations_monitor_class.location.id,
             :monitor_class_id => locations_monitor_class.monitor_class.id,

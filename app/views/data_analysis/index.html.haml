@@ -1,6 +1,6 @@
 .data-analysis
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
-    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class
+    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points
   .main{'ng-controller' => 'controllers.DataAnalysisTable'}
     .date-filters
       %datepicker{'ng-model' => 'startDateTime', 'date-format' => 'd/M/yyyy', 'time-format' => 'HH:mm', 'placeholder' => 'Readings Taken After'}
