@@ -30,6 +30,7 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
         CREATE: "/data_input/create",
         CREATE_MONITOR_POINT: "/data_input/create/monitor_point",
         READINGS: "/data_input/readings/site/:site_id/monitorclass/:monitor_class_id",
+        LOCATIONS_MONITOR_CLASS: "/data_input/locations_monitor_class/site/:site_id/monitor_class/:monitor_class_id",
         ASSETS: "/data_input/assets/site/:site_id/monitorclass/:monitor_class_id",
         IMPORT: "/data_input/import",
         COMPLETE_IMPORT: "/data_input/complete_import"

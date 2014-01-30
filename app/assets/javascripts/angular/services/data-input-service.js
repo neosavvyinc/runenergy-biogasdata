@@ -58,6 +58,12 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                     } else {
                         throw "You must provide a readings collection and a mapping of columns to monitor points in order to complete the import.";
                     }
+                },
+                getLocationsMonitorClass: function (locationId, monitorClassId) {
+
+                },
+                createLocationsMonitorClass: function(locationId, monitorClassId, monitorPoints, monitorPointsToLimits) {
+
                 }
             };
         }]);

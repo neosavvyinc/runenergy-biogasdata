@@ -26,6 +26,22 @@ class DataInputController < DataInterfaceController
     end
   end
 
+  def locations_monitor_class
+    unless ajax_value_or_nil(params[:site_id]).nil? or ajax_value_or_nil(params[:monitor_class_id]).nil?
+      if request.method == 'POST'
+        lmc = LocationsMonitorClass.lazy_load(params[:site_id], params[:monitor_class_id])
+        params[:monitor_points].each do |p|
+          lmc.monitor_points << MonitorPoint.lazy_load_from_schema(p)
+        end
+        render json: lmc.as_json(:include => [:field_log_points, :monitor_points])
+      else
+        render json: LocationsMonitorClass.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id]).first.try(:as_json, :include => [:field_log_points, :monitor_points])
+      end
+    else
+      render json: {:error => 'You must pass in a :site_id and :monitor_class_id with the url'}, :status => 400
+    end
+  end
+
   def create
     if request.method == 'POST'
       if not ajax_value_or_nil(params[:site_id]).nil? and
@@ -48,6 +64,7 @@ class DataInputController < DataInterfaceController
       end
     else
       all_view_classes(false, false, false)
+      @monitor_points = MonitorPoint.all
     end
   end
 

@@ -17,6 +17,8 @@
     %ns-serialize{'data' => sections.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'sections'}
   - unless assets.nil?
     %ns-serialize{'data' => assets.to_json.html_safe, 'property' => 'assets'}
+  - unless monitor_points.nil?
+    %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'newDataValues.monitorPoints'}
   %ns-serialize{'data' => monitor_classes.to_json(:include => [:monitor_points, :field_log_points], :methods => [:monitor_points_for_all_locations]).html_safe, 'property' => 'monitorClasses'}
   %re-bootstrap-button-dropdown.location{'items' => 'landfillOperators', 'selected-item' => 'newDataValues.selectedLandfillOperator', 'label-field' => 'name', 'link-class' => 'btn-success', 'default' => 'Choose Landfill Operator'}
   %re-bootstrap-button-dropdown.location{'items' => 'availableSites', 'selected-item' => 'newDataValues.selectedSite', 'label-field' => 'site_name', 'link-class' => 'btn-success', 'default' => 'Choose Site'}

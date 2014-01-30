@@ -86,6 +86,61 @@ describe DataInputController do
 
   end
 
+  describe 'locations_monitor_class' do
+
+    let :locations_monitor_class do
+      FactoryGirl.create(:deluxe_locations_monitor_class)
+    end
+
+    it 'should return a status 400 if there is not :site_id' do
+      xhr :get, 'locations_monitor_class', :site_id => 'null', :monitor_class_id => 17
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 if there is no :monitor_class_id' do
+      xhr :get, 'locations_monitor_class', :site_id => 18, :monitor_class_id => ''
+      response.status.should eq(400)
+    end
+
+    describe 'GET' do
+      it 'should return the locations monitor class as json with any get request that is valid' do
+        xhr :get, 'locations_monitor_class', :site_id => locations_monitor_class.location.id, :monitor_class_id => locations_monitor_class.monitor_class.id
+        parsed_response = JSON.parse(response.body)
+        parsed_response['id'].should eq(locations_monitor_class.id)
+      end
+
+      it 'should return nil for invalid site and monitor class pairings' do
+        xhr :get, 'locations_monitor_class', :site_id => locations_monitor_class.location.id + 1, :monitor_class_id => locations_monitor_class.monitor_class.id
+        response.body.should eq('null')
+      end
+    end
+
+    describe 'POST' do
+      it 'should lazy load the locations monitor class from the site_id and monitor_class_id' do
+        xhr :post, 'locations_monitor_class', :site_id => locations_monitor_class.location.id,
+            :monitor_class_id => locations_monitor_class.monitor_class.id,
+            :monitor_points => [{:name => 'Uranium'}]
+        LocationsMonitorClass.last.id.should eq(locations_monitor_class.id)
+      end
+
+      it 'should respond with the last loaded locations monitor class' do
+        xhr :post, 'locations_monitor_class', :site_id => locations_monitor_class.location.id,
+            :monitor_class_id => locations_monitor_class.monitor_class.id,
+            :monitor_points => [{:name => 'Uranium'}]
+        JSON.parse(response.body)['id'].should eq(locations_monitor_class.id)
+      end
+
+      it 'should apply monitor_points lazy loaded to the locations monitor class' do
+        xhr :post, 'locations_monitor_class', :site_id => locations_monitor_class.location.id,
+            :monitor_class_id => locations_monitor_class.monitor_class.id,
+            :monitor_points => [{:name => 'Uranium'}]
+        locations_monitor_class.monitor_points.size.should eq(1)
+        locations_monitor_class.monitor_points.first.name.should eq('Uranium')
+      end
+    end
+
+  end
+
   describe 'create' do
     describe 'GET' do
       before(:each) do

@@ -3,5 +3,8 @@ RunEnergy.Dashboard.Values.value('values.NewDataValues', {
     selectedSite: null,
     selectedSection: null,
     selectedAsset: null,
-    selectedMonitorClass: null
+    selectedMonitorClass: null,
+    selectedLocationsMonitorClass: null,
+
+    monitorPoints: []
 });

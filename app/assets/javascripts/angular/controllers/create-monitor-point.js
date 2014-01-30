@@ -18,6 +18,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.CreateMonitorPoint',
 
                             //Add new monitor point to collection shown in dropdowns
                             newDataValues.selectedMonitorClass.monitor_points_for_all_locations.push(result);
+                            newDataValues.monitorPoints.push(result);
 
                             $scope.name = "";
                             $scope.unit = "";

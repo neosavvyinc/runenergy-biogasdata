@@ -5,7 +5,8 @@ describe("controllers.DataInputController", function () {
         controller,
         routes,
         dataInputServiceCreateSpy,
-        dataInputServiceReadingSpy;
+        dataInputServiceReadingSpy,
+        nsRailsServiceSpy;
 
     beforeEach(function () {
         module.apply(module, RunEnergy.Dashboard.Dependencies);
@@ -18,6 +19,7 @@ describe("controllers.DataInputController", function () {
             dataInputServiceCreateSpy = spyOnAngularService($injector.get('services.DataInputService'), 'createReading', {then: function (fn) {
                 return fn();
             }});
+            nsRailsServiceSpy = spyOnChainedPromise($injector.get('nsRailsService'), 'request', [{name: "Stumpy"}]);
             dataInputServiceReadingSpy = spyOnAngularService($injector.get('services.DataInputService'), 'readings', null);
             controller = $injector.get('$controller')("controllers.DataInputController", {$scope: $scope});
         });
@@ -80,6 +82,36 @@ describe("controllers.DataInputController", function () {
                 $scope.currentReading = {name: "Steve"};
                 $scope.onReset();
                 expect($scope.currentReading).toEqual({});
+            });
+        });
+
+        describe('onAssign', function () {
+            beforeEach(function () {
+                newDataValues.selectedSite = {id: 24};
+                newDataValues.selectedMonitorClass = {id: 19};
+                $scope.newLocationsMonitorClass.monitorPoints = [{name: 'Methane'}];
+                $scope.createLocationsMonitorClass = true;
+                $scope.onAssign();
+            });
+
+            it('Should set $scope.createLocationsMonitorClass to false', function () {
+                expect($scope.createLocationsMonitorClass).toBeFalsy();
+            });
+
+            it('Should call the railsService', function () {
+                expect(nsRailsServiceSpy).toHaveBeenCalledWith({
+                    method: 'POST',
+                    url: routes.DATA_INPUT.LOCATIONS_MONITOR_CLASS,
+                    params: {
+                        ':site_id': newDataValues.selectedSite.id,
+                        ':monitor_class_id': newDataValues.selectedMonitorClass.id
+                    },
+                    data: $scope.newLocationsMonitorClass
+                });
+            });
+
+            it('Should set newDataValues.selectedLocationsMonitorClass to the result', function () {
+                expect(newDataValues.selectedLocationsMonitorClass).toEqual({name: 'Stumpy'});
             });
         });
     });
@@ -171,6 +203,16 @@ describe("controllers.DataInputController", function () {
 
         it('Should set $scope.newDataValues to newDataValues', function () {
             expect($scope.newDataValues).toEqual(newDataValues);
+        });
+
+        it('Should set $scope.createLocationsMonitorClass to false', function () {
+            expect($scope.createLocationsMonitorClass).toBeFalsy();
+        });
+
+        it('Should instantiate $scope.newLocationsMonitorClass to an object', function () {
+            expect($scope.newLocationsMonitorClass).toEqual({
+                monitorPoints: []
+            });
         });
     });
 });

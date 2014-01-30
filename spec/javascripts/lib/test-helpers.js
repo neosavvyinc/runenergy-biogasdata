@@ -9,6 +9,15 @@ spyOnAngularService = function (service, methodName, result) {
     }});
 };
 
+spyOnChainedPromise = function (object, method, results) {
+    var index = 0;
+    function _chainedPromise(fn) {
+        fn(results[Math.min(index++, results.length - 1)]);
+        return {then: _chainedPromise};
+    };
+    return spyOn(object, method).andReturn({then: _chainedPromise});
+};
+
 domControllerAndScope = function (name, parentScope) {
     var scope;
     inject(function ($injector, $compile) {

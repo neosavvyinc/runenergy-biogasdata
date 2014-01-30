@@ -22,6 +22,6 @@
         %label{'ng-repeat' => '(key, value) in call.params'} {{key}} => {{value}}
         %label{'ng-show' => 'call.payload'} Payload:
         .payload{'ng-show' => 'call.payload'}
-          %pre{'ng-bind' => 'stringify(call.payload)'}
+          %pre{'ng-bind' => 'chrom(call.payload)'}
         .code
           %pre{'ng-bind' => 'call.response'}
