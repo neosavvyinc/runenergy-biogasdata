@@ -24,9 +24,9 @@ RunEnergy.Dashboard.Directives
                     }
                 };
 
-                if (attrs.linkClass) {
-                    scope.innerLinkClass = attrs.linkClass;
-                }
+                attrs.$observe('linkClass', function (val) {
+                    scope.innerLinkClass = val;
+                });
 
                 scope.$watch('labelFunction', function (val) {
                     if (val && typeof val === 'function') {

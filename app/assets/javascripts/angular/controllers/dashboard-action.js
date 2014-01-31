@@ -74,6 +74,23 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
 
             var nsCollectionFilterProperties = $filter('nsCollectionFilterProperties');
             var nsCollectionFilterProperty = $filter('nsCollectionFilterProperty');
+            var _filterAssets = memoize(function (assets, newDataValues) {
+                var nAssets;
+                if (newDataValues.selectedSite && newDataValues.selectedSite.id) {
+                    nAssets = nsCollectionFilterProperty(assets, 'location_id', newDataValues.selectedSite.id);
+                }
+                if (newDataValues.selectedMonitorClass && newDataValues.selectedMonitorClass.id) {
+                    nAssets = nsCollectionFilterProperty(assets, 'monitor_class_id', newDataValues.selectedMonitorClass.id);
+                }
+                if (newDataValues.selectedSection && newDataValues.selectedSection.id) {
+                    nAssets = nsCollectionFilterProperty(assets, 'section_id', newDataValues.selectedSection.id);
+                }
+                return nAssets || assets;
+            });
+            var _watchAssets = function () {
+                $scope.availableAssets = _filterAssets($scope.assets, newDataValues);
+            };
+
             $scope.$watch('newDataValues.selectedLandfillOperator', function (val) {
                 if (val && val.location_ids && val.location_ids.length && $scope.sites && $scope.sites.length) {
                     $scope.availableSites = nsCollectionFilterProperties($scope.sites, 'id', val.location_ids);
@@ -84,12 +101,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                     $scope.availableMonitorClasses = nsCollectionFilterProperties($scope.monitorClasses, 'id', val.monitor_class_ids);
                     $scope.availableSections = nsCollectionFilterProperties($scope.sections, 'id', val.section_ids);
                 }
+                _watchAssets();
             });
-            $scope.$watch('newDataValues.selectedMonitorClass', function (val) {
-                if (val && val.id) {
-                    $scope.availableAssets = nsCollectionFilterProperty($scope.assets, 'monitor_class_id', val.id);
-                }
-            });
+            $scope.$watch('newDataValues.selectedMonitorClass', _watchAssets);
+            $scope.$watch('newDataValues.selectedSection', _watchAssets);
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {
