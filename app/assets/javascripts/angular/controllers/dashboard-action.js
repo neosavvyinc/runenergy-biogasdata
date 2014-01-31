@@ -7,6 +7,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                   newDataValues,
                   $location,
                   $filter) {
+            var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
+            var itemByProperty = Neosavvy.Core.Utils.CollectionUtils.itemByProperty;
 
             //Initialization, Perm Values
             $scope.landfillOperators = null;
@@ -26,7 +28,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
 
 
             //Watchers
-            function initValue(prop, locationProp, d, firstElement) {
+            function _initValue(prop, locationProp, d, firstElement) {
                 return function (val) {
                     if (val && val.length) {
                         if ($location.search()[locationProp]) {
@@ -42,7 +44,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 };
             }
 
-            function resetValuesBelow(propName, locationProp) {
+            function _resetValuesBelow(propName, locationProp) {
                 return function (newVal, oldVal) {
                     //Set url search parameter
                     if (newVal && newVal.id) {
@@ -65,12 +67,20 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 };
             }
 
+            function _chooseAccordingValues() {
+                if (hpGet(newDataValues, 'selectedAsset.id')) {
+                    newDataValues.selectedSite = itemByProperty($scope.sites, "id", newDataValues.selectedAsset.location_id);
+                    newDataValues.selectedMonitorClass = itemByProperty($scope.monitorClasses, "id", newDataValues.selectedAsset.monitor_class_id);
+                    newDataValues.selectedSection = itemByProperty($scope.sections, "id", newDataValues.selectedAsset.section_id);
+                }
+            }
+
             var dereg = {};
-            dereg.da = $scope.$watch('landfillOperators', initValue('newDataValues.selectedLandfillOperator', 'operator', 'da', true));
-            dereg.db = $scope.$watch('sites', initValue('newDataValues.selectedSite', 'site', 'db'));
-            dereg.dc = $scope.$watch('monitorClasses', initValue('newDataValues.selectedMonitorClass', 'monitor_class', 'dc'));
-            dereg.dd = $scope.$watch('sections', initValue('newDataValues.selectedSection', 'section', 'dd'));
-            dereg.de = $scope.$watch('assets', initValue('newDataValues.selectedAsset', 'asset', 'de'));
+            dereg.da = $scope.$watch('landfillOperators', _initValue('newDataValues.selectedLandfillOperator', 'operator', 'da', true));
+            dereg.db = $scope.$watch('sites', _initValue('newDataValues.selectedSite', 'site', 'db'));
+            dereg.dc = $scope.$watch('monitorClasses', _initValue('newDataValues.selectedMonitorClass', 'monitor_class', 'dc'));
+            dereg.dd = $scope.$watch('sections', _initValue('newDataValues.selectedSection', 'section', 'dd'));
+            dereg.de = $scope.$watch('assets', _initValue('newDataValues.selectedAsset', 'asset', 'de'));
 
             var nsCollectionFilterProperties = $filter('nsCollectionFilterProperties');
             var nsCollectionFilterProperty = $filter('nsCollectionFilterProperty');
@@ -105,13 +115,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             });
             $scope.$watch('newDataValues.selectedMonitorClass', _watchAssets);
             $scope.$watch('newDataValues.selectedSection', _watchAssets);
+            $scope.$watch('newDataValues.selectedAsset', _chooseAccordingValues);
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {
-                $scope.$watch('newDataValues.selectedLandfillOperator', resetValuesBelow('newDataValues.selectedLandfillOperator', 'operator'));
-                $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite', 'site'));
-                $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass', 'monitor_class'));
-                $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection', 'section'));
+                $scope.$watch('newDataValues.selectedLandfillOperator', _resetValuesBelow('newDataValues.selectedLandfillOperator', 'operator'));
+                $scope.$watch('newDataValues.selectedSite', _resetValuesBelow('newDataValues.selectedSite', 'site'));
+                $scope.$watch('newDataValues.selectedMonitorClass', _resetValuesBelow('newDataValues.selectedMonitorClass', 'monitor_class'));
+                $scope.$watch('newDataValues.selectedSection', _resetValuesBelow('newDataValues.selectedSection', 'section'));
                 $scope.onFirstUserInteract = function () {
                 };
             };
