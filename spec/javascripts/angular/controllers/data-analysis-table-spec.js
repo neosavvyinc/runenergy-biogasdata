@@ -3,7 +3,16 @@ describe("controllers.DataAnalysisTable", function () {
         $scope,
         newDataValues,
         controller,
-        readingsSpy;
+        routes,
+        railsServiceSpy;
+
+    var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
+    var _epochDateFor = function (dateTime) {
+        if (dateTime) {
+            return parseInt(dateTime.getTime() / 1000)
+        }
+        return dateTime;
+    };
 
     beforeEach(function () {
         module.apply(this, RunEnergy.Dashboard.Dependencies);
@@ -12,7 +21,8 @@ describe("controllers.DataAnalysisTable", function () {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             newDataValues = $injector.get('values.NewDataValues');
-            readingsSpy = spyOnAngularService($injector.get('services.AnalysisService'), 'readings', {readings: [
+            routes = $injector.get('constants.Routes');
+            railsServiceSpy = spyOnAngularService($injector.get('nsRailsService'), 'request', {readings: [
                 {data: {age: 5}},
                 {data: {age: 6}}
             ]});
@@ -53,14 +63,26 @@ describe("controllers.DataAnalysisTable", function () {
             it('Should do nothing if there is no selectedSite', function () {
                 newDataValues.selectedSite = null;
                 $scope.$digest();
-                expect(readingsSpy).not.toHaveBeenCalled();
+                expect(railsServiceSpy).not.toHaveBeenCalled();
             });
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 45};
                 newDataValues.selectedMonitorClass = {id: 11};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 11, null, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 11
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the startDate if that is available', function () {
@@ -68,7 +90,19 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.startDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the endDate if that is available', function () {
@@ -76,7 +110,19 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
 
             it('Should call with both the start and end dates if they are available', function () {
@@ -85,7 +131,7 @@ describe("controllers.DataAnalysisTable", function () {
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 
@@ -93,14 +139,14 @@ describe("controllers.DataAnalysisTable", function () {
             it('Should do nothing if there is no selectedSite', function () {
                 newDataValues.selectedSite = null;
                 $scope.$digest();
-                expect(readingsSpy).not.toHaveBeenCalled();
+                expect(railsServiceSpy).not.toHaveBeenCalled();
             });
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 84};
                 newDataValues.selectedMonitorClass = {id: 14};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(84, 14, null, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith(84, 14, null, null);
             });
 
             it('Should call with the startDate if that is available', function () {
@@ -108,7 +154,7 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.startDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
             });
 
             it('Should call with the endDate if that is available', function () {
@@ -116,7 +162,7 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
             });
 
             it('Should call with both the start and end dates if they are available', function () {
@@ -125,7 +171,7 @@ describe("controllers.DataAnalysisTable", function () {
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 
@@ -137,14 +183,14 @@ describe("controllers.DataAnalysisTable", function () {
             it('Should do nothing if there is no selectedSite', function () {
                 newDataValues.selectedSite = null;
                 $scope.$digest();
-                expect(readingsSpy).not.toHaveBeenCalled();
+                expect(railsServiceSpy).not.toHaveBeenCalled();
             });
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 45};
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, null);
             });
 
             it('Should call with the startDate if that is available', function () {
@@ -152,7 +198,7 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.startDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
             });
 
             it('Should call with the endDate if that is available', function () {
@@ -160,7 +206,7 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
             });
 
             it('Should call with both the start and end dates if they are available', function () {
@@ -169,7 +215,7 @@ describe("controllers.DataAnalysisTable", function () {
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(readingsSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
             });
         });
 

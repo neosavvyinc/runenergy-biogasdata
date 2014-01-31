@@ -112,7 +112,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 $scope.$watch('newDataValues.selectedSite', resetValuesBelow('newDataValues.selectedSite', 'site'));
                 $scope.$watch('newDataValues.selectedMonitorClass', resetValuesBelow('newDataValues.selectedMonitorClass', 'monitor_class'));
                 $scope.$watch('newDataValues.selectedSection', resetValuesBelow('newDataValues.selectedSection', 'section'));
-                $scope.$watch('newDataValues.selectedAsset', resetValuesBelow('newDataValues.selectedAsset', 'asset'));
                 $scope.onFirstUserInteract = function () {
                 };
             };

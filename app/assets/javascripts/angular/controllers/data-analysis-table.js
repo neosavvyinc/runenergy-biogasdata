@@ -1,21 +1,36 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
-    ['$scope', 'values.NewDataValues', 'services.AnalysisService',
-        function ($scope, newDataValues, analysisService) {
+    ['$scope', 'nsRailsService', 'values.NewDataValues', 'services.AnalysisService', 'constants.Routes',
+        function ($scope, nsRailsService, newDataValues, analysisService, routes) {
+            var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Getters
+            var _epochDateFor = function (dateTime) {
+                if (dateTime) {
+                    return parseInt(dateTime.getTime() / 1000)
+                }
+                return dateTime;
+            };
+
             var _getData = function () {
                 if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
-                    analysisService.readings(
-                            newDataValues.selectedSite.id,
-                            newDataValues.selectedMonitorClass.id,
-                            $scope.startDateTime,
-                            $scope.endDateTime
-                        ).then(function (result) {
-                            $scope.data = result ? _.map(result.readings, function(reading) {
-                                reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
-                                return reading.data;
-                            }) : null;
-                        });
+                    nsRailsService.request({
+                        method: 'GET',
+                        url: routes.ANALYSIS.READINGS,
+                        params: {
+                            ':site_id': newDataValues.selectedSite.id,
+                            ':monitor_class_id': newDataValues.selectedMonitorClass.id
+                        },
+                        optional: {
+                            'asset_id': hpGet(newDataValues, 'selectedAsset.id'),
+                            'start_date_time': _epochDateFor($scope.startDateTime),
+                            'end_date_time': _epochDateFor($scope.endDateTime)
+                        }
+                    }).then(function (result) {
+                        $scope.data = result ? _.map(result.readings, function(reading) {
+                            reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
+                            return reading.data;
+                        }) : null;
+                    });
                 }
             };
 
@@ -38,6 +53,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             $scope.$watch('newDataValues.selectedSite', _getData);
             $scope.$watch('newDataValues.selectedMonitorClass', _getData);
+            $scope.$watch('newDataValues.selectedAsset', _getData);
             $scope.$watch('startDateTime.getTime()', _getData);
             $scope.$watch('endDateTime.getTime()', _getData);
 

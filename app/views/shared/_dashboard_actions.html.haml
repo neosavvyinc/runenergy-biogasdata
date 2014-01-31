@@ -23,7 +23,8 @@
   %re-bootstrap-button-dropdown.location{'items' => 'landfillOperators', 'selected-item' => 'newDataValues.selectedLandfillOperator', 'label-field' => 'name', 'link-class' => 'btn-success', 'default' => 'Choose Landfill Operator'}
   %re-bootstrap-button-dropdown.location{'items' => 'availableSites', 'selected-item' => 'newDataValues.selectedSite', 'label-field' => 'site_name', 'link-class' => 'btn-success', 'default' => 'Choose Site'}
   %re-bootstrap-button-dropdown.location{'disabled' => '{{newDataValues.selectedSite | nsLogicalIf : "false" : "true"}}', 'items' => 'availableMonitorClasses', 'selected-item' => 'newDataValues.selectedMonitorClass', 'label-field' => 'name', 'link-class' => '{{newDataValues.selectedSite | nsLogicalIf : "btn btn-success" : "btn"}}', 'default' => 'Choose Monitor Class'}
+  %span Optional:
   - unless sections.nil?
-    %re-bootstrap-button-dropdown.location{'items' => 'availableSections', 'selected-item' => 'newDataValues.selectedSection', 'label-field' => 'name', 'link-class' => 'btn btn-success', 'default' => 'Choose Section'}
+    %re-bootstrap-button-dropdown.location{'items' => 'availableSections', 'selected-item' => 'newDataValues.selectedSection', 'label-field' => 'name', 'link-class' => 'btn btn-warning', 'default' => 'Choose Section'}
   - unless assets.nil?
-    %re-bootstrap-button-dropdown.location{'items' => 'availableAssets', 'selected-item' => 'newDataValues.selectedAsset', 'label-field' => 'unique_identifier', 'link-class' => 'btn btn-success', 'default' => 'Choose Asset'}
+    %re-bootstrap-button-dropdown.location{'items' => 'availableAssets', 'selected-item' => 'newDataValues.selectedAsset', 'label-field' => 'unique_identifier', 'link-class' => 'btn btn-warning', 'default' => 'Choose Asset'}
