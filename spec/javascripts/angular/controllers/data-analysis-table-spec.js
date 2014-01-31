@@ -127,11 +127,23 @@ describe("controllers.DataAnalysisTable", function () {
 
             it('Should call with both the start and end dates if they are available', function () {
                 newDataValues.selectedSite = {id: 45};
-                newDataValues.selectedMonitorClass = {id: 17};
+                newDataValues.selectedMonitorClass = {id: 19};
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 19
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
         });
 
