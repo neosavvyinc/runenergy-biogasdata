@@ -158,7 +158,19 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedSite = {id: 84};
                 newDataValues.selectedMonitorClass = {id: 14};
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(84, 14, null, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 84,
+                        ':monitor_class_id': 14
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the startDate if that is available', function () {
@@ -166,7 +178,19 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.startDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the endDate if that is available', function () {
@@ -174,7 +198,19 @@ describe("controllers.DataAnalysisTable", function () {
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
 
             it('Should call with both the start and end dates if they are available', function () {
@@ -183,7 +219,19 @@ describe("controllers.DataAnalysisTable", function () {
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
         });
 
@@ -200,25 +248,61 @@ describe("controllers.DataAnalysisTable", function () {
 
             it('Should get the readings with the ids from the selections', function () {
                 newDataValues.selectedSite = {id: 45};
-                newDataValues.selectedMonitorClass = {id: 17};
+                newDataValues.selectedMonitorClass = {id: 11};
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 11
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the startDate if that is available', function () {
                 newDataValues.selectedSite = {id: 45};
-                newDataValues.selectedMonitorClass = {id: 17};
+                newDataValues.selectedMonitorClass = {id: 12};
                 $scope.startDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, null);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 12
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': null
+                    }
+                });
             });
 
             it('Should call with the endDate if that is available', function () {
                 newDataValues.selectedSite = {id: 45};
-                newDataValues.selectedMonitorClass = {id: 17};
+                newDataValues.selectedMonitorClass = {id: 9};
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, null, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 9
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': null,
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
 
             it('Should call with both the start and end dates if they are available', function () {
@@ -227,7 +311,19 @@ describe("controllers.DataAnalysisTable", function () {
                 $scope.startDateTime = new Date();
                 $scope.endDateTime = new Date();
                 $scope.$digest();
-                expect(railsServiceSpy).toHaveBeenCalledWith(45, 17, $scope.startDateTime, $scope.endDateTime);
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                    method: 'GET',
+                    url: routes.ANALYSIS.READINGS,
+                    params: {
+                        ':site_id': 45,
+                        ':monitor_class_id': 17
+                    },
+                    optional: {
+                        'asset_id': undefined,
+                        'start_date_time': _epochDateFor($scope.startDateTime),
+                        'end_date_time': _epochDateFor($scope.endDateTime)
+                    }
+                });
             });
         });
 

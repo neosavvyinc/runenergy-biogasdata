@@ -3,6 +3,7 @@ RunEnergy.Dashboard.Services.service('nsRailsService',
         function (nsServiceExtensions) {
             var RE_A = /\W+/g;
             var RE_B = /([a-z\d])([A-Z])/g;
+            var _isBlank = Neosavvy.Core.Utils.StringUtils.isBlank;
 
             function _keysToSnakeCase(obj, nObj) {
                 nObj = nObj || {};
@@ -28,7 +29,9 @@ RunEnergy.Dashboard.Services.service('nsRailsService',
                         delete options.params;
                     }
                     if (options.optional && typeof options.optional === 'object') {
-                        builder.addParam(options.optional)
+                        builder.addParam(_.omit(options.optional, function (val) {
+                            return _isBlank(val);
+                        }));
                         delete options.optional;
                     }
                     options.url = builder.build();
