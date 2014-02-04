@@ -19,6 +19,10 @@ describe DataAnalysisController do
     FactoryGirl.create(:asset, :section => section)
   end
 
+  let :asset_b do
+    FactoryGirl.create(:asset)
+  end
+
   let :monitor_class do
     FactoryGirl.create(:monitor_class)
   end
@@ -27,7 +31,7 @@ describe DataAnalysisController do
     [
         FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2010)),
         FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2012)),
-        FactoryGirl.create(:reading, :asset => asset, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2014))
+        FactoryGirl.create(:reading, :asset => asset_b, :location => location, :monitor_class => monitor_class, :taken_at => DateTime.new(2014))
     ]
   end
 
@@ -101,6 +105,13 @@ describe DataAnalysisController do
     it 'should return a 400 error if not passed a monitor_class_id in the request' do
       xhr :get, 'readings', :site_id => location.id, :monitor_class_id => 'null'
       response.status.should eq(400)
+    end
+
+    it 'should return all the readings for an asset_id if passed in' do
+      xhr :get, 'readings', :asset_id => asset_b.id, :site_id => location.id, :monitor_class_id => monitor_class.id
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].should_not be_nil
+      parsed_response['readings'].size.should eq(1)
     end
 
     it 'should return all readings for the site if a valid site_id is passed in' do
