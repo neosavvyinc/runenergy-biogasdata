@@ -30,7 +30,9 @@ describe("controllers.DataInputController", function () {
             it('Should clear the error when all fields are filled in', function () {
                 newDataValues.selectedAsset = {id: 24};
                 newDataValues.selectedMonitorClass = {id: 19};
+                $scope.readingDate = new Date();
                 $scope.error = "Something";
+                $scope.assetUniqueIdentifier = "25OR624";
                 $scope.onAdd();
                 expect($scope.error).toEqual("");
             });
@@ -41,8 +43,9 @@ describe("controllers.DataInputController", function () {
                 $scope.assetUniqueIdentifier = "WH7890"
                 $scope.currentFieldLog.name = "Travis";
                 $scope.currentReading.temperature = 678;
+                $scope.readingDate = new Date();
                 $scope.onAdd();
-                expect(dataInputServiceCreateSpy).toHaveBeenCalledWith(24, 19, "WH7890", {name: "Travis"}, {temperature: 678}, null);
+                expect(dataInputServiceCreateSpy).toHaveBeenCalledWith(24, 19, "WH7890", {name: "Travis"}, {temperature: 678}, $scope.readingDate);
             });
 
             it('Should update the readings by getting all the readings from the server after a successful create call', function () {
@@ -50,6 +53,8 @@ describe("controllers.DataInputController", function () {
                 newDataValues.selectedMonitorClass = {id: 19};
                 $scope.currentFieldLog.name = "Travis";
                 $scope.currentReading.temperature = 678;
+                $scope.readingDate = new Date();
+                $scope.assetUniqueIdentifier = "25OR624";
                 $scope.onAdd();
                 expect(dataInputServiceReadingSpy).toHaveBeenCalledWith(24, 19);
             });

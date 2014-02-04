@@ -16,7 +16,8 @@
         %label {{mp.name + ' (' + mp.unit + ')'}}
         %input{'ng-model' => 'currentReading[mp.name]'}
         .limit-warning
-          %label{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
+          %label.monitor-limit{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
+      %label.error{'ng-bind' => 'error'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
     .span4{'ng-if' => 'createLocationsMonitorClass'}

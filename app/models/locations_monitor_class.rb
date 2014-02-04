@@ -33,6 +33,33 @@ class LocationsMonitorClass < ActiveRecord::Base
     "#{location.try(:site_name)} - #{monitor_class.try(:name).try(:pluralize)}"
   end
 
+  def notifications_for(reading)
+    unless reading.nil? or exception_notifications.empty?
+      unless reading.location_id != location_id
+        data = JSON.parse(reading.data)
+        data.each do |k, v|
+          mp = MonitorPoint.find_by_name(k)
+          unless mp.nil?
+            ml = mp.monitor_limit_for_location(location_id)
+            unless ml.nil?
+              if ml.try(:lower_limit) and v.to_f < ml.try(:lower_limit).to_f
+                exception_notifications.each do |en|
+                  en.lower_limit_warning(self, mp, ml, reading)
+                end
+              elsif ml.try(:lower_limit) and v.to_f > ml.try(:upper_limit).to_f
+                exception_notifications.each do |en|
+                  en.upper_limit_warning(self, mp, ml, reading)
+                end
+              end
+            end
+          end
+        end
+      else
+        raise 'You have passed a reading into a locations monitor class to which it does not belong'
+      end
+    end
+  end
+
   def as_json(options={})
     super(options).merge({
                              'column_cache' => (self.column_cache ? JSON.parse(self.column_cache) : nil),

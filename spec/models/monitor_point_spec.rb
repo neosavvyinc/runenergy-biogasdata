@@ -10,8 +10,12 @@ describe MonitorPoint do
     FactoryGirl.create(:monitor_point, :name => 'Methane Gas')
   end
 
+  let :monitor_limit do
+    FactoryGirl.create(:monitor_limit, :monitor_point => monitor_point, :location => location)
+  end
+
   before(:each) do
-    monitor_point.should_not be_nil
+    monitor_limit.should_not be_nil
   end
 
   describe 'self.lazy_load_from_schema' do
@@ -34,6 +38,22 @@ describe MonitorPoint do
       MonitorLimit.last.monitor_point_id.should eq(mp.id)
     end
     
+  end
+
+  describe 'monitor_limit_for_location' do
+
+    it 'should return the monitor_limit found if it is not null' do
+      monitor_point.monitor_limit_for_location(location.id).should eq(monitor_limit)
+    end
+
+    it 'should not return a monitor_limit if it does not match the location' do
+      monitor_point.monitor_limit_for_location(FactoryGirl.create(:location).id).should be_nil
+    end
+
+    it 'should not return a monitor_limit if it does not match the monitor_point' do
+      FactoryGirl.create(:monitor_point).monitor_limit_for_location(location.id).should be_nil
+    end
+
   end
   
   describe 'snake_name' do

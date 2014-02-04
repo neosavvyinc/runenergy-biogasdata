@@ -64,6 +64,42 @@ describe LocationsMonitorClass do
       locations_monitor_class.display_name.should eq('Tom Landfill - Shorties')
     end
   end
+  
+  describe 'notifications_for' do
+    exception_notification = nil, reading =nil, oxygen = nil, carbon = nil
+    before(:each) do
+      oxygen = FactoryGirl.create(:monitor_point, :name => 'oxygen')
+      carbon = FactoryGirl.create(:monitor_point, :name => 'carbon')
+      reading = FactoryGirl.create(:reading, :data => {'name' => 'Steve', 'oxygen' => '20', 'carbon' => 650.67}, :location => locations_monitor_class.location)
+      exception_notification = FactoryGirl.create(:exception_notification, :locations_monitor_class => locations_monitor_class)
+    end
+
+    it 'should raise an error if the readings location does not match its location' do
+      expect {
+        locations_monitor_class.notifications_for(FactoryGirl.create(:reading, :location => another_location))
+      }.to raise_error
+    end
+
+    it 'should pass over cases where a monitor_point is not found' do
+      expect(exception_notification).not_to receive(:lower_limit_warning)
+      expect(exception_notification).not_to receive(:upper_limit_warning)
+      locations_monitor_class.notifications_for(reading)
+    end
+
+    it 'should call the exception_notification.lower_limit_warning method when a lower limit exception is found' do
+      expect(exception_notification).to receive(:lower_limit_warning)
+      expect(exception_notification).not_to receive(:upper_limit_warning)
+      FactoryGirl.create(:monitor_limit, :lower_limit => 30.6, :monitor_point => oxygen, :location => locations_monitor_class.location)
+      locations_monitor_class.notifications_for(reading)
+    end
+
+    it 'should call the exception_notification.upper_limit_warning method when an upper limit exception is found' do
+      expect(exception_notification).not_to receive(:lower_limit_warning)
+      expect(exception_notification).to receive(:upper_limit_warning)
+      FactoryGirl.create(:monitor_limit, :upper_limit => 649, :monitor_point => carbon, :location => locations_monitor_class.location)
+      locations_monitor_class.notifications_for(reading)
+    end
+  end
 
   describe 'as_json' do
     it 'should parse out json for the column_cache' do

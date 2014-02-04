@@ -18,6 +18,10 @@ class MonitorPoint < ActiveRecord::Base
     mp
   end
 
+  def monitor_limit_for_location(location_id)
+    MonitorLimit.where(:location_id => location_id, :monitor_point_id => self.id).first
+  end
+
   def snake_name
     name.gsub(/\s{1,}/, '_').downcase
   end

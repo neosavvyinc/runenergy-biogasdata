@@ -44,7 +44,7 @@ class Reading < DataAsStringModel
           data[header[index]] = row[index]
         end
       end
-      Reading.new(:data => data.to_json)
+      Reading.create(:data => data.to_json)
     end
   end
 

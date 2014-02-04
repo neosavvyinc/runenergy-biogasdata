@@ -59,6 +59,12 @@ class DataInputController < DataInterfaceController
                                   :monitor_class_id => params[:monitor_class_id],
                                   :field_log_id => field_log.id,
                                   :taken_at => DateTime.strptime(params[:date_time].to_s, '%s')})
+
+        #Send out monitor limit notifications, may be good to do in a delayed job
+        lmc = LocationsMonitorClass.lazy_load(params[:site_id], params[:monitor_class_id])
+        lmc.notifications_for(reading)
+
+        #Render response
         render json: {:field_log => field_log, :reading => reading}
       else
         render json: {:error => 'Invalid param for reading create request.'}, :status => 400

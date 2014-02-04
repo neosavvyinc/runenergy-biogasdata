@@ -1,0 +1,11 @@
+.email
+  %h3 Limit Reached for #{@monitor_point.name}
+  %h3 Limit Value: #{@limit_value}
+  %h3 Asset: #{@reading.asset.unique_identifier}
+  %h3 Reading:
+  %ul
+  - JSON.parse(@reading.data).each do |key, value|
+    - if key == @monitor_point.name
+      %li{'style' => 'color: #FF0000'} #{key}: #{value}
+    - else
+      %li #{key}: #{value}

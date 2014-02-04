@@ -104,16 +104,21 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
 
             //Action Handlers
             $scope.onAdd = function () {
+                $scope.error = "";
                 if (newDataValues.selectedSite &&
-                    newDataValues.selectedMonitorClass) {
-                    $scope.error = "";
-                    dataInputService.createReading(
-                        newDataValues.selectedSite.id,
-                        newDataValues.selectedMonitorClass.id,
-                        $scope.assetUniqueIdentifier,
-                        $scope.currentFieldLog,
-                        $scope.currentReading,
-                        $scope.readingDate).then(_getReadings);
+                    newDataValues.selectedMonitorClass &&
+                    $scope.assetUniqueIdentifier) {
+                    if ($scope.readingDate) {
+                        dataInputService.createReading(
+                            newDataValues.selectedSite.id,
+                            newDataValues.selectedMonitorClass.id,
+                            $scope.assetUniqueIdentifier,
+                            $scope.currentFieldLog,
+                            $scope.currentReading,
+                            $scope.readingDate).then(_getReadings);
+                    } else {
+                        $scope.error = "The reading date is required.";
+                    }
                 } else {
                     $scope.error = "Please fill in all fields for the reading.";
                 }
