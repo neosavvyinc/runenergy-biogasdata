@@ -21,7 +21,7 @@ Biogasdata::Application.configure do
       address:              'smtp.gmail.com',
       port:                 587,
       domain:               'example.com',
-      user_name:            'trevoranddianewedding',
+      user_name:            'runenergynotifications',
       password:             'runenergy007',
       authentication:       'plain',
       enable_starttls_auto: true  }
