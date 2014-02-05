@@ -1,0 +1,38 @@
+/* line 3, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .sync input {
+    width: 295px;
+}
+/* line 5, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .monitor-point, .mobile-rig .field-log, .mobile-rig .sync-button {
+    margin: 10px 2px 0;
+}
+/* line 7, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .monitor-point a.btn, .mobile-rig .field-log a.btn, .mobile-rig .sync-button a.btn {
+    width: 302px;
+}
+/* line 9, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .monitor-point label, .mobile-rig .field-log label, .mobile-rig .sync-button label {
+    min-width: 110px;
+}
+/* line 12, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .submission a.btn {
+    width: 302px;
+    margin-top: 10px;
+}
+/* line 15, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .readings {
+    margin-top: 30px;
+}
+/* line 17, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .readings .reading {
+    clear: both;
+}
+/* line 19, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .readings .reading span {
+    margin-right: 5px;
+    float: left;
+}
+/* line 22, ../../app/assets/stylesheets/mobile_rig.css.sass */
+.mobile-rig .readings .reading .fieldlog, .mobile-rig .readings .reading .data {
+    clear: both;
+}

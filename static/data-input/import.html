@@ -1,0 +1,70 @@
+<html xmlns:ng="http://angularjs.org"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{border-spacing:1px 1px;-ms-zoom:1.0001;}.ng-animate-active{border-spacing:0px 0px;-ms-zoom:1;}</style>
+    <title>Run Energy - Biogasdata</title>
+    <link href="../assets/lib/css/macgyver.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/ng-quick-date.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/active_admin.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/bootstrap.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/fontawesome.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/bootstrap_and_overrides.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/dashboard.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/dashboard_20.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/mobile_rig.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="//j2GP0r2jkIWSzk/wflbPKC+loIgE9MWOXcblrQipU=" name="csrf-token">
+    <style></style></head>
+<body ng-app="dashboard" style="" class="ng-scope">
+<div class="container-fluid">
+    <div class="header-controls row-fluid ng-scope" ng-controller="controllers.HeaderControlsController">
+        <h3 class="title span4">
+          <span class="company">
+            &nbsp;
+          </span>
+            <span class="slash ng-binding ng-hide" ng-bind="'/'" ng-show="user.name">/</span>
+            <span class="user ng-binding" ng-bind="user.name"></span>
+        </h3>
+        <div class="btn-group span3">
+            <a class="btn dropdown-toggle span12" data-toggle="dropdown">Data Input <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="/data_input/create#?operator=20&amp;site=7&amp;monitor_class=2">Add Data</a>
+                </li>
+                <li>
+                    <a href="/data_input/import#?operator=20&amp;site=7&amp;monitor_class=2">Import Data</a>
+                </li>
+            </ul>
+        </div>
+        <a class="btn span3" href="/data_analysis#?operator=20&amp;site=7&amp;monitor_class=2">Data Analysis</a>
+        <a href="/users/sign_out" class="btn btn-inverse logout span2" data-method="delete" rel="nofollow">Logout</a>
+    </div>
+    <div class="data-input import">
+        <div class="dashboard-actions ng-scope" ng-click="onFirstUserInteract()" ng-controller="controllers.DashboardActionController">
+            <ns-serialize property="landfillOperators"></ns-serialize>
+            <ns-serialize property="sites"></ns-serialize>
+            <ns-serialize property="monitorClasses"></ns-serialize>
+            <div class="location btn-group ng-isolate-scope" default="Choose Landfill Operator" items="landfillOperators" label-field="name" link-class="btn-success" selected-item="newDataValues.selectedLandfillOperator"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">SITA (Aus)<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Byron Shire Council</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">SITA (Aus)</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">MayDay</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <div class="location btn-group ng-isolate-scope" default="Choose Site" items="availableSites" label-field="site_name" link-class="btn-success" selected-item="newDataValues.selectedSite"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">Whytes Gully Landfill<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Inkerman Landfill</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Whytes Gully Landfill</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <div class="location btn-group ng-isolate-scope" default="Choose Monitor Class" disabled="disabled" items="availableMonitorClasses" label-field="name" link-class="btn btn-success" selected-item="newDataValues.selectedMonitorClass"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">Gas Well<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Gas Well</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <span>Optional:</span>
+        </div>
+        <div class="content ng-scope" ng-controller="controllers.DataInputImportController">
+            <label class="error ng-binding" ng-bind="error"></label>
+            <form accept-charset="UTF-8" action="/data_input/import?operator=20&amp;site=7&amp;monitor_class=2" enctype="multipart/form-data" method="post" class="ng-valid ng-dirty"><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="✓"><input name="authenticity_token" type="hidden" value="//j2GP0r2jkIWSzk/wflbPKC+loIgE9MWOXcblrQipU="></div>
+                <div class="span3">
+                    <label for="column_definition_row">Column Name Row:</label>
+                    <input id="column_definition_row" name="column_definition_row" ng-model="columnNameRow" type="text" value="1" class="ng-valid ng-dirty">
+                    <label for="first_data_row">First Data Row:</label>
+                    <input id="first_data_row" name="first_data_row" ng-model="firstDataRow" type="text" value="2" class="ng-valid ng-dirty">
+                    <label for="column_definition_row">Last Data Row (defaults to end):</label>
+                    <input id="last_data_row" name="last_data_row" type="text">
+                </div>
+                <div class="span4">
+                    <input id="files_csv" name="files[csv]" ng-disabled="requiredFieldsMissing" ns-retrieve-element="fileInput" type="file">
+                </div>
+                <input name="authenticity_token" type="hidden" value="//j2GP0r2jkIWSzk/wflbPKC+loIgE9MWOXcblrQipU=">
+                <input name="commit" ng-disabled="requiredFieldsMissing" type="submit" value="Import">
+            </form>
+        </div>
+    </div>
+</div>
+
+</body></html>

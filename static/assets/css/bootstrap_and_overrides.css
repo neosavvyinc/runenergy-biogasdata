@@ -1,0 +1,26 @@
+/*
+
+
+  Use Font Awesome icons (default)
+  To use Glyphicons sprites instead of Font Awesome, replace with "require twitter-bootstrap-static/sprites"
+
+  */
+
+
+
+.filter-field {
+    width: 90%;
+    min-width: 40px;
+}
+
+.flare-table {
+    font-size: 0.8em;
+}
+
+.table th {
+    line-height:1.2em;
+}
+
+.btn-group+.btn-group {
+    margin-left: 0;
+}

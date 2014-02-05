@@ -1,0 +1,60 @@
+/* line 3, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.ng-cloak {
+    display: none;
+}
+
+/* line 7, ../../app/assets/stylesheets/dashboard_20.css.sass */
+input.ng-invalid.ng-dirty {
+    background-color: lightcoral;
+}
+
+/* line 11, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-analysis .quickdate {
+    margin-right: 165px;
+}
+
+/* line 16, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .form-inline label {
+    width: 300px;
+}
+/* line 18, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .form-inline label.monitor-limit, .data-input .form-inline label.error {
+    color: red;
+}
+/* line 21, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .form-inline a.btn {
+    width: 300px;
+    display: block;
+    clear: both;
+    margin: 5px 0;
+}
+/* line 26, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .data-table {
+    margin-top: 42px;
+}
+
+/* line 32, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .form-inline .field-log label {
+    width: 200px;
+}
+/* line 34, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input .form-inline .field-log input {
+    margin-top: -3px;
+}
+/* line 38, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input.import .data-table .btn-danger, .data-input.import .data-table .btn-inverse {
+    box-sizing: border-box;
+    width: 100%;
+}
+/* line 41, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input.import .data-table .removed-row {
+    background-color: lightcoral;
+}
+/* line 43, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input.import .data-table .removed-row > td {
+    background-color: lightcoral;
+}
+/* line 45, ../../app/assets/stylesheets/dashboard_20.css.sass */
+.data-input.import .data-table .removed-column {
+    background-color: lightcoral;
+}

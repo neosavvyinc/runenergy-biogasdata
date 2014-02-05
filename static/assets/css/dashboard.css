@@ -1,0 +1,129 @@
+/* line 7, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard {
+    min-height: 500px;
+}
+/* line 8, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .label-important {
+    font-size: 27px;
+    padding: 11px;
+}
+/* line 12, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard th .units {
+    font-weight: normal;
+    font-style: italic;
+}
+/* line 17, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title {
+    float: left;
+}
+/* line 19, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title span {
+    float: left;
+    margin-right: 10px;
+}
+/* line 22, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title span.slash, .dashboard .header-controls .title span.user {
+    margin-top: 8px;
+}
+/* line 24, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title span.slash {
+    margin-right: 14px;
+}
+/* line 26, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title span.company {
+    width: 144px;
+    height: 56px;
+    background: transparent url(/assets/logo.jpg) top left;
+}
+/* line 30, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .title span.user {
+    width: 200px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #5ab45a;
+}
+/* line 33, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .header-controls .btn {
+    margin-top: 23px;
+}
+/* line 35, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .logout {
+    float: right;
+    margin: 20px 0;
+}
+/* line 38, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .control-row {
+    margin-bottom: 16px;
+}
+/* line 41, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .customer a, .dashboard .flare-specifications a {
+    width: 200px;
+}
+/* line 44, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .location a {
+    width: 400px;
+}
+/* line 47, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .btn {
+    margin-top: 13px;
+}
+/* line 49, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time, .dashboard .date-time .date {
+    float: left;
+    margin-right: 15px;
+}
+/* line 52, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time span, .dashboard .date-time .date span {
+    float: left;
+    padding-top: 18px;
+    margin-right: 4px;
+}
+/* line 56, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time.disabled, .dashboard .date-time .date.disabled {
+    color: #cfcfcf;
+}
+/* line 58, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time input, .dashboard .date-time .date input {
+    width: 75px;
+    margin-top: 15px;
+}
+/* line 61, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time button, .dashboard .date-time .date button {
+    margin-top: 15px;
+}
+/* line 63, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time .re-masked-date-input, .dashboard .date-time .date .re-masked-date-input {
+    width: 77px;
+}
+/* line 65, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .date-time .time .re-masked-time-input, .dashboard .date-time .date .re-masked-time-input {
+    width: 57px;
+}
+/* line 67, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .prev, .dashboard .next, .dashboard .export, .dashboard .export-loader {
+    float: left;
+    margin-right: 4px;
+}
+/* line 70, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .prev, .dashboard .next {
+    width: 185px;
+}
+/* line 72, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .export {
+    width: 200px;
+}
+/* line 74, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .export-loader {
+    position: relative;
+    width: 30px;
+    height: 30px;
+}
+/* line 75, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .export-loader > div {
+    position: none;
+}
+/* line 80, ../../app/assets/stylesheets/dashboard.css.sass */
+.dashboard .dashboard {
+    margin-top: 4px;
+}

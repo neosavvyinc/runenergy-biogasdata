@@ -1,0 +1,81 @@
+// Place all the styles related to the dashboard controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+@import core
+
+.dashboard
+  .label-important
+    font-size: 27px
+    padding: 11px
+  th
+    .units
+      font-weight: normal
+      font-style: italic
+  min-height: 500px
+  .header-controls
+    .title
+      float: left
+      span
+        float: left
+        margin-right: 10px
+        &.slash, &.user
+          margin-top: 8px
+        &.slash
+          margin-right: 14px
+        &.company
+          width: 144px
+          height: 56px
+          background: transparent image-url('logo.jpg') top left
+        &.user
+          @include truncate(200px)
+          color: #5AB45A
+    .btn
+      margin-top: 23px
+  .logout
+    float: right
+    margin: 20px 0
+  .control-row
+    margin-bottom: 16px
+  .customer, .flare-specifications
+    a
+      width: 200px
+  .location
+    a
+      width: 400px
+  .date-time
+    .btn
+      margin-top: 13px
+    .time, .date
+      float: left
+      margin-right: 15px
+      span
+        float: left
+        padding-top: 18px
+        margin-right: 4px
+      &.disabled
+        color: #CFCFCF
+      input
+        width: 75px
+        margin-top: 15px
+      button
+        margin-top: 15px
+      .re-masked-date-input
+        width: 77px
+      .re-masked-time-input
+        width: 57px
+  .prev, .next, .export, .export-loader
+    float: left
+    margin-right: 4px
+  .prev, .next
+    width: 185px
+  .export
+    width: 200px
+  .export-loader
+    > div
+      position: none
+    position: relative
+    width: 30px
+    height: 30px
+  .dashboard
+    margin-top: 4px

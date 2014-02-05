@@ -1,0 +1,178 @@
+<html xmlns:ng="http://angularjs.org"><head><style type="text/css">@charset "UTF-8";[ng\:cloak],[ng-cloak],[data-ng-cloak],[x-ng-cloak],.ng-cloak,.x-ng-cloak,.ng-hide{display:none !important;}ng\:form{display:block;}.ng-animate-start{border-spacing:1px 1px;-ms-zoom:1.0001;}.ng-animate-active{border-spacing:0px 0px;-ms-zoom:1;}</style>
+    <title>Run Energy - Biogasdata</title>
+    <link href="../assets/lib/css/macgyver.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/ng-quick-date.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/active_admin.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/bootstrap.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/lib/css/fontawesome.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/bootstrap_and_overrides.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/dashboard.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/dashboard_20.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <link href="../assets/css/mobile_rig.css?body=1" media="all" rel="stylesheet" type="text/css">
+    <meta content="authenticity_token" name="csrf-param">
+    <meta content="//j2GP0r2jkIWSzk/wflbPKC+loIgE9MWOXcblrQipU=" name="csrf-token">
+    <style></style></head>
+<body ng-app="dashboard" style="" class="ng-scope">
+<div class="container-fluid">
+    <div class="header-controls row-fluid ng-scope" ng-controller="controllers.HeaderControlsController">
+        <h3 class="title span4">
+          <span class="company">
+            &nbsp;
+          </span>
+            <span class="slash ng-binding ng-hide" ng-bind="'/'" ng-show="user.name">/</span>
+            <span class="user ng-binding" ng-bind="user.name"></span>
+        </h3>
+        <div class="btn-group span3">
+            <a class="btn dropdown-toggle span12" data-toggle="dropdown">Data Input <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+                <li>
+                    <a href="/data_input/create#?operator=20&amp;site=5&amp;monitor_class=2">Add Data</a>
+                </li>
+                <li>
+                    <a href="/data_input/import#?operator=20&amp;site=5&amp;monitor_class=2">Import Data</a>
+                </li>
+            </ul>
+        </div>
+        <a class="btn span3" href="/data_analysis#?operator=20&amp;site=5&amp;monitor_class=2">Data Analysis</a>
+        <a href="/users/sign_out" class="btn btn-inverse logout span2" data-method="delete" rel="nofollow">Logout</a>
+    </div>
+    <div class="data-input create">
+        <div class="dashboard-actions ng-scope" ng-click="onFirstUserInteract()" ng-controller="controllers.DashboardActionController">
+            <ns-serialize property="landfillOperators"></ns-serialize>
+            <ns-serialize property="sites"></ns-serialize>
+            <ns-serialize property="newDataValues.monitorPoints"></ns-serialize>
+            <ns-serialize property="monitorClasses"></ns-serialize>
+            <div class="location btn-group ng-isolate-scope" default="Choose Landfill Operator" items="landfillOperators" label-field="name" link-class="btn-success" selected-item="newDataValues.selectedLandfillOperator"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">SITA (Aus)<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Byron Shire Council</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">SITA (Aus)</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">MayDay</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <div class="location btn-group ng-isolate-scope" default="Choose Site" items="availableSites" label-field="site_name" link-class="btn-success" selected-item="newDataValues.selectedSite"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">Inkerman Landfill<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Inkerman Landfill</a></li><!-- end ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Whytes Gully Landfill</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <div class="location btn-group ng-isolate-scope" default="Choose Monitor Class" disabled="disabled" items="availableMonitorClasses" label-field="name" link-class="btn btn-success" selected-item="newDataValues.selectedMonitorClass"><a class="btn dropdown-toggle ng-binding btn-success" ng-class="innerLinkClass" data-toggle="dropdown">Gas Well<span class="caret"></span></a><ul class="dropdown-menu"><!-- ngRepeat: item in items --><li ng-repeat="item in items" ng-click="onClick(item)" class="ng-scope"><a ng-bind="_defaultLabelFunction(item, labelField)" class="ng-binding">Gas Well</a></li><!-- end ngRepeat: item in items --></ul></div>
+            <span>Optional:</span>
+        </div>
+        <div class="row-fluid ng-scope" ng-controller="controllers.DataInputController">
+            <form class="span4 form-inline ng-pristine ng-valid ng-hide" ng-show="newDataValues.selectedLocationsMonitorClass &amp;&amp; !createLocationsMonitorClass">
+                <h5>Asset</h5>
+                <input type="text" mac-autocomplete-label="uid" mac-autocomplete-query="asset_unique_identifier" mac-autocomplete-url="getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)" ng-model="assetUniqueIdentifier" class="ng-pristine ng-valid">
+                <h5>Date</h5>
+                <div class="quickdate ng-isolate-scope ng-pristine ng-valid" date-format="d/M/yyyy" ng-model="readingDate" time-format="HH:mm">
+                    <a href="" ng-focus="toggleCalendar(true)" ng-click="toggleCalendar()" class="quickdate-button ng-binding" title=""><div ng-hide="iconClass" ng-bind-html="buttonIconHtml" class="ng-binding"></div>Click to Set Date</a>
+                    <div class="quickdate-popup" ng-class="{open: calendarShown}">
+                        <a href="" tabindex="-1" class="quickdate-close" ng-click="toggleCalendar()"><div ng-bind-html="closeButtonHtml" class="ng-binding">X</div></a>
+                        <div class="quickdate-text-inputs">
+                            <div class="quickdate-input-wrapper">
+                                <label>Date</label>
+                                <input class="quickdate-date-input ng-pristine ng-valid" name="inputDate" type="text" ng-model="inputDate" placeholder="1/1/2013" ng-blur="setDateFromInput()" ng-enter="setDateFromInput(true)" ng-class="{'ng-quick-date-error': inputDateErr}" ng-tab="onDateInputTab()">
+                            </div>
+                            <div class="quickdate-input-wrapper" ng-hide="disableTimepicker">
+                                <label>Time</label>
+                                <input class="quickdate-time-input ng-pristine ng-valid" name="inputTime" type="text" ng-model="inputTime" placeholder="12:00 PM" ng-blur="setDateFromInput(false)" ng-enter="setDateFromInput(true)" ng-class="{'quickdate-error': inputTimeErr}" ng-tab="onTimeInputTab()">
+                            </div>
+                        </div>
+                        <div class="quickdate-calendar-header">
+                            <a href="" class="quickdate-prev-month quickdate-action-link" tabindex="-1" ng-click="prevMonth()"><div ng-bind-html="prevLinkHtml" class="ng-binding">Prev</div></a>
+                            <span class="quickdate-month ng-binding">February 2014</span>
+                            <a href="" class="quickdate-next-month quickdate-action-link" ng-click="nextMonth()" tabindex="-1"><div ng-bind-html="nextLinkHtml" class="ng-binding">Next</div></a>
+                        </div>
+                        <table class="quickdate-calendar">
+                            <thead>
+                            <tr>
+                                <!-- ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">Su</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">M</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">Tu</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">W</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">Th</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">F</th><!-- end ngRepeat: day in dayAbbreviations --><th ng-repeat="day in dayAbbreviations" class="ng-scope ng-binding">Sa</th><!-- end ngRepeat: day in dayAbbreviations -->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!-- ngRepeat: week in weeks --><tr ng-repeat="week in weeks" class="ng-scope">
+                                <!-- ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">26</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">27</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">28</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">29</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">30</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">31</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">1</td><!-- end ngRepeat: day in week -->
+                            </tr><!-- end ngRepeat: week in weeks --><tr ng-repeat="week in weeks" class="ng-scope">
+                                <!-- ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">2</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">3</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding is-today">4</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">5</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">6</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">7</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">8</td><!-- end ngRepeat: day in week -->
+                            </tr><!-- end ngRepeat: week in weeks --><tr ng-repeat="week in weeks" class="ng-scope">
+                                <!-- ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">9</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">10</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">11</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">12</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">13</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">14</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">15</td><!-- end ngRepeat: day in week -->
+                            </tr><!-- end ngRepeat: week in weeks --><tr ng-repeat="week in weeks" class="ng-scope">
+                                <!-- ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">16</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">17</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">18</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">19</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">20</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">21</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">22</td><!-- end ngRepeat: day in week -->
+                            </tr><!-- end ngRepeat: week in weeks --><tr ng-repeat="week in weeks" class="ng-scope">
+                                <!-- ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">23</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">24</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">25</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">26</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">27</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding">28</td><!-- end ngRepeat: day in week --><td ng-mousedown="setDate(day.date)" ng-class="{&quot;other-month&quot;: day.other, &quot;selected&quot;: day.selected, &quot;is-today&quot;: day.today}" ng-repeat="day in week" class="ng-scope ng-binding other-month">1</td><!-- end ngRepeat: day in week -->
+                            </tr><!-- end ngRepeat: week in weeks -->
+                            </tbody>
+                        </table>
+                        <div class="quickdate-popup-footer">
+                            <a href="" class="quickdate-clear" tabindex="-1" ng-hide="disableClearButton" ng-click="clear()">Clear</a>
+                        </div>
+                    </div>
+                </div>
+                <h5>Field Log</h5>
+                <!-- ngRepeat: flp in newDataValues.selectedLocationsMonitorClass.field_log_points -->
+                <h5>Data</h5>
+                <!-- ngRepeat: mp in newDataValues.selectedLocationsMonitorClass.monitor_points -->
+                <label class="error ng-binding" ng-bind="error"></label>
+                <a class="btn btn-success add" ng-click="onAdd()">Add</a>
+                <a class="btn btn-warning reset" ng-click="onReset()">Reset</a>
+            </form>
+            <!-- ngIf: createLocationsMonitorClass --><div class="span4 ng-scope" ng-if="createLocationsMonitorClass">
+            <div class="create-monitor-point ng-scope" ng-controller="controllers.CreateMonitorPoint">
+                <h4>New Monitor Point</h4>
+                <form name="monitorPointForm" class="ng-pristine ng-invalid ng-invalid-required">
+                    <label>Name</label>
+                    <input ng-model="name" required="" class="ng-pristine ng-invalid ng-invalid-required">
+                    <label>Unit</label>
+                    <input ng-model="unit" required="" class="ng-pristine ng-invalid ng-invalid-required">
+                    <div class="clearfix">
+                        <a class="btn btn-primary" ng-click="onCreateMonitorPoint(monitorPointForm.$valid)">Create Monitor Point</a>
+                    </div>
+                </form>
+            </div>
+            <form class="span12 form-inline ng-pristine ng-valid">
+                <h5>Assign Monitor Points</h5>
+                <!-- ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Methane (%)</label>
+                <a class="btn ng-binding btn-success" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">x</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Carbon Dioxide (%)</label>
+                <a class="btn ng-binding btn-success" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">x</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Oxygen (%)</label>
+                <a class="btn ng-binding btn-success" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">x</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Pressure (kPa)</label>
+                <a class="btn ng-binding btn-danger" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">+</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Water Level (Inches)</label>
+                <a class="btn ng-binding btn-danger" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">+</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Water Color (%)</label>
+                <a class="btn ng-binding btn-danger" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">+</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Density (lb.)</label>
+                <a class="btn ng-binding btn-danger" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">+</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">Something New (in.)</label>
+                <a class="btn ng-binding btn-success" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">x</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints --><div class="monitor-point span8 ng-scope" ng-repeat="mp in newDataValues.monitorPoints">
+                <label style="width: 100%" class="ng-binding">New Point (Temp)</label>
+                <a class="btn ng-binding btn-danger" ng-class="getMonitorPointAdded(mp) | nsLogicalIf : &quot;btn-success&quot; : &quot;btn-danger&quot;" ng-click="onAddOrRemoveMonitorPointFromDefinition(mp)">+</a>
+            </div><!-- end ngRepeat: mp in newDataValues.monitorPoints -->
+                <div class="span8">
+                    <a class="btn btn-primary" ng-click="onAssign()">Assign</a>
+                </div>
+            </form>
+        </div><!-- end ngIf: createLocationsMonitorClass -->
+            <div class="span8">
+                <div class="data-table ng-scope ng-hide" ng-controller="controllers.PreviewCreate" ng-show="data.length">
+                    <ns-serialize property="monitorPoints"></ns-serialize>
+                    <label class="label label-important ng-binding" ng-bind="message"></label>
+                    <table class="table flare-table table-striped table-condensed table-bordered">
+                        <thead>
+                        <tr>
+                            <!-- ngRepeat: (key, value) in data[0] -->
+                        </tr>
+                        <tr>
+                            <!-- ngRepeat: (key, value) in filters -->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!-- ngRepeat: item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body></html>

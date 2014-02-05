@@ -1,0 +1,49 @@
+@import core
+
+.ng-cloak
+  display: none
+
+input
+  &.ng-invalid.ng-dirty
+    background-color: lightcoral
+
+.data-analysis
+  .quickdate
+    margin-right: 165px
+
+.data-input
+  .form-inline
+    label
+      width: 300px
+      &.monitor-limit, &.error
+        color: red
+    a
+      &.btn
+        width: 300px
+        display: block
+        clear: both
+        margin: 5px 0
+  .data-table
+    margin-top: 42px
+
+.data-input
+  .form-inline
+    .field-log
+      label
+        width: 200px
+      input
+        margin-top: -3px
+  &.import
+    .data-table
+      .btn-danger, .btn-inverse
+        box-sizing: border-box
+        width: 100%
+      .removed-row
+        background-color: lightcoral
+        > td
+          background-color: lightcoral
+      .removed-column
+        background-color: lightcoral
+
+
+
