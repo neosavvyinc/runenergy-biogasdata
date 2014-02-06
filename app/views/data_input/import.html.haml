@@ -20,8 +20,8 @@
           = file_field(:files, :csv, 'ns-retrieve-element' =>'fileInput', 'ng-disabled' => 'requiredFieldsMissing')
         %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
         = submit_tag 'Import', 'ng-disabled' => 'requiredFieldsMissing'
-    %h4 Upper Limits
-    = render 'shared/data_table', :angular_controller => 'controllers.UpperLimit', :monitor_points => @monitor_points
-    %h4 Lower Limits
-    = render 'shared/data_table', :angular_controller => 'controllers.LowerLimit', :monitor_points => @monitor_points
+    %h6{'ng-show' => 'upperLimits.length'}  Upper Limits
+    = render 'shared/limit_data_table', :angular_controller => 'controllers.UpperLimit', :monitor_points => @monitor_points
+    %h6{'ng-show' => 'lowerLimits.length'} Lower Limits
+    = render 'shared/limit_data_table', :angular_controller => 'controllers.LowerLimit', :monitor_points => @monitor_points
     = render 'shared/import_data_table', :angular_controller => 'controllers.PreviewCreate'
