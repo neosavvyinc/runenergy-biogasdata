@@ -35,5 +35,12 @@ module.exports = Page.create({
         value: function (dropdown, name) {
             return dropdown.click().then(dropdown.element(by.linkText(name)).click);
         }
+    },
+    filters: {
+        value: function (operator, site, monitorClass) {
+            this.selectFromDropdown(this.operatorDropdown, operator);
+            this.selectFromDropdown(this.siteDropdown, site);
+            return this.selectFromDropdown(this.monitorClassDropdown, monitorClass);
+        }
     }
 });
