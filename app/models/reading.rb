@@ -91,6 +91,34 @@ class Reading < DataAsStringModel
     new_reading
   end
 
+  def mark_limits_as_json(location_id, monitor_limit_cache=nil)
+    val = as_json
+    unless location_id.nil? or self.data.nil?
+      val[:data].each do |k, v|
+        if monitor_limit_cache and monitor_limit_cache[k]
+          ml = monitor_limit_cache[k]
+        else
+          ml = MonitorPoint.find_by_name(k).try(:monitor_limit_for_location, location_id)
+          if ml
+            monitor_limit_cache[k] = ml
+          end
+        end
+        if ml
+          val[:upper_limits] ||= []
+          val[:lower_limits] ||= []
+          if not v.blank? and v.numeric?
+            if v.to_f > ml.upper_limit.to_f
+              val[:upper_limits] << k
+            elsif v.to_f < ml.lower_limit.to_f
+              val[:lower_limits] << k
+            end
+          end
+        end
+      end
+    end
+    val
+  end
+
   def as_json(options={})
     super(options).merge({
                              :data => JSON.parse(self.data),

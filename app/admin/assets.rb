@@ -33,7 +33,7 @@ ActiveAdmin.register Asset do
     f.inputs 'Asset' do
       f.input :unique_identifier
       f.input :name
-      f.input :location, :as => :select, :collection => asset.locations
+      f.input :location, :as => :select, :collection => Location.all
       f.input :section, :as => :select, :collection => asset.available_sections
       f.input :monitor_class, :as => :select, :collection => MonitorClass.all
       f.input :monitor_points, :as => :select, :collection => MonitorPoint.all, :input_html => {:style => 'height: 400px; width: 300px;'}

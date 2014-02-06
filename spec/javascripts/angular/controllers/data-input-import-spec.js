@@ -26,7 +26,13 @@ describe("controllers.DataInputImportController", function () {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             newDataValues = $injector.get('values.NewDataValues');
-            completeImportCsvSpy = spyOnAngularService($injector.get('services.DataInputService'), 'completeImportCsv', [1, 2, 3]);
+            completeImportCsvSpy = spyOn($injector.get('services.DataInputService'), 'completeImportCsv').
+            andReturn({then: function (fn) {
+                    fn([1, 2, 3]);
+                    return {finally: function (fnb) {
+                        fnb();
+                    }}
+                }});
             controller = $injector.get('$controller')("controllers.DataInputImportController", {$scope: $scope});
         });
     });

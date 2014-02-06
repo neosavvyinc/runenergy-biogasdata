@@ -109,12 +109,13 @@ class DataInputController < DataInterfaceController
         @error = 'Column Name Row and First Data Row are required for import.'
       end
     end
-    all_view_classes(false, false, false)
+    all_view_classes(false, false, true)
   end
 
   def complete_import
     unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
       LocationsMonitorClass.create_caches(params[:site_id].to_i, params[:monitor_class_id].to_i, params[:reading_mods][:column_to_monitor_point_mappings], params[:reading_mods][:deleted_columns], params[:asset_column_name])
+      monitor_limit_cache = {}
       readings = Reading.process_edited_collection(params[:readings],
                                                    params[:reading_mods][:column_to_monitor_point_mappings],
                                                    params[:reading_mods][:deleted_columns],
@@ -122,8 +123,19 @@ class DataInputController < DataInterfaceController
                                                    params[:site_id].to_i,
                                                    params[:monitor_class_id].to_i,
                                                    params[:asset_column_name]
-      )
-      render json: {readings: readings}
+      ).map {
+          |r| r.mark_limits_as_json(params[:site_id], monitor_limit_cache)
+      }
+
+      render json: {
+          upper_limits: readings.select {
+              |r| r[:upper_limits].try(:size) != 0
+          },
+          lower_limits: readings.select {
+              |r| r[:lower_limits].try(:size) != 0
+          },
+          readings: readings
+      }
     else
       render json: {:error => 'The reading params were not set in the session, do not make this request until you have first called the import method.'}, :status => 400
     end

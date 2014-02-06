@@ -62,12 +62,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                         $scope.readingMods.assetColumnName
                     ).then(
                     function (result) {
-                        console.log("RECEIVED DATA!");
+                        if (result) {
+                            $scope.upperLimits = readingTransformer(result.upper_limits);
+                            $scope.lowerLimits = readingTransformer(result.lower_limits);
+                        }
                     },
                     function (error) {
                         $scope.error = "You must select a location, monitor class, and asset column.";
-                    }
-                );
+                    });
             };
 
             $scope.onSetAssetColumn = function (column) {

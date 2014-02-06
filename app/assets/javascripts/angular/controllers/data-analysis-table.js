@@ -1,7 +1,10 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
-    ['$scope', 'nsRailsService', 'values.NewDataValues', 'services.AnalysisService', 'constants.Routes',
-        function ($scope, nsRailsService, newDataValues, analysisService, routes) {
+    ['$scope', 'nsRailsService', 'values.NewDataValues', 'services.AnalysisService', 'constants.Routes', '$controller',
+        function ($scope, nsRailsService, newDataValues, analysisService, routes, $controller) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
+
+            //Helpers
+            $controller('controllers.helpers.DataTable', {$scope: $scope});
 
             //Getters
             var _epochDateFor = function (dateTime) {
@@ -34,12 +37,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 }
             };
 
-            $scope.getColumnLabel = memoize(function (key, monitorPoint) {
-                if (key && monitorPoint && monitorPoint.unit) {
-                    return key + " (" + monitorPoint.unit + ")";
-                }
-                return key;
-            });
 
             //Watchers
             $scope.$watch('data', function (val) {
