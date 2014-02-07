@@ -9,6 +9,7 @@
     "karma-jasmine": "~0.1.3",
     "karma-chrome-launcher": "~0.1.0",
     "karma-coverage": "~0.1.0",
-    "astrolabe": "~0.3.0-alpha"
+    "astrolabe": "~0.3.0-alpha",
+    "node-uuid": "~1.4.1"
   }
 }

@@ -2,7 +2,7 @@
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
-    %form.span4.form-inline{'ng-show' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
+    %form.span4.form-inline.qa-create-tools{'ng-show' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
       %h5 Asset
       %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
@@ -20,7 +20,7 @@
       %label.error{'ng-bind' => 'error'}
       %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
-    .span4{'ng-if' => 'createLocationsMonitorClass'}
+    .span4.qa-assign-tools{'ng-if' => 'createLocationsMonitorClass'}
       = render 'shared/create_monitor_point'
       %form.span12.form-inline
         %h5 Assign Monitor Points

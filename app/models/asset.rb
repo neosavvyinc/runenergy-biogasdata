@@ -3,8 +3,6 @@ class Asset < ActiveRecord::Base
   belongs_to :location
   belongs_to :section
   belongs_to :monitor_class
-  has_many :assets_monitor_points
-  has_many :monitor_points, :through => :assets_monitor_points
   has_many :readings
 
   def self.lazy_load(location_id, monitor_class_id, unique_identifier)
