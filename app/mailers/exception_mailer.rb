@@ -17,11 +17,10 @@ class ExceptionMailer < ActionMailer::Base
     end
   end
 
-  def batch_monitor_limit_email(type, location, monitor_class, limits, readings, deleted, user = nil, other_email_address = nil)
+  def batch_monitor_limit_email(type, location, monitor_class, readings, deleted, user = nil, other_email_address = nil)
     #View
     @location = location
     @monitor_class = monitor_class
-    @monitor_limits = limits
     @readings = readings
     @deleted_readings = deleted
 

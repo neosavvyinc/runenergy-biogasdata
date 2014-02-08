@@ -1,12 +1,5 @@
 .email
   %h3 Readings Above Limit Imported For #{@location.site_name}, #{@monitor_class.name}
-  %h3 Site Class Limits
-  %table
-    - @monitor_limits.each do |ml|
-      %tr
-        %td ml.monitor_point.name
-        %td Lower: #{ml.lower_limit}
-        %td Upper: #{ml.upper_limit}
   %h3 Accepted Readings:
   %table
     %th
@@ -17,11 +10,11 @@
         - JSON.parse(r.data).each do |key, value|
           %td #{value}
   %h3 Deleted Readings:
-    %table
-      %th
+  %table
+    %th
       - JSON.parse(@deleted_readings.first.data).each do |key, value|
         %td #{key}
-      - @deleted_readings.each do |r|
-        %tr
-          - JSON.parse(r.data).each do |key, value|
-            %td #{value}
+    - @deleted_readings.each do |r|
+      %tr
+        - JSON.parse(r.data).each do |key, value|
+          %td #{value}

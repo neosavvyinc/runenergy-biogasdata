@@ -23,22 +23,20 @@ class ExceptionNotification < ActiveRecord::Base
                                         reading, user, other_email).deliver
   end
 
-  def batch_lower_limit_warning(locations_monitor_class, monitor_limits, readings, deleted)
+  def batch_lower_limit_warning(locations_monitor_class, readings, deleted)
     ExceptionMailer.batch_monitor_limit_email('Lower',
                                               locations_monitor_class.location,
                                               locations_monitor_class.monitor_class,
-                                              monitor_limits,
                                               readings,
                                               deleted,
                                               user,
                                               other_email).deliver
   end
 
-  def batch_upper_limit_warning(locations_monitor_class, monitor_limits, readings, deleted)
+  def batch_upper_limit_warning(locations_monitor_class, readings, deleted)
     ExceptionMailer.batch_monitor_limit_email('Upper',
                                               locations_monitor_class.location,
                                               locations_monitor_class.monitor_class,
-                                              monitor_limits,
                                               readings,
                                               deleted,
                                               user,
