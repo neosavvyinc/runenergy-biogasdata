@@ -7,7 +7,9 @@
         %th
           %p.name Add / Remove
         %th{'ng-repeat' => '(key, value) in data[0]'}
-          %p.name{'ng-bind' => 'getColumnLabel(key, monitorPoints[key])'}
+          %p.name
+            %span{'ng-bind' => 'getColumnLabel(key, monitorPoints[key])'}
+            %span.limit{'ng-bind' => 'monitorLimits[key][limitKey]'}
     %tbody
       %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters'}
         %td
