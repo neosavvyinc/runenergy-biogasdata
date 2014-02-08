@@ -24,4 +24,4 @@
     = render 'shared/limit_data_table', :angular_controller => 'controllers.UpperLimit', :monitor_points => @monitor_points
     %h6{'ng-show' => 'lowerLimits.length'} Lower Limits
     = render 'shared/limit_data_table', :angular_controller => 'controllers.LowerLimit', :monitor_points => @monitor_points
-    = render 'shared/import_data_table', :angular_controller => 'controllers.PreviewCreate'
+    = render 'shared/import_data_table'

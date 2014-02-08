@@ -24,9 +24,4 @@ class Asset < ActiveRecord::Base
     end
   end
 
-  def as_json(options={})
-    super(options).merge({
-                             :monitor_points => self.monitor_points.as_json
-                         })
-  end
 end

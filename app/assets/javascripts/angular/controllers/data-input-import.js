@@ -7,6 +7,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
         function ($scope, $location, dataInputService, readingTransformer, newDataValues) {
 
             //Initialization
+            var monitorLimits;
             $scope.columnNameRow = 1;
             $scope.firstDataRow = 2;
             $scope.readingMods = {
@@ -63,6 +64,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     ).then(
                     function (result) {
                         if (result) {
+                            $scope.monitorLimits = result.monitor_limits;
                             $scope.upperLimits = readingTransformer(result.upper_limits);
                             $scope.lowerLimits = readingTransformer(result.lower_limits);
                         }

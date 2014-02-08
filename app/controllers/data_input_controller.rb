@@ -128,11 +128,12 @@ class DataInputController < DataInterfaceController
       }
 
       render json: {
-          upper_limits: readings.select {
-              |r| r[:upper_limits].try(:size) != 0
+          monitor_limits: monitor_limit_cache,
+          upper_limits: readings.reject {
+              |r| r[:upper_limits].nil?
           },
-          lower_limits: readings.select {
-              |r| r[:lower_limits].try(:size) != 0
+          lower_limits: readings.reject {
+              |r| r[:lower_limits].nil?
           },
           readings: readings
       }
