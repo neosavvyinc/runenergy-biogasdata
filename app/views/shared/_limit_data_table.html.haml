@@ -1,6 +1,7 @@
 .data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length'}
   %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'monitorPoints'}
   %label.label.label-important{'ng-bind' => 'message'}
+  %a.btn.btn-primary{'ng-click' => 'onApproveLimits()'} Approve Limits
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
@@ -11,7 +12,7 @@
             %span{'ng-bind' => 'getColumnLabel(key, monitorPoints[key])'}
             %span.limit{'ng-bind' => 'monitorLimits[key][limitKey]'}
     %tbody
-      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters'}
+      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters', 'ng-class' => 'getDeleted(item.id) | nsLogicalIf : "removed-row" : ""'}
         %td
-          %a.btn.btn-danger{'ng-click' => 'onRemoveRow($index + 1)', 'ng-class' => 'getRowVariation($index + 1, "btn-danger", "btn-inverse")'} {{getRowVariation($index + 1, "x", "+")}}
+          %a.btn.btn-danger{'ng-click' => 'onRemoveRow($index)', 'ng-class' => 'getDeleted(item.id) | nsLogicalIf : "btn-inverse" : "btn-danger"'} {{getDeleted(item.id) | nsLogicalIf : "+" : "x"}}
         %td{'ng-class' => 'getOutsideLimitClass(value, monitorLimits[key], key)', 'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item'}

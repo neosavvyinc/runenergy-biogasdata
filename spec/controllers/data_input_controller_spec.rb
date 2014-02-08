@@ -394,5 +394,61 @@ describe DataInputController do
     end
   end
 
+  describe 'approve_limit_breaking_set' do
+    readings = nil, location = nil, monitor_class = nil, locations_monitor_class = nil
+
+    before(:each) do
+      location = FactoryGirl.create(:location)
+      monitor_class = FactoryGirl.create(:monitor_class)
+      locations_monitor_class = FactoryGirl.create(:locations_monitor_class,
+                                                   :location => location,
+                                                   :monitor_class => monitor_class)
+      readings = [
+          FactoryGirl.create(:reading, :location => location, :monitor_class => monitor_class).as_json,
+          FactoryGirl.create(:reading, :location => location, :monitor_class => monitor_class).as_json,
+          FactoryGirl.create(:reading, :location => location, :monitor_class => monitor_class).as_json,
+          FactoryGirl.create(:reading, :location => location, :monitor_class => monitor_class).as_json,
+          FactoryGirl.create(:reading, :location => location, :monitor_class => monitor_class).as_json
+      ]
+    end
+
+    it 'should send back an error if not passed a readings parameter' do
+      xhr :post, :approve_limit_breaking_set, :deleted_ids => {}, :type => 'upper_limit'
+      response.status.should eq(400)
+    end
+
+    it 'should send back an error if not passed a deleted_ids parameter' do
+      xhr :post, :approve_limit_breaking_set, :readings => [], :type => 'upper_limit'
+      response.status.should eq(400)
+    end
+
+    it 'should return all the readings and an empty deleted collection if none are deleted' do
+      xhr :post, :approve_limit_breaking_set, :readings => readings, :deleted_ids => {}, :type => 'lower_limit'
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].size.should eq(5)
+      parsed_response['deleted'].size.should eq(0)
+    end
+
+    it 'should return the deleted readings in a collection when some deleted_ids are passed in' do
+      hash = {}
+      hash[readings[1]['id']] = true
+      hash[readings[3]['id']] = true
+      xhr :post, :approve_limit_breaking_set, :readings => readings, :deleted_ids => hash, :type => 'lower_limit'
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].size.should eq(3)
+      parsed_response['deleted'].size.should eq(2)
+    end
+
+    it 'should physically delete the deleted readings' do
+      hash = {}
+      hash[readings[1]['id'].to_s] = true
+      hash[readings[3]['id'].to_s] = true
+      xhr :post, :approve_limit_breaking_set, :readings => readings, :deleted_ids => hash, :type => 'upper_limit'
+      Reading.where(:id => readings[1]['id']).first.should be_nil
+      Reading.where(:id => readings[3]['id']).first.should be_nil
+    end
+
+  end
+
 end
 

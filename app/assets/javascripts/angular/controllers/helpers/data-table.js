@@ -1,23 +1,37 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.helpers.DataTable',
     ['$scope',
-        function ($scope) {
+        'nsRailsService',
+        'constants.Routes',
+        function ($scope,
+                  nsRailsService,
+                  routes) {
 
-            if (!$scope.readingMods) {
-                $scope.readingMods = {
-                    deletedRowIndices: [],
-                    deletedColumns: {},
-                    columnToMonitorPointMappings: {},
-                    assetColumnName: null
-                };
-            }
+            $scope.readingMods = {
+                deletedIds: {}
+            };
 
             //Action Handlers
             $scope.onRemoveRow = function (index) {
-                var indexOf = $scope.readingMods.deletedRowIndices.indexOf(index);
-                if (indexOf === -1) {
-                    $scope.readingMods.deletedRowIndices.push(index);
+                var id = String($scope.data[index].id);
+                if (!$scope.readingMods.deletedIds[id]) {
+                    $scope.readingMods.deletedIds[id] = true;
                 } else {
-                    $scope.readingMods.deletedRowIndices.splice(indexOf, 1);
+                    delete $scope.readingMods.deletedIds[id];
+                }
+            };
+
+            $scope.onApproveLimits = function () {
+                if ($scope.data && $scope.data.length) {
+                    return nsRailsService.request({
+                        method: 'POST',
+                        url: routes.DATA_INPUT.APPROVE_LIMIT_BREAKING_SET,
+                        data: _.merge({
+                            readings: $scope.data,
+                            type: $scope.limitKey
+                        }, $scope.readingMods)
+                    });
+                } else {
+                    throw "There is no data on the scope, this function should not be called.";
                 }
             };
 
@@ -31,6 +45,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.helpers.DataTable',
 
             $scope.getRowVariation = function (index, optionA, optionB) {
                 return ($scope.readingMods.deletedRowIndices.indexOf(index) === -1 ? optionA : optionB);
+            };
+
+            $scope.getDeleted = function (id) {
+                if (id) {
+                    return $scope.readingMods.deletedIds[String(id)] || false;
+                }
+                return false;
             };
 
         }]);

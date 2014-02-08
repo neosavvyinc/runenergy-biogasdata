@@ -10,6 +10,9 @@ class LocationsMonitorClass < ActiveRecord::Base
 
   validates_presence_of :location, :monitor_class
 
+  UPPER_LIMIT_WARNING = 'upper_limit'
+  LOWER_LIMIT_WARNING = 'lower_limit'
+
   def self.lazy_load(location_id, monitor_class_id)
     locations_monitor_class = LocationsMonitorClass.where(:location_id => location_id, :monitor_class_id => monitor_class_id).first
     if locations_monitor_class.nil?
@@ -57,6 +60,25 @@ class LocationsMonitorClass < ActiveRecord::Base
       else
         raise 'You have passed a reading into a locations monitor class to which it does not belong'
       end
+    end
+  end
+
+  def notifications_for_batch(readings, deleted, type)
+    if exception_notifications and (type == UPPER_LIMIT_WARNING or type == LOWER_LIMIT_WARNING)
+      unless readings.size == 1 and (deleted.nil? or deleted.empty?)
+        monitor_limits = MonitorLimit.where(:location_id => location_id, :monitor_class_id => monitor_class_id)
+        exception_notifications.each do |en|
+          if type == UPPER_LIMIT_WARNING
+            en.batch_upper_limit_warning(self, monitor_limits, readings, deleted)
+          else
+            en.batch_lower_limit_warning(self, monitor_limits, readings, deleted)
+          end
+        end
+      else
+        notifications_for(readings.first)
+      end
+    else
+      raise 'You have passed in invalid warning type for a batch notification'
     end
   end
 

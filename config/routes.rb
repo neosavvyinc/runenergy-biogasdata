@@ -26,6 +26,7 @@ Biogasdata::Application.routes.draw do
   match 'data_input/create', :to => 'data_input#create', :as => 'data_input_create'
   match 'data_input/import', :to => 'data_input#import', :as => 'data_input_import'
   match 'data_input/complete_import', :to => 'data_input#complete_import', :as => 'data_input_complete_import'
+  match 'data_input/approve_limit_breaking_set', :to => 'data_input#approve_limit_breaking_set', :as => 'data_input_approve_limit_breaking_set'
 
   #Data Analysis
   match 'data_analysis/readings/site/:site_id/monitorclass/:monitor_class_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'

@@ -101,6 +101,32 @@ describe LocationsMonitorClass do
     end
   end
 
+  describe 'notifications_for_batch' do
+    readings = nil
+
+    before(:each) do
+      readings = [
+         FactoryGirl.create(:reading),
+         FactoryGirl.create(:reading),
+         FactoryGirl.create(:reading),
+         FactoryGirl.create(:reading)
+      ]
+    end
+
+
+    it 'should raise an error if passed an invalid type for the warning' do
+      expect {
+        locations_monitor_class.notifications_for_batch(nil, nil, 'wrong')
+      }.to raise_error
+    end
+
+    it 'should call notifications_for with the first reading if the reading collection has one element' do
+      expect(locations_monitor_class).to receive(:notifications_for)
+      locations_monitor_class.notifications_for_batch([readings[0]], nil, LocationsMonitorClass::UPPER_LIMIT_WARNING)
+    end
+
+  end
+
   describe 'as_json' do
     it 'should parse out json for the column_cache' do
       locations_monitor_class.as_json['column_cache'].should eq({'name' => 'George'})

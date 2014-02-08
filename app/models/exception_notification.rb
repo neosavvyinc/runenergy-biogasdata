@@ -10,17 +10,39 @@ class ExceptionNotification < ActiveRecord::Base
   end
 
   def lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
-    ExceptionMailer.monitor_limit_email('Upper',
+    ExceptionMailer.monitor_limit_email('Lower',
                                         locations_monitor_class.location,
                                         monitor_point, monitor_limit.upper_limit,
                                         reading, user, other_email).deliver
   end
 
   def upper_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
-    ExceptionMailer.monitor_limit_email('Lower',
+    ExceptionMailer.monitor_limit_email('Upper',
                                         locations_monitor_class.location,
                                         monitor_point, monitor_limit.lower_limit,
                                         reading, user, other_email).deliver
+  end
+
+  def batch_lower_limit_warning(locations_monitor_class, monitor_limits, readings, deleted)
+    ExceptionMailer.batch_monitor_limit_email('Lower',
+                                              locations_monitor_class.location,
+                                              locations_monitor_class.monitor_class,
+                                              monitor_limits,
+                                              readings,
+                                              deleted,
+                                              user,
+                                              other_email).deliver
+  end
+
+  def batch_upper_limit_warning(locations_monitor_class, monitor_limits, readings, deleted)
+    ExceptionMailer.batch_monitor_limit_email('Upper',
+                                              locations_monitor_class.location,
+                                              locations_monitor_class.monitor_class,
+                                              monitor_limits,
+                                              readings,
+                                              deleted,
+                                              user,
+                                              other_email).deliver
   end
 
   protected

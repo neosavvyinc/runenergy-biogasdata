@@ -65,8 +65,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     function (result) {
                         if (result) {
                             $scope.monitorLimits = result.monitor_limits;
-                            $scope.upperLimits = readingTransformer(result.upper_limits);
-                            $scope.lowerLimits = readingTransformer(result.lower_limits);
+                            $scope.upperLimits = readingTransformer(result.upper_limits, true);
+                            $scope.lowerLimits = readingTransformer(result.lower_limits, true);
                         }
                     },
                     function (error) {

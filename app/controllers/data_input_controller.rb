@@ -142,4 +142,32 @@ class DataInputController < DataInterfaceController
     end
   end
 
+  def approve_limit_breaking_set
+    if params[:readings] and params[:deleted_ids] and params[:type]
+      deleted = []
+      readings = Reading.find(params[:readings].map { |r| r['id'] })
+      params[:deleted_ids].each do |k, v|
+        r = Reading.find(k)
+        deleted << r
+        r.delete
+      end
+      readings = (readings.map {|r| r}) - deleted
+
+      #Notifications
+      if readings and readings.size
+        locations_monitor_class = LocationsMonitorClass.where(
+            :location_id => readings.first.location_id,
+            :monitor_class_id => readings.first.monitor_class_id).first
+        locations_monitor_class.notifications_for_batch(readings, deleted, params[:type])
+      end
+
+      render json: {
+          readings: readings,
+          deleted: deleted
+      }
+    else
+      render json: {:error => 'You have passed an invalid request to approve readings.'}, :status => 400
+    end
+  end
+
 end
