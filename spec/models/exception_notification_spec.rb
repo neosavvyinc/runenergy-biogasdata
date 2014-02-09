@@ -9,6 +9,22 @@ describe ExceptionNotification do
     )
   end
 
+  let :locations_monitor_class do
+    FactoryGirl.create(:deluxe_locations_monitor_class)
+  end
+
+  let :monitor_point do
+    FactoryGirl.create(:monitor_point)
+  end
+
+  let :monitor_limit do
+    FactoryGirl.create(:deluxe_monitor_limit)
+  end
+
+  let :reading do
+    FactoryGirl.create(:reading)
+  end
+
   before(:each) do
     exception_notification.should_not be_nil
   end
@@ -27,6 +43,36 @@ describe ExceptionNotification do
       exception_notification.user = nil
       exception_notification.other_email = nil
       exception_notification.display_name.should be_nil
+    end
+  end
+
+  describe 'lower_limit_warning' do
+
+    it 'should call the ExceptionMailer.monitor_limit_email' do
+      expect(ExceptionMailer).to receive(:monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
+      exception_notification.lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
+    end
+
+  end
+
+  describe 'upper_limit_warning' do
+    it 'should call the ExceptionMailer.monitor_limit_email' do
+      expect(ExceptionMailer).to receive(:monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
+      exception_notification.lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
+    end
+  end
+
+  describe 'batch_lower_limit_warning' do
+    it 'should call the batch_monitor_limit_email method' do
+      expect(ExceptionMailer).to receive(:batch_monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
+      exception_notification.batch_lower_limit_warning(locations_monitor_class, [reading], [])
+    end
+  end
+
+  describe 'batch_lower_limit_warning' do
+    it 'should call the batch_monitor_limit_email method' do
+      expect(ExceptionMailer).to receive(:batch_monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
+      exception_notification.batch_upper_limit_warning(locations_monitor_class, [reading], [])
     end
   end
   

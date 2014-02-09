@@ -42,6 +42,7 @@ gem 'haml-rails', '~> 0.4'
 gem 'jquery-rails', '~> 2.3.0'
 gem 'jquery-ui-rails', '~> 4.0.3'
 gem 'addressable', '~> 2.3.5'
+gem 'hashie', '~> 2.0.5'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
