@@ -10,7 +10,16 @@ class FieldLog < DataAsStringModel
     end
   end
 
+  def display_name
+    data = as_json[:data]
+    if data and data.length > 0
+      data.map { |k, v| "#{k}: #{v}" }.join(', ')
+    else
+      'No Data Defined'
+    end
+  end
+
   def as_json(options={})
-    super(options).merge(:data => JSON.parse(self.data))
+    super(options).merge(:data => (self.data ? JSON.parse(self.data) : {}))
   end
 end

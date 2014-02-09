@@ -30,6 +30,19 @@ describe FieldLog do
 
   end
 
+  describe 'display_name' do
+
+    it 'should return No Data Defined if there is no data' do
+      fl = FactoryGirl.create(:field_log, :data => '{}')
+      fl.display_name.should eq('No Data Defined')
+    end
+
+    it 'should return the csv of data if defined' do
+      field_log.display_name.should eq('name: George')
+    end
+
+  end
+
   describe 'as_json' do
 
     it 'should merge a json parsed version of the data with the normal properties' do
