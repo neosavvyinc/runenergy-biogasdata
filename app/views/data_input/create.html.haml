@@ -5,7 +5,7 @@
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}
     %form.span4.form-inline.qa-create-tools{'ng-show' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
       %h5 Asset
-      %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
+      %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid', 'class' => 'qa-asset-unique-identifier'}
       %h5 Date
       %datepicker{'ng-model' => 'readingDate', 'date-format' => 'd/M/yyyy', 'time-format' => 'HH:mm'}
       %h5{'ng-show' => 'newDataValues.selectedLocationsMonitorClass.field_log_points'} Field Log
@@ -18,8 +18,8 @@
         %input{'ng-model' => 'currentReading[mp.name]'}
         .limit-warning
           %label.monitor-limit{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
-      %label.error{'ng-bind' => 'error'}
-      %a.btn.btn-success.add{'ng-click' => 'onAdd()'} Add
+      %label.error.qa-main-error{'ng-bind' => 'error'}
+      %a.btn.btn-success.add.qa-add-create{'ng-click' => 'onAdd()'} Add
       %a.btn.btn-warning.reset{'ng-click' => 'onReset()'} Reset
     .span4.qa-assign-tools{'ng-if' => 'createLocationsMonitorClass'}
       = render 'shared/create_monitor_point'

@@ -14,7 +14,7 @@ module.exports = Page.create({
     },
     errorLabel: {
         get: function () {
-            return element(by.binding('error'));
+            return element(by.className('qa-main-error'));
         }
     }
 });

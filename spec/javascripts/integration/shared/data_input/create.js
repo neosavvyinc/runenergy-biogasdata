@@ -21,5 +21,20 @@ module.exports = Page.create({
         get: function () {
             return this.container.element(by.className('data-table'));
         }
+    },
+    addButton: {
+        get: function () {
+            return this.container.element(by.className('qa-add-create'));
+        }
+    },
+    errorLabel: {
+        get: function () {
+            return this.container.element(by.className('qa-main-error'));
+        }
+    },
+    assetUidInput: {
+        get: function () {
+            return this.container.element(by.className('qa-asset-unique-identifier'));
+        }
     }
 });

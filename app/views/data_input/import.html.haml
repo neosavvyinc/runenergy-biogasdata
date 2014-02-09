@@ -4,7 +4,7 @@
   = render 'shared/create_monitor_point'
   .clearfix
   .content{'ng-controller' => 'controllers.DataInputImportController', 're-spinning-overlay' => 'loading'}
-    %label.error{'ng-bind' => 'error'}
+    %label.error.qa-main-error{'ng-bind' => 'error'}
     - unless @readings.nil?
       %h4{'ng-show' => 'data.length'} Spreadsheet Preview & Assignment
       %a.btn.btn-primary.complete{'ng-click' => 'onCompleteImport()', 'ng-show' => 'data.length'} Complete Import
