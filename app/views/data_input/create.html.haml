@@ -8,7 +8,7 @@
       %mac-autocomplete{'mac-autocomplete-url' => 'getAssetAutoCompleteUrl(newDataValues.selectedSite, newDataValues.selectedMonitorClass)', 'mac-autocomplete-query' => 'asset_unique_identifier', 'ng-model' => 'assetUniqueIdentifier', 'mac-autocomplete-label' => 'uid'}
       %h5 Date
       %datepicker{'ng-model' => 'readingDate', 'date-format' => 'd/M/yyyy', 'time-format' => 'HH:mm'}
-      %h5 Field Log
+      %h5{'ng-show' => 'newDataValues.selectedLocationsMonitorClass.field_log_points'} Field Log
       .field-log{'ng-repeat' => 'flp in newDataValues.selectedLocationsMonitorClass.field_log_points'}
         %label{'ng-bind' => 'flp.name'}
         %input{'ng-model' => 'currentFieldLog[flp.name]'}

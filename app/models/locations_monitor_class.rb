@@ -3,7 +3,7 @@ class LocationsMonitorClass < ActiveRecord::Base
   belongs_to :location
   belongs_to :monitor_class
   has_many :exception_notifications
-  has_many :field_log_points_locations_monitor_classes
+  has_many :field_log_points_locations_monitor_classes, :uniq => true
   has_many :field_log_points, :through => :field_log_points_locations_monitor_classes
   has_many :monitor_points_locations_monitor_classes, :uniq => true
   has_many :monitor_points, :through => :monitor_points_locations_monitor_classes

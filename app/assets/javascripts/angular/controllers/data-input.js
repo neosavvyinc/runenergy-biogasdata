@@ -117,10 +117,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                             $scope.currentReading,
                             $scope.readingDate).then(_getReadings);
                     } else {
-                        $scope.error = "The reading date is required.";
+                        $scope.error = "Reading date is required";
                     }
                 } else {
-                    $scope.error = "Please fill in all fields for the reading.";
+                    $scope.error = "Please type in or auto select an asset identifier";
                 }
             };
 
