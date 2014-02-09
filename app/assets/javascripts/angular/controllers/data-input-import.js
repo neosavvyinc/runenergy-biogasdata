@@ -76,12 +76,19 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     ).then(
                     function (result) {
                         if (result) {
+                            //Stateful goodness
                             $scope.loading = false;
                             $scope.data = null;
                             newDataValues.enable.createMonitorPoint = false;
+
+                            //Monitor limit info needed
                             $scope.monitorLimits = result.monitor_limits;
                             $scope.upperLimits = readingTransformer(result.upper_limits, true);
                             $scope.lowerLimits = readingTransformer(result.lower_limits, true);
+
+                            //Set approvals if they are empty
+                            $scope.approvals.upperLimit = ($scope.upperLimits || !$scope.upperLimits.length)
+                            $scope.approvals.lowerLimit = ($scope.lowerLimits || !$scope.lowerLimits.length)
                         }
                     },
                     function (error) {

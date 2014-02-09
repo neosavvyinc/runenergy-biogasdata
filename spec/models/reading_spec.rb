@@ -115,7 +115,7 @@ describe Reading do
           {},
           {}
       )
-      data.should eq({'Sequestration' => 67, 'Charles Bronson' => 'Hello Friends'})
+      data.should eq({'Sequestration' => '67', 'Charles Bronson' => 'Hello Friends'})
     end
 
     it 'should be able to delete a monitor point' do
@@ -182,6 +182,14 @@ describe Reading do
       reading[:upper_limits].should be_nil
       reading[:lower_limits].size.should eq (1)
       reading[:lower_limits][0].should eq('Oxygen')
+    end
+
+    it 'should throw blank values in the lower limit array if there is a key defined' do
+      reading = FactoryGirl.create(:reading, :data => {'Methane' => '', 'Oxygen' => 500}).mark_limits_as_json(location.id)
+      reading[:upper_limits].should be_nil
+      reading[:lower_limits].size.should eq (2)
+      reading[:lower_limits][0].should eq('Methane')
+      reading[:lower_limits][1].should eq('Oxygen')
     end
 
     it 'should throw on upper and lower limits for a reading that qualifies for both' do

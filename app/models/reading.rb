@@ -105,7 +105,10 @@ class Reading < DataAsStringModel
           end
         end
         if ml
-          if not v.blank? and v.to_s.numeric?
+          if v.blank?
+            val[:lower_limits] ||= []
+            val[:lower_limits] << k
+          elsif v.to_s.numeric?
             if v.to_f > ml['upper_limit'].to_f
               val[:upper_limits] ||= []
               val[:upper_limits] << k

@@ -20,7 +20,7 @@ describe("controllers.helpers.DataTable", function () {
 
             //Stuff inherited from other scope
             $scope.approvals = {};
-            
+
             routes = $injector.get('constants.Routes');
             controller = $injector.get('$controller')("controllers.helpers.DataTable", {$scope: $scope});
         });

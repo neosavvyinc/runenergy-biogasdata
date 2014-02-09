@@ -3,5 +3,6 @@ class MonitorLimit < ActiveRecord::Base
   belongs_to :monitor_point
   belongs_to :location
 
+  validates_presence_of :lower_limit, :upper_limit
 
 end
