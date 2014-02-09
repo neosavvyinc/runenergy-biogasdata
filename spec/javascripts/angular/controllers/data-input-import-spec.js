@@ -133,20 +133,22 @@ describe("controllers.DataInputImportController", function () {
     describe('Action Handlers', function () {
         describe('onCompleteImport', function () {
             it('Should call the completeImportCsv method on the service with the params', function () {
-                $scope.data = [1, 2, 3, 4];
+                $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
+                $scope.readingMods.assetColumnName = 'id';
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith(
-                    [1, 2, 3, 4],
+                    [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}],
                     $scope.readingMods.columnToMonitorPointMappings,
                     $scope.readingMods.deletedRowIndices,
                     $scope.readingMods.deletedColumns,
                     undefined,
                     17,
-                    null);
+                    'id');
             });
 
             it('Should set $scope.data to null', function () {
-                $scope.data = [1, 2, 3, 4];
+                $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
+                $scope.readingMods.assetColumnName = 'id';
                 $scope.onCompleteImport();
                 expect($scope.data).toBeNull();
             });
