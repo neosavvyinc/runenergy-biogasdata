@@ -22,6 +22,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.helpers.DataTable',
 
             $scope.onApproveLimits = function () {
                 if ($scope.data && $scope.data.length) {
+                    $scope.loading = true;
                     return nsRailsService.request({
                         method: 'POST',
                         url: routes.DATA_INPUT.APPROVE_LIMIT_BREAKING_SET,
@@ -29,6 +30,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.helpers.DataTable',
                             readings: $scope.data,
                             type: $scope.limitKey
                         }, $scope.readingMods)
+                    }).then(function (result) {
+                        $scope.loading = false;
+                        $scope.data = null;
+                        if ($scope.limitKey == 'upper_limit') {
+                            $scope.upperLimits = null;
+                            $scope.approvals.upperLimit = true;
+                        } else {
+                            $scope.lowerLimits = null;
+                            $scope.approvals.lowerLimit = true;
+                        }
                     });
                 } else {
                     throw "There is no data on the scope, this function should not be called.";

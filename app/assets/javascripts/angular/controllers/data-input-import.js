@@ -16,6 +16,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                 columnToMonitorPointMappings: {},
                 assetColumnName: null
             };
+            $scope.approvals = {
+                upperLimit: false,
+                lowerLimit: false
+            };
             $scope.newDataValues = newDataValues;
 
             //Watchers
@@ -50,10 +54,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                 }
             });
 
+            $scope.$watch('approvals', function (val) {
+                if (val && val.upperLimit && val.lowerLimit) {
+                    window.location = '/data_analysis#' + window.location.search;
+                }
+            }, true);
+
             //Action Handlers
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
                 $scope.error = "";
+                $scope.loading = true;
                 dataInputService.completeImportCsv(
                         $scope.data,
                         $scope.readingMods.columnToMonitorPointMappings,
@@ -65,6 +76,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     ).then(
                     function (result) {
                         if (result) {
+                            $scope.loading = false;
                             $scope.data = null;
                             newDataValues.enable.createMonitorPoint = false;
                             $scope.monitorLimits = result.monitor_limits;

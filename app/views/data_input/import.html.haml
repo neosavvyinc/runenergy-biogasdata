@@ -3,10 +3,11 @@
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => (@locked || false)
   = render 'shared/create_monitor_point'
   .clearfix
-  .content{'ng-controller' => 'controllers.DataInputImportController'}
+  .content{'ng-controller' => 'controllers.DataInputImportController', 're-spinning-overlay' => 'loading'}
     %label.error{'ng-bind' => 'error'}
     - unless @readings.nil?
-      %a.btn.btn-primary{'ng-click' => 'onCompleteImport()', 'ng-show' => 'data.length'} Complete Import
+      %h4{'ng-show' => 'data.length'} Spreadsheet Preview & Assignment
+      %a.btn.btn-primary.complete{'ng-click' => 'onCompleteImport()', 'ng-show' => 'data.length'} Complete Import
       %ns-serialize{'data' => @readings.try(:to_json).try(:html_safe), 'property' => 'data'}
     - else
       = form_tag "{{getFormPostUrl('#{data_input_import_path}', newDataValues)}}", multipart: true, 'ng-submit' => 'onSubmit($event)' do
@@ -21,8 +22,8 @@
           = file_field(:files, :csv, 'ns-retrieve-element' =>'fileInput', 'ng-disabled' => 'requiredFieldsMissing')
         %input{name: 'authenticity_token', type: 'hidden', value: form_authenticity_token}
         = submit_tag 'Import', 'ng-disabled' => 'requiredFieldsMissing'
-    %h4.limit{'ng-show' => 'upperLimits.length'}  Upper Limits
+    %h4{'ng-show' => 'upperLimits.length'}  Upper Limits
     = render 'shared/limit_data_table', :angular_controller => 'controllers.UpperLimit', :monitor_points => @monitor_points
-    %h4.limit{'ng-show' => 'lowerLimits.length'} Lower Limits
+    %h4{'ng-show' => 'lowerLimits.length'} Lower Limits
     = render 'shared/limit_data_table', :angular_controller => 'controllers.LowerLimit', :monitor_points => @monitor_points
     = render 'shared/import_data_table'

@@ -58,6 +58,13 @@ describe("controllers.DataInputImportController", function () {
         it('Should instantiate newDataValues as a property on the scope', function () {
             expect($scope.newDataValues).toEqual(newDataValues);
         });
+
+        it('Should instantiate approvals', function () {
+            expect($scope.approvals).toEqual({
+                upperLimit: false,
+                lowerLimit: false
+            });
+        });
     });
 
     describe('Watchers', function () {

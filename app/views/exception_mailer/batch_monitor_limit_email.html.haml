@@ -3,17 +3,19 @@
   %h3 Accepted Readings:
   %table
     %th
-    - JSON.parse(@readings.first.data).each do |key, value|
-      %td #{key}
-    - @readings.each do |r|
-      %tr
-        - JSON.parse(r.data).each do |key, value|
-          %td #{value}
+    - unless @readings.nil? or @readings.empty?
+      - JSON.parse(@readings.first.data).each do |key, value|
+        %td #{key}
+      - @readings.each do |r|
+        %tr
+          - JSON.parse(r.data).each do |key, value|
+            %td #{value}
   %h3 Deleted Readings:
   %table
     %th
-      - JSON.parse(@deleted_readings.first.data).each do |key, value|
-        %td #{key}
+      - unless @deleted_readings.nil? or @deleted_readings.empty?
+        - JSON.parse(@deleted_readings.first.data).each do |key, value|
+          %td #{key}
     - @deleted_readings.each do |r|
       %tr
         - JSON.parse(r.data).each do |key, value|

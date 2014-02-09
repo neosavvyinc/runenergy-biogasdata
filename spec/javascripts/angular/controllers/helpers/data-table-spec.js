@@ -8,6 +8,9 @@ describe("controllers.helpers.DataTable", function () {
     beforeEach(function () {
         module.apply(module, RunEnergy.Dashboard.Dependencies.concat(function ($provide) {
             railsService = jasmine.createSpyObj("railsService", ["request"]);
+            railsService.request.andReturn({then: function (fn) {
+                fn({readings: [], deleted: []});
+            }});
             $provide.value('nsRailsService', railsService);
         }));
 
@@ -66,9 +69,19 @@ describe("controllers.helpers.DataTable", function () {
                         method: 'POST',
                         url: routes.DATA_INPUT.APPROVE_LIMIT_BREAKING_SET,
                         data: {
-                            readings: $scope.data,
-                            deletedIds: $scope.readingMods.deletedIds
+                            readings: [{id: 1}, {id: 2}, {id: 3}],
+                            deletedIds: $scope.readingMods.deletedIds,
+                            type: undefined
                         }});
+                });
+
+                it('Should set $scope.data to null', function () {
+                    $scope.onApproveLimits();
+                    expect($scope.data).toBeNull();
+                });
+
+                it('Should set $scope.loading to false', function () {
+                    expect($scope.loading).toBeFalsy();
                 });
             });
 

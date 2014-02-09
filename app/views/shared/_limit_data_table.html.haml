@@ -1,4 +1,4 @@
-.data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length'}
+.data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length', 're-spinning-overlay' => 'loading'}
   %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'monitorPoints'}
   %label.label.label-important{'ng-bind' => 'message'}
   %a.btn.btn-primary.approve-limits{'ng-click' => 'onApproveLimits()'} Approve Limits
