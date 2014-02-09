@@ -6,5 +6,9 @@ RunEnergy.Dashboard.Values.value('values.NewDataValues', {
     selectedMonitorClass: null,
     selectedLocationsMonitorClass: null,
 
-    monitorPoints: []
+    monitorPoints: [],
+
+    enable: {
+        createMonitorPoint: false
+    }
 });

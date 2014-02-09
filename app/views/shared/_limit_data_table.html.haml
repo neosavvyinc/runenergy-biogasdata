@@ -1,7 +1,7 @@
 .data-table{'ng-controller' => angular_controller, 'ng-show' => 'data.length'}
   %ns-serialize{'data' => monitor_points.to_json.html_safe, 'property' => 'monitorPoints'}
   %label.label.label-important{'ng-bind' => 'message'}
-  %a.btn.btn-primary{'ng-click' => 'onApproveLimits()'} Approve Limits
+  %a.btn.btn-primary.approve-limits{'ng-click' => 'onApproveLimits()'} Approve Limits
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr

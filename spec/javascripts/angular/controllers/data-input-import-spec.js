@@ -129,13 +129,19 @@ describe("controllers.DataInputImportController", function () {
                 $scope.data = [1, 2, 3, 4];
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith(
-                    $scope.data,
+                    [1, 2, 3, 4],
                     $scope.readingMods.columnToMonitorPointMappings,
                     $scope.readingMods.deletedRowIndices,
                     $scope.readingMods.deletedColumns,
                     undefined,
                     17,
                     null);
+            });
+
+            it('Should set $scope.data to null', function () {
+                $scope.data = [1, 2, 3, 4];
+                $scope.onCompleteImport();
+                expect($scope.data).toBeNull();
             });
         });
 

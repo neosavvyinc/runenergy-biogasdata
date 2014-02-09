@@ -22,6 +22,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             var dereg = $scope.$watch('data', function (val) {
                 if (val && val.length) {
                     $scope.data = readingTransformer(val);
+                    newDataValues.enable.createMonitorPoint = true;
                     dereg();
                 }
             });
@@ -64,6 +65,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     ).then(
                     function (result) {
                         if (result) {
+                            $scope.data = null;
+                            newDataValues.enable.createMonitorPoint = false;
                             $scope.monitorLimits = result.monitor_limits;
                             $scope.upperLimits = readingTransformer(result.upper_limits, true);
                             $scope.lowerLimits = readingTransformer(result.lower_limits, true);

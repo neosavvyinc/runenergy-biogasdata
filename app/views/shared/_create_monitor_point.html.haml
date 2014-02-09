@@ -1,9 +1,6 @@
-.create-monitor-point{'ng-controller' => 'controllers.CreateMonitorPoint'}
+.create-monitor-point{'ng-controller' => 'controllers.CreateMonitorPoint', 'ng-show' => 'newDataValues.enable.createMonitorPoint'}
   %h4 New Monitor Point
   %form{'name' => 'monitorPointForm'}
-    %label Name
-    %input{'ng-model' => 'name', 'required' => true}
-    %label Unit
-    %input{'ng-model' => 'unit', 'required' => true}
-    .clearfix
-      %a.btn.btn-primary{'ng-click' => 'onCreateMonitorPoint(monitorPointForm.$valid)'} Create Monitor Point
+    %input{'placeholder' => 'Name',' ng-model' => 'name', 'required' => true}
+    %input{'placeholder' => 'Unit', 'ng-model' => 'unit', 'required' => true}
+    %a.btn.btn-primary{'ng-click' => 'onCreateMonitorPoint(monitorPointForm.$valid)'} Create Monitor Point

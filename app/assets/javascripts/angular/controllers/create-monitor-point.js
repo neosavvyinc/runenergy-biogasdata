@@ -28,5 +28,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.CreateMonitorPoint',
 
             $scope.name = "";
             $scope.unit = "";
+            $scope.newDataValues = newDataValues;
 
         }]);
