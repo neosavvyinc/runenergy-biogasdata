@@ -146,6 +146,46 @@ describe("controllers.DataInputImportController", function () {
                 expect($scope.readingMods.assetColumnName).toEqual("Identifier 20");
             });
         });
+
+        describe('onSubmit', function () {
+            var eSpy;
+
+            beforeEach(function () {
+                newDataValues.selectedSite = {id: 29};
+                newDataValues.selectedMonitorClass = {id: 25};
+                eSpy = jasmine.createSpyObj('e', ['preventDefault']);
+            });
+
+            it('Should preventDefault of event if there is no selectedSite', function () {
+                newDataValues.selectedSite = null;
+                $scope.onSubmit(eSpy);
+                expect(eSpy.preventDefault).toHaveBeenCalledWith();
+            });
+
+            it('Should set $scope.error if there is no selected site', function () {
+                newDataValues.selectedSite = null;
+                $scope.onSubmit(eSpy);
+                expect($scope.error).toEqual('You must select a site before uploading');
+            });
+
+            it('Should preventDefault of event if there is no selectedMonitorClass', function () {
+                newDataValues.selectedMonitorClass = null;
+                $scope.onSubmit(eSpy);
+                expect(eSpy.preventDefault).toHaveBeenCalledWith();
+            });
+
+            it('Should set $scope.error if there is no selected monitor class', function () {
+                newDataValues.selectedMonitorClass = null;
+                $scope.onSubmit(eSpy);
+                expect($scope.error).toEqual('You must select a monitor class before uploading');
+            });
+
+            it('Should not prevent the default if there is both', function () {
+                $scope.onSubmit(eSpy);
+                expect(eSpy.preventDefault).not.toHaveBeenCalled();
+            });
+
+        });
     });
 
     describe('Getters', function () {

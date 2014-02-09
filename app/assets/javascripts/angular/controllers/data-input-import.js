@@ -78,6 +78,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                 $scope.readingMods.assetColumnName = column;
             };
 
+            $scope.onSubmit = function (e) {
+                if (!newDataValues.selectedSite) {
+                    $scope.error = 'You must select a site before uploading';
+                    e.preventDefault();
+                } else if (!newDataValues.selectedMonitorClass) {
+                    $scope.error = 'You must select a monitor class before uploading';
+                    e.preventDefault();
+                }
+            };
+
             //Getters
             $scope.getFormPostUrl = function (base, newDataValues) {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
