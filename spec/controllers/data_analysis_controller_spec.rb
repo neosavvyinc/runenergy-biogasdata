@@ -141,17 +141,4 @@ describe DataAnalysisController do
 
   end
 
-  describe 'monitor_points' do
-    it 'should return a 400 error if not passed an asset_id in the request' do
-      xhr :get, 'monitor_points', :asset_id => 'null'
-      response.status.should eq(400)
-    end
-
-    it 'should return all the monitor points for the asset if a valid asset_id is passed in' do
-      xhr :get, 'monitor_points', :asset_id => asset.id
-      parsed_response = JSON.parse(response.body)
-      parsed_response['monitor_points'].should_not be_nil
-      parsed_response['monitor_points'].size.should eq(2)
-    end
-  end
 end

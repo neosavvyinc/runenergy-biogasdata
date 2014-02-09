@@ -11,7 +11,7 @@ describe MonitorPoint do
   end
 
   let :monitor_limit do
-    FactoryGirl.create(:monitor_limit, :monitor_point => monitor_point, :location => location)
+    FactoryGirl.create(:deluxe_monitor_limit, :monitor_point => monitor_point, :location => location)
   end
 
   before(:each) do

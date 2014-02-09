@@ -320,10 +320,6 @@ describe DataInputController do
 
     describe 'POST' do
 
-      it 'should set @locked to true' do
-        controller.instance_variable_get(:@locked).should be_true
-      end
-
       it 'should set the error if the :column_definition_row param is blank' do
         post :import, :first_data_row => 6
         controller.instance_variable_get(:@error).should_not be_nil

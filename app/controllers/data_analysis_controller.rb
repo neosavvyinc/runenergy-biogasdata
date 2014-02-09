@@ -25,14 +25,4 @@ class DataAnalysisController < DataInterfaceController
     end
   end
 
-  def monitor_points
-    unless ajax_value_or_nil(params[:asset_id]).nil?
-      monitor_points = Asset.find(params[:asset_id].to_i).monitor_points
-      render json: {monitor_points: monitor_points}
-    else
-      render json: {:error => 'You must pass valid parameter to retrieve monitor points for analysis'}, :status => 400
-    end
-  end
-
-
 end
