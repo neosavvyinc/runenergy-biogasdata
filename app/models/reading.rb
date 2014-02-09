@@ -84,7 +84,7 @@ class Reading < DataAsStringModel
           if column_to_name_cache[column].blank?
             column_to_name_cache[column] = MonitorPoint.find(column_to_point_id[column]['id'].to_i).try(:name)
           end
-          new_reading[column_to_name_cache[column]] = value
+          new_reading[column_to_name_cache[column]] = value.to_s.strip.gsub(',', '')
         end
       end
     end

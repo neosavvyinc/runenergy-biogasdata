@@ -105,10 +105,15 @@ class DataInputController < DataInterfaceController
             params[:last_data_row].try(:to_i)
         )
         all_dashboard_action_selections
+
+        #Locks the dashboard actions
+        @locked = true
       else
         @error = 'Column Name Row and First Data Row are required for import.'
       end
     end
+
+    #All other necessary view classes
     all_view_classes(false, false, true)
   end
 
