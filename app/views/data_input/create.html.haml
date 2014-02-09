@@ -1,4 +1,4 @@
-.data-input.create
+.data-input.create{'re-show-when-ready' => true, 'style' => 'display: none;'}
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
     :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => false
   .row-fluid{'ng-controller' => 'controllers.DataInputController'}

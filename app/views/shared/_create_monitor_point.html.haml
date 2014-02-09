@@ -4,3 +4,5 @@
     %input{'placeholder' => 'Name',' ng-model' => 'name', 'required' => true}
     %input{'placeholder' => 'Unit', 'ng-model' => 'unit', 'required' => true}
     %a.btn.btn-primary{'ng-click' => 'onCreateMonitorPoint(monitorPointForm.$valid)'} Create Monitor Point
+  %label.message{'ng-bind' => 'message'}
+  %label.error{'ng-bind' => 'error'}

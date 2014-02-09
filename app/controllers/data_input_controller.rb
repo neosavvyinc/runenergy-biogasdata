@@ -80,14 +80,18 @@ class DataInputController < DataInterfaceController
         ajax_value_or_nil(params[:monitor_class_id]).nil? or
         ajax_value_or_nil(params[:name]).nil? or
         ajax_value_or_nil(params[:unit]).nil?
-      monitor_point = MonitorPoint.create(:name => params[:name], :unit => params[:unit])
+      unless MonitorPoint.where(:name => params[:name], :unit => params[:unit]).first
+        monitor_point = MonitorPoint.create(:name => params[:name], :unit => params[:unit])
 
-      #Add MonitorPoint to the LocationsMonitorClass for the location and monitor class
-      LocationsMonitorClass.
-          lazy_load(params[:site_id], params[:monitor_class_id]).
-          monitor_points << monitor_point
+        #Add MonitorPoint to the LocationsMonitorClass for the location and monitor class
+        LocationsMonitorClass.
+            lazy_load(params[:site_id], params[:monitor_class_id]).
+            monitor_points << monitor_point
 
-      render json: monitor_point
+        render json: monitor_point
+      else
+        render json: {:error => "Monitor Point #{params[:name]} (#{params[:unit]}) has already been created."}, :status => 400
+      end
     else
       render json: {:error => 'Invalid params for creating a monitor point.'}, :status => 400
     end
@@ -156,7 +160,7 @@ class DataInputController < DataInterfaceController
         deleted << r
         r.delete
       end
-      readings = (readings.map {|r| r}) - deleted
+      readings = (readings.map { |r| r }) - deleted
 
       #Notifications
       if readings and readings.size
