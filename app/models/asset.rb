@@ -14,6 +14,10 @@ class Asset < ActiveRecord::Base
                      :unique_identifier => unique_identifier)
   end
 
+  def display_name
+    "#{location.try(:site_name) || 'No Location'}, #{monitor_class.try(:name) || 'No Class'}: #{unique_identifier}"
+  end
+
   def available_sections
     if not @location.nil?
       @location.sections

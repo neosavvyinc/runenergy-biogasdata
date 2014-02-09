@@ -1,5 +1,10 @@
-ActiveAdmin.register LocationsMonitorClass do
+ActiveAdmin.register LocationsMonitorClass, :as => 'Site Monitor Classes' do
   menu :parent => 'Site Management'
+
+  index do
+    column :display_name
+    default_actions
+  end
 
   form do |f|
     f.inputs 'Site Specific Assignments' do
