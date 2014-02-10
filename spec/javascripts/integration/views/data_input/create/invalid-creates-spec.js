@@ -5,14 +5,6 @@ var uuid = require('node-uuid')
 
 describe('user attempts to perform some kind of invalid create operation', function () {
 
-    it('Should be able to login', function () {
-        try {
-            login.login('tewen@neosavvy.com', 'runenergy007');
-        } catch (e) {
-            //Do nothing
-        }
-    });
-
     it('Should go to the create page', function () {
         create.go();
         expect(browser.getCurrentUrl()).toContain('/data_input/create')

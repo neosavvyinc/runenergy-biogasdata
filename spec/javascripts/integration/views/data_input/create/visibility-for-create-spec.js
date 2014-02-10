@@ -5,14 +5,6 @@ var dashboardActions = require('../../../shared/shared/dashboard-actions');
 
 describe('/data_input/create', function () {
 
-    it('Should be able to login', function () {
-        try {
-            login.login('tewen@neosavvy.com', 'runenergy007');
-        } catch (e) {
-            //Do nothing
-        }
-    });
-
     it('Should be able to go to the create page', function () {
         create.go();
         expect(browser.getCurrentUrl()).toContain('/data_input/create');

@@ -4,14 +4,6 @@ var dashboardActions = require('../../../shared/shared/dashboard-actions');
 
 describe('user attempting to perform an invalid file import', function () {
 
-    it('Should be able to login', function () {
-        try {
-            login.login('tewen@neosavvy.com', 'runenergy007');
-        } catch (e) {
-            //Do nothing
-        }
-    });
-
     it('Should be able to the import page', function () {
         importView.go();
         expect(browser.getCurrentUrl()).toContain('/data_input/import');
