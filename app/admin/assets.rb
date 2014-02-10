@@ -6,9 +6,6 @@ ActiveAdmin.register Asset do
     column :location
     column :section
     column :monitor_class
-    column 'Monitor Points' do |asset|
-      asset.monitor_points.map {|mp| "#{mp.name}"}
-    end
     default_actions
   end
 
@@ -20,12 +17,6 @@ ActiveAdmin.register Asset do
       h6 asset.section.display_name
       h6 "Created At: #{asset.created_at}"
       h6 "Updated At: #{asset.updated_at}"
-    end
-    panel 'Monitor Points' do
-      table_for asset.monitor_points do
-        column :name
-        column :unit
-      end
     end
   end
 
