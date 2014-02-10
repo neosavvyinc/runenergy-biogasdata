@@ -19,7 +19,7 @@ class DataAnalysisController < DataInterfaceController
       unless ajax_value_or_nil(params[:end_date_time]).nil?
         readings = readings.where('taken_at <= ?', DateTime.strptime(params[:end_date_time].to_s, '%s'))
       end
-      render json: {:readings => readings}
+      render json: {:readings => readings.order('created_at DESC')}
     else
       render json: {:error => 'You must pass valid parameter to retrieve readings for analysis'}, :status => 400
     end

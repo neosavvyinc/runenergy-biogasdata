@@ -10,5 +10,5 @@
         %th{'ng-repeat' => '(key, value) in filters'}
           %input.filter-field{'ng-model' => 'filters[key]'}
     %tbody
-      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 100 | nsCollectionKeyedNumericExpression : filters'}
+      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 500 | nsCollectionKeyedNumericExpression : filters'}
         %td{'ng-bind' => 'value', 'ng-repeat' => '(key, value) in item'}

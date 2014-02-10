@@ -126,5 +126,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 $scope.onFirstUserInteract = function () {
                 };
             };
+            
+            $scope.onReset = function () {
+                newDataValues.selectedSection = null;
+                newDataValues.selectedAsset = null;
+            };
 
         }]);

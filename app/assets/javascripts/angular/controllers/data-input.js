@@ -103,6 +103,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             };
 
             //Action Handlers
+            function _remedyBlanks(reading, locationsMonitorClass) {
+                if (reading && locationsMonitorClass && locationsMonitorClass.monitor_points) {
+                    for (var i = 0; i < locationsMonitorClass.monitor_points.length; i++) {
+                        if (_.isUndefined(reading[locationsMonitorClass.monitor_points[i].name])) {
+                            reading[locationsMonitorClass.monitor_points[i].name] = "";
+                        }
+                    }
+                }
+                return reading;
+            }
+
             $scope.onAdd = function () {
                 $scope.error = "";
                 if (newDataValues.selectedSite &&
@@ -114,7 +125,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                             newDataValues.selectedMonitorClass.id,
                             $scope.assetUniqueIdentifier,
                             $scope.currentFieldLog,
-                            $scope.currentReading,
+                            _remedyBlanks($scope.currentReading, newDataValues.selectedLocationsMonitorClass),
                             $scope.readingDate).then(_getReadings);
                     } else {
                         $scope.error = "Reading date is required";

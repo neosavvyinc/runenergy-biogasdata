@@ -16,6 +16,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             var _getData = function () {
                 if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
+                    $scope.loading = true;
                     nsRailsService.request({
                         method: 'GET',
                         url: routes.ANALYSIS.READINGS,
@@ -29,6 +30,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                             'end_date_time': _epochDateFor($scope.endDateTime)
                         }
                     }).then(function (result) {
+                        $scope.loading = false;
                         $scope.data = result ? _.map(result.readings, function(reading) {
                             reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
                             return reading.data;
@@ -54,6 +56,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.$watch('startDateTime.getTime()', _getData);
             $scope.$watch('endDateTime.getTime()', _getData);
 
+            //Action Handlers
+            $scope.onPrev = function () {
+                $scope.page = Math.max(0, $scope.page - 1);
+            };
+
+            $scope.onNext = function () {
+                $scope.page = Math.min($scope.page + 1, parseInt($scope.data.length / 500) - 1);
+            };
 
             //Initialization
             $scope.data = [];

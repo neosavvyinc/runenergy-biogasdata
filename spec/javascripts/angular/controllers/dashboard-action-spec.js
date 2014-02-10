@@ -120,5 +120,24 @@ describe("controllers.DashboardActionController", function () {
                 expect(_.map($scope.$$watchers, 'exp')).toContain('newDataValues.selectedSection');
             });
         });
+
+        describe('onReset', function () {
+
+            beforeEach(function () {
+                newDataValues.selectedSection = {id: 27};
+                newDataValues.selectedAsset = {id: 90};
+            });
+
+            it('Should set newDataValues.selectedSection to null', function () {
+                $scope.onReset();
+                expect(newDataValues.selectedSection).toBeNull();
+            });
+
+            it('Should set newDataValues.selectedAsset to null', function () {
+                $scope.onReset();
+                expect(newDataValues.selectedAsset).toBeNull();
+            });
+
+        });
     });
 });

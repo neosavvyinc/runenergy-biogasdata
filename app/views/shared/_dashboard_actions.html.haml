@@ -30,6 +30,8 @@
       %re-bootstrap-button-dropdown.section{'items' => 'availableSections', 'selected-item' => 'newDataValues.selectedSection', 'label-field' => 'name', 'link-class' => 'btn btn-warning', 'default' => 'Choose Section'}
     - unless assets.nil?
       %re-bootstrap-button-dropdown.asset{'items' => 'availableAssets', 'selected-item' => 'newDataValues.selectedAsset', 'label-field' => 'unique_identifier', 'link-class' => 'btn btn-warning', 'default' => 'Choose Asset'}
+    - unless sections.nil? and assets.nil?
+      %a.btn.btn-primary{'ng-click' => 'onReset()'} Reset
   - else
     %a.btn{'ng-bind' => 'newDataValues.selectedLandfillOperator.name'}
     %a.btn{'ng-bind' => 'newDataValues.selectedSite.site_name'}
