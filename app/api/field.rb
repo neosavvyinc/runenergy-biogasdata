@@ -123,7 +123,7 @@ module Field
                                  :field_log_id => field_log.id,
                                  :data => JSON.dump(params[:reading]),
                                  :taken_at => DateTime.strptime(params[:date_time].to_s, '%s')
-                             })
+                             }).as_json(:methods => [:taken_at_epoch])
             else
               error!('Date time readings must be passed in Unix (Time Since Epoch) format.', 401)
             end
