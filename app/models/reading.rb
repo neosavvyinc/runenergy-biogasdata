@@ -123,6 +123,10 @@ class Reading < DataAsStringModel
     val
   end
 
+  def taken_at_epoch
+    taken_at.try(:to_f)
+  end
+
   def as_json(options={})
     super(options).merge({
                              :data => JSON.parse(self.data),

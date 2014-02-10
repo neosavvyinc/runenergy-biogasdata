@@ -96,6 +96,7 @@ module Field
           .where(:location_id => params[:site_id].to_i)
           .where(:monitor_class_id => params[:class_id].to_i)
           .limit(params[:count].try(:to_i) || 10)
+          .as_json(:methods => [:taken_at_epoch])
         else
           error!('User is not entitled to site. Bad ID value.', 401)
         end

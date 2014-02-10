@@ -209,6 +209,18 @@ describe Reading do
 
   end
 
+  describe 'taken_at_epoch' do
+
+    it 'should return nil if the time is undefined' do
+      FactoryGirl.create(:reading).taken_at_epoch.should be_nil
+    end
+
+    it 'should return the epoch time otherwise' do
+      FactoryGirl.create(:reading, :taken_at => DateTime.new(2001, 10, 10)).taken_at_epoch.should eq(1002672000.0)
+    end
+    
+  end
+  
   describe 'as_json' do
     it 'should provide a parsed version of the data attribute' do
       reading.as_json['data'].should eq("{\"name\":\"Georgie\",\"location\":\"NYC\",\"age\":67}")
