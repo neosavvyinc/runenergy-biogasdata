@@ -36,6 +36,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
                     delete $scope.readingMods.deletedColumns[name];
                 } else {
                     $scope.readingMods.deletedColumns[name] = true;
+                    delete $scope.readingMods.columnToMonitorPointMappings[name];
                 }
             };
 

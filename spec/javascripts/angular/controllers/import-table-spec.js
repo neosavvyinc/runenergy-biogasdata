@@ -95,6 +95,13 @@ describe("controllers.ImportTable", function () {
                 $scope.onRemoveColumn("Georgie");
                 expect($scope.readingMods.deletedColumns["Georgie"]).toBeUndefined();
             });
+
+            it('Should remove the key from the readingMods.columnToMonitorPointMappings in the delete case', function () {
+                $scope.readingMods.columnToMonitorPointMappings["Georgie"] = true;
+                $scope.readingMods.deletedColumns["Georgie"] = undefined;
+                $scope.onRemoveColumn("Georgie");
+                expect($scope.readingMods.columnToMonitorPointMappings["Georgie"]).toBeUndefined();
+            });
         });
     });
 
