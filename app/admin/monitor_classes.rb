@@ -33,7 +33,7 @@ ActiveAdmin.register MonitorClass do
       f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 100px; width: 300px;'}
       f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
       f.input :asset_properties, :as => :select, :collection => AssetProperty.all, :input_html => {:style => 'height: 300px; width: 300px;'}
-      f.has_many :asset_properties do |ap|
+      f.has_many :asset_properties, :allow_destroy => true, :heading => 'Asset Properties', :new_record => false do |ap|
         ap.input :name
       end
     end

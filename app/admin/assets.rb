@@ -27,6 +27,11 @@ ActiveAdmin.register Asset do
       f.input :location, :as => :select, :collection => Location.all
       f.input :section, :as => :select, :collection => asset.available_sections
       f.input :monitor_class, :as => :select, :collection => MonitorClass.all
+      f.has_many :asset_property_values, :allow_destroy => true do |apv|
+        apv.input :asset_property, :as => :select, :collection => AssetProperty.all
+        apv.input :value
+        apv.input :_destroy, :as => :boolean, :label => 'Remove From Asset'
+      end
     end
     f.actions
   end

@@ -9,7 +9,7 @@ class MonitorClass < ActiveRecord::Base
   has_many :field_log_points, through: :monitor_classes_field_log_points
   has_many :asset_properties
 
-  accepts_nested_attributes_for :asset_properties
+  accepts_nested_attributes_for :asset_properties, :allow_destroy => true
 
   def monitor_points_for_all_locations
     lmcs = LocationsMonitorClass.where(:monitor_class_id => self.id).
