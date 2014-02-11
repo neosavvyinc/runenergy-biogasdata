@@ -2,6 +2,7 @@ ActiveAdmin.register MonitorClass do
 
   menu :parent => 'Site Management'
 
+
   index do
     column :name
     column 'Field Log Points' do |mc|
@@ -31,6 +32,10 @@ ActiveAdmin.register MonitorClass do
       f.input :name
       f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 100px; width: 300px;'}
       f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :asset_properties, :as => :select, :collection => AssetProperty.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.has_many :asset_properties do |ap|
+        ap.input :name
+      end
     end
     f.actions
   end
