@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140211003452) do
+ActiveRecord::Schema.define(:version => 20140211012917) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -108,10 +108,9 @@ ActiveRecord::Schema.define(:version => 20140211003452) do
 
   create_table "custom_monitor_calculations", :force => true do |t|
     t.string   "value"
-    t.integer  "monitor_point_id"
-    t.integer  "asset_id"
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
+    t.integer  "locations_monitor_class_id"
   end
 
   create_table "device_profiles", :force => true do |t|

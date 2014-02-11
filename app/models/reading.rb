@@ -91,6 +91,10 @@ class Reading < DataAsStringModel
     new_reading
   end
 
+  def taken_at_epoch
+    taken_at.try(:to_f)
+  end
+
   def mark_limits_as_json(location_id, monitor_limit_cache=nil)
     val = as_json
     unless location_id.nil? or self.data.nil?
@@ -123,8 +127,14 @@ class Reading < DataAsStringModel
     val
   end
 
-  def taken_at_epoch
-    taken_at.try(:to_f)
+  def with_calculations_as_json(calculations, asset_property_value_cache = nil)
+    val = as_json
+    if calculations and calculations.size
+      calculations.each do |c|
+
+      end
+    end
+    val
   end
 
   def as_json(options={})

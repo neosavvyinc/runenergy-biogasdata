@@ -1,5 +1,5 @@
 class LocationsMonitorClass < ActiveRecord::Base
-  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name
+  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name, :custom_monitor_calculations_attributes
   belongs_to :location
   belongs_to :monitor_class
   has_many :exception_notifications
@@ -7,8 +7,11 @@ class LocationsMonitorClass < ActiveRecord::Base
   has_many :field_log_points, :through => :field_log_points_locations_monitor_classes
   has_many :monitor_points_locations_monitor_classes, :uniq => true
   has_many :monitor_points, :through => :monitor_points_locations_monitor_classes
+  has_many :custom_monitor_calculations
 
   validates_presence_of :location, :monitor_class
+
+  accepts_nested_attributes_for :custom_monitor_calculations, :allow_destroy => true
 
   UPPER_LIMIT_WARNING = 'upper_limit'
   LOWER_LIMIT_WARNING = 'lower_limit'
