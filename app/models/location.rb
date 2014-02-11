@@ -17,6 +17,12 @@ class Location < ActiveRecord::Base
   has_many :monitor_limits
   has_many :assets
 
+  before_create :create_locations_monitor_class
+
+  def create_locations_monitor_class
+
+  end
+
   def display_name
     site_name || "Unnamed #{state.name}, #{country.name}"
   end
