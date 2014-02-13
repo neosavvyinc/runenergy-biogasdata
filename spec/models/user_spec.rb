@@ -107,8 +107,7 @@ describe User do
 
   describe 'all_locations' do
     it 'should return all the locations in the db for an overseer' do
-      # 5 now because of user group locations
-      overseer.all_locations.size.should eq(5)
+      overseer.all_locations.size.should eq(3)
       overseer.all_locations.include?(location_a).should be_true
       overseer.all_locations.include?(location_b).should be_true
       overseer.all_locations.include?(location_c).should be_true

@@ -52,7 +52,7 @@ describe CustomMonitorCalculation do
 
   describe 'parse' do
     let :custom_monitor_calculation do
-      FactoryGirl.create(:custom_monitor_calculation, :value => '5 + .1234765')
+      FactoryGirl.create(:custom_monitor_calculation, :value => '5 + 0.1234765')
     end
 
     it 'should just run parse and use a precision of two by default' do
@@ -61,7 +61,7 @@ describe CustomMonitorCalculation do
 
     it 'should use the significant digit precision, otherwise' do
       custom_monitor_calculation.significant_digits = 4
-      custom_monitor_calculation.parse.should eq('5.1234')
+      custom_monitor_calculation.parse.should eq('5.1235')
     end
   end
   
