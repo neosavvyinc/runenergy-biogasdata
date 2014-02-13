@@ -1,5 +1,5 @@
 class CustomMonitorCalculation < ActiveRecord::Base
-  attr_accessible :locations_monitor_class_id, :value
+  attr_accessible :locations_monitor_class_id, :name, :value
   belongs_to :locations_monitor_class
 
   def self.parse(str, asset=nil, data=nil)

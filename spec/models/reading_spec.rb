@@ -141,6 +141,18 @@ describe Reading do
     )
   end
 
+  describe 'taken_at_epoch' do
+
+    it 'should return nil if the time is undefined' do
+      FactoryGirl.create(:reading).taken_at_epoch.should be_nil
+    end
+
+    it 'should return the epoch time otherwise' do
+      FactoryGirl.create(:reading, :taken_at => DateTime.new(2001, 10, 10)).taken_at_epoch.should eq(1002672000.0)
+    end
+
+  end
+
   describe 'mark_limits_as_json' do
     location = nil, monitor_limit = nil, other_monitor_limit = nil,
         monitor_point = nil, other_monitor_point = nil,
@@ -209,16 +221,36 @@ describe Reading do
 
   end
 
-  describe 'taken_at_epoch' do
+  describe 'add_calculations_as_json' do
+    locations_monitor_class = nil
 
-    it 'should return nil if the time is undefined' do
-      FactoryGirl.create(:reading).taken_at_epoch.should be_nil
+    before(:each) do
+      height = FactoryGirl.create(:asset_property, :name => 'Height')
+      weight = FactoryGirl.create(:asset_property, :name => 'Weight Long')
+      asset = FactoryGirl.create(:asset)
+      asset.asset_property_values << FactoryGirl.create(:asset_property_value, :asset_property => height, :value => 15)
+      asset.asset_property_values << FactoryGirl.create(:asset_property_value, :asset_property => weight, :value => -100.3)
+      reading.asset = asset
+      reading.data = {'Balance Gas' => 78, 'Methane' => 18, 'Toxic Waste' => 1010.5}
+      reading.save
+      locations_monitor_class = FactoryGirl.create(:deluxe_locations_monitor_class)
+      locations_monitor_class.custom_monitor_calculations << FactoryGirl.create(:custom_monitor_calculation, :name => 'Coolness', :value => 'asset[Height] * data[Toxic Waste]')
+      locations_monitor_class.custom_monitor_calculations << FactoryGirl.create(:custom_monitor_calculation, :name => 'Hottness', :value => '10 - 4')
+      locations_monitor_class.save
     end
 
-    it 'should return the epoch time otherwise' do
-      FactoryGirl.create(:reading, :taken_at => DateTime.new(2001, 10, 10)).taken_at_epoch.should eq(1002672000.0)
+    it 'should just return the reading as_json if there is no locations_monitor_class passed in' do
+      reading.add_calculations_as_json(nil).should eq(reading.as_json)
     end
-    
+
+    it 'should return the reading as json if there are no calculations on the lmc' do
+      reading.add_calculations_as_json(FactoryGirl.create(:deluxe_locations_monitor_class)).should eq(reading.as_json)
+    end
+
+    it 'should add the calculations to the readings data' do
+      reading.add_calculations_as_json(locations_monitor_class)[:data].should eq({"Balance Gas"=>78, "Methane"=>18, "Toxic Waste"=>1010.5, "Coolness"=>15157.5, "Hottness"=>6})
+    end
+
   end
   
   describe 'as_json' do

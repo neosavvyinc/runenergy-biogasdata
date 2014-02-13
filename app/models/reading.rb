@@ -127,11 +127,12 @@ class Reading < DataAsStringModel
     val
   end
 
-  def with_calculations_as_json(calculations, asset_property_value_cache = nil)
+  def add_calculations_as_json(locations_monitor_class)
     val = as_json
-    if calculations and calculations.size
-      calculations.each do |c|
-
+    if locations_monitor_class and
+        locations_monitor_class.custom_monitor_calculations
+      locations_monitor_class.custom_monitor_calculations.each do |cmc|
+        val[:data][cmc.name] = CustomMonitorCalculation.parse(cmc.value, asset, val[:data])
       end
     end
     val
