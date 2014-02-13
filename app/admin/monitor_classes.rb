@@ -2,7 +2,6 @@ ActiveAdmin.register MonitorClass do
 
   menu :parent => 'Site Management'
 
-
   index do
     column :name
     column 'Field Log Points' do |mc|
@@ -32,12 +31,22 @@ ActiveAdmin.register MonitorClass do
       f.input :name
       f.input :field_log_points, :as => :select, :collection => FieldLogPoint.all, :input_html => {:style => 'height: 100px; width: 300px;'}
       f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :monitor_point_ordering
       f.input :asset_properties, :as => :select, :collection => AssetProperty.all, :input_html => {:style => 'height: 300px; width: 300px;'}
       f.has_many :asset_properties, :allow_destroy => true, :heading => 'Asset Properties', :new_record => false do |ap|
         ap.input :name
       end
     end
     f.actions
+  end
+
+  before_save :check_monitor_point_ordering
+
+  controller do
+    def check_monitor_point_ordering(obj)
+      flash[:error] ||= []
+      flash[:error] << 'Some error here!'
+    end
   end
 
 end
