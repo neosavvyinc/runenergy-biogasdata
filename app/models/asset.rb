@@ -21,6 +21,11 @@ class Asset < ActiveRecord::Base
     "#{location.try(:site_name) || 'No Location'}, #{monitor_class.try(:name) || 'No Class'}: #{unique_identifier}"
   end
 
+  def property_value_by_name(name)
+    asset_property_values.joins(:asset_property)
+    .where('asset_properties.name' => name.to_s).first.try(:value)
+  end
+
   def available_sections
     if not @location.nil?
       @location.sections
