@@ -14,7 +14,7 @@ ActiveAdmin.register Asset do
       h6 "ID: #{asset.unique_identifier}"
       h6 asset.name
       h6 asset.location.site_name
-      h6 asset.section.display_name
+      h6 asset.section.try(:display_name)
       h6 "Created At: #{asset.created_at}"
       h6 "Updated At: #{asset.updated_at}"
     end

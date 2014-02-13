@@ -16,6 +16,7 @@ ActiveAdmin.register LocationsMonitorClass, :as => 'Site Monitor Classes' do
         cmc.input :name
         cmc.input :value
         cmc.input :significant_digits
+        cmc.input :_destroy, :as => :boolean, :label => 'Remove From Sites Monitor Class'
       end
     end
     f.actions
