@@ -132,7 +132,7 @@ class Reading < DataAsStringModel
     if locations_monitor_class and
         locations_monitor_class.custom_monitor_calculations
       locations_monitor_class.custom_monitor_calculations.each do |cmc|
-        val[:data][cmc.name] = CustomMonitorCalculation.parse(cmc.value, asset, val[:data])
+        val[:data][cmc.name] = cmc.parse(asset, val[:data]).try(:to_s)
       end
     end
     val

@@ -15,6 +15,7 @@ ActiveAdmin.register LocationsMonitorClass, :as => 'Site Monitor Classes' do
       f.has_many :custom_monitor_calculations, :allow_destroy => true do |cmc|
         cmc.input :name
         cmc.input :value
+        cmc.input :significant_digits
       end
     end
     f.actions

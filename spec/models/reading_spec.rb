@@ -248,7 +248,7 @@ describe Reading do
     end
 
     it 'should add the calculations to the readings data' do
-      reading.add_calculations_as_json(locations_monitor_class)[:data].should eq({"Balance Gas"=>78, "Methane"=>18, "Toxic Waste"=>1010.5, "Coolness"=>15157.5, "Hottness"=>6})
+      reading.add_calculations_as_json(locations_monitor_class)[:data].should eq({"Balance Gas"=>78, "Methane"=>18, "Toxic Waste"=>1010.5, "Coolness"=>'15157.50', "Hottness"=> '6.00'})
     end
 
   end

@@ -1,6 +1,8 @@
 class CustomMonitorCalculation < ActiveRecord::Base
-  attr_accessible :locations_monitor_class_id, :name, :value
+  attr_accessible :locations_monitor_class_id, :name, :value, :significant_digits
   belongs_to :locations_monitor_class
+
+  include ActionView::Helpers::NumberHelper
 
   def self.parse(str, asset=nil, data=nil)
     if str
@@ -9,7 +11,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
       #Scan and replace for asset attributes
       str.scan(/asset\[.*?\]/).each_with_index do |match, idx|
-        str = str.gsub(match, asset.property_value_by_name(asset_params[idx]).to_s)
+        replacement = asset.property_value_by_name(asset_params[idx]).try(:to_s)
+        str = str.gsub(match, (replacement.blank? ? '0' : replacement))
       end
 
       #Parse data in case it is stringified
@@ -19,11 +22,21 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
       #Scan the string for data attributes
       str.scan(/data\[.*?\]/).each_with_index do |match, idx|
-        str = str.gsub(match, data[data_params[idx]].to_s)
+        replacement = data[data_params[idx]].to_s
+        str = str.gsub(match, (replacement.blank? ? '0' : replacement))
       end
-      eval(str)
+
+      begin
+        eval(str)
+      rescue Exception => e
+        0
+      end
     else
       raise 'You must pass in a string in order to parse a custom monitor calculation'
     end
+  end
+
+  def parse(asset = nil, data = nil)
+    number_with_precision(CustomMonitorCalculation.parse(value, asset, data), precision: significant_digits || 2)
   end
 end
