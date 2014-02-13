@@ -40,13 +40,4 @@ ActiveAdmin.register MonitorClass do
     f.actions
   end
 
-  before_save :check_monitor_point_ordering
-
-  controller do
-    def check_monitor_point_ordering(obj)
-      flash[:error] ||= []
-      flash[:error] << 'Some error here!'
-    end
-  end
-
 end
