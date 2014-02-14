@@ -11,7 +11,7 @@ describe('user attempts to perform some kind of invalid create operation', funct
     });
 
     it('Should be able to select the required filters for display', function () {
-        dashboardActions.filters("Byron Shire Council", "Myocum Landfill", "Gas Well");
+        dashboardActions.filters("Byron Shire Council", "Myocum Landfill", "Landfill Pump");
     });
 
     describe('no asset uid', function () {

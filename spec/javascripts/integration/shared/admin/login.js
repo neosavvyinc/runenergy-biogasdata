@@ -1,33 +1,26 @@
-var Page = require("astrolabe").Page;
+module.exports = function () {
+    var driver = protractor.getInstance().driver;
 
-module.exports = Page.create({
-    url: {value: '/admin'},
-    email: {
-        get: function () {
-            return element(by.id("admin_user_email"));
-        }
-    },
-    password: {
-        get: function () {
-            return element(by.id("admin_user_password"));
-        }
-    },
-    submit: {
-        get: function () {
-            return element(by.name("commit"));
-        }
-    },
-    login: {
-        value: function (username, password) {
-            this.go();
-            this.email.sendKeys(username);
-            this.password.sendKeys(password);
-            return this.submit.click();
-        }
-    },
-    loginAsTrevor: {
-        value: function () {
-            return this.login("tewen@neosavvy.com", "runenergy007");
-        }
-    }
-});
+    this.go = function () {
+        return driver.get('http://0.0.0.0:3000/admin');
+    };
+
+    this.emailInput = function () {
+        return driver.findElement(by.id("admin_user_email"));
+    };
+
+    this.passwordInput = function () {
+        return driver.findElement(by.id("admin_user_password"));
+    };
+
+    this.submitButton = function () {
+        return driver.findElement(by.name("commit"));
+    };
+
+    this.login = function (username, password) {
+        this.go();
+        this.emailInput().sendKeys(username);
+        this.passwordInput().sendKeys(password);
+        return this.submitButton().click();
+    };
+};

@@ -26,7 +26,7 @@ describe('/data_input/create', function () {
 
         describe('filters', function () {
             it('Should be able to set filters', function () {
-                dashboardActions.filters("Byron Shire Council", "Myocum Landfill", "Gas Well");
+                dashboardActions.filters("Byron Shire Council", "Myocum Landfill", "Landfill Pump");
             });
 
             describe('create form', function () {
