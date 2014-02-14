@@ -87,17 +87,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             var nsCollectionFilterProperties = $filter('nsCollectionFilterProperties');
             var nsCollectionFilterProperty = $filter('nsCollectionFilterProperty');
             var _filterAssets = memoize(function (assets, newDataValues) {
-                var nAssets;
+                var nAssets = assets;
                 if (newDataValues.selectedSite && newDataValues.selectedSite.id) {
-                    nAssets = nsCollectionFilterProperty(assets, 'location_id', newDataValues.selectedSite.id);
+                    nAssets = nsCollectionFilterProperty(nAssets, 'location_id', newDataValues.selectedSite.id);
                 }
                 if (newDataValues.selectedMonitorClass && newDataValues.selectedMonitorClass.id) {
-                    nAssets = nsCollectionFilterProperty(assets, 'monitor_class_id', newDataValues.selectedMonitorClass.id);
+                    nAssets = nsCollectionFilterProperty(nAssets, 'monitor_class_id', newDataValues.selectedMonitorClass.id);
                 }
                 if (newDataValues.selectedSection && newDataValues.selectedSection.id) {
-                    nAssets = nsCollectionFilterProperty(assets, 'section_id', newDataValues.selectedSection.id);
+                    nAssets = nsCollectionFilterProperty(nAssets, 'section_id', newDataValues.selectedSection.id);
                 }
-                return nAssets || assets;
+                return nAssets;
             });
             var _watchAssets = function () {
                 $scope.availableAssets = _filterAssets($scope.assets, newDataValues);

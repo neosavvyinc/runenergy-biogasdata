@@ -25,7 +25,7 @@ module.exports = function () {
                     return trs[1].findElement(by.linkText('Delete')).click();
                 }
                 return null;
-            })
+            });
         });
         driver.switchTo().alert().accept();
     };
