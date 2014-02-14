@@ -9,8 +9,6 @@ class LocationsMonitorClass < ActiveRecord::Base
   has_many :monitor_points, :through => :monitor_points_locations_monitor_classes
   has_many :custom_monitor_calculations
 
-  validates_presence_of :location, :monitor_class
-
   accepts_nested_attributes_for :custom_monitor_calculations, :allow_destroy => true
 
   UPPER_LIMIT_WARNING = 'upper_limit'

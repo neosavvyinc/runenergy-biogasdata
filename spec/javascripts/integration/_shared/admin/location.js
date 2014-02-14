@@ -1,5 +1,6 @@
-var Login = require('./login');
 var uuid = require('node-uuid');
+var Login = require('./login');
+var util = require('./util');
 
 module.exports = function () {
     var driver = protractor.getInstance().driver;
@@ -10,9 +11,9 @@ module.exports = function () {
         driver.findElement(by.id("site_site_name")).sendKeys(name || uuid.v1());
 
         //Select User By Name
-        driver.findElement(by.css('select#site_user_ids option:contains("' + usersName + '")')).click();
+        util.optionFromOpenList(by.css('select#site_user_ids'), usersName);
 
-        driver.findElement(by.name('commit'));
+        driver.findElement(by.name('commit')).click();
     };
 
     this.deleteLocation = function (name) {
@@ -26,5 +27,6 @@ module.exports = function () {
                 return null;
             })
         });
+        driver.switchTo().alert().accept();
     };
 };

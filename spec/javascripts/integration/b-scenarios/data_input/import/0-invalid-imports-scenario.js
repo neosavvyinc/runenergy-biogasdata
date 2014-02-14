@@ -18,7 +18,7 @@ describe('user attempting to perform an invalid file import', function () {
 
         describe('no monitor class selected', function () {
             it('Should be able to select a site', function () {
-                dashboardActions.selectFromDropdown(dashboardActions.siteDropdown, 'Myocum Landfill');
+                dashboardActions.selectFromDropdown(dashboardActions.siteDropdown, 'Hammersmith Odeum');
             });
 
             it('Should get an error message about a missing monitor class', function () {

@@ -2,8 +2,8 @@ exports.config = {
     specs: [
         './integration/_shared/**/*.js',
         './integration/a-setup/**/*.js',
+        './integration/b-scenarios/**/*.js',
         './integration/c-teardown/**/*.js'
-        //'./integration/**/*-spec.js'
     ],
 
     jasmineNodeOpts: {

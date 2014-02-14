@@ -15,7 +15,7 @@
       %h5 Data
       .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedLocationsMonitorClass.monitor_points'}
         %label {{mp.name + ' (' + mp.unit + ')'}}
-        %input{'ng-model' => 'currentReading[mp.name]'}
+        %input.qa-monitor-point-input{'ng-model' => 'currentReading[mp.name]'}
         .limit-warning
           %label.monitor-limit{'ng-bind' => 'getMonitorLimitWarning(mp.name, currentReading[mp.name])'}
       %label.error.qa-main-error{'ng-bind' => 'error'}
@@ -27,8 +27,8 @@
         %h5 Assign Monitor Points
         .monitor-point.span8{'ng-repeat' => 'mp in newDataValues.monitorPoints'}
           %label{:style => 'width: 100%'} {{mp.name + ' (' + mp.unit + ')'}}
-          %a.btn{'ng-class' => 'getMonitorPointAdded(mp) | nsLogicalIf : "btn-success" : "btn-danger"', 'ng-click' => 'onAddOrRemoveMonitorPointFromDefinition(mp)'} {{getMonitorPointAdded(mp) | nsLogicalIf : 'x' : '+'}}
+          %a.btn.qa-assign-monitor-point-button{'ng-class' => 'getMonitorPointAdded(mp) | nsLogicalIf : "btn-success" : "btn-danger"', 'ng-click' => 'onAddOrRemoveMonitorPointFromDefinition(mp)'} {{getMonitorPointAdded(mp) | nsLogicalIf : 'x' : '+'}}
         .span8
-          %a.btn.btn-primary{'ng-click' => 'onAssign()'} Assign
+          %a.btn.btn-primary.qa-assign-button{'ng-click' => 'onAssign()'} Assign
     .span8
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => false

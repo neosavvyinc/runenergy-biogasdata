@@ -1,6 +1,6 @@
 var Location = require('../_shared/admin/location');
 
-xdescribe('delete the locations needed for scenarios', function () {
+describe('delete the locations needed for scenarios', function () {
 
     var location = new Location();
 
