@@ -6,9 +6,10 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :token_authenticatable
 
   before_save :ensure_authentication_token
+  before_save :assign_default_permissions
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids, :authentication_token
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids, :authentication_token, :edit_permission
   belongs_to :user_type
   has_many :exception_notifications
   has_many :user_groups_users
@@ -42,6 +43,14 @@ class User < ActiveRecord::Base
 
   def is_entitled_to?(location_id)
     all_locations.map {|l| l.id}.include?(location_id.to_i)
+  end
+
+  def assign_default_permissions
+    if is_overseer?
+      if self.edit_permission.nil?
+        self[:edit_permission] = true
+      end
+    end
   end
 
   def is_overseer?

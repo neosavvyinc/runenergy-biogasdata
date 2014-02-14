@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140213163752) do
+ActiveRecord::Schema.define(:version => 20140213235646) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -370,8 +370,9 @@ ActiveRecord::Schema.define(:version => 20140213163752) do
 
   create_table "user_groups", :force => true do |t|
     t.string   "name"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",      :null => false
+    t.datetime "updated_at",      :null => false
+    t.boolean  "edit_permission"
   end
 
   create_table "user_groups_users", :id => false, :force => true do |t|
@@ -403,6 +404,7 @@ ActiveRecord::Schema.define(:version => 20140213163752) do
     t.integer  "user_type_id"
     t.string   "name"
     t.string   "authentication_token"
+    t.boolean  "edit_permission"
   end
 
   add_index "users", ["authentication_token"], :name => "index_users_on_authentication_token", :unique => true

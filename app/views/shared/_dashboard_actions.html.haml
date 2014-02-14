@@ -1,4 +1,5 @@
 .dashboard-actions{'ng-controller' => 'controllers.DashboardActionController', 'ng-click' => 'onFirstUserInteract()'}
+  %ns-serialize{'data' => current_user.to_json.html_safe, 'property' => 'newDataValues.currentUser'}
   - unless operator.nil?
     %ns-serialize{'data' => operator.to_json(:methods => [:location_ids]).html_safe, 'property' => 'newDataValues.selectedLandfillOperator'}
   - unless site.nil?
@@ -32,6 +33,8 @@
       %re-bootstrap-button-dropdown.asset{'items' => 'availableAssets', 'selected-item' => 'newDataValues.selectedAsset', 'label-field' => 'unique_identifier', 'link-class' => 'btn btn-warning', 'default' => 'Choose Asset'}
     - unless sections.nil? and assets.nil?
       %a.btn.btn-primary{'ng-click' => 'onReset()'} Reset
+    - if current_user.edit_permission
+      %a.btn.btn-danger.save-changes{'ng-click' => 'onSaveEdit()'} Save Data Changes
   - else
     %a.btn{'ng-bind' => 'newDataValues.selectedLandfillOperator.name'}
     %a.btn{'ng-bind' => 'newDataValues.selectedSite.site_name'}

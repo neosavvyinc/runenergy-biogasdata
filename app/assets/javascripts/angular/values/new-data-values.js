@@ -1,4 +1,5 @@
 RunEnergy.Dashboard.Values.value('values.NewDataValues', {
+    currentUser: null,
     selectedLandfillOperator: null,
     selectedSite: null,
     selectedSection: null,

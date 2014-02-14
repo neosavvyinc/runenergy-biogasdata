@@ -1,10 +1,25 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
-    ['$scope', 'nsRailsService', 'values.NewDataValues', 'services.AnalysisService', 'constants.Routes', '$controller',
-        function ($scope, nsRailsService, newDataValues, analysisService, routes, $controller) {
+    ['$scope',
+        'nsRailsService',
+        'values.NewDataValues',
+        'services.AnalysisService',
+        'constants.Routes',
+        '$controller',
+        'values.Notifications',
+        function ($scope,
+                  nsRailsService,
+                  newDataValues,
+                  analysisService,
+                  routes,
+                  $controller,
+                  notifications) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
             $controller('controllers.helpers.DataTable', {$scope: $scope});
+
+            var underEdit = null;
+            $scope.rowUnderEdit = null;
 
             //Getters
             var _epochDateFor = function (dateTime) {
@@ -31,7 +46,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         }
                     }).then(function (result) {
                         $scope.loading = false;
-                        $scope.data = result ? _.map(result.readings, function(reading) {
+                        $scope.data = result ? _.map(result.readings, function (reading) {
+                            reading.data['id'] = reading.id;
                             reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
                             return reading.data;
                         }) : null;
@@ -39,6 +55,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 }
             };
 
+            $scope.getEdit = function (row) {
+                return (underEdit === row.$$hashKey);
+            };
 
             //Watchers
             $scope.$watch('data', function (val) {
@@ -47,6 +66,22 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     for (var key in $scope.filters) {
                         $scope.filters[key] = "";
                     }
+                }
+            });
+
+            $scope.notifications = notifications;
+            $scope.$watch('notifications.editSavedTrigger', function () {
+                if ($scope.rowUnderEdit && $scope.rowUnderEdit.id) {
+                    nsRailsService.request({
+                        method: 'POST',
+                        url: routes.ANALYSIS.UPDATE_READING,
+                        params: {
+                            ':id': $scope.rowUnderEdit.id
+                        },
+                        data: $scope.rowUnderEdit
+                    }).then(function (result) {
+                        console.log("Do something with the new data.");
+                    });
                 }
             });
 
@@ -63,6 +98,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             $scope.onNext = function () {
                 $scope.page = Math.min($scope.page + 1, parseInt($scope.data.length / 500) - 1);
+            };
+
+            $scope.onEditRow = function (row) {
+                if (newDataValues.currentUser.edit_permission) {
+                    var hashKey = hpGet(row, '$$hashKey');
+                    if (underEdit !== hashKey) {
+                        $scope.rowUnderEdit = angular.copy(row);
+                        underEdit = hashKey;
+                    }
+                }
             };
 
             //Initialization

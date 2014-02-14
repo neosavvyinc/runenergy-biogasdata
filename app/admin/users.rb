@@ -22,6 +22,7 @@ ActiveAdmin.register User, :as => 'Customers/Viewers' do
       f.input :password
       f.input :password_confirmation
       f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :edit_permission
     end
     f.actions
   end

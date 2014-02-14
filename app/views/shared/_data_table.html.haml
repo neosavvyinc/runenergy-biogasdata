@@ -4,11 +4,14 @@
   %table.table.flare-table.table-striped.table-condensed.table-bordered
     %thead
       %tr
-        %th{'ng-repeat' => 'item in data[0] | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'item[0] != "$$hashKey"'}
+        %th{'ng-repeat' => 'item in data[0] | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'item[0] != "$$hashKey" && item[0] != "id"'}
           %p.name{'ng-bind' => 'getColumnLabel(item[0], monitorPoints[item[0]])'}
       -#%tr
       -#  %th{'ng-repeat' => '(key, value) in filters'}
       -#    %input.filter-field{'ng-model' => 'filters[key]'}
     %tbody
-      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 500 | nsCollectionKeyedNumericExpression : filters'}
-        %td{'ng-bind' => 'value[1]', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey"'}
+      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 500 | nsCollectionKeyedNumericExpression : filters', 'ng-click' => 'onEditRow(item)'}
+        %td{'ng-bind' => 'value[1]', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
+        - if current_user.edit_permission
+          %td{'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && getEdit(item)'}
+            %input{'ng-model' => 'rowUnderEdit[value[0]]'}

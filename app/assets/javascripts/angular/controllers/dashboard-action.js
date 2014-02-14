@@ -3,10 +3,12 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
         'values.NewDataValues',
         '$location',
         '$filter',
+        'values.Notifications',
         function ($scope,
                   newDataValues,
                   $location,
-                  $filter) {
+                  $filter,
+                  notifications) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
             var itemByProperty = Neosavvy.Core.Utils.CollectionUtils.itemByProperty;
 
@@ -130,6 +132,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             $scope.onReset = function () {
                 newDataValues.selectedSection = null;
                 newDataValues.selectedAsset = null;
+            };
+
+            $scope.onSaveEdit = function () {
+                notifications.editSavedTrigger++;
             };
 
         }]);
