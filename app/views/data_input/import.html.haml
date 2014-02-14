@@ -1,6 +1,6 @@
 .data-input.import{'re-show-when-ready' => true, 'style' => 'display: none;'}
   = render 'shared/dashboard_actions', :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
-    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => (@locked || false)
+    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => (@locked || false), :edit_allowed => false
   = render 'shared/create_monitor_point'
   .clearfix
   .content{'ng-controller' => 'controllers.DataInputImportController', 're-spinning-overlay' => 'loading'}

@@ -84,7 +84,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         data: $scope.rowUnderEdit,
                         transformRequest: stripAngularKeysRequest
                     }).then(function (result) {
-                        console.log("Do something with the new data.");
+                        $scope.rowToReplace = Neosavvy.Core.Utils.CollectionUtils.updateByProperty($scope.data, angular.copy($scope.rowUnderEdit), "id");
+                        underEdit = null;
                     });
                 }
             });
