@@ -60,6 +60,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                                 newDataValues.selectedSite = null;
                             case "newDataValues.selectedSite":
                                 newDataValues.selectedMonitorClass = null;
+                                newDataValues.selectedLocationsMonitorClass = null;
                             case "newDataValues.selectedMonitorClass":
                                 newDataValues.selectedSection = null;
                             case "newDataValues.selectedSection":

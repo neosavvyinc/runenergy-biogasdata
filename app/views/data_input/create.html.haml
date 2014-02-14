@@ -30,5 +30,5 @@
           %a.btn.qa-assign-monitor-point-button{'ng-class' => 'getMonitorPointAdded(mp) | nsLogicalIf : "btn-success" : "btn-danger"', 'ng-click' => 'onAddOrRemoveMonitorPointFromDefinition(mp)'} {{getMonitorPointAdded(mp) | nsLogicalIf : 'x' : '+'}}
         .span8
           %a.btn.btn-primary.qa-assign-button{'ng-click' => 'onAssign()'} Assign
-    .span8
+    .span8{'ng-show' => 'newDataValues.selectedLocationsMonitorClass && !createLocationsMonitorClass'}
       = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => false
