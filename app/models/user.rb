@@ -9,7 +9,7 @@ class User < ActiveRecord::Base
   before_save :assign_default_permissions
 
   # Setup accessible (or protected) attributes for your model
-  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids, :authentication_token, :edit_permission
+  attr_accessible :email, :password, :password_confirmation, :remember_me, :name, :user_type_id, :location_ids, :authentication_token, :edit_permission, :user_group_ids
   belongs_to :user_type
   has_many :exception_notifications
   has_many :user_groups_users
@@ -51,6 +51,10 @@ class User < ActiveRecord::Base
         self[:edit_permission] = true
       end
     end
+  end
+
+  def can_edit
+    self.edit_permission || (user_groups.size and user_groups.map {|ug| ug.edit_permission}.include?(true))
   end
 
   def is_overseer?

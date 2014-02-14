@@ -106,7 +106,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             };
 
             $scope.onEditRow = function (row) {
-                if (newDataValues.currentUser.edit_permission) {
+                if (newDataValues.currentUser.can_edit) {
                     var hashKey = hpGet(row, '$$hashKey');
                     if (underEdit !== hashKey) {
                         $scope.rowUnderEdit = angular.copy(row);

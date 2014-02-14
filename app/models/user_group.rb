@@ -1,5 +1,5 @@
 class UserGroup < ActiveRecord::Base
-  attr_accessible :name, :edit_permission
+  attr_accessible :name, :edit_permission, :user_ids, :location_ids, :device_profile_ids
   has_many :user_groups_users
   has_many :users, :through => :user_groups_users
   has_many :device_profiles_user_groups

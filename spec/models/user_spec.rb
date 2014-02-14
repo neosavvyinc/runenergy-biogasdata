@@ -151,6 +151,27 @@ describe User do
     end
   end
 
+  def can_edit
+
+    it 'should return true if the user has edit permission' do
+      FactoryGirl.create(:user, :edit_permission => true).can_edit.should be_true
+    end
+
+    it 'should return false if the user does not have edit permission' do
+      FactoryGirl.create(:user, :edit_permission => false).can_edit.should be_false
+    end
+
+    it 'should return true if one user group has edit permission' do
+      user_group_a.edit_permission = true
+      user_a.can_edit.should be_true
+    end
+
+    it 'should return false if all user groups lack permission' do
+      user_group_c.edit_permission = false
+      user_c.can_edit.should be_false
+    end
+  end
+
   describe 'is_overseer?' do
     it 'should return true for the overseer user' do
       overseer.is_overseer?.should be_true

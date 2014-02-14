@@ -1,5 +1,5 @@
 .dashboard-actions{'ng-controller' => 'controllers.DashboardActionController', 'ng-click' => 'onFirstUserInteract()'}
-  %ns-serialize{'data' => current_user.to_json.html_safe, 'property' => 'newDataValues.currentUser'}
+  %ns-serialize{'data' => current_user.to_json(:methods => [:can_edit]).html_safe, 'property' => 'newDataValues.currentUser'}
   - unless operator.nil?
     %ns-serialize{'data' => operator.to_json(:methods => [:location_ids]).html_safe, 'property' => 'newDataValues.selectedLandfillOperator'}
   - unless site.nil?

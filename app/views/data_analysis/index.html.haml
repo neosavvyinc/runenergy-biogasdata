@@ -1,6 +1,6 @@
 .data-analysis{'re-show-when-ready' => true, 'style' => 'display: none;'}
   = render 'shared/dashboard_actions', :current_user => current_user, :landfill_operators => @landfill_operators, :sites => @sites, :sections => @sections, :assets => @assets, :monitor_classes => @monitor_classes,
-    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => false, :edit_allowed => current_user.edit_permission
+    :operator => @operator, :site => @site, :monitor_class => @monitor_class, :section => @section, :asset => @asset, :locations_monitor_class => @locations_monitor_class, :monitor_points => @monitor_points, :locked => false, :edit_allowed => current_user.can_edit
   .clearfix
   .main{'ng-controller' => 'controllers.DataAnalysisTable', 're-spinning-overlay' => 'loading'}
     .date-filters
@@ -9,4 +9,4 @@
     .pagination
       %a.btn{'ng-click' => 'onPrev()'} Prev
       %a.btn{'ng-click' => 'onNext()'} Next
-    = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => current_user.edit_permission
+    = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => current_user.can_edit
