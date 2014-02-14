@@ -1,7 +1,7 @@
-var login = require('../../../shared/login');
-var create = require('../../../shared/data_input/create')
-var dashboardActions = require('../../../shared/shared/dashboard-actions');
-var uuid = require('node-uuid')
+var login = require('../../../_shared/login');
+var create = require('../../../_shared/data_input/create');
+var dashboardActions = require('../../../_shared/shared/dashboard-actions');
+var uuid = require('node-uuid');
 
 describe('user attempts to perform some kind of invalid create operation', function () {
 

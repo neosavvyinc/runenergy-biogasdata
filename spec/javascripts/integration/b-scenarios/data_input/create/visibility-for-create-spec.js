@@ -1,7 +1,7 @@
-var assetAdmin = require('../../../shared/admin/asset')
-var login = require('../../../shared/login');
-var create = require('../../../shared/data_input/create');
-var dashboardActions = require('../../../shared/shared/dashboard-actions');
+var assetAdmin = require('../../../_shared/admin/asset')
+var login = require('../../../_shared/login');
+var create = require('../../../_shared/data_input/create');
+var dashboardActions = require('../../../_shared/shared/dashboard-actions');
 
 describe('/data_input/create', function () {
 

@@ -1,6 +1,6 @@
-var login = require('../../../shared/login');
-var importView = require('../../../shared/data_input/import');
-var dashboardActions = require('../../../shared/shared/dashboard-actions');
+var login = require('../../../_shared/login');
+var importView = require('../../../_shared/data_input/import');
+var dashboardActions = require('../../../_shared/shared/dashboard-actions');
 
 describe('user attempting to perform an invalid file import', function () {
 

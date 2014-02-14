@@ -1,4 +1,4 @@
-var Login = require('../../shared/admin/login');
+var Login = require('../_shared/admin/login');
 
 describe('user attempting to perform an invalid file import', function () {
 
