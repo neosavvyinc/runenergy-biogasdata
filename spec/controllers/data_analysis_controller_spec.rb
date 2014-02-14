@@ -134,11 +134,35 @@ describe DataAnalysisController do
     end
 
     it 'should support a range between start and end for the date range' do
-      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id,:start_date_time => DateTime.new(2013).to_i, :end_date_time => DateTime.new(2015).to_i
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id, :start_date_time => DateTime.new(2013).to_i, :end_date_time => DateTime.new(2015).to_i
       parsed_response = JSON.parse(response.body)
       parsed_response['readings'].size.should eq(1)
     end
 
+  end
+
+  describe 'update' do
+    my_reading = nil
+
+    before(:each) do
+      my_reading = readings[1]
+    end
+
+    it 'should return an error with status 400 if no id is passed in' do
+      xhr :post, 'update', :id => 'null'
+      response.status.should eq(400)
+    end
+
+    it 'should update the date with params other than Date Time and id' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => 56, 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
+      my_reading = Reading.find(my_reading.id)
+      JSON.parse(my_reading.data).should eq({'Methane' => '45', 'Oxygen' => '89', 'Water Color' => '15'})
+    end
+
+    it 'should return the new reading in the response' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => 56, 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
+      JSON.parse(response.body)["id"].should eq(my_reading.id)
+    end
   end
 
 end

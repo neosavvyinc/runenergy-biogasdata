@@ -31,4 +31,4 @@
         .span8
           %a.btn.btn-primary{'ng-click' => 'onAssign()'} Assign
     .span8
-      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points
+      = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => false

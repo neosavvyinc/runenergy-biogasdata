@@ -6,13 +6,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
         'constants.Routes',
         '$controller',
         'values.Notifications',
+        'service.transformer.UniversalStripAngularKeysRequest',
         function ($scope,
                   nsRailsService,
                   newDataValues,
                   analysisService,
                   routes,
                   $controller,
-                  notifications) {
+                  notifications,
+                  stripAngularKeysRequest) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
@@ -78,7 +80,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         params: {
                             ':id': $scope.rowUnderEdit.id
                         },
-                        data: $scope.rowUnderEdit
+                        ignoreDataKeys: true,
+                        data: $scope.rowUnderEdit,
+                        transformRequest: stripAngularKeysRequest
                     }).then(function (result) {
                         console.log("Do something with the new data.");
                     });

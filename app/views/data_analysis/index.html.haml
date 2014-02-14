@@ -9,4 +9,4 @@
     .pagination
       %a.btn{'ng-click' => 'onPrev()'} Prev
       %a.btn{'ng-click' => 'onNext()'} Next
-    = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points
+    = render 'shared/data_table', :angular_controller => 'controllers.PreviewCreate', :monitor_points => @monitor_points, :edit_allowed => current_user.edit_permission

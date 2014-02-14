@@ -12,6 +12,6 @@
     %tbody
       %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 500 | nsCollectionKeyedNumericExpression : filters', 'ng-click' => 'onEditRow(item)'}
         %td{'ng-bind' => 'value[1]', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
-        - if current_user.edit_permission
+        - if edit_allowed
           %td{'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && getEdit(item)'}
             %input{'ng-model' => 'rowUnderEdit[value[0]]'}

@@ -36,7 +36,9 @@ RunEnergy.Dashboard.Services.service('nsRailsService',
                     }
                     options.url = builder.build();
                     if (options.data && typeof options.data === 'object') {
-                        options.data = _keysToSnakeCase(options.data);
+                        if (!options.ignoreDataKeys) {
+                            options.data = _keysToSnakeCase(options.data);
+                        }
                     }
                     return nsServiceExtensions.request(options);
                 } else {

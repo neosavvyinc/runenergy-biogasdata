@@ -28,4 +28,15 @@ class DataAnalysisController < DataInterfaceController
     end
   end
 
+
+  def update
+    unless ajax_value_or_nil(params[:id]).nil?
+      r = Reading.find(params[:id])
+      r.update_attribute(:data, params.except('id', 'Date Time', 'controller', 'action', 'data_analysi'))
+      render json: r
+    else
+      render json: {:error => 'You must pass a reading ID and data to update a reading'}, :status => 400
+    end
+  end
+
 end
