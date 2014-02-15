@@ -1,18 +1,26 @@
-ddescribe("controllers.DashboardActionController", function () {
+describe("controllers.DashboardActionController", function () {
     var $rootScope,
         $scope,
         newDataValues,
         controller,
         nsRailsServiceSpy,
-        routes;
+        locationSpy,
+        routes,
+        notifications;
 
     beforeEach(function () {
         module.apply(module, RunEnergy.Dashboard.Dependencies.concat(function ($provide) {
+            //nsRailsService
             nsRailsServiceSpy = jasmine.createSpyObj('nsRailsService', ['request']);
             nsRailsServiceSpy.request.andReturn({then: function (fn) {
                 fn();
             }});
             $provide.value('nsRailsService', nsRailsServiceSpy);
+
+            //$location
+            locationSpy = jasmine.createSpyObj('$location', ['search']);
+            locationSpy.search.andReturn({site: 13, monitor_class: 14, section: 10, asset: 1});
+            $provide.value('$location', locationSpy);
         }));
 
         inject(function ($injector) {
@@ -20,6 +28,7 @@ ddescribe("controllers.DashboardActionController", function () {
             $scope = $rootScope.$new();
             newDataValues = $injector.get('values.NewDataValues');
             routes = $injector.get('constants.Routes');
+            notifications = $injector.get('values.Notifications');
             controller = $injector.get('$controller')("controllers.DashboardActionController", {$scope: $scope});
         });
     });
@@ -32,6 +41,16 @@ ddescribe("controllers.DashboardActionController", function () {
             expect(newDataValues.selectedLandfillOperator).toEqual("Lemmy");
         });
 
+        describe('_initValue', function () {
+
+            it('Should set the selectionSection on scope to the one referenced in the url', function () {
+                $scope.sections = [{id: 8}, {id: 10}, {id: 11}];
+                $scope.$digest();
+                expect(newDataValues.selectedSection).toEqual({id: 10});
+            });
+
+        });
+
         describe('_resetValuesBelow', function () {
             beforeEach(function() {
                 newDataValues.selectedLandfillOperator = {id: 15};
@@ -42,25 +61,84 @@ ddescribe("controllers.DashboardActionController", function () {
                 $scope.onFirstUserInteract();
             });
 
-            xit('Should set everything to null when selectedLandfillOperator is changed', function () {
+            it('Should set everything to null when selectedLandfillOperator is changed', function () {
                 $scope.newDataValues.selectedLandfillOperator = {id: 60};
+                $scope.$digest();
+                $scope.newDataValues.selectedLandfillOperator = {id: 61};
                 $scope.$digest();
                 expect(newDataValues.selectedSite).toBeNull();
                 expect(newDataValues.selectedMonitorClass).toBeNull();
                 expect(newDataValues.selectedAsset).toBeNull();
             });
 
-            it('Should set monitor class, section and asset to null when site is changed', function () {
-
+            it('Should call $location.search with the property name and the new prop', function () {
+                $scope.newDataValues.selectedMonitorClass = {id: 19};
+                $scope.$digest();
+                $scope.newDataValues.selectedMonitorClass = {id: 22};
+                $scope.$digest();
+                expect(locationSpy.search).toHaveBeenCalledWith('monitor_class', 22);
             });
 
-            it('Should set section and asset to null when monitor class is changed', function () {
+        });
 
+        describe('newDataValues.selectedLandfillOperator', function () {
+
+            beforeEach(function () {
+                $scope.sites = [{id: 20}, {id: 21}, {id: 22}];
+                newDataValues.selectedLandfillOperator = {id: 27, location_ids: [20, 22]};
+                $scope.$digest();
             });
 
-            it('Should set asset to null when section is changed', function () {
-
+            it('Should choose the $scope.availableSites from the location_ids', function () {
+                expect($scope.availableSites).toEqual([{id: 20}, {id: 22}]);
             });
+
+        });
+
+        describe('newDataValues.selectedSite', function () {
+
+            beforeEach(function () {
+                $scope.monitorClasses = [{id: 24}, {id: 25}, {id: 26}];
+                $scope.sections = [{id: 28}, {id: 29}, {id: 30}];
+                newDataValues.selectedSite = {id: 27, monitor_class_ids: [26], section_ids: [29, 30, 31]};
+                $scope.$digest();
+            });
+
+            it('Should choose the $scope.availableMonitorClasses from the moitor_class_ids', function () {
+                expect($scope.availableMonitorClasses).toEqual([{id: 26}]);
+            });
+
+            it('Should choose the $scope.availableSections from the section_ids', function () {
+                expect($scope.availableSections).toEqual([
+                    {id: 29},
+                    {id: 30}
+                ]);
+            });
+
+        });
+
+        describe('newDataValues.selectedAsset', function () {
+
+            beforeEach(function () {
+                $scope.sites = [{id: 20}, {id: 21}, {id: 22}];
+                $scope.monitorClasses = [{id: 24}, {id: 25}, {id: 26}];
+                $scope.sections = [{id: 28}, {id: 29}, {id: 30}];
+                newDataValues.selectedAsset = {id: 90, location_id: 22, monitor_class_id: 24, section_id: 29};
+                $scope.$digest();
+            });
+
+            it('Should choose the site from the list of sites based on the assets location_id', function () {
+                expect(newDataValues.selectedSite).toEqual({id: 22});
+            });
+
+            it('Should choose the monitor class from the list based on the assets monitor_class_id', function () {
+                expect(newDataValues.selectedMonitorClass).toEqual({id: 24});
+            });
+
+            it('Should choose the section from the list based on assets section_id', function () {
+                expect(newDataValues.selectedSection).toEqual({id: 29});
+            });
+
         });
 
     });
@@ -147,6 +225,14 @@ ddescribe("controllers.DashboardActionController", function () {
                 expect(newDataValues.selectedAsset).toBeNull();
             });
 
+        });
+
+        describe('onSaveEdit', function () {
+            it('Should increment the editSavedTrigger', function () {
+                expect(notifications.editSavedTrigger).toEqual(0);
+                $scope.onSaveEdit();
+                expect(notifications.editSavedTrigger).toEqual(1);
+            });
         });
     });
 });

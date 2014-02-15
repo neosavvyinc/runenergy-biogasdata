@@ -1,6 +1,16 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
-    ['$scope', 'nsRailsService', 'values.DashboardHeaderData', 'values.NewDataValues', 'services.DataInputService', 'constants.Routes',
-        function ($scope, nsRailsService, dashboardHeaderData, newDataValues, dataInputService, routes) {
+    ['$scope',
+        'nsRailsService',
+        'values.DashboardHeaderData',
+        'values.NewDataValues',
+        'services.DataInputService',
+        'constants.Routes',
+        function ($scope,
+                  nsRailsService,
+                  dashboardHeaderData,
+                  newDataValues,
+                  dataInputService,
+                  routes) {
 
             //Initialization
             $scope.currentFieldLog = {};
