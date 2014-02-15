@@ -14,11 +14,24 @@ class MonitorClass < ActiveRecord::Base
   validates_each :monitor_point_ordering, allow_blank: true do |record, attr, value|
     points  = value.split(',').map {|p| p.strip}
     points.each do |p|
-      if p != 'Date Time' and MonitorPoint.where(:name => p).first.nil? and CustomMonitorCalculation.where(:name => p).first.nil?
+      if p != 'Asset' and p != 'Date Time' and MonitorPoint.where(:name => p).first.nil? and CustomMonitorCalculation.where(:name => p).first.nil?
         record.errors.add attr, "#{p} is not a monitor point or custom calculation."
         break
       end
     end
+  end
+
+  def monitor_point_ordering=(val)
+    write_attribute(:monitor_point_ordering, val)
+  end
+
+  def monitor_point_ordering
+    val = (read_attribute(:monitor_point_ordering) || '')
+    unless val.include?('Asset')
+      val = val.blank? ? 'Asset' : "#{val}, Asset"
+    end
+    val = val.include?('Date Time') ? val : "#{val}, Date Time"
+    val
   end
 
   def monitor_points_for_all_locations

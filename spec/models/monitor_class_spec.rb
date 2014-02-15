@@ -40,7 +40,7 @@ describe MonitorClass do
     end
 
     it 'should return a collection of monitor_points with unique ids' do
-      ids = monitor_class.monitor_points_for_all_locations.collect {|mp| mp.id}
+      ids = monitor_class.monitor_points_for_all_locations.collect { |mp| mp.id }
       (ids.uniq.size == ids.size).should be_true
     end
 
@@ -49,8 +49,41 @@ describe MonitorClass do
     end
 
     it 'should return all unique ids' do
-      ids = monitor_class_b.monitor_points_for_all_locations.collect {|mp| mp.id}
+      ids = monitor_class_b.monitor_points_for_all_locations.collect { |mp| mp.id }
       (ids.uniq.size == ids.size).should be_true
+    end
+
+  end
+
+  describe 'monitor_point_ordering' do
+
+    before(:each) do
+      FactoryGirl.create(:monitor_point, :name => 'Methane')
+      FactoryGirl.create(:monitor_point, :name => 'Oxygen')
+    end
+
+    it 'should include Asset, Date Time by default' do
+      monitor_class.monitor_point_ordering.should eq('Asset, Date Time')
+    end
+
+    it 'should return the exact monitor point ordering if it includes Asset and Date Time' do
+      monitor_class.monitor_point_ordering = 'Methane, Asset, Oxygen, Date Time'
+      monitor_class.monitor_point_ordering.should eq('Methane, Asset, Oxygen, Date Time')
+    end
+
+    it 'should be able to throw Asset into the last index' do
+      monitor_class.monitor_point_ordering = 'Methane, Oxygen, Date Time'
+      monitor_class.monitor_point_ordering.should eq('Methane, Oxygen, Date Time, Asset')
+    end
+
+    it 'should be able to throw Date Time into the last index' do
+      monitor_class.monitor_point_ordering = 'Asset, Methane, Oxygen'
+      monitor_class.monitor_point_ordering.should eq('Asset, Methane, Oxygen, Date Time')
+    end
+
+    it 'should be able to throw Asset and Date TIme into the last index' do
+      monitor_class.monitor_point_ordering = 'Methane, Oxygen'
+      monitor_class.monitor_point_ordering.should eq('Methane, Oxygen, Asset, Date Time')
     end
 
   end
