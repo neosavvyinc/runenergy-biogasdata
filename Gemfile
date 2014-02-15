@@ -35,6 +35,8 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'guard-rspec', '~> 3.0.2'
   gem 'simplecov', '~> 0.7.1'
+  # gem 'binding_of_caller'
+  # gem 'better_errors'
 end
 
 gem 'haml', '~> 4.0.3'
