@@ -100,11 +100,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             };
 
             $scope.onNext = function () {
-                $scope.page = Math.min($scope.page + 1, parseInt($scope.data.length / 500) - 1);
+                $scope.page = Math.min($scope.page + 1, parseInt($scope.data.length / 500) - (($scope.data.length % 500) ? 0 : 1));
             };
 
             $scope.onEditRow = function (row) {
-                if (newDataValues.currentUser.can_edit) {
+                if (hpGet(newDataValues, 'currentUser.can_edit')) {
                     var hashKey = hpGet(row, '$$hashKey');
                     if (underEdit !== hashKey) {
                         $scope.rowUnderEdit = angular.copy(row);
