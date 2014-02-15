@@ -11,7 +11,7 @@ RunEnergy.Dashboard.Transformers.factory('services.transformer.UniversalReadingR
                         reading.data.id = reading.id;
                     }
                     reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
-                    reading.data['Asset'] = hpGet(reading, 'asset.asset_unique_identifier');
+                    reading.data['Asset'] = hpGet(reading, 'asset.unique_identifier');
                     return reading.data;
                 });
             }

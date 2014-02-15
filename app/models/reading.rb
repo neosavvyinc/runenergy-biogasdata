@@ -139,7 +139,7 @@ class Reading < DataAsStringModel
   end
 
   def as_json(options={})
-    super(options).merge({
+    super(options.merge(:include => [:asset])).merge({
                              :data => JSON.parse(self.data),
                              :field_log => self.field_log.as_json
                          })

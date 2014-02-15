@@ -5,12 +5,14 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
         'values.NewDataValues',
         'services.DataInputService',
         'constants.Routes',
+        'services.transformer.UniversalReadingResponseTransformer',
         function ($scope,
                   nsRailsService,
                   dashboardHeaderData,
                   newDataValues,
                   dataInputService,
-                  routes) {
+                  routes,
+                  readingResponse) {
 
             //Initialization
             $scope.currentFieldLog = {};
@@ -31,7 +33,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                             newDataValues.selectedSite.id,
                             newDataValues.selectedMonitorClass.id
                         ).then(function (result) {
-                            $scope.data = _.map(result, 'data');
+                            $scope.data = readingResponse(result);
                         });
                 }
             }
