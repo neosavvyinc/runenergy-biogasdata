@@ -36,10 +36,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                         newDataValues.selectedLocationsMonitorClass = result !== 'null' ? result : null;
                         return newDataValues.selectedLocationsMonitorClass;
                     }).then(function (result) {
-                        if (!result || !result.monitor_points || !result.monitor_points.length) {
-                            $scope.createLocationsMonitorClass = true;
-                        }
-                    })
+                        $scope.createLocationsMonitorClass = ((!result || !result.monitor_points || !result.monitor_points.length) &&
+                            newDataValues.selectedSite && newDataValues.selectedMonitorClass);
+                    });
                 }
             }
 
@@ -59,17 +58,27 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
 
                 _getReadings();
                 _getLocationsMonitorClass();
+
+                //Make sure create is not available when there is no site
+                if (!val) {
+                    $scope.createLocationsMonitorClass = false;
+                }
             });
-            $scope.$watch('newDataValues.selectedMonitorClass', function () {
+            $scope.$watch('newDataValues.selectedMonitorClass', function (val) {
                 //Clear the models
                 $scope.onReset();
 
                 _getReadings();
                 _getLocationsMonitorClass();
+
+                //Make sure create is not available when there is no site
+                if (!val) {
+                    $scope.createLocationsMonitorClass = false;
+                }
             });
 
             //Getters
-            $scope.getAssetAutoCompleteUrl = memoize(function(selectedSite, selectedMonitorClass) {
+            $scope.getAssetAutoCompleteUrl = memoize(function (selectedSite, selectedMonitorClass) {
                 var builder = new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DATA_INPUT.ASSETS);
                 if (selectedSite) {
                     builder.paramReplace(':site_id', selectedSite.id);
@@ -80,7 +89,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 return builder.build();
             });
 
-            $scope.getMonitorLimitWarning = memoize(function(key, value) {
+            $scope.getMonitorLimitWarning = memoize(function (key, value) {
                 if (monitorPointNameToLimits && key && value) {
                     if (parseFloat(value) > monitorPointNameToLimits[key].upper_limit) {
                         return "This value is above the upper limit of " + monitorPointNameToLimits[key].upper_limit;

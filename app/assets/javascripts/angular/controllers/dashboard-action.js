@@ -4,11 +4,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
         '$location',
         '$filter',
         'values.Notifications',
-        function ($scope,
-                  newDataValues,
-                  $location,
-                  $filter,
-                  notifications) {
+        'nsRailsService',
+        'constants.Routes',
+        function ($scope, newDataValues, $location, $filter, notifications, nsRailsService, routes) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
             var itemByProperty = Neosavvy.Core.Utils.CollectionUtils.itemByProperty;
 
@@ -129,7 +127,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                 $scope.onFirstUserInteract = function () {
                 };
             };
-            
+
             $scope.onReset = function () {
                 newDataValues.selectedSection = null;
                 newDataValues.selectedAsset = null;

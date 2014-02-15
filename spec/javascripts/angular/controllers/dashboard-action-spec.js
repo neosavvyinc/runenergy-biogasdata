@@ -1,16 +1,25 @@
-describe("controllers.DashboardActionController", function () {
+ddescribe("controllers.DashboardActionController", function () {
     var $rootScope,
         $scope,
         newDataValues,
-        controller;
+        controller,
+        nsRailsServiceSpy,
+        routes;
 
     beforeEach(function () {
-        module.apply(module, RunEnergy.Dashboard.Dependencies);
+        module.apply(module, RunEnergy.Dashboard.Dependencies.concat(function ($provide) {
+            nsRailsServiceSpy = jasmine.createSpyObj('nsRailsService', ['request']);
+            nsRailsServiceSpy.request.andReturn({then: function (fn) {
+                fn();
+            }});
+            $provide.value('nsRailsService', nsRailsServiceSpy);
+        }));
 
         inject(function ($injector) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             newDataValues = $injector.get('values.NewDataValues');
+            routes = $injector.get('constants.Routes');
             controller = $injector.get('$controller')("controllers.DashboardActionController", {$scope: $scope});
         });
     });
@@ -23,7 +32,7 @@ describe("controllers.DashboardActionController", function () {
             expect(newDataValues.selectedLandfillOperator).toEqual("Lemmy");
         });
 
-        describe('resetValuesBelow', function () {
+        describe('_resetValuesBelow', function () {
             beforeEach(function() {
                 newDataValues.selectedLandfillOperator = {id: 15};
                 newDataValues.selectedSite = {id: 16};
