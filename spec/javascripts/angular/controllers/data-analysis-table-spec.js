@@ -4,6 +4,8 @@ describe("controllers.DataAnalysisTable", function () {
         newDataValues,
         controller,
         routes,
+        notifications,
+        stripAngularKeysRequest,
         railsServiceSpy;
 
     var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
@@ -26,6 +28,8 @@ describe("controllers.DataAnalysisTable", function () {
                 {data: {age: 5}},
                 {data: {age: 6}}
             ]});
+            stripAngularKeysRequest = $injector.get('service.transformer.UniversalStripAngularKeysRequest');
+            notifications = $injector.get('values.Notifications');
             controller = $injector.get('$controller')("controllers.DataAnalysisTable", {$scope: $scope});
         });
     });
@@ -51,6 +55,28 @@ describe("controllers.DataAnalysisTable", function () {
             it('Should return the key plus the units if defined', function () {
                 expect($scope.getColumnLabel("Methane", {unit: "%"})).toEqual("Methane (%)");
             });
+        });
+
+        describe('getEdit', function () {
+
+            it('Should return false when the row under edit is not the one passed in', function () {
+                newDataValues.currentUser = {can_edit: true}
+                $scope.onEditRow({$$hashKey: 'CMU50'});
+                expect($scope.getEdit({$$hashKey: 'CMU'})).toBeFalsy();
+            });
+
+            it('Should return when the row.$$hashKey is equal to the underEdit value, only if th user can edit', function () {
+                newDataValues.currentUser = {can_edit: false}
+                $scope.onEditRow({$$hashKey: 'CMU'});
+                expect($scope.getEdit({$$hashKey: 'CMU'})).toBeFalsy();
+            });
+
+            it('Should return when the row.$$hashKey is equal to the underEdit value, only if th user can edit', function () {
+                newDataValues.currentUser = {can_edit: true}
+                $scope.onEditRow({$$hashKey: 'CMU'});
+                expect($scope.getEdit({$$hashKey: 'CMU'})).toBeTruthy();
+            });
+
         });
     });
 
@@ -341,12 +367,91 @@ describe("controllers.DataAnalysisTable", function () {
             });
         });
 
+        describe('notifications.editSavedTrigger', function () {
+            it('Should not call the rails service if there is no row under edit', function () {
+                notifications.editSavedTrigger++;
+                $scope.$digest();
+                expect(railsServiceSpy).not.toHaveBeenCalled();
+            });
+
+            it('Should call the railsService when there is a row under edit', function () {
+                $scope.rowUnderEdit = {id: 27};
+                notifications.editSavedTrigger++;
+                $scope.$digest();
+                expect(railsServiceSpy).toHaveBeenCalledWith({
+                        method: 'POST',
+                        url: routes.ANALYSIS.UPDATE_READING,
+                        params: {
+                            ':id': $scope.rowUnderEdit.id
+                        },
+                        ignoreDataKeys: true,
+                        data: $scope.rowUnderEdit,
+                        transformRequest: stripAngularKeysRequest
+                    })
+            });
+        });
+
         afterEach(function () {
             newDataValues.selectedLandfillOperator = null;
             newDataValues.selectedSite = null;
             newDataValues.selectedSection = null;
             newDataValues.selectedAsset = null;
         })
+    });
+
+    describe('Action Handlers', function () {
+
+        describe('onPrev', function () {
+            it('Should decrement the page value', function () {
+                $scope.page = 2;
+                $scope.onPrev();
+                expect($scope.page).toEqual(1);
+            });
+
+            it('Should not be able to go below 0', function () {
+                $scope.page = 0;
+                $scope.onPrev();
+                expect($scope.page).toEqual(0);
+            });
+        });
+
+        describe('onNext', function () {
+
+            beforeEach(function () {
+                $scope.data = {length: 2700};
+            });
+
+            it('Should increment the page', function () {
+                $scope.page = 0;
+                $scope.onNext();
+                expect($scope.page).toEqual(1);
+            });
+
+            it('Should not be able to go over the max page for page sets of 500 elements', function () {
+                $scope.page = 5;
+                $scope.onNext();
+                expect($scope.page).toEqual(5);
+            });
+        });
+
+        describe('onEditRow', function () {
+
+            it('Should set the rowUnderEdit to the copy of the row passed in', function () {
+                newDataValues.currentUser = {can_edit: true};
+                var row = {$$hashKey: '25B'};
+                $scope.onEditRow(row);
+                expect($scope.rowUnderEdit).toEqual({});
+                expect($scope.rowUnderEdit).not.toBe(row);
+            });
+
+            it('Should not do anything if the user does not have edit permission', function () {
+                newDataValues.currentUser = {can_edit: false};
+                $scope.onEditRow({$$hashKey: '25B'});
+                expect($scope.rowUnderEdit).toBeNull();
+            });
+
+        });
+
     });
 
     describe('Initialization', function () {
@@ -372,6 +477,10 @@ describe("controllers.DataAnalysisTable", function () {
 
         it('Should set endDateTime to null', function () {
             expect($scope.endDateTime).toBeNull();
+        });
+
+        it('Should throw notifications on the $scope', function () {
+            expect($scope.notifications).toEqual(notifications);
         });
     });
 });
