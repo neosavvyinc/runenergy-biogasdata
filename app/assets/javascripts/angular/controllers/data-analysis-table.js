@@ -7,6 +7,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
         '$controller',
         'values.Notifications',
         'service.transformer.UniversalStripAngularKeysRequest',
+        'services.transformer.UniversalReadingResponseTransformer',
         function ($scope,
                   nsRailsService,
                   newDataValues,
@@ -14,7 +15,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                   routes,
                   $controller,
                   notifications,
-                  stripAngularKeysRequest) {
+                  stripAngularKeysRequest,
+                  readingResponse) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
@@ -48,11 +50,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         }
                     }).then(function (result) {
                         $scope.loading = false;
-                        $scope.data = result ? _.map(result.readings, function (reading) {
-                            reading.data['id'] = reading.id;
-                            reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
-                            return reading.data;
-                        }) : null;
+                        $scope.data = readingResponse(hpGet(result, 'readings'), true);
                     });
                 }
             };
