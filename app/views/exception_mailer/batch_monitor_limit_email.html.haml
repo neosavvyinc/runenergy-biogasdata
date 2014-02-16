@@ -19,7 +19,8 @@
       - unless @deleted_readings.nil? or @deleted_readings.empty?
         - JSON.parse(@deleted_readings.first.data).each do |key, value|
           %td{ :style=> "text-align: center; padding: 10px;"} #{key}
-    - @deleted_readings.each do |r|
-      %tr
-        - JSON.parse(r.data).each do |key, value|
-          %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+    %tbody
+      - @deleted_readings.each do |r|
+        %tr
+          - JSON.parse(r.data).each do |key, value|
+            %td{ :style=> "text-align: center; padding: 10px;"} #{value}
