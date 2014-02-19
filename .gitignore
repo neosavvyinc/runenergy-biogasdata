@@ -70,3 +70,6 @@ pickle-email-*.html
 
 # vim artifacts
 **.swp
+
+# personal email
+/config/initializers/personal_email.rb

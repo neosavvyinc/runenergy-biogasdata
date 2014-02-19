@@ -1,22 +1,26 @@
-.email
+%div.email
   %h3 Readings Above Limit Imported For #{@location.site_name}, #{@monitor_class.name}
   %h3 Accepted Readings:
   %table
     %th
-    - unless @readings.nil? or @readings.empty?
-      - JSON.parse(@readings.first.data).each do |key, value|
-        %td #{key}
+      %tr
+      - unless @readings.nil? or @readings.empty?
+        - JSON.parse(@readings.first.data).each do |key, value|
+          %td{ :style=> "text-align: center; padding: 10px;"} #{key}
+    %tbody
       - @readings.each do |r|
         %tr
           - JSON.parse(r.data).each do |key, value|
-            %td #{value}
+            %td{ :style=> "text-align: center; padding: 10px;"} #{value}
   %h3 Deleted Readings:
   %table
     %th
+      %tr
       - unless @deleted_readings.nil? or @deleted_readings.empty?
         - JSON.parse(@deleted_readings.first.data).each do |key, value|
-          %td #{key}
-    - @deleted_readings.each do |r|
-      %tr
-        - JSON.parse(r.data).each do |key, value|
-          %td #{value}
+          %td{ :style=> "text-align: center; padding: 10px;"} #{key}
+    %tbody
+      - @deleted_readings.each do |r|
+        %tr
+          - JSON.parse(r.data).each do |key, value|
+            %td{ :style=> "text-align: center; padding: 10px;"} #{value}
