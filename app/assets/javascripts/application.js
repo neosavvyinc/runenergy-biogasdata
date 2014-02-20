@@ -11,6 +11,7 @@
 // GO AFTER THE REQUIRES BELOW.
 //
 //= require jquery-2.0.3.min
+//= require jquery_ujs
 //= require twitter/bootstrap
 //= require hamlcoffee
 //= require bower_components/angular/angular.js
