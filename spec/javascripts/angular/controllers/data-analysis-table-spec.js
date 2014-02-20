@@ -360,10 +360,11 @@ describe("controllers.DataAnalysisTable", function () {
                 expect($scope.filters).toBeUndefined();
             });
 
-            it('Should set the filters with the first item of the data', function () {
-                $scope.data = [{name: 56, age: 38}];
+            it('Should set the filters with the first item of the allData', function () {
+                $scope.allData = [{name: 56, age: 38}];
+                newDataValues.selectedMonitorClass = {id: 26};
                 $scope.$digest();
-                expect($scope.filters).toEqual({name: "", age: ""});
+                expect($scope.filters).toEqual([ { key : 'name', expression : '' }, { key : 'age', expression : '' } ]);
             });
         });
 

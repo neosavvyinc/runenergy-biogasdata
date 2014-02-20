@@ -135,6 +135,7 @@ describe("controllers.DataInputImportController", function () {
             it('Should call the completeImportCsv method on the service with the params', function () {
                 $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
                 $scope.readingMods.assetColumnName = 'id';
+                newDataValues.selectedMonitorClass = {id: 17};
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith(
                     [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}],
