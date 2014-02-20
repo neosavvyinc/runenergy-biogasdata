@@ -95,7 +95,8 @@ module Field
           Reading
           .where(:location_id => params[:site_id].to_i)
           .where(:monitor_class_id => params[:class_id].to_i)
-          .limit(params[:count].try(:to_i) || 10)
+          .page(params[:offset].try(:to_i) || 0)
+          .per(params[:count].try(:to_i) || 10)
           .as_json(:methods => [:taken_at_epoch])
         else
           error!('User is not entitled to site. Bad ID value.', 401)

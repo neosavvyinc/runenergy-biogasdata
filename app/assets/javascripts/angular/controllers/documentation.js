@@ -23,6 +23,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DocumentationController'
                     "params": {
                         "site_id": "8",
                         "class_id": "5",
+                        "offset": "0",
                         "count": 15
                     }
                 },
