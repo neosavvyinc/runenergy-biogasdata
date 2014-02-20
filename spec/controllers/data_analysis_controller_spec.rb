@@ -154,14 +154,34 @@ describe DataAnalysisController do
     end
 
     it 'should update the date with params other than Date Time and id' do
-      xhr :post, 'update', :id => my_reading.id, 'Date Time' => 56, 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/02/14, 16:07:00', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
       my_reading = Reading.find(my_reading.id)
       JSON.parse(my_reading.data).should eq({'Methane' => '45', 'Oxygen' => '89', 'Water Color' => '15'})
     end
 
     it 'should return the new reading in the response' do
-      xhr :post, 'update', :id => my_reading.id, 'Date Time' => 56, 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/02/14, 16:07:00', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
       JSON.parse(response.body)["id"].should eq(my_reading.id)
+    end
+
+    it 'should apply an asset with the unique identifier to the reading returned' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/02/14, 16:07:00', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15, 'Asset' => '60IO'
+      JSON.parse(response.body)['asset']['id'].should eq(Asset.find_by_unique_identifier('60IO').id)
+    end
+
+    it 'should apply the Date Time key to the taken_at date' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/11/14, 16:07:19', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15, 'Asset' => '60IO'
+      Reading.find(JSON.parse(response.body)['id']).taken_at.should eq(DateTime.strptime('06/11/14, 16:07:19', '%d/%m/%y, %H:%M:%S'))
+    end
+
+    it 'should not add Asset to the data hash' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/11/14, 16:07:19', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15, 'Asset' => '60IO'
+      JSON.parse(response.body)['data']['Asset'].should be_nil
+    end
+
+    it 'should not add Date Time to the data hash' do
+      xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/11/14, 16:07:19', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15, 'Asset' => '60IO'
+      JSON.parse(response.body)['data']['Date Time'].should be_nil
     end
   end
 
