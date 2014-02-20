@@ -68,6 +68,37 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 }
             });
 
+
+            $scope.$watch('filters', _.debounce(function (val) {
+                if (val && val.length) {
+                    $scope.$apply(function () {
+                        var keysToExpressions = (function _keysToExpressions(ar) {
+                            var hash = {};
+                            for (var i = 0; i < ar.length; i++) {
+                                if (ar[i].expression && /\d/g.test(ar[i].expression)) {
+                                    hash[ar[i].key] = ar[i].expression.replace(/=/g, '==');
+                                }
+                            }
+                            return hash;
+                        })(val);
+
+                        //Filter data using parse
+                        $scope.data = _.filter($scope.allData, function (row) {
+                            try {
+                                for (var key in keysToExpressions) {
+                                    if (!$parse(String(row[key]) + keysToExpressions[key])()) {
+                                        return false
+                                    }
+                                }
+                                return true;
+                            } catch (e) {
+                                return false;
+                            }
+                        });
+                    });
+                }
+            }, 300), true);
+
             $scope.notifications = notifications;
             $scope.$watch('notifications.editSavedTrigger', function () {
                 if ($scope.rowUnderEdit && $scope.rowUnderEdit.id) {
@@ -117,18 +148,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     }
                 }
             };
-
-            $scope.onEditFilter = _.debounce(function (key, expression) {
-                $scope.$apply(function () {
-                    $scope.data = _.filter($scope.allData, function (item) {
-                        try {
-                            return $parse(String(item[key]) + expression)();
-                        } catch (e) {
-                            return false
-                        }
-                    });
-                });
-            }, 400);
 
             //Initialization
             $scope.data = [];

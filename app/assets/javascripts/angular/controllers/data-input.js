@@ -6,13 +6,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
         'services.DataInputService',
         'constants.Routes',
         'services.transformer.UniversalReadingResponseTransformer',
-        function ($scope,
-                  nsRailsService,
-                  dashboardHeaderData,
-                  newDataValues,
-                  dataInputService,
-                  routes,
-                  readingResponse) {
+        function ($scope, nsRailsService, dashboardHeaderData, newDataValues, dataInputService, routes, readingResponse) {
 
             //Initialization
             $scope.currentFieldLog = {};
@@ -34,6 +28,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                             newDataValues.selectedMonitorClass.id
                         ).then(function (result) {
                             $scope.data = readingResponse(result);
+                            if ($scope.data && $scope.data.length) {
+                                $scope.header = $scope.data[0];
+                            }
                         });
                 }
             }
