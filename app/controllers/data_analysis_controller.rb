@@ -21,7 +21,10 @@ class DataAnalysisController < DataInterfaceController
       end
       lmc = LocationsMonitorClass.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id]).first
       render json: {
-          :readings => readings.order('created_at DESC').map { |r| r.add_calculations_as_json(lmc) }
+          :readings => readings
+          .page(params[:offset].try(:to_i) || 0)
+          .per(params[:count].try(:to_i) || 500)
+          .order('created_at DESC').map { |r| r.add_calculations_as_json(lmc) }
       }
     else
       render json: {:error => 'You must pass valid parameter to retrieve readings for analysis'}, :status => 400

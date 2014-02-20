@@ -10,7 +10,7 @@
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression', 'ng-keyup'=> 'onEditFilter(filter.key, filter.expression)', 'ng-if' => 'filter.key != "Date Time" && filter.key != "Asset" && filter.key != "id" && filter.key != "$$hashKey"'}
     %tbody
-      %tr.re-grid-row{'ng-repeat' => 'item in data | nsCollectionPage : page : 500', 'ng-click' => 'onEditRow(item)'}
+      %tr.re-grid-row{'ng-repeat' => 'item in data', 'ng-click' => 'onEditRow(item)'}
         %td{'ng-bind' => 'value[1]', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
         - if edit_allowed
           %td{'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && getEdit(item)'}

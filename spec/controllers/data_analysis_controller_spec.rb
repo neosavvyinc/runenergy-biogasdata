@@ -161,7 +161,7 @@ describe DataAnalysisController do
 
     it 'should return the new reading in the response' do
       xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/02/14, 16:07:00', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15
-      JSON.parse(response.body)["id"].should eq(my_reading.id)
+      JSON.parse(response.body)['id'].should eq(my_reading.id)
     end
 
     it 'should apply an asset with the unique identifier to the reading returned' do

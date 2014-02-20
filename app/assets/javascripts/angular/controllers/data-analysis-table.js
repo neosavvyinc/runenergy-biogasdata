@@ -27,7 +27,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 return dateTime;
             };
 
-            var _getData = function () {
+            var _getData = _.debounce(function () {
                 if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
                     $scope.loading = true;
                     nsRailsService.request({
@@ -40,7 +40,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         optional: {
                             'asset_id': hpGet(newDataValues, 'selectedAsset.id'),
                             'start_date_time': _epochDateFor($scope.startDateTime),
-                            'end_date_time': _epochDateFor($scope.endDateTime)
+                            'end_date_time': _epochDateFor($scope.endDateTime),
+                            'offset': $scope.page
                         }
                     }).then(function (result) {
                         $scope.loading = false;
@@ -51,7 +52,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         }
                     });
                 }
-            };
+            }, 20);
 
             $scope.getEdit = function (row) {
                 return (underEdit === row.$$hashKey);
@@ -129,14 +130,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.$watch('newDataValues.selectedAsset', _getData);
             $scope.$watch('startDateTime.getTime()', _getData);
             $scope.$watch('endDateTime.getTime()', _getData);
+            $scope.$watch('page', _getData);
 
             //Action Handlers
             $scope.onPrev = function () {
-                $scope.page = Math.max(0, $scope.page - 1);
+                $scope.page = Math.max(1, $scope.page - 1);
             };
 
             $scope.onNext = function () {
-                $scope.page = Math.min($scope.page + 1, parseInt($scope.data.length / 500) - (($scope.data.length % 500) ? 0 : 1));
+                $scope.page += 1;
             };
 
             $scope.onEditRow = function (row) {
@@ -153,7 +155,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.data = [];
             $scope.monitorPoints = [];
             $scope.monitorClass = null;
-            $scope.page = 0;
+            $scope.page = 1;
             $scope.newDataValues = newDataValues;
             $scope.startDateTime = null;
             $scope.endDateTime = null;
