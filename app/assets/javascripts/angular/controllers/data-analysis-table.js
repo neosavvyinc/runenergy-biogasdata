@@ -1,5 +1,7 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
     ['$scope',
+        '$filter',
+        '$parse',
         'nsRailsService',
         'values.NewDataValues',
         'services.AnalysisService',
@@ -8,7 +10,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
         'values.Notifications',
         'service.transformer.UniversalStripAngularKeysRequest',
         'services.transformer.UniversalReadingResponseTransformer',
-        function ($scope, nsRailsService, newDataValues, analysisService, routes, $controller, notifications, stripAngularKeysRequest, readingResponse) {
+        function ($scope, $filter, $parse, nsRailsService, newDataValues, analysisService, routes, $controller, notifications, stripAngularKeysRequest, readingResponse) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
@@ -42,7 +44,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         }
                     }).then(function (result) {
                         $scope.loading = false;
-                        $scope.data = readingResponse(hpGet(result, 'readings'), true);
+                        $scope.allData = readingResponse(hpGet(result, 'readings'), true);
+                        if ($scope.allData && $scope.allData.length) {
+                            $scope.header = $scope.allData[0];
+                            $scope.data = $scope.allData.concat();
+                        }
                     });
                 }
             };
@@ -52,12 +58,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             };
 
             //Watchers
-            $scope.$watch('data', function (val) {
-                if (val && val.length) {
-                    $scope.filters = angular.copy(val[0]);
-                    for (var key in $scope.filters) {
-                        $scope.filters[key] = "";
-                    }
+            $scope.$watch('allData', function (val) {
+                if (val && val.length && newDataValues.selectedMonitorClass) {
+                    $scope.filters = _.map(
+                        $filter('reCollectionOrderedPairs')
+                            (val[0], newDataValues.selectedMonitorClass.monitor_point_ordering), function (item) {
+                            return {key: item[0], expression: ""};
+                        });
                 }
             });
 
@@ -110,6 +117,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     }
                 }
             };
+
+            $scope.onEditFilter = _.debounce(function (key, expression) {
+                $scope.$apply(function () {
+                    $scope.data = _.filter($scope.allData, function (item) {
+                        try {
+                            return $parse(String(item[key]) + expression)();
+                        } catch (e) {
+                            return false
+                        }
+                    });
+                });
+            }, 400);
 
             //Initialization
             $scope.data = [];
