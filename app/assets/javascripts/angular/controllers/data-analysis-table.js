@@ -8,15 +8,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
         'values.Notifications',
         'service.transformer.UniversalStripAngularKeysRequest',
         'services.transformer.UniversalReadingResponseTransformer',
-        function ($scope,
-                  nsRailsService,
-                  newDataValues,
-                  analysisService,
-                  routes,
-                  $controller,
-                  notifications,
-                  stripAngularKeysRequest,
-                  readingResponse) {
+        function ($scope, nsRailsService, newDataValues, analysisService, routes, $controller, notifications, stripAngularKeysRequest, readingResponse) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
@@ -72,19 +64,25 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.notifications = notifications;
             $scope.$watch('notifications.editSavedTrigger', function () {
                 if ($scope.rowUnderEdit && $scope.rowUnderEdit.id) {
-                    nsRailsService.request({
-                        method: 'POST',
-                        url: routes.ANALYSIS.UPDATE_READING,
-                        params: {
-                            ':id': $scope.rowUnderEdit.id
-                        },
-                        ignoreDataKeys: true,
-                        data: $scope.rowUnderEdit,
-                        transformRequest: stripAngularKeysRequest
-                    }).then(function (result) {
-                        $scope.rowToReplace = Neosavvy.Core.Utils.CollectionUtils.updateByProperty($scope.data, angular.copy($scope.rowUnderEdit), "id");
-                        underEdit = null;
-                    });
+                    if (/\d\d\/\d\d\/\d\d, \d\d:\d\d:\d\d/g.test($scope.rowUnderEdit['Date Time']) &&
+                        moment($scope.rowUnderEdit['Date Time']).isValid()) {
+                        nsRailsService.request({
+                            method: 'POST',
+                            url: routes.ANALYSIS.UPDATE_READING,
+                            params: {
+                                ':id': $scope.rowUnderEdit.id
+                            },
+                            ignoreDataKeys: true,
+                            data: $scope.rowUnderEdit,
+                            transformRequest: stripAngularKeysRequest
+                        }).then(function (result) {
+                            $scope.rowToReplace = Neosavvy.Core.Utils.CollectionUtils.updateByProperty($scope.data, angular.copy($scope.rowUnderEdit), "id");
+                            underEdit = null;
+                        });
+                        $scope.error = "";
+                    } else {
+                        $scope.error = 'Please enter a valid date time of the format: DD/MM/YY, HH:MM:SS';
+                    }
                 }
             });
 

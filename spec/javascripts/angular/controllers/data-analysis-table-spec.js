@@ -375,7 +375,7 @@ describe("controllers.DataAnalysisTable", function () {
             });
 
             it('Should call the railsService when there is a row under edit', function () {
-                $scope.rowUnderEdit = {id: 27};
+                $scope.rowUnderEdit = {id: 27, 'Date Time': '06/02/14, 16:07:00'};
                 notifications.editSavedTrigger++;
                 $scope.$digest();
                 expect(railsServiceSpy).toHaveBeenCalledWith({
