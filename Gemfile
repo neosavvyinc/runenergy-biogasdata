@@ -35,6 +35,7 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'guard-rspec', '~> 3.0.2'
   gem 'simplecov', '~> 0.7.1'
+  gem 'shoulda-matchers'
 end
 
 gem 'haml', '~> 4.0.3'
