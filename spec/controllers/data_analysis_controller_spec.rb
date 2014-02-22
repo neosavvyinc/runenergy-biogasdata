@@ -139,6 +139,27 @@ describe DataAnalysisController do
       parsed_response['readings'].size.should eq(1)
     end
 
+    it 'should be able to return readings for a specific asset' do
+      reading = FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset))
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_id => reading.asset.id
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].should_not be_nil
+      parsed_response['readings'].size.should eq(1)
+      parsed_response['readings'][0]['id'].should eq(reading.id)
+    end
+
+    it 'should be able to return readings for a specific section' do
+      section = FactoryGirl.create(:section)
+      reading = FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset, :section => section))
+      reading_b = FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset, :section => section))
+      xhr :get, 'readings', :site_id => location.id, :monitor_class_id => monitor_class.id, :section_id => section.id
+      parsed_response = JSON.parse(response.body)
+      parsed_response['readings'].should_not be_nil
+      parsed_response['readings'].size.should eq(2)
+      parsed_response['readings'][0]['id'].should eq(reading.id)
+      parsed_response['readings'][1]['id'].should eq(reading_b.id)
+    end
+
   end
 
   describe 'update' do
