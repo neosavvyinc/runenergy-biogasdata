@@ -112,6 +112,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 11
                     },
                     optional: {
+                        'section_id': undefined,
                         'asset_id': undefined,
                         'start_date_time': null,
                         'end_date_time': null,
@@ -134,6 +135,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 17
                     },
                     optional: {
+                        'section_id': undefined,
                         'asset_id': undefined,
                         'start_date_time': _epochDateFor($scope.startDateTime),
                         'end_date_time': null,
@@ -156,6 +158,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 17
                     },
                     optional: {
+                        'section_id': undefined,
                         'asset_id': undefined,
                         'start_date_time': null,
                         'end_date_time': _epochDateFor($scope.endDateTime),
@@ -308,6 +311,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 11
                     },
                     optional: {
+                        'section_id': 78,
                         'asset_id': undefined,
                         'start_date_time': null,
                         'end_date_time': null,
@@ -330,6 +334,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 12
                     },
                     optional: {
+                        'section_id': 78,
                         'asset_id': undefined,
                         'start_date_time': _epochDateFor($scope.startDateTime),
                         'end_date_time': null,
@@ -352,6 +357,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 9
                     },
                     optional: {
+                        'section_id': 78,
                         'asset_id': undefined,
                         'start_date_time': null,
                         'end_date_time': _epochDateFor($scope.endDateTime),
@@ -375,6 +381,7 @@ describe("controllers.DataAnalysisTable", function () {
                         ':monitor_class_id': 17
                     },
                     optional: {
+                        'section_id': 78,
                         'asset_id': undefined,
                         'start_date_time': _epochDateFor($scope.startDateTime),
                         'end_date_time': _epochDateFor($scope.endDateTime),
