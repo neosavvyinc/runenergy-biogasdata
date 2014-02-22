@@ -38,6 +38,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                             ':monitor_class_id': newDataValues.selectedMonitorClass.id
                         },
                         optional: {
+                            'section_id': hpGet(newDataValues, 'selectedSection.id'),
                             'asset_id': hpGet(newDataValues, 'selectedAsset.id'),
                             'start_date_time': _epochDateFor($scope.startDateTime),
                             'end_date_time': _epochDateFor($scope.endDateTime),
@@ -127,6 +128,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
 
             $scope.$watch('newDataValues.selectedSite', _getData);
             $scope.$watch('newDataValues.selectedMonitorClass', _getData);
+            $scope.$watch('newDataValues.selectedSection', _getData);
             $scope.$watch('newDataValues.selectedAsset', _getData);
             $scope.$watch('startDateTime.getTime()', _getData);
             $scope.$watch('endDateTime.getTime()', _getData);

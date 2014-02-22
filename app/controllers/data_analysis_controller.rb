@@ -8,8 +8,10 @@ class DataAnalysisController < DataInterfaceController
 
   def readings
     if not ajax_value_or_nil(params[:asset_id]).nil? or (not ajax_value_or_nil(params[:site_id]).nil? and not ajax_value_or_nil(params[:monitor_class_id]).nil?)
-      unless ajax_value_or_nil(params[:asset_id]).nil?
+      if not ajax_value_or_nil(params[:asset_id]).nil?
         readings = Reading.where(:asset_id => params[:asset_id])
+      elsif not ajax_value_or_nil(params[:section_id]).nil?
+        readings = Reading.joins(:asset).where(:assets => {:section_id => params[:section_id]})
       else
         readings = Reading.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id])
       end
