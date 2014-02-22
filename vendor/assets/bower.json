@@ -5,6 +5,9 @@
     "momentjs": "2.5.0",
     "angular-macgyver": "0.1.28",
     "ngQuickDate": "1.2.1",
-    "angular-animate": "1.2.4"
+    "angular-animate": "1.2.4",
+    "d3": "latest",
+    "nvd3": "latest",
+    "angularjs-nvd3-directives": "latest"
   }
 }

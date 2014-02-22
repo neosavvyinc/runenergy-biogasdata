@@ -10,7 +10,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
         'values.Notifications',
         'service.transformer.UniversalStripAngularKeysRequest',
         'services.transformer.UniversalReadingResponseTransformer',
-        function ($scope, $filter, $parse, nsRailsService, newDataValues, analysisService, routes, $controller, notifications, stripAngularKeysRequest, readingResponse) {
+        '$location',
+        function ($scope, $filter, $parse, nsRailsService, newDataValues, analysisService, routes, $controller, notifications, stripAngularKeysRequest, readingResponse, $location) {
             var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
 
             //Helpers
@@ -149,6 +150,19 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     if (underEdit !== hashKey) {
                         $scope.rowUnderEdit = angular.copy(row);
                         underEdit = hashKey;
+                    }
+                }
+            };
+
+            $scope.onPlotMonitorPoint = function (monitorPoint) {
+                if (newDataValues.enable.plotMonitorPoint) {
+                    if (monitorPoint && monitorPoint.id) {
+                        window.location.href = new Neosavvy.Core.Builders.RequestUrlBuilder('/visualizations/monitor_point/:monitor_point_id#').
+                            addParam($location.search()).
+                            paramReplace(':monitor_point_id', monitorPoint.id).
+                            build();
+                    } else {
+                        throw "You cannot plot a monitor point without passing in a valid monitor point.";
                     }
                 }
             };

@@ -31,8 +31,11 @@ Biogasdata::Application.routes.draw do
   #Data Analysis
   match 'data_analysis/readings/site/:site_id/monitorclass/:monitor_class_id', :to => 'data_analysis#readings', :as => 'data_analysis_readings'
   match 'data_analysis/monitor_points/:asset_id', :to => 'data_analysis#monitor_points', :as => 'data_analysis_monitor_points'
-  match '/data_analysis/readings/:id', :to => 'data_analysis#update', :as => 'data_analysis_update'
+  match 'data_analysis/readings/:id', :to => 'data_analysis#update', :as => 'data_analysis_update'
   match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
+
+  #Visualizations
+  match 'visualizations/monitor_point/:monitor_point_id', :to => 'visualizations#monitor_point_progress', :as => 'visualizations_monitor_point_progress'
 
   #Mobile Rig
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'

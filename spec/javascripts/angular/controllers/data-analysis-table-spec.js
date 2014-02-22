@@ -7,6 +7,7 @@ describe("controllers.DataAnalysisTable", function () {
         notifications,
         stripAngularKeysRequest,
         railsServiceSpy,
+        locationSpy,
         $timeout;
 
     var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
@@ -64,7 +65,10 @@ describe("controllers.DataAnalysisTable", function () {
     });
 
     beforeEach(function () {
-        module.apply(this, RunEnergy.Dashboard.Dependencies);
+        locationSpy = jasmine.createSpyObj('$location', ['search']);
+        module.apply(this, RunEnergy.Dashboard.Dependencies.concat({
+            $location: locationSpy
+        }));
 
         inject(function ($injector) {
             $rootScope = $injector.get('$rootScope');
@@ -483,6 +487,26 @@ describe("controllers.DataAnalysisTable", function () {
                 expect($scope.rowUnderEdit).toBeNull();
             });
 
+        });
+
+        describe('onPlotMonitorPoint', function () {
+
+            beforeEach(function () {
+                newDataValues.enable.plotMonitorPoint = true;
+                locationSpy.search.andReturn({operator: 15, monitor_class: 12, site: 5});
+            });
+
+            it('Should throw an error when called without a monitor point', function () {
+                expect(function () {
+                    $scope.onPlotMonitorPoint();
+                }).toThrow();
+            });
+
+            it('Should throw an error if called with a monitorPoint without an id', function () {
+                expect(function () {
+                    $scope.onPlotMonitorPoint({});
+                }).toThrow();
+            });
         });
 
     });

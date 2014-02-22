@@ -11,6 +11,7 @@
  *= require_self
  *= require macgyver
  *= require ng-quick-date
+ *= require nv.d3
  *= require core
  *= require_tree .
  */
