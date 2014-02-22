@@ -157,7 +157,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.onPlotMonitorPoint = function (monitorPoint) {
                 if (newDataValues.enable.plotMonitorPoint) {
                     if (monitorPoint && monitorPoint.id) {
-                        window.location.href = new Neosavvy.Core.Builders.RequestUrlBuilder('/visualizations/monitor_point/:monitor_point_id#').
+                        window.location.href = new Neosavvy.Core.Builders.RequestUrlBuilder('/visualizations/monitor_point/:monitor_point_id').
                             addParam($location.search()).
                             paramReplace(':monitor_point_id', monitorPoint.id).
                             build();
