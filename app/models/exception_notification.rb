@@ -10,37 +10,37 @@ class ExceptionNotification < ActiveRecord::Base
   end
 
   def lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
-    ExceptionMailer.monitor_limit_email('Lower',
+    ExceptionMailer.delay.monitor_limit_email('Lower',
                                         locations_monitor_class.location,
                                         monitor_point, monitor_limit.lower_limit,
-                                        reading, user, other_email).deliver
+                                        reading, user, other_email)
   end
 
   def upper_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
-    ExceptionMailer.monitor_limit_email('Upper',
+    ExceptionMailer.delay.monitor_limit_email('Upper',
                                         locations_monitor_class.location,
                                         monitor_point, monitor_limit.upper_limit,
-                                        reading, user, other_email).deliver
+                                        reading, user, other_email)
   end
 
   def batch_lower_limit_warning(locations_monitor_class, readings, deleted)
-    ExceptionMailer.batch_monitor_limit_email('Lower',
+    ExceptionMailer.delay.batch_monitor_limit_email('Lower',
                                               locations_monitor_class.location,
                                               locations_monitor_class.monitor_class,
                                               readings,
                                               deleted,
                                               user,
-                                              other_email).deliver
+                                              other_email)
   end
 
   def batch_upper_limit_warning(locations_monitor_class, readings, deleted)
-    ExceptionMailer.batch_monitor_limit_email('Upper',
+    ExceptionMailer.delay.batch_monitor_limit_email('Upper',
                                               locations_monitor_class.location,
                                               locations_monitor_class.monitor_class,
                                               readings,
                                               deleted,
                                               user,
-                                              other_email).deliver
+                                              other_email)
   end
 
   protected

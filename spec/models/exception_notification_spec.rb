@@ -27,6 +27,7 @@ describe ExceptionNotification do
 
   before(:each) do
     exception_notification.should_not be_nil
+    ExceptionMailer.stub(:delay).and_return(ExceptionMailer)
   end
 
   describe 'display_name' do
@@ -75,5 +76,5 @@ describe ExceptionNotification do
       exception_notification.batch_upper_limit_warning(locations_monitor_class, [reading], [])
     end
   end
-  
+
 end
