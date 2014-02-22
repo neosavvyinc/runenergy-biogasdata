@@ -50,6 +50,8 @@ Biogasdata::Application.routes.draw do
   match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
 
+  #Debugging for delayed jobs
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
