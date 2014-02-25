@@ -65,6 +65,10 @@ describe("controllers.DataInputImportController", function () {
                 lowerLimit: false
             });
         });
+
+        it('Should set $scope.readingDate to null', function () {
+            expect($scope.readingDate).toBeNull();
+        });
     });
 
     describe('Watchers', function () {
@@ -135,6 +139,7 @@ describe("controllers.DataInputImportController", function () {
             it('Should call the completeImportCsv method on the service with the params', function () {
                 $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
                 $scope.readingMods.assetColumnName = 'id';
+                $scope.readingDate = new Date();
                 newDataValues.selectedMonitorClass = {id: 17};
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith(
@@ -144,12 +149,14 @@ describe("controllers.DataInputImportController", function () {
                     $scope.readingMods.deletedColumns,
                     undefined,
                     17,
-                    'id');
+                    'id',
+                    jasmine.any(Number));
             });
 
             it('Should set $scope.data to null', function () {
                 $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
                 $scope.readingMods.assetColumnName = 'id';
+                $scope.readingDate = new Date();
                 $scope.onCompleteImport();
                 expect($scope.data).toBeNull();
             });

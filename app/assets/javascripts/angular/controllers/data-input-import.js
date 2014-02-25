@@ -11,6 +11,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             var monitorLimits;
             $scope.columnNameRow = 1;
             $scope.firstDataRow = 2;
+            $scope.readingDate = null;
             $scope.readingMods = {
                 deletedRowIndices: [],
                 deletedColumns: {},
@@ -61,46 +62,58 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             }, true);
 
             //Action Handlers
+            var _epochDateFor = function (dateTime) {
+                if (dateTime) {
+                    return parseInt(dateTime.getTime() / 1000)
+                }
+                return dateTime;
+            };
+
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
                 $scope.error = "";
                 if (!isBlank($scope.readingMods.assetColumnName)) {
-                    //+2 for the hashKey and the assetColumnName
-                    if ((_.keys($scope.readingMods.columnToMonitorPointMappings).length +
-                        _.keys($scope.readingMods.deletedColumns).length + 2) === _.keys($scope.data[0]).length) {
-                        $scope.loading = true;
-                        dataInputService.completeImportCsv(
-                                $scope.data,
-                                $scope.readingMods.columnToMonitorPointMappings,
-                                $scope.readingMods.deletedRowIndices,
-                                $scope.readingMods.deletedColumns,
-                                hpGet(newDataValues, 'selectedSite.id'),
-                                hpGet(newDataValues, 'selectedMonitorClass.id'),
-                                $scope.readingMods.assetColumnName
-                            ).then(
-                            function (result) {
-                                if (result) {
-                                    //Stateful goodness
-                                    $scope.loading = false;
-                                    $scope.data = null;
-                                    newDataValues.enable.createMonitorPoint = false;
+                    if (!isBlank($scope.readingDate)) {
+                        //+2 for the hashKey and the assetColumnName
+                        if ((_.keys($scope.readingMods.columnToMonitorPointMappings).length +
+                            _.keys($scope.readingMods.deletedColumns).length + 2) === _.keys($scope.data[0]).length) {
+                            $scope.loading = true;
+                            dataInputService.completeImportCsv(
+                                    $scope.data,
+                                    $scope.readingMods.columnToMonitorPointMappings,
+                                    $scope.readingMods.deletedRowIndices,
+                                    $scope.readingMods.deletedColumns,
+                                    hpGet(newDataValues, 'selectedSite.id'),
+                                    hpGet(newDataValues, 'selectedMonitorClass.id'),
+                                    $scope.readingMods.assetColumnName,
+                                    _epochDateFor($scope.readingDate)
+                                ).then(
+                                function (result) {
+                                    if (result) {
+                                        //Stateful goodness
+                                        $scope.loading = false;
+                                        $scope.data = null;
+                                        newDataValues.enable.createMonitorPoint = false;
 
-                                    //Monitor limit info needed
-                                    $scope.monitorLimits = result.monitor_limits;
-                                    $scope.upperLimits = readingTransformer(result.upper_limits, true);
-                                    $scope.lowerLimits = readingTransformer(result.lower_limits, true);
+                                        //Monitor limit info needed
+                                        $scope.monitorLimits = result.monitor_limits;
+                                        $scope.upperLimits = readingTransformer(result.upper_limits, true);
+                                        $scope.lowerLimits = readingTransformer(result.lower_limits, true);
 
-                                    //Set approvals if they are empty
-                                    $scope.approvals.upperLimit = (!$scope.upperLimits || !$scope.upperLimits.length)
-                                    $scope.approvals.lowerLimit = (!$scope.lowerLimits || !$scope.lowerLimits.length)
-                                }
-                            },
-                            function (error) {
-                                $scope.error = "You must select a location, monitor class, and asset column.";
-                            });
-                    }
-                    else {
-                        $scope.error = "You have not assigned or removed every column.";
+                                        //Set approvals if they are empty
+                                        $scope.approvals.upperLimit = (!$scope.upperLimits || !$scope.upperLimits.length)
+                                        $scope.approvals.lowerLimit = (!$scope.lowerLimits || !$scope.lowerLimits.length)
+                                    }
+                                },
+                                function (error) {
+                                    $scope.error = "You must select a location, monitor class, and asset column.";
+                                });
+                        }
+                        else {
+                            $scope.error = "You have not assigned or removed every column.";
+                        }
+                    } else {
+                        $scope.error = "You must specify a reading date for the import.";
                     }
                 } else {
                     $scope.error = "Please select an asset column for your spreadsheet.";

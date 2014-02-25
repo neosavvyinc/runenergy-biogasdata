@@ -38,7 +38,7 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             build()
                     });
                 },
-                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns, siteId, monitorClassId, assetColumnName) {
+                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns, siteId, monitorClassId, assetColumnName, readingDate) {
                     if (readings && readings.length && columnToMonitorPointMappings) {
                         return nsServiceExtensions.request({
                             method: 'POST',
@@ -48,6 +48,7 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                                 monitor_class_id: monitorClassId,
                                 asset_column_name: assetColumnName,
                                 readings: readings,
+                                reading_date: readingDate,
                                 reading_mods: {
                                     deleted_row_indices: deletedRowIndices,
                                     deleted_columns: deletedColumns,
