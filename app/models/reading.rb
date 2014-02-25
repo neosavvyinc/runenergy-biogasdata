@@ -48,7 +48,7 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name)
+  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name, reading_date)
     unless readings.nil? or site_id.blank? or monitor_class_id.blank? or asset_column_name.blank?
       new_readings = []
       column_to_name_cache = {}
@@ -66,6 +66,7 @@ class Reading < DataAsStringModel
               :location_id => site_id,
               :monitor_class_id => monitor_class_id,
               :asset_id => asset.id,
+              :taken_at => reading_date,
               :data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache)
           )
         end

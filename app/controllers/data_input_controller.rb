@@ -18,7 +18,7 @@ class DataInputController < DataInterfaceController
         ajax_value_or_nil(params[:monitor_class_id]).nil? or
         ajax_value_or_nil(params[:asset_unique_identifier]).nil?
       render json: {:data => Asset.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id]).
-          where(["unique_identifier LIKE :uid", {:uid => "#{params[:asset_unique_identifier]}%"}]).
+          where(['unique_identifier LIKE :uid', {:uid => "#{params[:asset_unique_identifier]}%"}]).
           collect { |a| {:uid => a.unique_identifier} }
       }
     else
@@ -122,7 +122,9 @@ class DataInputController < DataInterfaceController
   end
 
   def complete_import
-    unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
+    unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or
+        params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank? or
+        params[:reading_date].blank?
       LocationsMonitorClass.create_caches(params[:site_id].to_i, params[:monitor_class_id].to_i, params[:reading_mods][:column_to_monitor_point_mappings], params[:reading_mods][:deleted_columns], params[:asset_column_name])
       monitor_limit_cache = {}
       readings = Reading.process_edited_collection(params[:readings],
@@ -131,7 +133,8 @@ class DataInputController < DataInterfaceController
                                                    params[:reading_mods][:deleted_row_indices],
                                                    params[:site_id].to_i,
                                                    params[:monitor_class_id].to_i,
-                                                   params[:asset_column_name]
+                                                   params[:asset_column_name],
+                                                   DateTime.strptime(params[:reading_date].to_s, '%s')
       ).map {
           |r| r.mark_limits_as_json(params[:site_id], monitor_limit_cache)
       }

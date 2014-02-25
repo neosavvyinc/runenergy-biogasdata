@@ -52,30 +52,30 @@ describe Reading do
 
     it 'should raise an error if the collection is nil' do
       expect {
-        Reading.process_edited_collection(nil, {}, {}, [], 10, 11, 12)
+        Reading.process_edited_collection(nil, {}, {}, [], 10, 11, 12, DateTime.now)
       }.to raise_error
     end
 
     it 'should raise an error if the site_id is blank' do
       expect {
-        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], '', 11, 12)
+        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], '', 11, 12, DateTime.now)
       }.to raise_error
     end
 
     it 'should raise an error if the monitor_class_id is blank' do
       expect {
-        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], 10, nil, 12)
+        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], 10, nil, 12, DateTime.now)
       }.to raise_error
     end
 
     it 'should raise an error if the asset_column_name is blank' do
       expect {
-        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], 10, 11, '')
+        Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [], 10, 11, '', DateTime.now)
       }.to raise_error
     end
 
     it 'should return no readings if all rows passed in ared deleted' do
-      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [1, 2, 3], 7, 8, 9)
+      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [1, 2, 3], 7, 8, 9, DateTime.now)
       my_readings.should eq([])
     end
 
@@ -84,7 +84,7 @@ describe Reading do
       expect(Reading).to receive(:map_and_validate_columns).twice.and_return({'data_no' => rand(30)})
 
       #Call
-      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [2], 1, monitor_class.id, 3)
+      my_readings = Reading.process_edited_collection(['Tom', 'Charlie', 'Jerry'], {}, {}, [2], 1, monitor_class.id, 3, DateTime.now)
       my_readings.size.should eq(2)
     end
   end

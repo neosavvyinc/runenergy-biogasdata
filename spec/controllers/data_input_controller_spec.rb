@@ -343,32 +343,38 @@ describe DataInputController do
     end
 
     it 'should return a status 400 error if readings is nil' do
-      xhr :post, :complete_import, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      xhr :post, :complete_import, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should eq(400)
     end
 
     it 'should return a status 400 error if readings is empty' do
-      xhr :post, :complete_import, :readings => [], :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      xhr :post, :complete_import, :readings => [], :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should eq(400)
     end
 
     it 'should return a status 400 error if reading_mods is empty' do
-      xhr :post, :complete_import, :readings => readings_b, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      xhr :post, :complete_import, :readings => readings_b, :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should eq(400)
     end
 
     it 'should return a status 400 error if site_id is blank' do
-      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should eq(400)
     end
 
     it 'should return a status 400 error if monitor_class_id is blank' do
-      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :asset_column_name => 'Well ID'
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should eq(400)
     end
 
     it 'should return a status 400 error if asset_column_name is blank' do
-      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id
+      xhr :post, :complete_import, :readings => readings_b, :reading_mods => {}, :site_id => location.id, :monitor_class_id => monitor_class.id, :reading_date => 1393292329
+      response.status.should eq(400)
+    end
+
+    it 'should return a status 400 error if the reading_date is blank' do
+      xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
+          :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
       response.status.should eq(400)
     end
 
@@ -380,7 +386,7 @@ describe DataInputController do
         expect(LocationsMonitorClass).to receive(:create_caches).once
 
         xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
-            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
         JSON.parse(response.body)['readings'].should eq(JSON.parse(readings_a.to_json))
       end
 
@@ -389,7 +395,7 @@ describe DataInputController do
         expect(Reading).to receive(:process_edited_collection).once.and_return(readings_a)
 
         xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
-            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
+            :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
         JSON.parse(response.body)['readings'].should eq(JSON.parse(readings_a.to_json))
       end
       
