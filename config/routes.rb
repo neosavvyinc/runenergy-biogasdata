@@ -34,6 +34,9 @@ Biogasdata::Application.routes.draw do
   match 'data_analysis/readings/:id', :to => 'data_analysis#update', :as => 'data_analysis_update'
   match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
 
+  #Summary
+  match 'summary/locations', :to => 'summary#locations', :as => 'summary_locations'
+
   #Visualizations
   match 'visualizations/monitor_point/:monitor_point_id', :to => 'visualizations#monitor_point_progress', :as => 'visualizations_monitor_point_progress'
 

@@ -1,0 +1,18 @@
+.summary
+  .data-table
+    %table.table.flare-table.table-striped.table-condensed.table-bordered
+      %thead
+        %tr
+          %th Type
+          %th Number
+          %th Monitored This Month
+          %th Readings This Month
+          %th Readings This Year
+          %th Readings Previous Year
+      %tbody
+        - @sites.each do |s|
+          %tr
+            %td{:colspan => 6} #{s.site_name}
+          - s.monitor_classes.each do |mc|
+            %tr
+              %td{:colspan => 6} #{mc.name.pluralize}
