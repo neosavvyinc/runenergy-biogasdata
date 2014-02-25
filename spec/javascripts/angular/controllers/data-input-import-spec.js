@@ -19,7 +19,8 @@ describe("controllers.DataInputImportController", function () {
             'runenergy.dashboard.controllers',
             'runenergy.dashboard.services',
             'runenergy.dashboard.constants',
-            'runenergy.dashboard.values'
+            'runenergy.dashboard.values',
+            'runenergy.dashboard.filters'
         ].concat(Neosavvy.AngularCore.Dependencies));
 
         inject(function ($injector) {
@@ -131,16 +132,43 @@ describe("controllers.DataInputImportController", function () {
                 $scope.$digest();
                 expect($scope.readingMods.deletedColumns).toEqual({name: true, color: true});
             });
+
+            it('Should set the readingMods.assetColumnName if the val has one assigned', function () {
+                newDataValues.selectedLocationsMonitorClass = {deleted_column_cache: {name: true, color: true}, asset_column_name: 'Blue'};
+                $scope.$digest();
+                expect($scope.readingMods.assetColumnName).toEqual('Blue');
+            });
         });
     });
 
     describe('Action Handlers', function () {
         describe('onCompleteImport', function () {
-            it('Should call the completeImportCsv method on the service with the params', function () {
+            beforeEach(function () {
                 $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
                 $scope.readingMods.assetColumnName = 'id';
                 $scope.readingDate = new Date();
                 newDataValues.selectedMonitorClass = {id: 17};
+            });
+
+            it('Should set the error if no readingMods.assetColumnName is set', function () {
+                $scope.readingMods.assetColumnName = '';
+                $scope.onCompleteImport();
+                expect($scope.error).toEqual("Please select an asset column for your spreadsheet.");
+            });
+
+            it('Should set the error if no readingDate is set', function () {
+                $scope.readingDate = null;
+                $scope.onCompleteImport();
+                expect($scope.error).toEqual("You must specify a reading date for the import.");
+            });
+
+            it('Should set the error if the assigned and deleted colums are not equal to the data columns', function () {
+                $scope.data = [{id: 0, $$hashKey: 19, somethingElse: 18}];
+                $scope.onCompleteImport();
+                expect($scope.error).toEqual("You have not assigned or removed every column.");
+            });
+
+            it('Should call the completeImportCsv method on the service with the params', function () {
                 $scope.onCompleteImport();
                 expect(completeImportCsvSpy).toHaveBeenCalledWith(
                     [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}],

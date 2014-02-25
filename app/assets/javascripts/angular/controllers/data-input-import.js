@@ -1,10 +1,16 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportController',
     ['$scope',
         '$location',
+        '$filter',
         'services.DataInputService',
         'services.transformer.UniversalReadingResponseTransformer',
         'values.NewDataValues',
-        function ($scope, $location, dataInputService, readingTransformer, newDataValues) {
+        function ($scope,
+                  $location,
+                  $filter,
+                  dataInputService,
+                  readingTransformer,
+                  newDataValues) {
             var isBlank = Neosavvy.Core.Utils.StringUtils.isBlank;
 
             //Initialization
@@ -62,13 +68,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             }, true);
 
             //Action Handlers
-            var _epochDateFor = function (dateTime) {
-                if (dateTime) {
-                    return parseInt(dateTime.getTime() / 1000)
-                }
-                return dateTime;
-            };
-
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
                 $scope.error = "";
@@ -86,7 +85,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                                     hpGet(newDataValues, 'selectedSite.id'),
                                     hpGet(newDataValues, 'selectedMonitorClass.id'),
                                     $scope.readingMods.assetColumnName,
-                                    _epochDateFor($scope.readingDate)
+                                    $filter('reDateToEpoch')($scope.readingDate)
                                 ).then(
                                 function (result) {
                                     if (result) {

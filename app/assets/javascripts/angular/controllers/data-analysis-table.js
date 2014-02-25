@@ -21,13 +21,6 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.rowUnderEdit = null;
 
             //Getters
-            var _epochDateFor = function (dateTime) {
-                if (dateTime) {
-                    return parseInt(dateTime.getTime() / 1000)
-                }
-                return dateTime;
-            };
-
             var _getData = _.debounce(function () {
                 if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
                     $scope.loading = true;
@@ -41,8 +34,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                         optional: {
                             'section_id': hpGet(newDataValues, 'selectedSection.id'),
                             'asset_id': hpGet(newDataValues, 'selectedAsset.id'),
-                            'start_date_time': _epochDateFor($scope.startDateTime),
-                            'end_date_time': _epochDateFor($scope.endDateTime),
+                            'start_date_time': $filter('reDateToEpoch')($scope.startDateTime),
+                            'end_date_time': $filter('reDateToEpoch')($scope.endDateTime),
                             'offset': $scope.page
                         }
                     }).then(function (result) {
