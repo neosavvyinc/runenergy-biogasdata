@@ -16,6 +16,8 @@ gem 'classy_enum', '~> 3.3.1'
 gem 'grape', '~> 0.6.1'
 gem 'delayed_job_active_record'
 gem 'delayed_job_web'
+gem 'daemons'
+gem 'whenever', :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.
