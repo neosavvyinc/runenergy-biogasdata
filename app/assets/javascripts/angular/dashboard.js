@@ -26,7 +26,7 @@ var haml = new function () {
 
 RunEnergy.Dashboard.Dependencies = ['runenergy.dashboard.filters', 'runenergy.dashboard.services', 'runenergy.dashboard.managers', 'runenergy.dashboard.directives', 'runenergy.dashboard.constants', 'runenergy.dashboard.controllers', 'runenergy.dashboard.values'];
 
-angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('$strap.directives')).
+angular.module('dashboard', RunEnergy.Dashboard.Dependencies).
     config(['$routeProvider',
         function ($routeProvider) {
             $routeProvider.
@@ -46,14 +46,6 @@ angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('$strap.dire
             // Note that we're passing the function fileContent, and not the object
             // returned by its invocation. More on that on Digging Deeper.
         }
-
-//        //Configuration For Angular Strap
-//        angular.module('dashboard', []).value('$strapConfig', {
-//            datepicker: {
-//                language: 'en',
-//                format: 'dd/mm/yyyy'
-//            }
-//        });
 
         window.haml.load();
     }]);

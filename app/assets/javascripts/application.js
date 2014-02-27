@@ -10,18 +10,15 @@
 // WARNING: THE FIRST BLANK LINE MARKS THE END OF WHAT'S TO BE PROCESSED, ANY BLANK LINE SHOULD
 // GO AFTER THE REQUIRES BELOW.
 //
-//= require jquery-2.0.3.min
+//= require jquery
+//= require jquery_ujs
 //= require twitter/bootstrap
 //= require hamlcoffee
 //= require angular
-//= require bootstrap-datepicker
-//= require bootstrap-timepicker
 //= require spin.min
 //= require jquery.maskedinput.min
 //= require moment.min
 //= require lodash.min
 //= require base64.min
-//= require angular-strap
 //= require angular/dashboard
-//= require_tree ./templates
-//= require_tree ./angular
+//= require_tree .

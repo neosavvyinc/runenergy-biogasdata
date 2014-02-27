@@ -1,0 +1,27 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  date_time_reading: 2013-05-25 12:29:01
+  inlet_pressure: 9.99
+  blower_speed: 9.99
+  methane: 9.99
+  flame_temperature: 9.99
+  standard_lfg_flow: 9.99
+  standard_cumulative_lfg_volume: 9.99
+  static_pressure: 9.99
+  lfg_temperature: 9.99
+  standard_lfg_volume: 9.99
+  standard_methane_volume: 9.99
+
+two:
+  date_time_reading: 2013-05-25 12:29:01
+  inlet_pressure: 9.99
+  blower_speed: 9.99
+  methane: 9.99
+  flame_temperature: 9.99
+  standard_lfg_flow: 9.99
+  standard_cumulative_lfg_volume: 9.99
+  static_pressure: 9.99
+  lfg_temperature: 9.99
+  standard_lfg_volume: 9.99
+  standard_methane_volume: 9.99

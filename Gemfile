@@ -11,7 +11,6 @@ gem 'activeadmin'
 gem 'active_admin_sidebar'
 gem "paperclip", "~> 3.0"
 gem 'kaminari'
-gem 'ffi', '~> 1.0.9'
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -31,14 +30,11 @@ end
 
 group :development, :test do
   gem 'rspec-rails', '~> 2.0'
-  gem 'guard-rspec', require: false
-  gem 'simplecov', :require => false
 end
 
 gem 'haml'
 gem 'haml-rails'
-gem 'jquery-rails', '~> 2.3.0'
-gem 'jquery-ui-rails'
+gem 'jquery-rails'
 gem "angularjs-rails"
 
 # To use ActiveModel has_secure_password
