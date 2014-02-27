@@ -37,7 +37,29 @@ describe Asset do
     end
 
   end
-  
+
+  describe 'asset_properties' do
+
+    before(:each) do
+      name = FactoryGirl.create(:asset_property, :name => 'Name')
+      height = FactoryGirl.create(:asset_property, :name => 'Height')
+      FactoryGirl.create(:asset_property_value, :asset => asset, :value => 5446, :asset_property => height)
+      FactoryGirl.create(:asset_property_value, :asset => asset, :value => 'George', :asset_property => name)
+    end
+
+    it 'should return an empty hash if there are no asset_properties defined' do
+      FactoryGirl.create(:asset).asset_properties.should eq({})
+    end
+
+    it 'should return the asset_property values with their property names as keys' do
+      asset.asset_properties.should eq({
+          'Name' => 'George',
+          'Height' => '5446'
+                                                })
+    end
+
+  end
+
   describe 'display_name' do
     it 'should be good at including the location and monitor class' do
       asset.display_name.should eq("#{location.site_name}, #{monitor_class.name}: 78HFG")

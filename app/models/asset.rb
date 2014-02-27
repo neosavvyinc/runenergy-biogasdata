@@ -17,6 +17,14 @@ class Asset < ActiveRecord::Base
                      :unique_identifier => unique_identifier)
   end
 
+  def asset_properties
+    kv = {}
+    asset_property_values.each do |apv|
+      kv[apv.asset_property.name] = apv.value
+    end
+    kv
+  end
+
   def display_name
     "#{location.try(:site_name) || 'No Location'}, #{monitor_class.try(:name) || 'No Class'}: #{unique_identifier}"
   end

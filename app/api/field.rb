@@ -80,7 +80,11 @@ module Field
         if authenticated?
           current_user.
               all_locations.
-              as_json(:include => [:assets, :locations_monitor_classes => {:include => [:monitor_points, :field_log_points]}])
+              as_json(:include => {:assets =>
+                                       {:methods => [:asset_properties]},
+                                   :locations_monitor_classes =>
+                                       {:include => [:monitor_points, :field_log_points, :custom_monitor_calculations]}
+          })
         end
       end
     end
