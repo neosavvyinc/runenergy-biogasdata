@@ -33,6 +33,35 @@ describe Location do
     monitor_classes[2].monitor_points << FactoryGirl.create(:monitor_point, :name => '2 Index')
   end
 
+  describe 'assets_monitored_within_date_range' do
+    asset_a = nil, asset_b = nil, asset_c = nil
+
+    before(:each) do
+      asset_a = FactoryGirl.create(:asset, :location => location)
+      asset_b = FactoryGirl.create(:asset, :location => location)
+      asset_c = FactoryGirl.create(:asset, :location => location)
+
+      FactoryGirl.create(:reading, :taken_at => DateTime.now - 1.month, :asset => asset_a)
+      FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset_a)
+      FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset_c)
+      FactoryGirl.create(:reading, :taken_at => DateTime.now + 1.month, :asset => asset_c)
+    end
+
+    it 'should return a collection of unique assets with readings in the range' do
+      assets = location.assets_monitored_within_date_range(DateTime.now - 1.month - 1.day, DateTime.now - 1.day)
+      assets.size.should eq(1)
+      assets.include?(asset_a).should be_true
+    end
+
+    it 'should ensure that the collection is unique' do
+      assets = location.assets_monitored_within_date_range(DateTime.now - 1.month - 1.day, DateTime.now + 1.year)
+      assets.size.should eq(2)
+      assets.include?(asset_a).should be_true
+      assets.include?(asset_c).should be_true
+    end
+    
+  end
+  
   describe 'display_name' do
 
     it 'should return the site_name if it is defined' do

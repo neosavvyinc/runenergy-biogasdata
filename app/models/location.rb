@@ -17,10 +17,8 @@ class Location < ActiveRecord::Base
   has_many :monitor_limits
   has_many :assets
 
-  before_create :create_locations_monitor_class
-
-  def create_locations_monitor_class
-
+  def assets_monitored_within_date_range(start_date_time, end_date_time)
+    Reading.where('taken_at >= ? AND taken_at <= ?', start_date_time, end_date_time).map {|r| r.asset}.uniq
   end
 
   def display_name
@@ -30,4 +28,5 @@ class Location < ActiveRecord::Base
   def monitor_classes_with_points
     monitor_classes.try(:as_json, {:include => [:monitor_points, :field_log_points]})
   end
+
 end

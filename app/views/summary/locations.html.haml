@@ -11,8 +11,13 @@
           %th Readings Previous Year
       %tbody
         - @sites.each do |s|
-          %tr
+          %tr.location
             %td{:colspan => 6} #{s.site_name}
           - s.monitor_classes.each do |mc|
             %tr
-              %td{:colspan => 6} #{mc.name.pluralize}
+              %td #{mc.name.pluralize}
+              %td #{s.assets.where(:monitor_class_id => mc.id).size}
+              %td #{s.assets_monitored_within_date_range(DateTime.now.beginning_of_month, DateTime.now.end_of_month).size}
+              %td #{s.assets_monitored_within_date_range(DateTime.now.beginning_of_month, DateTime.now.end_of_month).size}
+              %td #{s.assets_monitored_within_date_range(DateTime.now.beginning_of_year, DateTime.now.end_of_year).size}
+              %td #{s.assets_monitored_within_date_range(DateTime.now.ago(1.year).beginning_of_year, DateTime.now.ago(1.year).end_of_year).size}
