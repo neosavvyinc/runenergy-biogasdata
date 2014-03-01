@@ -1,11 +1,13 @@
 describe("controllers.DataInputImportController", function () {
     var $rootScope,
         $scope,
+        $filter,
+        routes,
         controller,
         newDataValues,
+        railsService,
         readingTransformerSpy,
-        createTransformerSpy,
-        completeImportCsvSpy;
+        createTransformerSpy;
 
     beforeEach(module('runenergy.dashboard.controllers', function ($provide) {
         readingTransformerSpy = jasmine.createSpy().andReturn("Jimminy Crickets!");
@@ -21,19 +23,20 @@ describe("controllers.DataInputImportController", function () {
             'runenergy.dashboard.constants',
             'runenergy.dashboard.values',
             'runenergy.dashboard.filters'
-        ].concat(Neosavvy.AngularCore.Dependencies));
+        ].concat(Neosavvy.AngularCore.Dependencies).concat(function ($provide) {
+                railsService = jasmine.createSpyObj("railsService", ["request"]);
+                railsService.request.andReturn({then: function (fn) {
+                    fn({readings: [], deleted: []});
+                }});
+                $provide.value('nsRailsService', railsService);
+            }));
 
-        inject(function ($injector) {
+        inject(function ($injector, _$filter_) {
+            $filter = _$filter_;
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
+            routes = $injector.get('constants.Routes');
             newDataValues = $injector.get('values.NewDataValues');
-            completeImportCsvSpy = spyOn($injector.get('services.DataInputService'), 'completeImportCsv').
-            andReturn({then: function (fn) {
-                    fn([1, 2, 3]);
-                    return {finally: function (fnb) {
-                        fnb();
-                    }}
-                }});
             controller = $injector.get('$controller')("controllers.DataInputImportController", {$scope: $scope});
         });
     });
@@ -141,6 +144,25 @@ describe("controllers.DataInputImportController", function () {
                 expect($scope.readingMods.assetColumnName).toEqual('Blue');
             });
         });
+
+        describe('readingMods.dateColumnName', function () {
+
+            beforeEach(function () {
+                $scope.readingMods.dateColumnName = 'Taken Up';
+                $scope.$digest();
+            });
+
+            it('Should set the default dateFormat on readingMods', function () {
+                expect($scope.readingMods.dateFormat).toEqual('%d-%b-%y');
+            });
+
+            it('Should deregister the watcher so it cannot be called again', function () {
+                $scope.readingMods.dateFormat = 'Another';
+                $scope.$digest();
+                expect($scope.readingMods.dateFormat).toEqual('Another');
+            });
+
+        });
     });
 
     describe('Action Handlers', function () {
@@ -149,6 +171,7 @@ describe("controllers.DataInputImportController", function () {
                 $scope.data = [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}];
                 $scope.readingMods.assetColumnName = 'id';
                 $scope.readingDate = new Date();
+                newDataValues.selectedSite = {id: 19};
                 newDataValues.selectedMonitorClass = {id: 17};
             });
 
@@ -170,17 +193,27 @@ describe("controllers.DataInputImportController", function () {
                 expect($scope.error).toEqual("You have not assigned or removed every column.");
             });
 
-            it('Should call the completeImportCsv method on the service with the params', function () {
+            it('Should call the nsRailsService with the params', function () {
+                var dataBefore = $scope.data;
                 $scope.onCompleteImport();
-                expect(completeImportCsvSpy).toHaveBeenCalledWith(
-                    [{id: 0, $$hashKey: 19}, {id: 2, $$hashKey: 20}, {id: 3, $$hashKey: 21}],
-                    $scope.readingMods.columnToMonitorPointMappings,
-                    $scope.readingMods.deletedRowIndices,
-                    $scope.readingMods.deletedColumns,
-                    undefined,
-                    17,
-                    'id',
-                    jasmine.any(Number));
+                expect(railsService.request).toHaveBeenCalledWith({
+                    method: 'POST',
+                    url: routes.DATA_INPUT.COMPLETE_IMPORT,
+                    data: {
+                        site_id: newDataValues.selectedSite.id,
+                        monitor_class_id: newDataValues.selectedMonitorClass.id,
+                        asset_column_name: $scope.readingMods.assetColumnName,
+                        readings: dataBefore,
+                        reading_date: $filter('reDateToEpoch')($scope.readingDate),
+                        reading_mods: {
+                            deleted_row_indices: $scope.readingMods.deletedRowIndices,
+                            deleted_columns: $scope.readingMods.deletedColumns,
+                            column_to_monitor_point_mappings: $scope.readingMods.columnToMonitorPointMappings,
+                            date_column_name: $scope.readingMods.dateColumnName,
+                            date_format: $scope.readingMods.dateFormat
+                        }
+                    }
+                });
             });
 
             it('Should set $scope.data to null', function () {

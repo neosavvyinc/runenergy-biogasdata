@@ -2,10 +2,12 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
     ['$scope',
         '$location',
         '$filter',
+        'nsRailsService',
+        'constants.Routes',
         'services.DataInputService',
         'services.transformer.UniversalReadingResponseTransformer',
         'values.NewDataValues',
-        function ($scope, $location, $filter, dataInputService, readingTransformer, newDataValues) {
+        function ($scope, $location, $filter, nsRailsService, routes, dataInputService, readingTransformer, newDataValues) {
             var isBlank = Neosavvy.Core.Utils.StringUtils.isBlank;
 
             //Initialization
@@ -81,16 +83,24 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                         if ((_.keys($scope.readingMods.columnToMonitorPointMappings).length +
                             _.keys($scope.readingMods.deletedColumns).length + 2) === _.keys($scope.data[0]).length) {
                             $scope.loading = true;
-                            dataInputService.completeImportCsv(
-                                    $scope.data,
-                                    $scope.readingMods.columnToMonitorPointMappings,
-                                    $scope.readingMods.deletedRowIndices,
-                                    $scope.readingMods.deletedColumns,
-                                    hpGet(newDataValues, 'selectedSite.id'),
-                                    hpGet(newDataValues, 'selectedMonitorClass.id'),
-                                    $scope.readingMods.assetColumnName,
-                                    $filter('reDateToEpoch')($scope.readingDate)
-                                ).then(
+                            nsRailsService.request({
+                                method: 'POST',
+                                url: routes.DATA_INPUT.COMPLETE_IMPORT,
+                                data: {
+                                    site_id: hpGet(newDataValues, 'selectedSite.id'),
+                                    monitor_class_id: hpGet(newDataValues, 'selectedMonitorClass.id'),
+                                    asset_column_name: $scope.readingMods.assetColumnName,
+                                    readings: $scope.data,
+                                    reading_date: $filter('reDateToEpoch')($scope.readingDate),
+                                    reading_mods: {
+                                        deleted_row_indices: $scope.readingMods.deletedRowIndices,
+                                        deleted_columns: $scope.readingMods.deletedColumns,
+                                        column_to_monitor_point_mappings: $scope.readingMods.columnToMonitorPointMappings,
+                                        date_column_name: $scope.readingMods.dateColumnName,
+                                        date_format: $scope.readingMods.dateFormat
+                                    }
+                                }
+                            }).then(
                                 function (result) {
                                     if (result) {
                                         //Stateful goodness

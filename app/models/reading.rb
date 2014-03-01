@@ -48,7 +48,7 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name, reading_date)
+  def self.process_edited_collection(readings, column_to_monitor_point_mappings, deleted_columns, deleted_row_indices, site_id, monitor_class_id, asset_column_name, reading_date = nil, date_column_name = nil, date_format = nil)
     unless readings.nil? or site_id.blank? or monitor_class_id.blank? or asset_column_name.blank?
       new_readings = []
       column_to_name_cache = {}
@@ -66,7 +66,7 @@ class Reading < DataAsStringModel
               :location_id => site_id,
               :monitor_class_id => monitor_class_id,
               :asset_id => asset.id,
-              :taken_at => reading_date,
+              :taken_at => self.choose_reading_date(data, reading_date, date_column_name, date_format),
               :data => self.map_and_validate_columns(data, column_to_monitor_point_mappings, deleted_columns, column_to_name_cache)
           )
         end
@@ -90,6 +90,22 @@ class Reading < DataAsStringModel
       end
     end
     new_reading
+  end
+
+  def self.choose_reading_date(data, reading_date, date_column_name, date_format = nil)
+    unless date_column_name.nil?
+      unless data[date_column_name].blank?
+        begin
+          DateTime.strptime(data[date_column_name], (date_format || '%d-%b-%y'))
+        rescue
+          raise Exceptions::InvalidDateFormatException
+        end
+      else
+        nil
+      end
+    else
+      reading_date
+    end
   end
 
   def taken_at_epoch
@@ -141,8 +157,8 @@ class Reading < DataAsStringModel
 
   def as_json(options={})
     super(options.merge(:include => [:asset])).merge({
-                             :data => JSON.parse(self.data),
-                             :field_log => self.field_log.as_json
-                         })
+                                                         :data => JSON.parse(self.data),
+                                                         :field_log => self.field_log.as_json
+                                                     })
   end
 end

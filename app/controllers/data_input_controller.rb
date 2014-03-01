@@ -123,32 +123,44 @@ class DataInputController < DataInterfaceController
 
   def complete_import
     unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or
-        params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank? or
-        params[:reading_date].blank?
+        params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
       LocationsMonitorClass.create_caches(params[:site_id].to_i, params[:monitor_class_id].to_i, params[:reading_mods][:column_to_monitor_point_mappings], params[:reading_mods][:deleted_columns], params[:asset_column_name])
       monitor_limit_cache = {}
-      readings = Reading.process_edited_collection(params[:readings],
-                                                   params[:reading_mods][:column_to_monitor_point_mappings],
-                                                   params[:reading_mods][:deleted_columns],
-                                                   params[:reading_mods][:deleted_row_indices],
-                                                   params[:site_id].to_i,
-                                                   params[:monitor_class_id].to_i,
-                                                   params[:asset_column_name],
-                                                   DateTime.strptime(params[:reading_date].to_s, '%s')
-      ).map {
-          |r| r.mark_limits_as_json(params[:site_id], monitor_limit_cache)
-      }
+      reading_date = nil
+      if params[:reading_mods][:date_column_name]
+        params[:reading_mods][:date_column_name] = ajax_value_or_nil(params[:reading_mods][:date_column_name])
+        params[:reading_mods][:date_format] = ajax_value_or_nil(params[:reading_mods][:date_format])
+      else
+        reading_date = DateTime.strptime(params[:reading_date].to_s, '%s')
+      end
+      begin
+        readings = Reading.process_edited_collection(params[:readings],
+                                                     params[:reading_mods][:column_to_monitor_point_mappings],
+                                                     params[:reading_mods][:deleted_columns],
+                                                     params[:reading_mods][:deleted_row_indices],
+                                                     params[:site_id].to_i,
+                                                     params[:monitor_class_id].to_i,
+                                                     params[:asset_column_name],
+                                                     reading_date,
+                                                     params[:reading_mods][:date_column_name],
+                                                     params[:reading_mods][:date_format]
+        ).map {
+            |r| r.mark_limits_as_json(params[:site_id], monitor_limit_cache)
+        }
 
-      render json: {
-          monitor_limits: monitor_limit_cache,
-          upper_limits: readings.reject {
-              |r| r[:upper_limits].nil?
-          },
-          lower_limits: readings.reject {
-              |r| r[:lower_limits].nil?
-          },
-          readings: readings
-      }
+        render json: {
+            monitor_limits: monitor_limit_cache,
+            upper_limits: readings.reject {
+                |r| r[:upper_limits].nil?
+            },
+            lower_limits: readings.reject {
+                |r| r[:lower_limits].nil?
+            },
+            readings: readings
+        }
+      rescue Exceptions::InvalidDateFormatException => e
+        render json: {:error => 'Filled out dates in the date column do not match the provided date format, check your CSV for discrepancies.'}, :status => 400
+      end
     else
       render json: {:error => 'The reading params were not set in the session, do not make this request until you have first called the import method.'}, :status => 400
     end

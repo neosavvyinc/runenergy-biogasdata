@@ -372,12 +372,14 @@ describe DataInputController do
       response.status.should eq(400)
     end
 
-    it 'should return a status 400 error if the reading_date is blank' do
-      xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
-          :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID'
-      response.status.should eq(400)
-    end
+    it 'should return a status 400 in cases where it throws an InvalidDateFormatException' do
+      expect(Reading).to receive(:process_edited_collection).once.and_raise(Exceptions::InvalidDateFormatException)
 
+      xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
+          :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
+      response.status.should equal(400)
+    end
+    
     describe 'valid' do
 
       it 'should call LocationsMonitorClass.create_caches once' do

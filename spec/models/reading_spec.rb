@@ -128,6 +128,38 @@ describe Reading do
       data.should eq({'Charles Bronson' => 'Hello Friends'})
     end
   end
+  
+  describe 'self.choose_reading_date' do
+    data = nil, other_data = nil
+
+    before(:each) do
+      data = {'Date Time' => '10-Jun-15'}
+      other_data = {'Taken When' => 'August 19, 2001'}
+    end
+
+    it 'should return the reading_date value if there is no date_column_name passed in' do
+      reading_date = DateTime.now
+      Reading.choose_reading_date(data, reading_date, nil, '%d-%b-%y').should eq(reading_date)
+    end
+
+    it 'should default to the date format %d-%b-%y unless a date format is passed in' do
+      Reading.choose_reading_date(data, DateTime.now, 'Date Time').should eq(DateTime.strptime('10-Jun-15', '%d-%b-%y'))
+    end
+
+    it 'should use the date_format provided if it is passed in' do
+      Reading.choose_reading_date(other_data, DateTime.now, 'Taken When', '%B %d, %Y').should eq(DateTime.strptime('August 19, 2001', '%B %d, %Y'))
+    end
+
+    it 'should return a specific exception if the date does not match the format' do
+      expect {
+        Reading.choose_reading_date(other_data, DateTime.now, 'Taken When')
+      }.to raise_error(Exceptions::InvalidDateFormatException)
+    end
+
+    it 'should not blow up if there is nothing at the index' do
+      Reading.choose_reading_date(other_data, DateTime.now, 'Taken How').should be_nil
+    end
+  end
 
   let :reading do
     FactoryGirl.create(

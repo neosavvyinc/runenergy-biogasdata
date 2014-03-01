@@ -68,48 +68,4 @@ describe("services.DataInputService", function () {
             expect(myResult).toEqual([1, 2, 3]);
         });
     });
-
-    describe('completeImportCsv', function () {
-        it('Should throw an error if no readings are provided', function () {
-            expect(function () {
-                service.completeImportCsv(null, {});
-            }).toThrow();
-        });
-
-        it('Should throw an error if readings is empty', function () {
-            expect(function () {
-                service.completeImportCsv([], {});
-            }).toThrow();
-        });
-
-        it('Should throw an error if no column names to monitor points mappings are provided', function () {
-            expect(function () {
-                service.completeImportCsv([1, 2, 3], null);
-            }).toThrow();
-        });
-
-        it('Should call the nsServiceExtensions with the required params', function () {
-            service.completeImportCsv([1, 2, 3], {name: 'namen'}, [3, 7], {column_a: true});
-            expect(requestSpy).toHaveBeenCalledWith({
-                method: 'POST',
-                url: routes.DATA_INPUT.COMPLETE_IMPORT,
-                data: {
-                    readings: [1, 2, 3],
-                    reading_mods: {
-                        deleted_row_indices: [3, 7],
-                        deleted_columns: {column_a: true},
-                        column_to_monitor_point_mappings: {name: 'namen'}
-                    }
-                }
-            });
-        });
-
-        it('Should return the value from nsServiceExtensions', function () {
-            var myResult;
-            service.completeImportCsv([1, 2, 3], {name: 'namen'}, [3, 7], {column_a: true}).then(function (result) {
-                myResult = result
-            });
-            expect(myResult).toEqual([1, 2, 3]);
-        });
-    });
 });

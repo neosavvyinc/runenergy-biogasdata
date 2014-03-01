@@ -37,34 +37,6 @@ RunEnergy.Dashboard.Services.factory('services.DataInputService',
                             paramReplace({':site_id': siteId, ':monitor_class_id': monitorClassId}).
                             build()
                     });
-                },
-                completeImportCsv: function (readings, columnToMonitorPointMappings, deletedRowIndices, deletedColumns, siteId, monitorClassId, assetColumnName, readingDate) {
-                    if (readings && readings.length && columnToMonitorPointMappings) {
-                        return nsServiceExtensions.request({
-                            method: 'POST',
-                            url: routes.DATA_INPUT.COMPLETE_IMPORT,
-                            data: {
-                                site_id: siteId,
-                                monitor_class_id: monitorClassId,
-                                asset_column_name: assetColumnName,
-                                readings: readings,
-                                reading_date: readingDate,
-                                reading_mods: {
-                                    deleted_row_indices: deletedRowIndices,
-                                    deleted_columns: deletedColumns,
-                                    column_to_monitor_point_mappings: columnToMonitorPointMappings
-                                }
-                            }
-                        });
-                    } else {
-                        throw "You must provide a readings collection and a mapping of columns to monitor points in order to complete the import.";
-                    }
-                },
-                getLocationsMonitorClass: function (locationId, monitorClassId) {
-
-                },
-                createLocationsMonitorClass: function(locationId, monitorClassId, monitorPoints, monitorPointsToLimits) {
-
                 }
             };
         }]);
