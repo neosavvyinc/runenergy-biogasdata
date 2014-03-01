@@ -20,7 +20,9 @@ class Asset < ActiveRecord::Base
   def asset_properties
     kv = {}
     asset_property_values.each do |apv|
-      kv[apv.asset_property.name] = apv.value
+      unless apv.asset_property.nil?
+        kv[apv.asset_property.name] = apv.value
+      end
     end
     kv
   end
