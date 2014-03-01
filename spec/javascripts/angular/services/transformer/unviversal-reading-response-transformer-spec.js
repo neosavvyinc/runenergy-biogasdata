@@ -58,4 +58,14 @@ describe("services.transformer.UniversalReadingResponseTransformer", function ()
     it('Should add the taken_at property to the data on each element', function () {
         expect(transformer(response).length).toEqual(3);
     });
+
+    /* Save this for later, acting a little strange at the moment */
+    xit('Should extract values with nod data property', function () {
+        expect(transformer([
+            {data: {name: "George"}, taken_at: '10/09/12, 10:48:32', asset: asset, id: 25},
+            {taken_at: '10/09/12, 10:48:32', asset: asset, id: 25}
+        ])).toEqual([
+                {name: "George", 'Date Time': '09/10/12, 10:48:32', Asset: '25OR624'}
+            ]);
+    });
 });

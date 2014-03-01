@@ -8,7 +8,8 @@
           %p.name{'ng-bind' => 'key'}
           .dropdown{'ng-show' => 'getColumnVariation(key, true, false)'}
             %a.btn{'ng-click' => 'onSetAssetColumn(key)', 'ng-class' => 'readingMods.assetColumnName == key | nsLogicalIf : \'btn-danger\' : \'\''} {{readingMods.assetColumnName == key | nsLogicalIf : 'Asset Column' : 'Set Asset Column'}}
-            .monitor-points{'ng-show' => 'readingMods.assetColumnName != key'}
+            %a.btn{'ng-click' => 'onSetDateColumn(key)', 'ng-class' => 'readingMods.dateColumnName  == key | nsLogicalIf : \'btn-warning\' : \'\''} {{readingMods.dateColumnName == key | nsLogicalIf : 'Date Column' : 'Set Date Column'}}
+            .monitor-points{'ng-show' => 'readingMods.assetColumnName != key && readingMods.dateColumnName != key'}
               %re-bootstrap-button-dropdown{'items' => 'newDataValues.selectedMonitorClass.monitor_points_for_all_locations', 'selected-item' => 'readingMods.columnToMonitorPointMappings[key]', 'label-field' => 'name', 'label-function' => 'monitorPointLabelFunction'}
       %tr
         %th

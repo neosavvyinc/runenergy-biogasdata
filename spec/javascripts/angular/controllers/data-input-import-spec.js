@@ -52,7 +52,9 @@ describe("controllers.DataInputImportController", function () {
                 deletedRowIndices: [],
                 deletedColumns: {},
                 columnToMonitorPointMappings: {},
-                assetColumnName: null
+                assetColumnName: null,
+                dateColumnName: null,
+                dateFormat: null
             });
         });
 
@@ -195,6 +197,26 @@ describe("controllers.DataInputImportController", function () {
                 expect($scope.readingMods.assetColumnName).toBeNull();
                 $scope.onSetAssetColumn("Identifier 20");
                 expect($scope.readingMods.assetColumnName).toEqual("Identifier 20");
+            });
+
+            it('Should not be able to set the currently defined date column as the asset column', function () {
+                $scope.readingMods.dateColumnName = "Taken";
+                $scope.onSetAssetColumn("Taken");
+                expect($scope.readingMods.assetColumnName).toBeNull();
+            });
+        });
+
+        describe('onSetDateColumn', function () {
+            it('Should set the $scope.readingMods.dateColumnName to the column passed into the function', function () {
+                expect($scope.readingMods.dateColumnName).toBeNull();
+                $scope.onSetDateColumn("Date & Time");
+                expect($scope.readingMods.dateColumnName).toEqual("Date & Time");
+            });
+
+            it('Should not be able to set the currently defined asset column as the date column', function () {
+                $scope.readingMods.assetColumnName = "Taken2";
+                $scope.onSetDateColumn("Taken2");
+                expect($scope.readingMods.dateColumnName).toBeNull();
             });
         });
 

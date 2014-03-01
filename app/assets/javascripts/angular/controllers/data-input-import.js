@@ -5,12 +5,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
         'services.DataInputService',
         'services.transformer.UniversalReadingResponseTransformer',
         'values.NewDataValues',
-        function ($scope,
-                  $location,
-                  $filter,
-                  dataInputService,
-                  readingTransformer,
-                  newDataValues) {
+        function ($scope, $location, $filter, dataInputService, readingTransformer, newDataValues) {
             var isBlank = Neosavvy.Core.Utils.StringUtils.isBlank;
 
             //Initialization
@@ -22,7 +17,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                 deletedRowIndices: [],
                 deletedColumns: {},
                 columnToMonitorPointMappings: {},
-                assetColumnName: null
+                assetColumnName: null,
+                dateColumnName: null,
+                dateFormat: null
             };
             $scope.approvals = {
                 upperLimit: false,
@@ -66,6 +63,13 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     window.location = '/data_analysis#' + window.location.search;
                 }
             }, true);
+
+            var deregB = $scope.$watch('readingMods.dateColumnName', function (val) {
+                if (val) {
+                    $scope.readingMods.dateFormat = '%d-%b-%y';
+                    deregB();
+                }
+            });
 
             //Action Handlers
             $scope.onCompleteImport = function () {
@@ -120,7 +124,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             };
 
             $scope.onSetAssetColumn = function (column) {
-                $scope.readingMods.assetColumnName = column;
+                if ($scope.readingMods.dateColumnName !== column) {
+                    $scope.readingMods.assetColumnName = column;
+                }
+            };
+
+            $scope.onSetDateColumn = function (column) {
+                if ($scope.readingMods.assetColumnName !== column) {
+                    $scope.readingMods.dateColumnName = column;
+                }
             };
 
             $scope.onSubmit = function (e) {
