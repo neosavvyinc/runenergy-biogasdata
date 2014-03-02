@@ -9,7 +9,7 @@
       %div{'ng-show' => 'data.length'}
         %h4 Spreadsheet Preview & Assignment
         %a.btn.btn-primary.complete{'ng-click' => 'onCompleteImport()', 'ng-show' => 'data.length'} Complete Import
-        %div{'ng-if' => '!readingMods.dateColumnName'}
+        %div{'ng-show' => '!readingMods.dateColumnName'}
           %h4.assign-date Assign Date For Readings
           %datepicker{'ng-model' => 'readingDate', 'date-format' => 'd/M/yyyy', 'disable-timepicker' => 'true'}
         .date-format{'ng-if' => 'readingMods.dateColumnName'}

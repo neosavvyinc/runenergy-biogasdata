@@ -38,6 +38,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.ImportTable',
                     $scope.readingMods.deletedColumns[name] = true;
                     delete $scope.readingMods.columnToMonitorPointMappings[name];
                 }
+
+                /* Check for asset column */
+                if ($scope.readingMods.assetColumnName === name) {
+                    $scope.readingMods.assetColumnName = null;
+                }
+
+                /* Check for date column */
+                if ($scope.readingMods.dateColumnName === name) {
+                    $scope.readingMods.dateColumnName = null;
+                }
             };
 
             //Getters

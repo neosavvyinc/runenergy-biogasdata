@@ -124,7 +124,13 @@ class DataInputController < DataInterfaceController
   def complete_import
     unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or
         params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
-      LocationsMonitorClass.create_caches(params[:site_id].to_i, params[:monitor_class_id].to_i, params[:reading_mods][:column_to_monitor_point_mappings], params[:reading_mods][:deleted_columns], params[:asset_column_name])
+      LocationsMonitorClass.create_caches(params[:site_id].to_i,
+                                          params[:monitor_class_id].to_i,
+                                          params[:reading_mods][:column_to_monitor_point_mappings],
+                                          params[:reading_mods][:deleted_columns],
+                                          params[:asset_column_name],
+                                          params[:reading_mods][:date_column_name],
+                                          params[:reading_mods][:date_format])
       monitor_limit_cache = {}
       reading_date = nil
       if params[:reading_mods][:date_column_name]

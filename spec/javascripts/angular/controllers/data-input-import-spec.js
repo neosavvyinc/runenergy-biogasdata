@@ -143,11 +143,24 @@ describe("controllers.DataInputImportController", function () {
                 $scope.$digest();
                 expect($scope.readingMods.assetColumnName).toEqual('Blue');
             });
+
+            it('Should set the readingMods.dateColumnName if the val has one assigned', function () {
+                newDataValues.selectedLocationsMonitorClass = {date_column_name: 'Date Time'};
+                $scope.$digest();
+                expect($scope.readingMods.dateColumnName).toEqual('Date Time');
+            });
+
+            it('Should set the readingMods.dateFormat if the val has one assigned', function () {
+                newDataValues.selectedLocationsMonitorClass = {date_format: '%d-%b-%y - 1000'};
+                $scope.$digest();
+                expect($scope.readingMods.dateFormat).toEqual('%d-%b-%y - 1000');
+            });
         });
 
         describe('readingMods.dateColumnName', function () {
 
             beforeEach(function () {
+                newDataValues.selectedLocationsMonitorClass = {date_format: ''};
                 $scope.readingMods.dateColumnName = 'Taken Up';
                 $scope.$digest();
             });
@@ -199,6 +212,7 @@ describe("controllers.DataInputImportController", function () {
                 expect(railsService.request).toHaveBeenCalledWith({
                     method: 'POST',
                     url: routes.DATA_INPUT.COMPLETE_IMPORT,
+                    ignoreDataKeys: true,
                     data: {
                         site_id: newDataValues.selectedSite.id,
                         monitor_class_id: newDataValues.selectedMonitorClass.id,

@@ -102,6 +102,18 @@ describe("controllers.ImportTable", function () {
                 $scope.onRemoveColumn("Georgie");
                 expect($scope.readingMods.columnToMonitorPointMappings["Georgie"]).toBeUndefined();
             });
+
+            it('Should be able to set the assetColumnName to null if the removed column name matches it', function () {
+                $scope.readingMods.assetColumnName = "Well Identifier";
+                $scope.onRemoveColumn("Well Identifier");
+                expect($scope.readingMods.assetColumnName).toBeNull();
+            });
+
+            it('Should be able to set the dateColumnName to null if the removed column matches it', function () {
+                $scope.readingMods.dateColumnName = "Reading Date";
+                $scope.onRemoveColumn("Reading Date");
+                expect($scope.readingMods.dateColumnName).toBeNull();
+            });
         });
     });
 

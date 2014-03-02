@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140213235646) do
+ActiveRecord::Schema.define(:version => 20140302222242) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -276,6 +276,8 @@ ActiveRecord::Schema.define(:version => 20140213235646) do
     t.string  "column_cache",         :limit => 8000
     t.string  "deleted_column_cache", :limit => 8000
     t.string  "asset_column_name"
+    t.string  "date_column_name"
+    t.string  "date_format"
   end
 
   create_table "locations_user_groups", :force => true do |t|

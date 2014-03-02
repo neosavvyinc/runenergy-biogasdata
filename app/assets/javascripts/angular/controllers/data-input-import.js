@@ -57,6 +57,12 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                     if (val.deleted_column_cache) {
                         $scope.readingMods.deletedColumns = val.deleted_column_cache;
                     }
+                    if (val.date_column_name) {
+                        $scope.readingMods.dateColumnName = val.date_column_name;
+                    }
+                    if (val.date_format){
+                        $scope.readingMods.dateFormat = val.date_format;
+                    }
                 }
             });
 
@@ -67,7 +73,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             }, true);
 
             var deregB = $scope.$watch('readingMods.dateColumnName', function (val) {
-                if (val) {
+                if (val && isBlank($scope.readingMods.dateFormat)) {
                     $scope.readingMods.dateFormat = '%d-%b-%y';
                     deregB();
                 }
@@ -91,6 +97,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                             nsRailsService.request({
                                 method: 'POST',
                                 url: routes.DATA_INPUT.COMPLETE_IMPORT,
+                                ignoreDataKeys: true,
                                 data: {
                                     site_id: hpGet(newDataValues, 'selectedSite.id'),
                                     monitor_class_id: hpGet(newDataValues, 'selectedMonitorClass.id'),

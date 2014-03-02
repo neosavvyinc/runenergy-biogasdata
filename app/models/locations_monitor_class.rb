@@ -1,5 +1,5 @@
 class LocationsMonitorClass < ActiveRecord::Base
-  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name, :custom_monitor_calculations_attributes
+  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name, :date_column_name, :date_format, :custom_monitor_calculations_attributes
   belongs_to :location
   belongs_to :monitor_class
   has_many :exception_notifications
@@ -22,11 +22,13 @@ class LocationsMonitorClass < ActiveRecord::Base
     locations_monitor_class
   end
 
-  def self.create_caches(location_id, monitor_class_id, column_mapping, deleted_columns, asset_column_name)
+  def self.create_caches(location_id, monitor_class_id, column_mapping, deleted_columns, asset_column_name = nil, date_column_name = nil, date_format = nil)
     locations_monitor_class = self.lazy_load(location_id, monitor_class_id)
     locations_monitor_class.column_cache = column_mapping.to_json
     locations_monitor_class.deleted_column_cache = deleted_columns.to_json
     locations_monitor_class.asset_column_name = asset_column_name
+    locations_monitor_class.date_column_name = date_column_name
+    locations_monitor_class.date_format = date_format
     locations_monitor_class.save
 
     #Return value
