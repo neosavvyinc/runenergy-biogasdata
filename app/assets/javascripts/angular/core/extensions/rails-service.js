@@ -9,7 +9,8 @@ RunEnergy.Dashboard.Services.service('nsRailsService',
                 nObj = nObj || {};
                 for (var key in obj) {
                     var newKey = key.replace(RE_A, '_').replace(RE_B, '$1_$2').toLowerCase();
-                    if (typeof obj[key] === 'object' &&
+                    if (obj[key] &&
+                        typeof obj[key] === 'object' &&
                         obj[key].constructor.toString().indexOf('Array') === -1) {
                         nObj[newKey] = {};
                         _keysToSnakeCase(obj[key], nObj[newKey]);

@@ -74,14 +74,19 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
             });
 
             //Action Handlers
+            function _matchedColumns() {
+                return ((_.keys($scope.readingMods.columnToMonitorPointMappings).length +
+                    _.keys($scope.readingMods.deletedColumns).length +
+                    (isBlank($scope.readingMods.dateColumnName) ? 2 : 3)) >= _.keys($scope.data[0]).length);
+            }
+
             $scope.onCompleteImport = function () {
                 var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
                 $scope.error = "";
                 if (!isBlank($scope.readingMods.assetColumnName)) {
-                    if (!isBlank($scope.readingDate)) {
+                    if (!isBlank($scope.readingDate) || !isBlank($scope.readingMods.dateColumnName)) {
                         //+2 for the hashKey and the assetColumnName
-                        if ((_.keys($scope.readingMods.columnToMonitorPointMappings).length +
-                            _.keys($scope.readingMods.deletedColumns).length + 2) === _.keys($scope.data[0]).length) {
+                        if (_matchedColumns()) {
                             $scope.loading = true;
                             nsRailsService.request({
                                 method: 'POST',
@@ -119,7 +124,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputImportControlle
                                     }
                                 },
                                 function (error) {
-                                    $scope.error = "You must select a location, monitor class, and asset column.";
+                                    $scope.error = error;
                                 });
                         }
                         else {

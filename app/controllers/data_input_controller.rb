@@ -162,7 +162,7 @@ class DataInputController < DataInterfaceController
         render json: {:error => 'Filled out dates in the date column do not match the provided date format, check your CSV for discrepancies.'}, :status => 400
       end
     else
-      render json: {:error => 'The reading params were not set in the session, do not make this request until you have first called the import method.'}, :status => 400
+      render json: {:error => 'You must select a location, monitor class, and asset column.'}, :status => 400
     end
   end
 
