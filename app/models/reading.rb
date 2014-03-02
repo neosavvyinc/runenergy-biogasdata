@@ -96,7 +96,7 @@ class Reading < DataAsStringModel
     unless date_column_name.nil?
       unless data[date_column_name].blank?
         begin
-           DateTime.strptime(data[date_column_name], (date_format || '%d-%b-%y'))
+           DateTime.strptime(data[date_column_name], (date_format || '%d-%b-%y')).utc.beginning_of_day
         rescue
           raise Exceptions::InvalidDateFormatException
         end
