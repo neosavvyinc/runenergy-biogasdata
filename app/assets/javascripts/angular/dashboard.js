@@ -34,7 +34,7 @@ angular.module('dashboard', RunEnergy.Dashboard.Dependencies.concat('ngQuickDate
             $routeProvider.
                 otherwise({templateUrl: 'dashboard'});
         }]).run(['$window', '$templateCache', '$http', function ($window, $templateCache, $http) {
-        RunEnergy.Dashboard.CSRF_TOKEN = RunEnergy.Dashboard.Utils.DomUtils.getElementsByAttribute("meta", "name", "csrf-token")[0].content;
+        RunEnergy.Dashboard.CSRF_TOKEN = Neosavvy.Core.Utils.DomUtils.getElementsByAttribute("meta", "name", "csrf-token")[0].content;
         $http.defaults.headers.post["X-CSRF-Token"] = RunEnergy.Dashboard.CSRF_TOKEN;
         $http.defaults.headers.put["X-CSRF-Token"] = RunEnergy.Dashboard.CSRF_TOKEN;
 

@@ -39,10 +39,10 @@ RunEnergy.Dashboard.Controllers.controller('controllers.PageController',
             //GETTERS
             $scope.getExportCSVLink = function () {
                 if (dashboardHeaderData.flareSpecification) {
-                    return RunEnergy.Dashboard.Utils.RequestUrlUtils.withParams(
-                        routes.DASHBOARD.CSV_EXPORT.READ, {
+                    return new Neosavvy.Core.Builders.RequestUrlBuilder(routes.DASHBOARD.CSV_EXPORT.READ).
+                        addParam({
                             flareSpecificationId: dashboardHeaderData.flareSpecification.id
-                        });
+                        }).build();
                 }
                 return "";
             };

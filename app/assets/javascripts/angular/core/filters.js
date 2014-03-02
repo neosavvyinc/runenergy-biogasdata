@@ -38,7 +38,7 @@ RunEnergy.Dashboard.Filters.filter('numericFilterRound', function () {
             var str = String(rounded);
             if (rounded && significantDigits) {
                 if ((str.length - significantDigits) <= 0) {
-                    str = "0" + "." + RunEnergy.Dashboard.Utils.NumberUtils.withLeadingZeroes(str, significantDigits);
+                    str = "0" + "." + Neosavvy.Core.Utils.NumberUtils.leadingZeroes(str, significantDigits);
                 } else {
                     str = str.slice(0, str.length - significantDigits) + "." + str.slice(str.length - significantDigits, str.length);
                 }

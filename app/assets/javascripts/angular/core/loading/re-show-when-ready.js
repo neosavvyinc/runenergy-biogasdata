@@ -1,6 +1,6 @@
 RunEnergy.Dashboard.Directives
     .directive('reShowWhenReady',
-    function ($compile) {
+    function () {
         return {
             priority: -100,
             restrict: 'AC',
