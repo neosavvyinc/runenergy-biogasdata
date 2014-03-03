@@ -1,5 +1,7 @@
 Biogasdata::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
+  config.active_record.default_timezone = :utc
+  config.active_record.time_zone_aware_attributes = false
 
   # Code is not reloaded between requests
   config.cache_classes = true
