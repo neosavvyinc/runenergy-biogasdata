@@ -192,7 +192,7 @@ describe DataAnalysisController do
 
     it 'should apply the Date Time key to the taken_at date' do
       xhr :post, 'update', :id => my_reading.id, 'Date Time' => '06/11/14, 16:07:19', 'Methane' => 45, 'Oxygen' => 89, 'Water Color' => 15, 'Asset' => '60IO'
-      Reading.find(JSON.parse(response.body)['id']).taken_at.should eq(DateTime.strptime('06/11/14, 16:07:19', '%d/%m/%y, %H:%M:%S'))
+      Reading.find(JSON.parse(response.body)['id']).taken_at.should eq(DateTime.strptime('06/11/14, 16:07:19', '%d/%m/%y, %H:%M:%S').utc)
     end
 
     it 'should not add Asset to the data hash' do

@@ -320,14 +320,84 @@ describe DataInputController do
 
     describe 'POST' do
 
-      it 'should set the error if the :column_definition_row param is blank' do
-        post :import, :first_data_row => 6
-        controller.instance_variable_get(:@error).should_not be_nil
+      describe 'invalid' do
+
+        it 'should set the error if the :column_definition_row param is blank' do
+          post :import, :first_data_row => 6
+          controller.instance_variable_get(:@error).should_not be_nil
+        end
+
+        it 'should set the error if the :first_data_row is blank' do
+          post :import, :column_definition_row => 89
+          controller.instance_variable_get(:@error).should_not be_nil
+        end
+
       end
 
-      it 'should set the error if the :first_data_row is blank' do
-        post :import, :column_definition_row => 89
-        controller.instance_variable_get(:@error).should_not be_nil
+      describe 'valid' do
+
+        let :locations_monitor_class do
+          FactoryGirl.create(:deluxe_locations_monitor_class)
+        end
+
+
+        let :section do
+          FactoryGirl.create(:section)
+        end
+
+        it 'should call the Reading.process_csv method' do
+          expect(Reading).to receive(:process_csv).once
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}
+        end
+
+        it 'should set @readings based on the response of the method' do
+          expect(Reading).to receive(:process_csv).once.and_return([1, 2, 3])
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}
+          controller.instance_variable_get(:@readings).should eq([1, 2, 3])
+        end
+
+        it 'should set the instance variable @locked to true' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}
+          controller.instance_variable_get(:@locked).should be_true
+        end
+
+        it 'should set the operator instance variable according to the param' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :operator => customer.id
+          controller.instance_variable_get(:@operator).should eq(customer)
+        end
+
+        it 'should set the site instance variable according to the param' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :site => location_a.id
+          controller.instance_variable_get(:@site).should eq(location_a)
+        end
+
+        it 'should set the monitor_class instance variable according to the param' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :monitor_class => monitor_class.id
+          controller.instance_variable_get(:@monitor_class).should eq(monitor_class)
+        end
+
+        it 'should set the section instance variable according to the param ' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :section => section.id
+          controller.instance_variable_get(:@section).should eq(section)
+        end
+
+        it 'should set the asset instance variable according to the param' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :asset => asset_b
+          controller.instance_variable_get(:@asset).should eq(asset_b)
+        end
+
+        it 'should set the locations_monitor_class instance variable according to location and monitor class' do
+          expect(Reading).to receive(:process_csv)
+          post :import, :column_definition_row => 9, :first_data_row => 10, :files => {:csv => {}}, :site => locations_monitor_class.location_id, :monitor_class => locations_monitor_class.monitor_class_id
+          controller.instance_variable_get(:@locations_monitor_class).should eq(locations_monitor_class)
+        end
+
       end
 
     end
@@ -379,7 +449,7 @@ describe DataInputController do
           :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
       response.status.should equal(400)
     end
-    
+
     describe 'valid' do
 
       it 'should call LocationsMonitorClass.create_caches once' do
@@ -400,7 +470,7 @@ describe DataInputController do
             :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329
         JSON.parse(response.body)['readings'].should eq(JSON.parse(readings_a.to_json))
       end
-      
+
     end
   end
 
