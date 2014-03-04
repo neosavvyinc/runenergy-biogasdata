@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.2.12'
+gem 'rails', '3.2.17'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -43,6 +43,7 @@ gem 'jquery-rails', '~> 2.3.0'
 gem 'jquery-ui-rails', '~> 4.0.3'
 gem 'addressable', '~> 2.3.5'
 gem 'hashie', '~> 2.0.5'
+gem 'tilt', '1.3.7'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

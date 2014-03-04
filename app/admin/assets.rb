@@ -35,4 +35,13 @@ ActiveAdmin.register Asset do
     end
     f.actions
   end
+
+  action_item :only => :show do
+    link_to('Duplicate', clone_admin_asset_path(asset))
+  end
+
+  member_action :clone, method: :get do
+    @asset = Asset.find(params[:id]).try(:dup)
+    render :new, layout: false
+  end
 end
