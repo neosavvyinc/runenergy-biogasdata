@@ -81,5 +81,24 @@ describe CustomMonitorCalculation do
       custom_monitor_calculation.parse.should eq('5.1235')
     end
   end
+
+  describe 'requires_previous_reading?' do
+
+    it 'should return false for custom monitor calculations with no value defined' do
+      custom_monitor_calculation = FactoryGirl.create(:custom_monitor_calculation, :value => nil)
+      custom_monitor_calculation.requires_previous_reading?.should be_false
+    end
+
+    it 'should return false for custom monitor calculations with no prev_data in their values' do
+      custom_monitor_calculation = FactoryGirl.create(:custom_monitor_calculation, :value => 'data[Something] - asset[Something Else]')
+      custom_monitor_calculation.requires_previous_reading?.should be_false
+    end
+
+    it 'should return true for the custom_monitor_calculations that have prev_data in their values' do
+      custom_monitor_calculation = FactoryGirl.create(:custom_monitor_calculation, :value => 'prev_data[Something] - asset[Something Else]')
+      custom_monitor_calculation.requires_previous_reading?.should be_true
+    end
+    
+  end
   
 end

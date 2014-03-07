@@ -48,4 +48,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
   def parse(asset = nil, data = nil, prev_data=nil)
     number_with_precision(CustomMonitorCalculation.parse(value, asset, data, prev_data), precision: significant_digits || 2)
   end
+
+  def requires_previous_reading?
+    value.try(:include?, 'prev_data') or false
+  end
 end
