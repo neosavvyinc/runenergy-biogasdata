@@ -185,6 +185,52 @@ describe Reading do
 
   end
 
+  describe 'previous_reading' do
+
+    it 'should be specific to asset' do
+      asset = FactoryGirl.create(:asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 45.minutes), :asset => asset)
+      reading = FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset)
+
+      new_before_reading = FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.minutes))
+      reading.previous_reading.should_not eq(new_before_reading)
+    end
+
+    it 'should default the the taken_at before date' do
+      asset = FactoryGirl.create(:asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
+      before_reading = FactoryGirl.create(:reading, :taken_at => (DateTime.now - 45.minutes), :asset => asset)
+      reading = FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset)
+
+      reading.previous_reading.should eq(before_reading)
+    end
+
+    it 'should use created_at as a backup' do
+      asset = FactoryGirl.create(:asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
+      before_reading = FactoryGirl.create(:reading, :asset => asset)
+      reading = FactoryGirl.create(:reading, :asset => asset)
+      before_reading.created_at = DateTime.now
+      reading.created_at = (DateTime.now - 30.minutes)
+      before_reading.save
+      reading.save
+
+      before_reading.previous_reading.should eq(reading)
+    end
+
+    it 'should return nil if there is no reading before this one' do
+      asset = FactoryGirl.create(:asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
+      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 45.minutes), :asset => asset)
+      reading = FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset)
+
+      lone_reading = FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset))
+      lone_reading.previous_reading.should be_nil
+    end
+    
+  end
+
   describe 'mark_limits_as_json' do
     location = nil, monitor_limit = nil, other_monitor_limit = nil,
         monitor_point = nil, other_monitor_point = nil,

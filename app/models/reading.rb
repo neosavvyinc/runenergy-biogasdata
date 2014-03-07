@@ -96,7 +96,7 @@ class Reading < DataAsStringModel
     unless date_column_name.nil?
       unless data[date_column_name].blank?
         begin
-           DateTime.strptime(data[date_column_name], (date_format || '%d-%b-%y')).utc.beginning_of_day
+          DateTime.strptime(data[date_column_name], (date_format || '%d-%b-%y')).utc.beginning_of_day
         rescue
           raise Exceptions::InvalidDateFormatException
         end
@@ -110,6 +110,16 @@ class Reading < DataAsStringModel
 
   def taken_at_epoch
     taken_at.try(:to_f)
+  end
+
+  def previous_reading
+    if not self.taken_at.nil?
+      Reading.where('asset_id = ? and taken_at < ?', self.asset_id, self.taken_at).order('taken_at DESC').first
+    elsif not self.created_at.nil?
+      Reading.where('asset_id = ? and created_at < ?', self.asset_id, self.created_at).order('created_at DESC').first
+    else
+      nil
+    end
   end
 
   def mark_limits_as_json(location_id, monitor_limit_cache=nil)
@@ -149,7 +159,7 @@ class Reading < DataAsStringModel
     if locations_monitor_class and
         locations_monitor_class.custom_monitor_calculations
       locations_monitor_class.custom_monitor_calculations.each do |cmc|
-        val[:data][cmc.name] = cmc.parse(asset, val[:data]).try(:to_s)
+        val[:data][cmc.name] = cmc.parse(asset, val[:data], previous_reading.try(:data)).try(:to_s)
       end
     end
     val
