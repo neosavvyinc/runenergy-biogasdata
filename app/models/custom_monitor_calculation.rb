@@ -25,15 +25,18 @@ class CustomMonitorCalculation < ActiveRecord::Base
       end
 
       #Scan the string for data attributes
-      str.scan(/prev_data\[.*?\]/).each_with_index do |match, idx|
-        replacement = prev_data[prev_data_params[idx]].to_s
-        str = str.gsub(match, (replacement.blank? ? '0' : replacement))
+      unless prev_data.nil?
+        str.scan(/prev_data\[.*?\]/).each_with_index do |match, idx|
+          replacement = prev_data[prev_data_params[idx]].to_s
+          str = str.gsub(match, (replacement.blank? ? '0' : replacement))
+        end
       end
-      str.scan(/data\[.*?\]/).each_with_index do |match, idx|
-        replacement = data[data_params[idx]].to_s
-        str = str.gsub(match, (replacement.blank? ? '0' : replacement))
+      unless data.nil?
+        str.scan(/data\[.*?\]/).each_with_index do |match, idx|
+          replacement = data[data_params[idx]].to_s
+          str = str.gsub(match, (replacement.blank? ? '0' : replacement))
+        end
       end
-
 
       begin
         eval(str)

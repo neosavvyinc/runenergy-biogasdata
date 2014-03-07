@@ -99,7 +99,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.$watch('notifications.editSavedTrigger', function () {
                 if ($scope.rowUnderEdit && $scope.rowUnderEdit.id) {
                     if (/\d\d\/\d\d\/\d\d, \d\d:\d\d:\d\d/g.test($scope.rowUnderEdit['Date Time']) &&
-                        moment($scope.rowUnderEdit['Date Time']).isValid()) {
+                        moment($scope.rowUnderEdit['Date Time'], 'DD/MM/YY, HH:mm:ss').isValid()) {
                         nsRailsService.request({
                             method: 'POST',
                             url: routes.ANALYSIS.UPDATE_READING,
