@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe CustomMonitorCalculation do
-  asset = nil, reading = nil
+  asset = nil, prev_reading = nil, reading = nil
   
   before(:each) do
     height = FactoryGirl.create(:asset_property, :name => 'Height')
@@ -9,6 +9,7 @@ describe CustomMonitorCalculation do
     asset = FactoryGirl.create(:asset)
     asset.asset_property_values << FactoryGirl.create(:asset_property_value, :asset_property => height, :value => 15)
     asset.asset_property_values << FactoryGirl.create(:asset_property_value, :asset_property => weight, :value => -100.3)
+    prev_reading = FactoryGirl.create(:reading, :data => {'Balance Gas' => -10.56, 'Methane' => 90.12, 'Toxic Waste' => 42, 'Sub' => '18.79'})
     reading = FactoryGirl.create(:reading, :data => {'Balance Gas' => 78, 'Methane' => 18, 'Toxic Waste' => 1010.5, 'Sub' => ''})
   end
 
@@ -46,6 +47,22 @@ describe CustomMonitorCalculation do
 
     it 'should return a 0 if the parsing fails' do
       CustomMonitorCalculation.parse('Time * Something Else / Hello').should eq(0)
+    end
+
+    it 'should play nice with prev_data only' do
+      CustomMonitorCalculation.parse('prev_data[Sub] * 10', nil, nil, prev_reading.data).should be_within(0.001).of(187.9)
+    end
+
+    it 'should play nice with prev_data and an asset' do
+      CustomMonitorCalculation.parse('prev_data[Sub] * 10 - asset[Height]', asset, nil, prev_reading.data).should be_within(0.001).of(172.9)
+    end
+    
+    it 'should play nice with data and prev_data' do
+      CustomMonitorCalculation.parse('data[Balance Gas] / prev_data[Balance Gas]', nil, reading.data, prev_reading.data).should be_within(0.001).of(-7.386)
+    end
+
+    it 'should play nice with asset, data, and prev_data' do
+      CustomMonitorCalculation.parse('(data[Balance Gas] / prev_data[Balance Gas]) + asset[Weight Long]', asset, reading.data, prev_reading.data).should be_within(0.001).of(-107.686)
     end
     
   end
