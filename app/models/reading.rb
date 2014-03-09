@@ -122,15 +122,15 @@ class Reading < DataAsStringModel
     end
   end
 
-  def mark_limits_as_json(location_id, monitor_limit_cache=nil)
+  def mark_limits_as_json(locations_monitor_class_id, monitor_limit_cache=nil)
     val = as_json
-    unless location_id.nil? or self.data.nil?
+    unless locations_monitor_class_id.nil? or self.data.nil?
       val[:data].each do |k, v|
         ml = nil
         if monitor_limit_cache and monitor_limit_cache[k]
           ml = monitor_limit_cache[k]
         else
-          ml = MonitorPoint.find_by_name(k).try(:monitor_limit_for_location, location_id).try(:as_json)
+          ml = MonitorPoint.find_by_name(k).try(:monitor_limit_for_locations_monitor_class, locations_monitor_class_id).try(:as_json)
           if ml and monitor_limit_cache
             monitor_limit_cache[k] = ml
           end

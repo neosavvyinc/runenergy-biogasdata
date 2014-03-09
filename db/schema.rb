@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140302222242) do
+ActiveRecord::Schema.define(:version => 20140307230521) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -312,12 +312,12 @@ ActiveRecord::Schema.define(:version => 20140302222242) do
   end
 
   create_table "monitor_limits", :force => true do |t|
-    t.datetime "created_at",       :null => false
-    t.datetime "updated_at",       :null => false
+    t.datetime "created_at",                 :null => false
+    t.datetime "updated_at",                 :null => false
     t.string   "upper_limit"
     t.string   "lower_limit"
-    t.integer  "location_id"
     t.integer  "monitor_point_id"
+    t.integer  "locations_monitor_class_id"
   end
 
   create_table "monitor_points", :force => true do |t|

@@ -1,5 +1,5 @@
 class LocationsMonitorClass < ActiveRecord::Base
-  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name, :date_column_name, :date_format, :custom_monitor_calculations_attributes
+  attr_accessible :location_id, :monitor_class_id, :field_log_point_ids, :monitor_point_ids, :column_cache, :deleted_column_cache, :asset_column_name, :date_column_name, :date_format, :custom_monitor_calculations_attributes, :monitor_limit_ids
   belongs_to :location
   belongs_to :monitor_class
   has_many :exception_notifications
@@ -8,6 +8,7 @@ class LocationsMonitorClass < ActiveRecord::Base
   has_many :monitor_points_locations_monitor_classes, :uniq => true
   has_many :monitor_points, :through => :monitor_points_locations_monitor_classes
   has_many :custom_monitor_calculations
+  has_many :monitor_limits
 
   accepts_nested_attributes_for :custom_monitor_calculations, :allow_destroy => true
 
@@ -46,7 +47,7 @@ class LocationsMonitorClass < ActiveRecord::Base
         data.each do |k, v|
           mp = MonitorPoint.find_by_name(k)
           unless mp.nil?
-            ml = mp.monitor_limit_for_location(location_id)
+            ml = mp.monitor_limit_for_locations_monitor_class(self.id)
             unless ml.nil?
               if ml.try(:lower_limit) and v.to_f < ml.try(:lower_limit).to_f
                 exception_notifications.each do |en|

@@ -124,7 +124,7 @@ class DataInputController < DataInterfaceController
   def complete_import
     unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or
         params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
-      LocationsMonitorClass.create_caches(params[:site_id].to_i,
+      locations_monitor_class = LocationsMonitorClass.create_caches(params[:site_id].to_i,
                                           params[:monitor_class_id].to_i,
                                           params[:reading_mods][:column_to_monitor_point_mappings],
                                           params[:reading_mods][:deleted_columns],
@@ -151,7 +151,7 @@ class DataInputController < DataInterfaceController
                                                      params[:reading_mods][:date_column_name],
                                                      params[:reading_mods][:date_format]
         ).map {
-            |r| r.mark_limits_as_json(params[:site_id], monitor_limit_cache)
+            |r| r.mark_limits_as_json(locations_monitor_class.id, monitor_limit_cache)
         }
 
         render json: {

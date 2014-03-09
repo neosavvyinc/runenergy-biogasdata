@@ -232,22 +232,22 @@ describe Reading do
   end
 
   describe 'mark_limits_as_json' do
-    location = nil, monitor_limit = nil, other_monitor_limit = nil,
+    locations_monitor_class = nil, monitor_limit = nil, other_monitor_limit = nil,
         monitor_point = nil, other_monitor_point = nil,
         upper_reading = nil, lower_reading = nil, both_reading = nil
 
     before(:each) do
-      location = FactoryGirl.create(:location)
+      locations_monitor_class = FactoryGirl.create(:locations_monitor_class)
       monitor_point = FactoryGirl.create(:monitor_point, :name => 'Methane')
       other_monitor_point = FactoryGirl.create(:monitor_point, :name => 'Oxygen')
       monitor_limit = FactoryGirl.create(:monitor_limit,
                                          :monitor_point => monitor_point,
-                                         :location => location,
+                                         :locations_monitor_class => locations_monitor_class,
                                          :lower_limit => 200,
                                          :upper_limit => 400)
       other_monitor_limit = FactoryGirl.create(:monitor_limit,
                                                :monitor_point => other_monitor_point,
-                                               :location => location,
+                                               :locations_monitor_class => locations_monitor_class,
                                                :lower_limit => 600,
                                                :upper_limit => 900)
       upper_reading = FactoryGirl.create(:reading, :data => {'Methane' => 500, 'Oxygen' => 700})
@@ -257,25 +257,25 @@ describe Reading do
 
     it 'should just return the reading as_json if there are no limits that apply' do
       reading = FactoryGirl.create(:reading)
-      reading.mark_limits_as_json(location.id).should eq(reading.as_json)
+      reading.mark_limits_as_json(locations_monitor_class.id).should eq(reading.as_json)
     end
 
     it 'should return the reading with an upper limits array that include the key if a monitor point breaks the upper limit' do
-      reading = upper_reading.mark_limits_as_json(location.id)
+      reading = upper_reading.mark_limits_as_json(locations_monitor_class.id)
       reading[:lower_limits].should be_nil
       reading[:upper_limits].size.should eq (1)
       reading[:upper_limits][0].should eq('Methane')
     end
 
     it 'should return the reading with a lower_limits array that include the key if a monitor point breaks the lower limit' do
-      reading = lower_reading.mark_limits_as_json(location.id)
+      reading = lower_reading.mark_limits_as_json(locations_monitor_class.id)
       reading[:upper_limits].should be_nil
       reading[:lower_limits].size.should eq (1)
       reading[:lower_limits][0].should eq('Oxygen')
     end
 
     it 'should throw blank values in the lower limit array if there is a key defined' do
-      reading = FactoryGirl.create(:reading, :data => {'Methane' => '', 'Oxygen' => 500}).mark_limits_as_json(location.id)
+      reading = FactoryGirl.create(:reading, :data => {'Methane' => '', 'Oxygen' => 500}).mark_limits_as_json(locations_monitor_class.id)
       reading[:upper_limits].should be_nil
       reading[:lower_limits].size.should eq (2)
       reading[:lower_limits][0].should eq('Methane')
@@ -283,7 +283,7 @@ describe Reading do
     end
 
     it 'should throw on upper and lower limits for a reading that qualifies for both' do
-      reading = both_reading.mark_limits_as_json(location.id)
+      reading = both_reading.mark_limits_as_json(locations_monitor_class.id)
       reading[:lower_limits].size.should eq(1)
       reading[:lower_limits][0].should eq('Methane')
       reading[:upper_limits].size.should eq(1)
@@ -292,7 +292,7 @@ describe Reading do
 
     it 'should throw monitor limits in the cache for the point' do
       monitor_limit_cache = {}
-      both_reading.mark_limits_as_json(location.id, monitor_limit_cache)
+      both_reading.mark_limits_as_json(locations_monitor_class.id, monitor_limit_cache)
       monitor_limit_cache['Methane']["id"].should eq(monitor_limit.id)
       monitor_limit_cache['Oxygen']["id"].should eq(other_monitor_limit.id)
     end

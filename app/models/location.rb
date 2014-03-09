@@ -1,5 +1,5 @@
 class Location < ActiveRecord::Base
-  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids, :monitor_class_ids, :section_ids, :monitor_limit_ids
+  attr_accessible :address, :country_id, :lattitude, :longitude, :site_name, :state_id, :google_earth_file, :company_id, :user_group_ids, :user_ids, :monitor_class_ids, :section_ids
   belongs_to :state
   belongs_to :country
   belongs_to :company
@@ -14,7 +14,6 @@ class Location < ActiveRecord::Base
   has_many :user_groups, :through => :locations_user_groups
   has_many :locations_users
   has_many :users, :through => :locations_users
-  has_many :monitor_limits
   has_many :assets
 
   def assets_monitored_within_date_range(start_date_time, end_date_time)

@@ -18,8 +18,8 @@ class MonitorPoint < ActiveRecord::Base
     mp
   end
 
-  def monitor_limit_for_location(location_id)
-    MonitorLimit.where(:location_id => location_id, :monitor_point_id => self.id).first
+  def monitor_limit_for_locations_monitor_class(locations_monitor_class_id)
+    MonitorLimit.where(:locations_monitor_class_id => locations_monitor_class_id, :monitor_point_id => self.id).first
   end
 
   def snake_name
