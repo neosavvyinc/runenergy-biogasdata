@@ -3,17 +3,17 @@
   - unless operator.nil?
     %ns-serialize{'data' => operator.to_json(:methods => [:location_ids]).html_safe, 'property' => 'newDataValues.selectedLandfillOperator'}
   - unless site.nil?
-    %ns-serialize{'data' => site.to_json(:include => [:monitor_limits => {:include => :monitor_point}],:methods => [:location_ids, :monitor_class_ids]).html_safe, 'property' => 'newDataValues.selectedSite'}
+    %ns-serialize{'data' => site.to_json(:methods => [:location_ids, :monitor_class_ids]).html_safe, 'property' => 'newDataValues.selectedSite'}
   - unless monitor_class.nil?
     %ns-serialize{'data' => monitor_class.to_json(:include => [:monitor_points, :field_log_points], :methods => [:monitor_points_for_all_locations]).html_safe, 'property' => 'newDataValues.selectedMonitorClass'}
   - unless locations_monitor_class.nil?
-    %ns-serialize{'data' => locations_monitor_class.to_json.html_safe, 'property' => 'newDataValues.selectedLocationsMonitorClass'}
+    %ns-serialize{'data' => locations_monitor_class.to_json(:include => [:monitor_limits => {:include => :monitor_point}]).html_safe, 'property' => 'newDataValues.selectedLocationsMonitorClass'}
   - unless section.nil?
     %ns-serialize{'data' => section.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'newDataValues.selectedSection'}
   - unless asset.nil?
     %ns-serialize{'data' => asset.to_json.html_safe, 'property' => 'newDataValues.selectedAsset'}
   %ns-serialize{'data' => landfill_operators.to_json(:methods => [:location_ids]).html_safe, 'property' => 'landfillOperators'}
-  %ns-serialize{'data' => sites.to_json(:include => [:monitor_limits => {:include => :monitor_point}], :methods => [:section_ids, :monitor_class_ids]).html_safe, 'property' => 'sites'}
+  %ns-serialize{'data' => sites.to_json(:methods => [:section_ids, :monitor_class_ids]).html_safe, 'property' => 'sites'}
   - unless sections.nil?
     %ns-serialize{'data' => sections.to_json(:methods => [:asset_ids]).html_safe, 'property' => 'sections'}
   - unless assets.nil?

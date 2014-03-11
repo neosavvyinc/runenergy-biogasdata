@@ -52,7 +52,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
             }
 
             var monitorPointNameToLimits;
-            $scope.$watch('newDataValues.selectedSite', function (val) {
+            $scope.$watch('newDataValues.selectedLocationsMonitorClass', function (val) {
                 if (val && val.monitor_limits && val.monitor_limits.length) {
                     monitorPointNameToLimits = {};
                     for (var i = 0; i < val.monitor_limits.length; i++) {
@@ -61,7 +61,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataInputController',
                 } else {
                     monitorPointNameToLimits = null;
                 }
-
+            });
+            $scope.$watch('newDataValues.selectedSite', function (val) {
                 //Clear the models
                 $scope.onReset();
 

@@ -455,7 +455,7 @@ describe DataInputController do
       it 'should call LocationsMonitorClass.create_caches once' do
         #Stub out method
         expect(Reading).to receive(:process_edited_collection).once.and_return(readings_a)
-        expect(LocationsMonitorClass).to receive(:create_caches).once
+        expect(LocationsMonitorClass).to receive(:create_caches).once.and_return(FactoryGirl.create(:deluxe_locations_monitor_class))
 
         xhr :post, :complete_import, :readings => readings_a, :reading_mods => {},
             :site_id => location.id, :monitor_class_id => monitor_class.id, :asset_column_name => 'Well ID', :reading_date => 1393292329

@@ -9,10 +9,10 @@ class MonitorPoint < ActiveRecord::Base
   has_many :assets, :through => :assets_monitor_points
 
   def self.lazy_load_from_schema(params)
-    mp_params = params.reject { |k, v| [:location_id, :upper_limit, :lower_limit].include?(k) }
+    mp_params = params.reject { |k, v| [:locations_monitor_class_id, :upper_limit, :lower_limit].include?(k) }
     mp = self.where(mp_params).first || MonitorPoint.create(mp_params)
-    if params[:location_id] and MonitorLimit.where(:monitor_point_id => mp.id, :location_id => params[:location_id]).first.nil?
-      ml_params = params.reject { |k, v| not [:location_id, :upper_limit, :lower_limit].include?(k) }
+    if params[:location_id] and MonitorLimit.where(:monitor_point_id => mp.id, :locations_monitor_class_id => params[:locations_monitor_class_id]).first.nil?
+      ml_params = params.reject { |k, v| not [:locations_monitor_class_id, :upper_limit, :lower_limit].include?(k) }
       MonitorLimit.create({:monitor_point_id => mp.id}.merge(ml_params))
     end
     mp

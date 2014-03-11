@@ -124,7 +124,7 @@ describe("controllers.DataInputController", function () {
     describe('Getters', function () {
         describe('getMonitorLimitWarning', function () {
             beforeEach(function () {
-                newDataValues.selectedSite =
+                newDataValues.selectedLocationsMonitorClass =
                 {"address": "Manse Road \r\nMyocum \r\n2481", "company_id": null, "country_id": 1, "created_at": "2013-05-30T15:16:51Z", "google_earth_file_content_type": null, "google_earth_file_file_name": null, "google_earth_file_file_size": null, "google_earth_file_updated_at": null, "id": 3, "lattitude": " 28\u00b035'22.36\"S", "longitude": "153\u00b030'44.22\"E", "site_name": "Myocum Landfill", "state_id": 53, "updated_at": "2013-05-30T15:16:51Z", "section_ids": [3, 4], "monitor_class_ids": [5], "monitor_limits": [
                     {"created_at": "2014-01-20T05:09:25Z", "id": 1, "location_id": 3, "lower_limit": "400", "monitor_point_id": 4, "updated_at": "2014-01-20T05:09:25Z", "upper_limit": "600", "monitor_point": {"created_at": "2013-11-27T02:48:33Z", "id": 4, "name": "Methane", "unit": "%", "updated_at": "2013-11-27T02:48:33Z"}}
                 ]};
@@ -139,17 +139,27 @@ describe("controllers.DataInputController", function () {
                 expect($scope.getMonitorLimitWarning("methane", null)).toEqual("");
             });
 
-            it('Should return a blank string if there is no newDataValues.selectedSite', function () {
-                newDataValues.selectedSite = null;
+            it('Should return a blank string if there is no newDataValues.selectedLocationsMonitorClass', function () {
+                newDataValues.selectedLocationsMonitorClass = null;
                 $scope.$digest();
-                expect($scope.getMonitorLimitWarning("methane", 500)).toEqual("");
+                expect($scope.getMonitorLimitWarning("Methane", 500)).toEqual("");
             });
 
             it('Should return the upper limit message if the value is above the upper limit', function () {
+                newDataValues.selectedLocationsMonitorClass =
+                {"address": "Manse Road \r\nMyocum \r\n2481", "company_id": null, "country_id": 1, "created_at": "2013-05-30T15:16:51Z", "google_earth_file_content_type": null, "google_earth_file_file_name": null, "google_earth_file_file_size": null, "google_earth_file_updated_at": null, "id": 3, "lattitude": " 28\u00b035'22.36\"S", "longitude": "153\u00b030'44.22\"E", "site_name": "Myocum Landfill", "state_id": 53, "updated_at": "2013-05-30T15:16:51Z", "section_ids": [3, 4], "monitor_class_ids": [5], "monitor_limits": [
+                    {"created_at": "2014-01-20T05:09:25Z", "id": 1, "location_id": 3, "lower_limit": "400", "monitor_point_id": 4, "updated_at": "2014-01-20T05:09:25Z", "upper_limit": "600", "monitor_point": {"created_at": "2013-11-27T02:48:33Z", "id": 4, "name": "Methane", "unit": "%", "updated_at": "2013-11-27T02:48:33Z"}}
+                ]};
+                $scope.$digest();
                 expect($scope.getMonitorLimitWarning("Methane", "600.5")).toEqual("This value is above the upper limit of 600");
             });
 
             it('Should return the lower limit message if the value is below the lower limit', function () {
+                newDataValues.selectedLocationsMonitorClass =
+                {"address": "Manse Road \r\nMyocum \r\n2481", "company_id": null, "country_id": 1, "created_at": "2013-05-30T15:16:51Z", "google_earth_file_content_type": null, "google_earth_file_file_name": null, "google_earth_file_file_size": null, "google_earth_file_updated_at": null, "id": 3, "lattitude": " 28\u00b035'22.36\"S", "longitude": "153\u00b030'44.22\"E", "site_name": "Myocum Landfill", "state_id": 53, "updated_at": "2013-05-30T15:16:51Z", "section_ids": [3, 4], "monitor_class_ids": [5], "monitor_limits": [
+                    {"created_at": "2014-01-20T05:09:25Z", "id": 1, "location_id": 3, "lower_limit": "400", "monitor_point_id": 4, "updated_at": "2014-01-20T05:09:25Z", "upper_limit": "600", "monitor_point": {"created_at": "2013-11-27T02:48:33Z", "id": 4, "name": "Methane", "unit": "%", "updated_at": "2013-11-27T02:48:33Z"}}
+                ]};
+                $scope.$digest();
                 expect($scope.getMonitorLimitWarning("Methane", "200")).toEqual("This value is below the lower limit of 400");
             });
 
