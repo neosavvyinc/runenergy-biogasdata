@@ -11,12 +11,16 @@ ActiveAdmin.register Asset do
 
   show do
     panel 'Details' do
-      h6 "ID: #{asset.unique_identifier}"
+      h4 "ID: #{asset.unique_identifier}"
       h6 asset.name
       h6 asset.location.site_name
+      h6 asset.monitor_class.name
       h6 asset.section.try(:display_name)
-      h6 "Created At: #{asset.created_at}"
-      h6 "Updated At: #{asset.updated_at}"
+    end
+    panel 'Properties' do
+      asset.asset_property_values.each do |apv|
+        h6 "#{apv.name} #{apv.value}"
+      end
     end
   end
 

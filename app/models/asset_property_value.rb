@@ -4,4 +4,8 @@ class AssetPropertyValue < ActiveRecord::Base
   belongs_to :asset_property
 
   validates_presence_of :asset_property
+
+  def name
+    asset_property.try(:name)
+  end
 end
