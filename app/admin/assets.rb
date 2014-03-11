@@ -40,7 +40,7 @@ ActiveAdmin.register Asset do
     f.actions
   end
 
-  action_item :only => :show do
+  action_item :only => [:show, :edit] do
     link_to('Duplicate', clone_admin_asset_path(asset))
   end
 
