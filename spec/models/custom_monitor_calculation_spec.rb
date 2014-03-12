@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe CustomMonitorCalculation do
   asset = nil, prev_reading = nil, reading = nil
-  
+
   before(:each) do
     height = FactoryGirl.create(:asset_property, :name => 'Height')
     weight = FactoryGirl.create(:asset_property, :name => 'Weight Long')
@@ -56,7 +56,7 @@ describe CustomMonitorCalculation do
     it 'should play nice with prev_data and an asset' do
       CustomMonitorCalculation.parse('prev_data[Sub] * 10 - asset[Height]', asset, nil, prev_reading.data).should be_within(0.001).of(172.9)
     end
-    
+
     it 'should play nice with data and prev_data' do
       CustomMonitorCalculation.parse('data[Balance Gas] / prev_data[Balance Gas]', nil, reading.data, prev_reading.data).should be_within(0.001).of(-7.386)
     end
@@ -64,7 +64,7 @@ describe CustomMonitorCalculation do
     it 'should play nice with asset, data, and prev_data' do
       CustomMonitorCalculation.parse('(data[Balance Gas] / prev_data[Balance Gas]) + asset[Weight Long]', asset, reading.data, prev_reading.data).should be_within(0.001).of(-107.686)
     end
-    
+
   end
 
   describe 'parse' do
@@ -98,7 +98,35 @@ describe CustomMonitorCalculation do
       custom_monitor_calculation = FactoryGirl.create(:custom_monitor_calculation, :value => 'prev_data[Something] - asset[Something Else]')
       custom_monitor_calculation.requires_previous_reading?.should be_true
     end
-    
+
   end
-  
+
+  describe 'requires_quantified_previous_reading?' do
+
+    it 'should return false if the value does not contain quantified previous readings' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => 'data[Something] - asset[Something Else]').
+          requires_quantified_previous_reading?.should be_false
+    end
+
+    it 'should return true if it contains one that has no spaces' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data-15][Something] - asset[Something Else]').
+          requires_quantified_previous_reading?.should be_true
+    end
+
+    it 'should return true for another one with more spaces' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data -   4000][Something] - asset[Something Else]').
+          requires_quantified_previous_reading?.should be_true
+    end
+
+    it 'should return false for a case with a plus' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data + 1][Something] - asset[Something Else]').
+          requires_quantified_previous_reading?.should be_false
+    end
+
+  end
+
 end

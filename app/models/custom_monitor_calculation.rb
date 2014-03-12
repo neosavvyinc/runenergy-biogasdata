@@ -55,4 +55,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
   def requires_previous_reading?
     value.try(:include?, 'prev_data') or false
   end
+
+  def requires_quantified_previous_reading?
+    (not value.try(:match, /\[data\s*-\s*\d*\]\[.*?\]/).nil?)
+  end
 end
