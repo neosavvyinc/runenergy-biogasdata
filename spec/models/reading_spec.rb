@@ -197,8 +197,9 @@ describe Reading do
 
     it 'should call the previous reading method with the absolute value of the integer' do
       reading = FactoryGirl.create(:reading)
-      expect(reading).to receive(:previous_reading).once.with(25).and_return('Reading!')
-      reading.previous_readings_for_indices(['-25']).should eq({'-25' => 'Reading!'})
+      other_reading = FactoryGirl.create(:reading)
+      expect(reading).to receive(:previous_reading).once.with(25).and_return(other_reading)
+      reading.previous_readings_for_indices(['-25']).should eq({'-25' => JSON.parse(other_reading.data)})
     end
 
   end

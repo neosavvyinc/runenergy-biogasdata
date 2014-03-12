@@ -116,13 +116,18 @@ class Reading < DataAsStringModel
     pr = {}
     unless indices.nil? or not indices.size
       indices.each do |i|
-        pr[i] = self.previous_reading(i.to_i.abs)
+        data = self.previous_reading(i.to_i.abs).try(:data)
+        if data
+          pr[i] = JSON.parse(data)
+        else
+          pr[i] = nil
+        end
       end
     end
     pr
   end
 
-  def previous_reading(backwards =  1)
+  def previous_reading(backwards = 1)
     readings = nil
     if not self.taken_at.nil?
       readings = Reading.where('asset_id = ? and taken_at <= ?', self.asset_id, self.taken_at).order('taken_at DESC')
@@ -131,7 +136,7 @@ class Reading < DataAsStringModel
     end
 
     if readings and readings.size and readings.size > backwards
-        readings[backwards]
+      readings[backwards]
     else
       nil
     end

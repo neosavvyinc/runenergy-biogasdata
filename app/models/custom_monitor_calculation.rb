@@ -40,7 +40,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
       end
       unless q_prev_data.nil?
         str.scan(/\[data\s*-\s*\d*\]\[.*?\]/).each_with_index do |match, idx|
-          replacement = q_prev_data[(match.scan(/-\s*\d*/).first)][q_prev_data_params[idx]].to_s
+          my_data = q_prev_data[match.scan(/-\s*\d*/).first.gsub(/\s/, '')]
+          replacement = my_data.nil? ? nil : my_data[q_prev_data_params[idx]].to_s
           str = str.gsub(match, (replacement.blank? ? '0' : replacement))
         end
       end
@@ -68,6 +69,6 @@ class CustomMonitorCalculation < ActiveRecord::Base
   end
 
   def previous_data_indices
-    value.scan(/\[data\s*-\s*\d*\]\[.*?\]/).map {|match| match.scan(/-\s*\d*/).first.gsub(/\s/, '')}
+    value.scan(/\[data\s*-\s*\d*\]\[.*?\]/).map { |match| match.scan(/-\s*\d*/).first.gsub(/\s/, '') }
   end
 end
