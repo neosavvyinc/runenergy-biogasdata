@@ -128,5 +128,33 @@ describe CustomMonitorCalculation do
     end
 
   end
+  
+  describe 'previous_data_indices' do
+
+    it 'should return the negative string values of the indices described in the data equations' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data-4000][Something] - asset[Something Else] + [data-10][Oxygen]').
+          previous_data_indices.should eq(['-4000', '-10'])
+    end
+
+    it 'should remove spaces' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data -   4000][Something] - asset[Something Else] + [data - 10][Oxygen]').
+          previous_data_indices.should eq(['-4000', '-10'])
+    end
+
+    it 'should not get throw off with normal data' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data -   59][Something] - asset[Something Else] * data[Oxymagic] + [data - 10][Oxygen]').
+          previous_data_indices.should eq(['-59', '-10'])
+    end
+
+    it 'should not get thrown off with prev_data' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data -   59][Something] - asset[Something Else] * prev_data[Oxymagic] + [data - 10][Oxygen]').
+          previous_data_indices.should eq(['-59', '-10'])
+    end
+    
+  end
 
 end

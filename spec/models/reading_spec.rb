@@ -185,6 +185,24 @@ describe Reading do
 
   end
 
+  describe 'previous_readings_for_indices' do
+
+    it 'should return an empty object if indices is nil' do
+      FactoryGirl.create(:reading).previous_readings_for_indices(nil).should eq({})
+    end
+
+    it 'should return an empty object if the indices is empty' do
+      FactoryGirl.create(:reading).previous_readings_for_indices([]).should eq({})
+    end
+
+    it 'should call the previous reading method with the absolute value of the integer' do
+      reading = FactoryGirl.create(:reading)
+      expect(reading).to receive(:previous_reading).once.with(25).and_return('Reading!')
+      reading.previous_readings_for_indices(['-25']).should eq({'-25' => 'Reading!'})
+    end
+
+  end
+
   describe 'previous_reading' do
 
     it 'should be specific to asset' do
@@ -208,7 +226,6 @@ describe Reading do
 
     it 'should use created_at as a backup' do
       asset = FactoryGirl.create(:asset)
-      FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
       before_reading = FactoryGirl.create(:reading, :asset => asset)
       reading = FactoryGirl.create(:reading, :asset => asset)
       before_reading.created_at = DateTime.now
@@ -228,7 +245,16 @@ describe Reading do
       lone_reading = FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset))
       lone_reading.previous_reading.should be_nil
     end
-    
+
+    it 'should be able to go farther back into previous readings' do
+      asset = FactoryGirl.create(:asset)
+      earliest = FactoryGirl.create(:reading, :taken_at => (DateTime.now - 15.hours), :asset => asset)
+      earlier = FactoryGirl.create(:reading, :taken_at => (DateTime.now - 45.minutes), :asset => asset)
+      reading = FactoryGirl.create(:reading, :taken_at => DateTime.now, :asset => asset)
+
+      reading.previous_reading(2).should eq(earliest)
+    end
+
   end
 
   describe 'mark_limits_as_json' do

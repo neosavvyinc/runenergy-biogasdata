@@ -27,7 +27,7 @@ class DataAnalysisController < DataInterfaceController
           :readings => readings
           .page(params[:offset].try(:to_i) || 0)
           .per(params[:count].try(:to_i) || 500)
-          .order('created_at DESC').map { |r| r.add_calculations_as_json(lmc) }
+          .order('taken_at DESC').map { |r| r.add_calculations_as_json(lmc) }
       }
     else
       render json: {:error => 'You must pass valid parameter to retrieve readings for analysis'}, :status => 400

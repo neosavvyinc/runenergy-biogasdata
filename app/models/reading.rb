@@ -112,11 +112,26 @@ class Reading < DataAsStringModel
     taken_at.try(:to_f)
   end
 
-  def previous_reading
+  def previous_readings_for_indices(indices)
+    pr = {}
+    unless indices.nil? or not indices.size
+      indices.each do |i|
+        pr[i] = self.previous_reading(i.to_i.abs)
+      end
+    end
+    pr
+  end
+
+  def previous_reading(backwards =  1)
+    readings = nil
     if not self.taken_at.nil?
-      Reading.where('asset_id = ? and taken_at < ?', self.asset_id, self.taken_at).order('taken_at DESC').first
+      readings = Reading.where('asset_id = ? and taken_at <= ?', self.asset_id, self.taken_at).order('taken_at DESC')
     elsif not self.created_at.nil?
-      Reading.where('asset_id = ? and created_at < ?', self.asset_id, self.created_at).order('created_at DESC').first
+      readings = Reading.where('asset_id = ? and created_at <= ?', self.asset_id, self.created_at).order('created_at DESC')
+    end
+
+    if readings and readings.size and readings.size > backwards
+        readings[backwards]
     else
       nil
     end
@@ -162,7 +177,8 @@ class Reading < DataAsStringModel
         val[:data][cmc.name] = cmc.parse(
             asset,
             val[:data],
-            (cmc.requires_previous_reading? ? previous_reading.try(:data) : nil)
+            (cmc.requires_previous_reading? ? previous_reading.try(:data) : nil),
+            (cmc.requires_quantified_previous_reading? ? previous_readings_for_indices(cmc.previous_data_indices) : nil)
         ).try(:to_s)
       end
     end

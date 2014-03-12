@@ -4,11 +4,12 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
   include ActionView::Helpers::NumberHelper
 
-  def self.parse(str, asset=nil, data=nil, prev_data=nil)
+  def self.parse(str, asset=nil, data=nil, prev_data=nil, q_prev_data = nil)
     if str
       asset_params = str.scan(/asset\[(.*?)\]/).flatten
       data_params = str.scan(/data\[(.*?)\]/).flatten
       prev_data_params = str.scan(/prev_data\[(.*?)\]/).flatten
+      q_prev_data_params = str.scan(/\[data\s*-\s*\d*\]\[(.*?)\]/).flatten
 
       #Scan and replace for asset attributes
       str.scan(/asset\[.*?\]/).each_with_index do |match, idx|
@@ -37,6 +38,12 @@ class CustomMonitorCalculation < ActiveRecord::Base
           str = str.gsub(match, (replacement.blank? ? '0' : replacement))
         end
       end
+      unless q_prev_data.nil?
+        str.scan(/\[data\s*-\s*\d*\]\[.*?\]/).each_with_index do |match, idx|
+          replacement = q_prev_data[(match.scan(/-\s*\d*/).first)][q_prev_data_params[idx]].to_s
+          str = str.gsub(match, (replacement.blank? ? '0' : replacement))
+        end
+      end
 
       begin
         eval(str)
@@ -48,8 +55,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
     end
   end
 
-  def parse(asset = nil, data = nil, prev_data=nil)
-    number_with_precision(CustomMonitorCalculation.parse(value, asset, data, prev_data), precision: significant_digits || 2)
+  def parse(asset = nil, data = nil, prev_data=nil, q_prev_data = nil)
+    number_with_precision(CustomMonitorCalculation.parse(value, asset, data, prev_data, q_prev_data), precision: significant_digits || 2)
   end
 
   def requires_previous_reading?
@@ -58,5 +65,9 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
   def requires_quantified_previous_reading?
     (not value.try(:match, /\[data\s*-\s*\d*\]\[.*?\]/).nil?)
+  end
+
+  def previous_data_indices
+    value.scan(/\[data\s*-\s*\d*\]\[.*?\]/).map {|match| match.scan(/-\s*\d*/).first.gsub(/\s/, '')}
   end
 end
