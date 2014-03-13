@@ -44,6 +44,7 @@ gem 'jquery-ui-rails', '~> 4.0.3'
 gem 'addressable', '~> 2.3.5'
 gem 'hashie', '~> 2.0.5'
 gem 'tilt', '1.3.7'
+gem 'time_diff', '0.3.0'
 
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'

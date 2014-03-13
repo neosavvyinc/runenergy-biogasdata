@@ -4,7 +4,7 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
   include ActionView::Helpers::NumberHelper
 
-  def self.parse(str, asset=nil, data=nil, prev_data=nil, q_prev_data = nil)
+  def self.parse(str, asset=nil, data=nil, prev_data=nil, q_prev_data = nil, date_taken_at = nil, prev_date_taken_at = nil)
     if str
       asset_params = str.scan(/asset\[(.*?)\]/).flatten
       data_params = str.scan(/data\[(.*?)\]/).flatten
@@ -45,6 +45,9 @@ class CustomMonitorCalculation < ActiveRecord::Base
           str = str.gsub(match, (replacement.blank? ? '0' : replacement))
         end
       end
+
+      #Add the days field
+      str.gsub(/\[days\]/, (date_taken_at && prev_date_taken_at ? Time.diff(date_taken_at, prev_date_taken_at)[:day].to_s : '0'))
 
       begin
         eval(str)
