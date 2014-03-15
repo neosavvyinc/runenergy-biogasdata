@@ -47,7 +47,10 @@ class CustomMonitorCalculation < ActiveRecord::Base
       end
 
       #Add the days field
-      str.gsub(/\[days\]/, (date_taken_at && prev_date_taken_at ? Time.diff(date_taken_at, prev_date_taken_at)[:day].to_s : '0'))
+      str = str.gsub(/\[days\]/, ((date_taken_at and prev_date_taken_at) ?
+          Time.diff(date_taken_at, prev_date_taken_at, '%d')[:diff].gsub(/\sdays|\sday/, '') :
+          '0')
+      )
 
       begin
         eval(str)
@@ -59,8 +62,8 @@ class CustomMonitorCalculation < ActiveRecord::Base
     end
   end
 
-  def parse(asset = nil, data = nil, prev_data=nil, q_prev_data = nil)
-    number_with_precision(CustomMonitorCalculation.parse(value, asset, data, prev_data, q_prev_data), precision: significant_digits || 2)
+  def parse(asset = nil, data = nil, prev_data=nil, q_prev_data = nil, date_taken_at = nil, prev_data_taken_at = nil)
+      number_with_precision(CustomMonitorCalculation.parse(value, asset, data, prev_data, q_prev_data, date_taken_at, prev_data_taken_at), precision: significant_digits || 2)
   end
 
   def requires_previous_reading?
@@ -73,5 +76,9 @@ class CustomMonitorCalculation < ActiveRecord::Base
 
   def previous_data_indices
     value.scan(/\[data\s*-\s*\d*\]\[.*?\]/).map { |match| match.scan(/-\s*\d*/).first.gsub(/\s/, '') }
+  end
+
+  def requires_date_interval?
+    value.try(:include?, '[days]') or false
   end
 end

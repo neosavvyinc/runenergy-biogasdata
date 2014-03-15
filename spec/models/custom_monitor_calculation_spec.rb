@@ -65,6 +65,13 @@ describe CustomMonitorCalculation do
       CustomMonitorCalculation.parse('(data[Balance Gas] / prev_data[Balance Gas]) + asset[Weight Long]', asset, reading.data, prev_reading.data).should be_within(0.001).of(-107.686)
     end
 
+    it 'should be able to replace the value for the [days] gap' do
+      CustomMonitorCalculation.parse(
+          '((data[Balance Gas] / prev_data[Balance Gas]) + asset[Weight Long]) + [days]',
+          asset, reading.data, prev_reading.data, nil, DateTime.now, (DateTime.now - (7 * 60 * 60 * 24))
+      ).should be_within(0.001).of(-100.686)
+    end
+
   end
 
   describe 'parse' do
@@ -153,6 +160,28 @@ describe CustomMonitorCalculation do
       FactoryGirl.
           create(:custom_monitor_calculation, :value => '[data -   59][Something] - asset[Something Else] * prev_data[Oxymagic] + [data - 10][Oxygen]').
           previous_data_indices.should eq(['-59', '-10'])
+    end
+    
+  end
+  
+  describe 'requires_date_interval?' do
+
+    it 'should return true if the value contains the days indicator' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data + 1][Something] - asset[Something Else] + [days]').
+          requires_date_interval?.should be_true
+    end
+
+    it 'should return false for a nil value' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => nil).
+          requires_date_interval?.should be_false
+    end
+
+    it 'should return false for value that does not include the days indicator' do
+      FactoryGirl.
+          create(:custom_monitor_calculation, :value => '[data + 1][Something] - asset[Something Else]').
+          requires_date_interval?.should be_false
     end
     
   end

@@ -182,8 +182,10 @@ class Reading < DataAsStringModel
         val[:data][cmc.name] = cmc.parse(
             asset,
             val[:data],
-            (cmc.requires_previous_reading? ? previous_reading.try(:data) : nil),
-            (cmc.requires_quantified_previous_reading? ? previous_readings_for_indices(cmc.previous_data_indices) : nil)
+            cmc.requires_previous_reading? ? previous_reading.try(:data) : nil,
+            cmc.requires_quantified_previous_reading? ? previous_readings_for_indices(cmc.previous_data_indices) : nil,
+            cmc.requires_date_interval? ? self.taken_at : nil,
+            cmc.requires_date_interval? ? previous_reading.try(:taken_at) : nil
         ).try(:to_s)
       end
     end

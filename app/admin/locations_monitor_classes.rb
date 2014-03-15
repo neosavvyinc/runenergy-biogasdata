@@ -18,7 +18,7 @@ ActiveAdmin.register LocationsMonitorClass, :as => 'Site Monitor Classes' do
     end
     panel 'Monitor Points' do
       site_monitor_classes.monitor_points.each do |mp|
-        h6 "#{mp.name} (#{mp.units})"
+        h6 "#{mp.name} (#{mp.unit})"
       end
     end
     panel 'Custom Monitor Calculations' do
