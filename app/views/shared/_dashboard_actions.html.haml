@@ -35,7 +35,8 @@
       %a.btn.btn-primary{'ng-click' => 'onReset()'} Reset
     - if edit_allowed
       %a.btn.btn-danger.save-changes{'ng-click' => 'onSaveEdit()'} Save Data Changes
-    %a.btn{'ng-click' => 'newDataValues.enable.plotMonitorPoint = !newDataValues.enable.plotMonitorPoint', 'ng-class' => 'newDataValues.enable.plotMonitorPoint | nsLogicalIf : "btn-primary" : ""'} {{newDataValues.enable.plotMonitorPoint | nsLogicalIf : 'Disable Plot' : 'Plot Monitor Point'}}
+    - if params[:controller].include?('data_analysis')
+      %a.btn{'ng-click' => 'newDataValues.enable.plotMonitorPoint = !newDataValues.enable.plotMonitorPoint', 'ng-class' => 'newDataValues.enable.plotMonitorPoint | nsLogicalIf : "btn-primary" : ""'} {{newDataValues.enable.plotMonitorPoint | nsLogicalIf : 'Disable Plot' : 'Plot Monitor Point'}}
   - else
     %a.btn{'ng-bind' => 'newDataValues.selectedLandfillOperator.name'}
     %a.btn{'ng-bind' => 'newDataValues.selectedSite.site_name'}
