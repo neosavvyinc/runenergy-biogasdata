@@ -2,7 +2,7 @@ module ApiHelp
 
   def ids_names_as_array(ids, class_def, property_name = 'name')
     unless ids.blank?
-      ids = ids.split(',').map {
+      ids = ids.to_s.split(',').map {
           |id|
         id = id.strip
         if id.numeric?

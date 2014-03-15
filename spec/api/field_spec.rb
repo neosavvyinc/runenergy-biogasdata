@@ -152,19 +152,67 @@ describe Field::API do
       lmc_bb['field_log_points'].size.should eq(2)
     end
 
-    it 'should be able to filter on a single class_ids param' do
-      
-    end
+    describe 'class_ids' do
 
-    it 'should be able to filter on comma separated class_ids' do
-      
-    end
+      liquid_guaging = nil, gas_readings = nil, both_location = nil, liquid_location = nil, gas_location = nil
 
-    it 'should be able to filter on a single class_ids param as a name' do
-      
-    end
-    
-    it 'should be able to filter on comma separated class_ids as names' do
+      before(:each) do
+        liquid_guaging = FactoryGirl.create(:monitor_class, :name => 'Liquid Guaging')
+        gas_readings = FactoryGirl.create(:monitor_class, :name => 'Gas Readings')
+        other_class = FactoryGirl.create(:monitor_class, :name => 'Other')
+        both_location = FactoryGirl.create(:location)
+        both_location.assets << FactoryGirl.create(:asset, :monitor_class => liquid_guaging)
+        both_location.assets << FactoryGirl.create(:asset, :monitor_class => gas_readings)
+        both_location.assets << FactoryGirl.create(:asset, :monitor_class => other_class)
+        both_location.users << user
+        both_location.save
+        liquid_location = FactoryGirl.create(:location)
+        liquid_location.assets << FactoryGirl.create(:asset, :monitor_class => liquid_guaging)
+        liquid_location.assets << FactoryGirl.create(:asset, :monitor_class => liquid_guaging)
+        liquid_location.assets << FactoryGirl.create(:asset, :monitor_class => other_class)
+        liquid_location.users << user
+        liquid_location.save
+        gas_location = FactoryGirl.create(:location)
+        gas_location.assets << FactoryGirl.create(:asset, :monitor_class => gas_readings)
+        gas_location.assets << FactoryGirl.create(:asset, :monitor_class => gas_readings)
+        gas_location.assets << FactoryGirl.create(:asset, :monitor_class => other_class)
+        gas_location.users << user
+        gas_location.save
+      end
+
+      it 'should be able to filter on a single class_ids param' do
+        get "#{prefix}sites", :authentication_token => user.authentication_token, :class_ids => liquid_guaging.id.to_s
+        parsed_response = JSON.parse(response.body)
+        parsed_response.size.should eq(2)
+        parsed_response[0]['assets'].size.should eq(1)
+        parsed_response[1]['assets'].size.should eq(2)
+      end
+
+      it 'should be able to filter on comma separated class_ids' do
+        get "#{prefix}sites", :authentication_token => user.authentication_token, :class_ids => "#{liquid_guaging.id.to_s}, #{gas_readings.id}"
+        parsed_response = JSON.parse(response.body)
+        parsed_response.size.should eq(3)
+        parsed_response[0]['assets'].size.should eq(2)
+        parsed_response[1]['assets'].size.should eq(2)
+        parsed_response[2]['assets'].size.should eq(2)
+      end
+
+      it 'should be able to filter on a single class_ids param as a name' do
+        get "#{prefix}sites", :authentication_token => user.authentication_token, :class_ids => gas_readings.name
+        parsed_response = JSON.parse(response.body)
+        parsed_response.size.should eq(2)
+        parsed_response[0]['assets'].size.should eq(1)
+        parsed_response[1]['assets'].size.should eq(2)
+      end
+
+      it 'should be able to filter on comma separated class_ids as names' do
+        get "#{prefix}sites", :authentication_token => user.authentication_token, :class_ids => "#{liquid_guaging.name}, #{gas_readings.name}"
+        parsed_response = JSON.parse(response.body)
+        parsed_response.size.should eq(3)
+        parsed_response[0]['assets'].size.should eq(2)
+        parsed_response[1]['assets'].size.should eq(2)
+        parsed_response[2]['assets'].size.should eq(2)
+      end
 
     end
 

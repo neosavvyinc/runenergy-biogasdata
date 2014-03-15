@@ -1,10 +1,10 @@
+require 'modules/api_help'
+
 module Field
   class API < Grape::API
 
     version 'v1'
     format :json
-
-    include ApiHelp
 
     #API Authentication, may make sense to pull out into reusable form
     helpers do
@@ -79,6 +79,10 @@ module Field
 
     resource :sites do
       get do
+        #Extensions
+        extend ApiHelp
+
+        #Functionality
         if authenticated?
           sites = current_user.
               all_locations.
@@ -89,11 +93,18 @@ module Field
           })
 
           if params[:class_ids]
-            class_ids =
-            sites.map {
-                |s|
-
-            }
+            new_sites = []
+            class_ids = ids_names_as_array(params[:class_ids], MonitorClass)
+            sites.each do |s|
+              #Not as efficient as it could be
+              if s[:assets] and s[:assets].size
+                s[:assets].select! { |a| class_ids.include?(a['monitor_class_id'].to_i) }
+                if s[:assets] and s[:assets].size > 0
+                  new_sites << s
+                end
+              end
+            end
+            new_sites
           else
             sites
           end
