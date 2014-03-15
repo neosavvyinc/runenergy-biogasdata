@@ -4,6 +4,8 @@ module Field
     version 'v1'
     format :json
 
+    include ApiHelp
+
     #API Authentication, may make sense to pull out into reusable form
     helpers do
       def warden
@@ -46,7 +48,7 @@ module Field
         email = params[:email]
         password = params[:password]
 
-        if email.nil? or password.nil?  # Ensure that both email and password are not nil
+        if email.nil? or password.nil? # Ensure that both email and password are not nil
           error!('The request must contain the user email and password.', 400)
         end
 
@@ -60,7 +62,7 @@ module Field
           error!('Invalid email or password.', 401)
         else
           @user.save # Save the token into the database
-          {:token=>@user.authentication_token}
+          {:token => @user.authentication_token}
         end
       end
 
@@ -70,7 +72,7 @@ module Field
           error!('Invalid token.', 404)
         else
           @user.reset_authentication_token!
-          {:token=>params[:authentication_token]}
+          {:token => params[:authentication_token]}
         end
       end
     end
@@ -78,13 +80,23 @@ module Field
     resource :sites do
       get do
         if authenticated?
-          current_user.
+          sites = current_user.
               all_locations.
               as_json(:include => {:assets =>
                                        {:methods => [:asset_properties]},
                                    :locations_monitor_classes =>
                                        {:include => [:monitor_points, :field_log_points, :custom_monitor_calculations]}
           })
+
+          if params[:class_ids]
+            class_ids =
+            sites.map {
+                |s|
+
+            }
+          else
+            sites
+          end
         end
       end
     end

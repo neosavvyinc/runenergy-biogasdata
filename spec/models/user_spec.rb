@@ -135,6 +135,7 @@ describe User do
       locations[0].site_name.should eq('Michael Jordan')
       locations[1].site_name.should eq('Irish Pub')
     end
+
   end
 
   describe 'is_entitled_to?' do

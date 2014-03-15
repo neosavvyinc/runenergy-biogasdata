@@ -152,6 +152,22 @@ describe Field::API do
       lmc_bb['field_log_points'].size.should eq(2)
     end
 
+    it 'should be able to filter on a single class_ids param' do
+      
+    end
+
+    it 'should be able to filter on comma separated class_ids' do
+      
+    end
+
+    it 'should be able to filter on a single class_ids param as a name' do
+      
+    end
+    
+    it 'should be able to filter on comma separated class_ids as names' do
+
+    end
+
   end
 
   describe 'readings' do
