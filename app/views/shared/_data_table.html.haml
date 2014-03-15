@@ -14,4 +14,5 @@
         %td{'ng-bind' => 'value[1]', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
         - if edit_allowed
           %td{'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && getEdit(item)'}
-            %input{'ng-model' => 'rowUnderEdit[value[0]]'}
+            %input{'ng-model' => 'rowUnderEdit[value[0]]', 'ng-if' => 'isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)'}
+            %span{'ng-bind' => 'value[1]', 'ng-if' => '!isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)'}

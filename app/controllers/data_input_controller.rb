@@ -34,9 +34,9 @@ class DataInputController < DataInterfaceController
         params[:monitor_points].each do |p|
           lmc.monitor_points << MonitorPoint.lazy_load_from_schema(p)
         end
-        render json: lmc.as_json(:include => [:field_log_points, :monitor_points, :monitor_limits => {:include => :monitor_point}])
+        render json: lmc.as_json(:include => [:field_log_points, :monitor_points, :custom_monitor_calculations, :monitor_limits => {:include => :monitor_point}])
       else
-        render json: LocationsMonitorClass.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id]).first.try(:as_json, :include => [:field_log_points, :monitor_points, :monitor_limits => {:include => :monitor_point}])
+        render json: LocationsMonitorClass.where(:location_id => params[:site_id], :monitor_class_id => params[:monitor_class_id]).first.try(:as_json, :include => [:field_log_points, :monitor_points, :custom_monitor_calculations, :monitor_limits => {:include => :monitor_point}])
       end
     else
       render json: {:error => 'You must pass in a :site_id and :monitor_class_id with the url'}, :status => 400

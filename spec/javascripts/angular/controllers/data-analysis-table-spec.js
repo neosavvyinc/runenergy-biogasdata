@@ -62,6 +62,32 @@ describe("controllers.DataAnalysisTable", function () {
             });
 
         });
+
+        describe('isEditableKey', function () {
+            beforeEach(function () {
+                newDataValues.selectedLocationsMonitorClass = {custom_monitor_calculations: [
+                    {name: 'Methane / Gas'},
+                    {name: 'Flow'},
+                    {name: 'Steam Power'}
+                ]}
+            });
+
+            it('Should return true if the key is not a name in the locations_monitor_class custom_monitor_calculations', function () {
+                expect($scope.isEditableKey('Methane', newDataValues.selectedLocationsMonitorClass)).toBeTruthy();
+            });
+
+            it('Should return false if it is a name in the locations monitor class custom_monitor_calculations', function () {
+                expect($scope.isEditableKey('Flow', newDataValues.selectedLocationsMonitorClass)).toBeFalsy();
+            });
+
+            it('Should return true if there is no locations_monitor_class', function () {
+                expect($scope.isEditableKey('Flow', null)).toBeTruthy();
+            });
+
+            it('Should return true if there is no custom_monitor_calculations', function () {
+                expect($scope.isEditableKey('Steam Power', {})).toBeTruthy();
+            });
+        });
     });
 
     beforeEach(function () {
@@ -403,10 +429,15 @@ describe("controllers.DataAnalysisTable", function () {
             });
 
             it('Should set the filters with the first item of the allData', function () {
-                $scope.allData = [{name: 56, age: 38}];
+                $scope.allData = [
+                    {name: 56, age: 38}
+                ];
                 newDataValues.selectedMonitorClass = {id: 26};
                 $scope.$digest();
-                expect($scope.filters).toEqual([ { key : 'name', expression : '' }, { key : 'age', expression : '' } ]);
+                expect($scope.filters).toEqual([
+                    { key: 'name', expression: '' },
+                    { key: 'age', expression: '' }
+                ]);
             });
         });
 
@@ -422,15 +453,15 @@ describe("controllers.DataAnalysisTable", function () {
                 notifications.editSavedTrigger++;
                 $scope.$digest();
                 expect(railsServiceSpy).toHaveBeenCalledWith({
-                        method: 'POST',
-                        url: routes.ANALYSIS.UPDATE_READING,
-                        params: {
-                            ':id': $scope.rowUnderEdit.id
-                        },
-                        ignoreDataKeys: true,
-                        data: $scope.rowUnderEdit,
-                        transformRequest: stripAngularKeysRequest
-                    })
+                    method: 'POST',
+                    url: routes.ANALYSIS.UPDATE_READING,
+                    params: {
+                        ':id': $scope.rowUnderEdit.id
+                    },
+                    ignoreDataKeys: true,
+                    data: $scope.rowUnderEdit,
+                    transformRequest: stripAngularKeysRequest
+                })
             });
         });
 

@@ -49,9 +49,31 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                 }
             }, 20);
 
+            /* This needs to be standardized out into another helper or function */
+            function _getLocationsMonitorClass() {
+                if (newDataValues.selectedSite && newDataValues.selectedMonitorClass) {
+                    nsRailsService.request({
+                        method: 'GET',
+                        url: routes.DATA_INPUT.LOCATIONS_MONITOR_CLASS,
+                        params: {':site_id': newDataValues.selectedSite.id, ':monitor_class_id': newDataValues.selectedMonitorClass.id}
+                    }).then(function (result) {
+                        newDataValues.selectedLocationsMonitorClass = result !== 'null' ? result : null;
+                    })
+                }
+            }
+
             $scope.getEdit = function (row) {
                 return (underEdit === row.$$hashKey);
             };
+
+            $scope.isEditableKey = memoize(function (key, locationsMonitorClass) {
+                if (locationsMonitorClass &&
+                    locationsMonitorClass.custom_monitor_calculations &&
+                    locationsMonitorClass.custom_monitor_calculations.length) {
+                    return _.pluck(locationsMonitorClass.custom_monitor_calculations, 'name').indexOf(key) === -1;
+                }
+                return true;
+            });
 
             //Watchers
             $scope.$watch('allData', function (val) {
@@ -127,6 +149,9 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.$watch('startDateTime.getTime()', _getData);
             $scope.$watch('endDateTime.getTime()', _getData);
             $scope.$watch('page', _getData);
+
+            $scope.$watch('newDataValues.selectedSite', _getLocationsMonitorClass);
+            $scope.$watch('newDataValues.selectedMonitorClass', _getLocationsMonitorClass);
 
             //Action Handlers
             $scope.onPrev = function () {

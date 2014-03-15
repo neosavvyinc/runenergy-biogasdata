@@ -40,6 +40,14 @@ class LocationsMonitorClass < ActiveRecord::Base
     "#{location.try(:site_name)} - #{monitor_class.try(:name).try(:pluralize)}"
   end
 
+  def calculation_names
+    if custom_monitor_calculations and custom_monitor_calculations.size
+      custom_monitor_calculations.map {|cmc| cmc.name}
+    else
+      []
+    end
+  end
+
   def notifications_for(reading)
     unless reading.nil? or exception_notifications.empty?
       unless reading.location_id != location_id

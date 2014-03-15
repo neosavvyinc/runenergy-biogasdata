@@ -38,7 +38,8 @@ class DataAnalysisController < DataInterfaceController
   def update
     unless ajax_value_or_nil(params[:id]).nil?
       r = Reading.find(params[:id])
-      r.update_attribute(:data, params.except('id', 'Date Time', 'controller', 'action', 'data_analysi', 'Asset'))
+      lmc = LocationsMonitorClass.lazy_load(r.location_id, r.monitor_class_id)
+      r.update_attribute(:data, params.except('id', 'Date Time', 'controller', 'action', 'data_analysi', 'Asset', *lmc.calculation_names))
       unless params['Asset'].nil? or params['Asset'].blank?
         r.update_attribute(:asset_id, Asset.lazy_load(r.location_id, r.monitor_class_id, params['Asset']).id)
       end

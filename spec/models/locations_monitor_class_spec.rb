@@ -74,6 +74,21 @@ describe LocationsMonitorClass do
       locations_monitor_class.display_name.should eq('Tom Landfill - Shorties')
     end
   end
+  
+  describe 'calculation_names' do
+
+    it 'should return an empty array if there are no custom monitor calculations' do
+      FactoryGirl.create(:deluxe_locations_monitor_class).calculation_names.should eq([])
+    end
+
+    it 'should return an array of the names if there are custom monitor calculations' do
+      lmc = FactoryGirl.create(:deluxe_locations_monitor_class)
+      lmc.custom_monitor_calculations << FactoryGirl.create(:custom_monitor_calculation, :name => 'George')
+      lmc.custom_monitor_calculations << FactoryGirl.create(:custom_monitor_calculation, :name => 'Harry')
+      lmc.calculation_names.should eq(['George', 'Harry'])
+    end
+    
+  end
 
   describe 'notifications_for' do
     exception_notification = nil, reading =nil, oxygen = nil, carbon = nil
