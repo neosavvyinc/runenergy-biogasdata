@@ -34,7 +34,7 @@ class User < ActiveRecord::Base
     else
       user_group_locations = (user_groups.map {|ug| ug.locations}).flatten
       if user_group_locations and user_group_locations.size
-        locations + user_group_locations
+        (locations + user_group_locations).uniq
       else
         locations
       end
