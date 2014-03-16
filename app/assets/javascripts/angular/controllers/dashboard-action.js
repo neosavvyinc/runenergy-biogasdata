@@ -132,6 +132,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             $scope.onReset = function () {
                 newDataValues.selectedSection = null;
                 newDataValues.selectedAsset = null;
+                $location.search('section', null);
+                $location.search('asset', null);
             };
 
             $scope.onSaveEdit = function () {
