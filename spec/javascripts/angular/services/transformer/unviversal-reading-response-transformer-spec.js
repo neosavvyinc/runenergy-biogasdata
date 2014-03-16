@@ -41,17 +41,17 @@ describe("services.transformer.UniversalReadingResponseTransformer", function ()
 
     it('Should add the asset unique identifiers to the Asset property', function () {
         expect(transformer(response, true)).toEqual([
-            {name: "George", "Date Time": '09/10/12, 10:48:32', Asset: asset.unique_identifier, id: 25},
-            {name: "Stan", "Date Time": '20/09/12, 07:18:32', Asset: '25OR625', id: 26},
-            {name: "Pete", "Date Time": '09/10/12, 10:40:32', Asset: asset.unique_identifier, id: 27}
+            {name: "George", "Date Time": '09/10/12, 14:48:32', Asset: asset.unique_identifier, id: 25},
+            {name: "Stan", "Date Time": '20/09/12, 11:18:32', Asset: '25OR625', id: 26},
+            {name: "Pete", "Date Time": '09/10/12, 14:40:32', Asset: asset.unique_identifier, id: 27}
         ]);
     });
 
     it('Should should be able to exclude ids if needed', function () {
         expect(transformer(response, false)).toEqual([
-            {name: "George", "Date Time": '09/10/12, 10:48:32', Asset: asset.unique_identifier},
-            {name: "Stan", "Date Time": '20/09/12, 07:18:32', Asset: '25OR625'},
-            {name: "Pete", "Date Time": '09/10/12, 10:40:32', Asset: asset.unique_identifier}
+            {name: "George", "Date Time": '09/10/12, 14:48:32', Asset: asset.unique_identifier},
+            {name: "Stan", "Date Time": '20/09/12, 11:18:32', Asset: '25OR625'},
+            {name: "Pete", "Date Time": '09/10/12, 14:40:32', Asset: asset.unique_identifier}
         ]);
     });
 

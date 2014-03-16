@@ -10,7 +10,7 @@ RunEnergy.Dashboard.Transformers.factory('services.transformer.UniversalReadingR
                     if (reading.id && includeId) {
                         reading.data.id = reading.id;
                     }
-                    reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).format('DD/MM/YY, HH:mm:ss') : '';
+                    reading.data['Date Time'] = reading.taken_at ? moment(reading.taken_at).utc().format('DD/MM/YY, HH:mm:ss') : '';
                     reading.data['Asset'] = hpGet(reading, 'asset.unique_identifier');
                     return reading.data;
                 });
