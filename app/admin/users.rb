@@ -1,6 +1,28 @@
 ActiveAdmin.register User, :as => 'Customers/Viewers' do
   menu :parent => 'Users'
 
+  show do
+    panel 'Customer Details' do
+      h4 customers_viewers.name
+      h6 customers_viewers.email
+
+    end
+    panel 'Permssions' do
+      h4 customers_viewers.user_type.name
+      h6 customers_viewers.edit_permission ? 'Has Edit Permission' : 'Does not have Edit Permission'
+    end
+    panel 'Assets' do
+      assets = customers_viewers.all_locations.map {|l| l.assets}.flatten
+      h3 "Total: #{assets.size}"
+      customers_viewers.all_locations.each do |l|
+        h4 "#{l.site_name}: #{l.assets.try(:size)}"
+      end
+      assets.each do |a|
+        h6 "#{a.location.site_name}, #{a.monitor_class.name}: #{a.unique_identifier}"
+      end
+    end
+  end
+
   index do
     column :name
     column :email
