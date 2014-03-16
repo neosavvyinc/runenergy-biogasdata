@@ -213,18 +213,25 @@ describe("controllers.DashboardActionController", function () {
             beforeEach(function () {
                 newDataValues.selectedSection = {id: 27};
                 newDataValues.selectedAsset = {id: 90};
+                $scope.onReset();
             });
 
             it('Should set newDataValues.selectedSection to null', function () {
-                $scope.onReset();
                 expect(newDataValues.selectedSection).toBeNull();
             });
 
             it('Should set newDataValues.selectedAsset to null', function () {
-                $scope.onReset();
                 expect(newDataValues.selectedAsset).toBeNull();
             });
 
+            it('Should call $location.search("section", null)', function () {
+                expect(locationSpy.search).toHaveBeenCalledWith("section", null);
+            });
+
+            it('Should call $location.search("asset", null)', function () {
+                expect(locationSpy.search).toHaveBeenCalledWith("asset", null);
+            });
+            
         });
 
         describe('onSaveEdit', function () {
