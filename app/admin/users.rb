@@ -5,10 +5,9 @@ ActiveAdmin.register User, :as => 'Customers/Viewers' do
     panel 'Customer Details' do
       h4 customers_viewers.name
       h6 customers_viewers.email
-
     end
     panel 'Permssions' do
-      h4 customers_viewers.user_type.name
+      h4 customers_viewers.try(:user_type).try(:name)
       h6 customers_viewers.edit_permission ? 'Has Edit Permission' : 'Does not have Edit Permission'
     end
     panel 'Assets' do
@@ -18,7 +17,7 @@ ActiveAdmin.register User, :as => 'Customers/Viewers' do
         h4 "#{l.site_name}: #{l.assets.try(:size)}"
       end
       assets.each do |a|
-        h6 "#{a.location.site_name}, #{a.monitor_class.name}: #{a.unique_identifier}"
+        h6 "#{a.try(:location).try(:site_name)}, #{a.try(:monitor_class).try(:name)}: #{a.unique_identifier}"
       end
     end
   end
