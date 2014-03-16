@@ -13,7 +13,7 @@
         %label{'ng-bind' => 'flp.name'}
         %input{'ng-model' => 'currentFieldLog[flp.name]'}
       %h5 Data
-      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedLocationsMonitorClass.monitor_points'}
+      .monitor-point{'ng-repeat' => 'mp in newDataValues.selectedLocationsMonitorClass.monitor_points | reCollectionOrderedProperties : newDataValues.selectedMonitorClass.monitor_point_ordering : "name"'}
         %label {{mp.name + ' (' + mp.unit + ')'}}
         %input.qa-monitor-point-input{'ng-model' => 'currentReading[mp.name]'}
         .limit-warning
