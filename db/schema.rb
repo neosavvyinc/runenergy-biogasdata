@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140307230521) do
+ActiveRecord::Schema.define(:version => 20140317235241) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -113,6 +113,11 @@ ActiveRecord::Schema.define(:version => 20140307230521) do
     t.integer  "locations_monitor_class_id"
     t.string   "name"
     t.integer  "significant_digits"
+  end
+
+  create_table "data_collisions", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "device_profiles", :force => true do |t|
@@ -336,13 +341,14 @@ ActiveRecord::Schema.define(:version => 20140307230521) do
 
   create_table "readings", :force => true do |t|
     t.datetime "taken_at"
-    t.string   "data",             :limit => 8000
-    t.datetime "created_at",                       :null => false
-    t.datetime "updated_at",                       :null => false
+    t.string   "data",              :limit => 8000
+    t.datetime "created_at",                        :null => false
+    t.datetime "updated_at",                        :null => false
     t.integer  "field_log_id"
     t.integer  "monitor_class_id"
     t.integer  "location_id"
     t.integer  "asset_id"
+    t.integer  "data_collision_id"
   end
 
   create_table "sections", :force => true do |t|
