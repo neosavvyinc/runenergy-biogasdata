@@ -1,0 +1,9 @@
+%tr
+  %td{'colspan' => colspan}
+    collision.display_name
+- collision.readings.each do |r|
+  %tr
+    %td #{r.asset.unique_identifier}
+    %td #{r.taken_at}
+    - r.data.each do |k, v|
+      %td #{v}

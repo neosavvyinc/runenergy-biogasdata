@@ -1,0 +1,24 @@
+.data-collision{'re-show-when-ready' => true, 'style' => 'display: none;', 'ng-controller' => 'controllers.DataCollision'}
+  - if @data_collision_blocks.size
+    - @data_collision_blocks.each do |lmc_name, collisions|
+      %h4 #{lmc_name}
+      .data-table
+        %table.table.flare-table.table-striped.table-condensed.table-bordered
+          %thead
+            %tr
+              %th
+                %p.name
+                  Asset
+              %th
+                %p.name
+                  Date Time
+              - collisions.first.readings.first.data.each do |k, v|
+                %th
+                  %p.name #{k}
+          %tbody
+            - colspan = collisions.first.readings.first.data.size + 2
+            - collisions.each do |c|
+              = render 'data_collision/collision', :collision => c, :colspan => colspan
+  - else
+    %label No Collisions
+

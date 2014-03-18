@@ -34,6 +34,9 @@ Biogasdata::Application.routes.draw do
   match 'data_analysis/readings/:id', :to => 'data_analysis#update', :as => 'data_analysis_update'
   match 'data_analysis', :to => 'data_analysis#index', :as => 'data_analysis_index'
 
+  #Data Collisions
+  match 'data_collision', :to => 'data_collision#index', :as => 'data_collision_index'
+
   #Summary
   match 'summary/locations', :to => 'summary#locations', :as => 'summary_locations'
 
