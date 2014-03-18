@@ -113,10 +113,20 @@ describe Asset do
 
   describe 'unique_identifier' do
     context "does not allow unique identifier with the same monitor class and location" do
-      setup do
-        a = asset.clone
+      let :asset2 do
+        FactoryGirl.build(:asset, :location => location, :monitor_class => monitor_class, :unique_identifier => '78HFG')
       end
-      it { should validate_uniqueness_of(:unique_identifier).scoped_to([:location_id, :monitor_class_id]) }
+      let :asset3 do
+        FactoryGirl.build(:asset, :location_id => 1, :monitor_class_id => 2, :unique_identifier => '78HFG')
+      end
+
+      it "does not allow unique_identifier with the same monitor class and location" do
+        expect { asset2.save! }.to raise_error
+      end
+
+      it "allows a unique identifier when monitor class is not the same" do
+        expect { asset3.save! }.to_not raise_error
+      end
     end
   end
 
