@@ -1,10 +1,16 @@
 class DataCollision < ActiveRecord::Base
 
-  def self.create_if_collision
-    
+  has_many :readings
+
+  def self.create_if_collision(reading)
+
   end
 
-  def self.collides(reading)
+  def self.collisions(reading)
+
+  end
+
+  def display_name
 
   end
 

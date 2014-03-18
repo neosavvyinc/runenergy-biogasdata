@@ -1,11 +1,12 @@
 require 'csv'
 
 class Reading < DataAsStringModel
-  attr_accessible :taken_at, :monitor_class_id, :field_log_id, :location_id, :asset_id
+  attr_accessible :taken_at, :monitor_class_id, :field_log_id, :location_id, :asset_id, :data_collision_id
   belongs_to :location
   belongs_to :monitor_class
   belongs_to :field_log
   belongs_to :asset
+  belongs_to :data_collision
 
   def self.process_csv(file, column_definition_row = nil, first_data_row = nil, last_data_row = nil)
     unless file.nil?
