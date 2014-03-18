@@ -13,6 +13,9 @@
                 %th
                   %p.name
                     Date Time
+                %th
+                  %p.name
+                    Resolve
                 - data = (collisions.first.readings.first.data ? JSON.parse(collisions.first.readings.first.data) : nil)
                 - unless data.nil?
                   - data.each do |k, v|
