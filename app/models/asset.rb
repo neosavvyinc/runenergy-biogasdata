@@ -6,6 +6,10 @@ class Asset < ActiveRecord::Base
   has_many :readings
   has_many :asset_property_values
 
+  validates_uniqueness_of :unique_identifier,
+                          :scope => [:location_id, :monitor_class_id],
+                          :if => :monitor_and_location_dupes
+
   accepts_nested_attributes_for :asset_property_values, :allow_destroy => true
 
   def self.lazy_load(location_id, monitor_class_id, unique_identifier)
@@ -44,6 +48,10 @@ class Asset < ActiveRecord::Base
     else
       Section.all
     end
+  end
+
+  def monitor_and_location_dupes
+    Asset.where(location_id: self.location_id, monitor_class_id: self.monitor_class_id).length > 0
   end
 
 end

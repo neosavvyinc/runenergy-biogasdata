@@ -35,7 +35,6 @@ describe Asset do
     it 'should create the object if it doesnt exist via other field' do
       Asset.lazy_load(location.id, monitor_class.id, 'NOTRIGHT').id.should_not eq(asset.id)
     end
-
   end
 
   describe 'asset_properties' do
@@ -74,6 +73,8 @@ describe Asset do
       asset.monitor_class = nil
       asset.display_name.should eq("#{location.site_name}, No Class: 78HFG")
     end
+
+
   end
 
   describe 'property_value_by_name' do
@@ -108,6 +109,15 @@ describe Asset do
       asset.property_value_by_name(:height).should eq('56')
     end
 
+  end
+
+  describe 'unique_identifier' do
+    context "does not allow unique identifier with the same monitor class and location" do
+      setup do
+        a = asset.clone
+      end
+      it { should validate_uniqueness_of(:unique_identifier).scoped_to([:location_id, :monitor_class_id]) }
+    end
   end
 
 end
