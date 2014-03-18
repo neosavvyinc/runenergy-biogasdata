@@ -5,5 +5,8 @@
   %tr
     %td #{r.asset.unique_identifier}
     %td #{r.taken_at}
-    - r.data.each do |k, v|
-      %td #{v}
+    - data = (r.data ? JSON.parse(r.data) : nil)
+    - unless data.nil?
+      - data.each do |k, v|
+        %td #{v}
+
