@@ -6,7 +6,7 @@
     %td #{r.asset.unique_identifier}
     %td #{r.taken_at}
     %td
-      %a.btn.btn-success{:data => {:collision_id => collision.id, :reading_id => r.id}} Resolve
+      %a.btn.btn-success{:data => {:collision_id => collision.id, :reading_id => r.id}, 'ng-click' => 'onResolve($event.target.dataset)'} Resolve
     - data = (r.data ? JSON.parse(r.data) : nil)
     - unless data.nil?
       - data.each do |k, v|

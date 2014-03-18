@@ -40,5 +40,8 @@ RunEnergy.Dashboard.Constants.constant("constants.Routes", {
         READINGS: "/data_analysis/readings/site/:site_id/monitorclass/:monitor_class_id",
         UPDATE_READING: "/data_analysis/readings/:id",
         MONITOR_POINTS: "/data_analysis/monitor_points/:asset_id"
+    },
+    DATA_COLLISION: {
+        RESOLVE: "/data_collision/resolve"
     }
 });
