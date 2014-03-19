@@ -90,20 +90,31 @@ describe DataCollisionController do
       response.status.should eq(400)
     end
 
-    it 'should return the removed collision with readings as json' do
+    it 'should return status 200 when it manages to remove the collision' do
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_a.id
+      parsed_response = JSON.parse(response.body)
+      parsed_response
+    end
 
+    it 'should return the removed collision with readings as json' do
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_a.id
+      parsed_response = JSON.parse(response.body)
+      parsed_response['id'].should eq(data_collision.id)
     end
 
     it 'should remove the collision upon completion' do
-
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_a.id
+      DataCollision.where(:id => data_collision.id).first.should be_nil
     end
 
     it 'should select the resolution reading upon completion, removing the collision_id prop' do
-
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_c.id
+      Reading.find(reading_c.id).data_collision_id.should be_nil
     end
 
     it 'should delete the other readings upon completion' do
-
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_c.id
+      Reading.where(:id => reading_a.id).first.should be_nil
     end
     
   end
