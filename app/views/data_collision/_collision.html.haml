@@ -1,8 +1,8 @@
-%tr
+%tr{:data => {:collision_id => collision.id}}
   %td{'colspan' => colspan}
     #{collision.display_name}
 - collision.readings.each do |r|
-  %tr
+  %tr{:data => {:collision_id => collision.id}}
     %td #{r.asset.unique_identifier}
     %td #{r.taken_at}
     %td

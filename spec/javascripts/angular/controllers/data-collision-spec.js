@@ -37,7 +37,7 @@ describe("controllers.DataCollision", function () {
             it('Should return the service call and broadcast and event with the data passed in', function () {
                 var broadCastSpy = spyOn($rootScope, '$broadcast');
                 $scope.onResolve({readingId: 16, collisionId: 18});
-                expect(broadCastSpy).toHaveBeenCalledWith('REMOVE_FROM_DOM', {readingId: 16, collisionId: 18});
+                expect(broadCastSpy).toHaveBeenCalledWith('REMOVE_FROM_DOM', {collisionId: 18});
             });
         });
 

@@ -12,7 +12,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataCollision',
                     url: routes.DATA_COLLISION.RESOLVE,
                     data: data
                 }).then(function () {
-                    $rootScope.$broadcast('REMOVE_FROM_DOM', data);
+                    $rootScope.$broadcast('REMOVE_FROM_DOM', {collisionId: data.collisionId});
                 });
             };
 
