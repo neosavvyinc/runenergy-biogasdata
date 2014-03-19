@@ -17,7 +17,7 @@ class DataCollisionController < DataInterfaceController
         end
       end
     else
-      redirect_to :controller => DataAnalysisController, :action => :index
+      redirect_to 'data_analysis#index'
     end
   end
 
