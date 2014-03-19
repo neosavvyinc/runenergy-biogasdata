@@ -21,4 +21,30 @@ class DataCollisionController < DataInterfaceController
     end
   end
 
+  def resolve
+    unless params[:collision_id].nil? or params[:reading_id].nil?
+      dc = DataCollision.where(:id => params[:collision_id]).first
+      reading = Reading.where(:id => params[:reading_id]).first
+      if dc.try(:readings).try(:include?, reading)
+        dc.readings.each do |r|
+          unless r.id == reading.id
+            r.delete
+          end
+        end
+
+        #Remove data collision
+        dc.delete
+
+        #Update reading not to include it
+        reading.update_attribute(:data_collision_id, nil)
+
+        render json: dc
+      else
+        render json: {:error => 'You have passed invalid or unmatching data collision and reading ids.'}, :status => 400
+      end
+    else
+      render json: {:error => 'You must pass a valid collision_id and reading_id to complete the resolution request.'}, :status => 400
+    end
+  end
+
 end

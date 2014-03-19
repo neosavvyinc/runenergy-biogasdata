@@ -64,5 +64,48 @@ describe DataCollisionController do
     end
     
   end
+  
+  describe 'resolve' do
+
+    reading_a = nil, reading_b = nil, reading_c = nil, data_collision = nil
+    before(:each) do
+      data_collision = FactoryGirl.create(:data_collision)
+      reading_a = FactoryGirl.create(:reading, :data_collision => data_collision)
+      reading_b = FactoryGirl.create(:reading)
+      reading_c = FactoryGirl.create(:reading, :data_collision => data_collision)
+    end
+
+    it 'should return a 400 error when not passed a collision_id param' do
+      xhr :get, :resolve, :reading_id => reading_a.id
+      response.status.should eq(400)
+    end
+
+    it 'should return a 400 error when not passed a reading_id param' do
+      xhr :get, :resolve, :collision_id => data_collision.id
+      response.status.should eq(400)
+    end
+
+    it 'should return a 400 error if the collision_id and reading_id are not matched' do
+      xhr :get, :resolve, :collision_id => data_collision.id, :reading_id => reading_b.id
+      response.status.should eq(400)
+    end
+
+    it 'should return the removed collision with readings as json' do
+
+    end
+
+    it 'should remove the collision upon completion' do
+
+    end
+
+    it 'should select the resolution reading upon completion, removing the collision_id prop' do
+
+    end
+
+    it 'should delete the other readings upon completion' do
+
+    end
+    
+  end
 
 end

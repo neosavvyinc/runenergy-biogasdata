@@ -36,6 +36,7 @@ Biogasdata::Application.routes.draw do
 
   #Data Collisions
   match 'data_collision', :to => 'data_collision#index', :as => 'data_collision_index'
+  match 'data_collision/resolve', :to => 'data_collision#resolve', :as => 'data_collision_resolve'
 
   #Summary
   match 'summary/locations', :to => 'summary#locations', :as => 'summary_locations'
