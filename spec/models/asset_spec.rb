@@ -90,7 +90,6 @@ describe Asset do
 
     it 'should return nil when the property the property does not exist' do
       asset.property_value_by_name('Weight').should be_nil
-
     end
 
     it 'should return nil when the value does not exist' do
@@ -108,7 +107,6 @@ describe Asset do
     it 'should return the value when it is set and passed a symbol' do
       asset.property_value_by_name(:height).should eq('56')
     end
-
   end
 
   describe 'unique_identifier' do
@@ -116,6 +114,7 @@ describe Asset do
       let :asset2 do
         FactoryGirl.build(:asset, :location => location, :monitor_class => monitor_class, :unique_identifier => '78HFG')
       end
+
       let :asset3 do
         FactoryGirl.build(:asset, :location_id => 1, :monitor_class_id => 2, :unique_identifier => '78HFG')
       end
@@ -127,7 +126,10 @@ describe Asset do
       it "allows a unique identifier when monitor class is not the same" do
         expect { asset3.save! }.to_not raise_error
       end
+
+      it { validate_uniqueness_of(:unique_identifier).scoped_to( [:location_id, :monitor_class_id] ) }
+      it { validate_uniqueness_of(:location_id).scoped_to( [:unique_identifier, :monitor_class_id] ) }
+      it { validate_uniqueness_of(:monitor_class_id).scoped_to( [:location_id, :unique_identifier] ) }
     end
   end
-
 end
