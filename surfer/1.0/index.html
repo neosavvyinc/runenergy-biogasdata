@@ -1,0 +1,148 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>D3 Surfer</title>
+    <style>
+    body, html {
+        margin:0;
+        padding:0;
+        font-family:Arial;
+    }
+    #heatmapArea {
+    	height:1100px;
+    	width:900px;
+        position:relative;
+        float:left;
+        border:1px solid black;
+    }
+    h2 {
+        margin-top:0;
+        display: block;
+    }
+    h1#chart-title {
+        text-transform: uppercase;
+    }
+    </style>
+    <script src="heatmap.js"></script>
+    <script src="d3.min.js"></script>
+</head>
+
+<body>
+    <img src="MapfromData.jpg" />
+    <br>
+    <h1 id="chart-title">Seghill - Gas Wells</h1>
+    <div id="heatmapArea"></div>
+    <script>
+	// The readings from SITA_readings.csv expect a Cartesian coordinate system
+	// (oriented from the lower left hand corner)
+	// HTML5 canvas expects coordinates from the top left hand corner
+	// This function gets called in a map() to orient the graph the correct way
+	// (consistent with original Seghill Gas Wells rendering)
+	function orientToCanvas(dataToOrient) {
+		var heatReadings = dataToOrient.heatReadings;
+		var labeledPoints = dataToOrient.labeledPoints;
+
+		// sort rows in descending order by y value
+		heatReadings.sort(function(a, b) {
+			return b.y - a.y;
+		});
+
+		var MAXHEIGHT = heatReadings[0].y;
+		var MARGIN_LEFT = -800;
+		var MARGIN_TOP = 50;
+
+		heatReadings = heatReadings.map(function(reading) {
+			return {
+				count: reading.count,
+				x: reading.x + MARGIN_LEFT, 
+				y: -reading.y + MAXHEIGHT + MARGIN_TOP 
+			};
+		});
+
+		labeledPoints = labeledPoints.map(function(point) {
+			return {
+				label: point.label,
+				x: point.x + MARGIN_LEFT, 
+				y: -point.y + MAXHEIGHT + MARGIN_TOP 
+			};
+		});
+
+		return {
+			heatReadings: heatReadings,
+			labeledPoints: labeledPoints
+		};
+	};
+
+    window.onload = function() {
+        d3.csv("/SITA_readings.csv", function(d) {
+            return {
+                x: Math.floor(+d.x),
+                y: Math.floor(+d.y),
+                count: Math.floor(+d.count)
+            };
+        }, function(error, heatReadings) {
+            if (!error) {
+				console.log(heatReadings);
+				d3.csv("SITA_post.csv", function(d) {
+					return {
+						x: Math.floor(+d.x),
+						y: Math.floor(+d.y),
+						label: d.id
+					};
+				},	function(err, labeledPoints) {
+					if (!err) {
+						console.log(labeledPoints);
+						orientedData = orientToCanvas({
+							heatReadings: heatReadings,
+							labeledPoints: labeledPoints
+						});
+						heatReadings = orientedData.heatReadings;
+						labeledPoints = orientedData.labeledPoints;
+						var element = document.getElementById('heatmapArea');
+
+						// heatmap configuration
+						var config = {
+							element: element,
+							radius: 38,
+							opacity: 100,
+							legend: {
+								position: 'br'
+							}
+							/*
+							gradient: { 
+								0.125: 'rgb(101,100,254)',
+								0.25: 'rgb(0,57,197)',
+								0.375: 'rgb(0,219,34)',
+								0.5: 'rgb(124,254,0)',
+								0.625: 'rgb(254,236,1)',
+								0.75: 'rgb(255,134,0)',
+								0.875: 'rgb(255,51,1)',
+								1: 'rgb(255,255,255)'
+							} */
+						};
+
+
+						var heatmap = h337.create(config);
+
+						// let's get some data
+						var data = {
+							max: 80,
+							data: heatReadings
+						};
+
+						heatmap.store.setDataSet(data);
+						heatmap.drawLabeledPoints(labeledPoints);
+					} else {
+						console.log(error);
+					}
+				});
+			} else {
+				console.log(error);
+			}
+        });
+    };
+    </script>
+</body>
+
+</html>

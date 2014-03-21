@@ -3,6 +3,7 @@ class Asset < ActiveRecord::Base
   belongs_to :location
   belongs_to :section
   belongs_to :monitor_class
+  has_one :heat_map_detail
   has_many :readings
   has_many :asset_property_values
 
