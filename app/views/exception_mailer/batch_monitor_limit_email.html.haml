@@ -5,22 +5,41 @@
     %th
       %tr
       - unless @readings.nil? or @readings.empty?
+        %td Asset
+        %td Date/Time
         - JSON.parse(@readings.first.data).each do |key, value|
           %td{ :style=> "text-align: center; padding: 10px;"} #{key}
     %tbody
       - @readings.each do |r|
         %tr
+          %td #{ r.asset.unique_identifier }
+          %td #{ r.taken_at }
           - JSON.parse(r.data).each do |key, value|
-            %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+            - monitor_point = MonitorLimit.all.map{|m| m if m.monitor_point.name == key }.first
+            - if monitor_point.present? && monitor_point != nil
+              - if (value > monitor_point.upper_limit)
+                %td{ :style=> "text-align: center; padding: 10px; background-color: yellow;"} #{value}
+            - else
+              %td{ :style=> "text-align: center; padding: 10px;"} #{value}
   %h3 Deleted Readings:
   %table
     %th
       %tr
       - unless @deleted_readings.nil? or @deleted_readings.empty?
+        %td Asset
+        %td Date/Time
         - JSON.parse(@deleted_readings.first.data).each do |key, value|
           %td{ :style=> "text-align: center; padding: 10px;"} #{key}
     %tbody
       - @deleted_readings.each do |r|
         %tr
+          %td #{ r.asset.unique_identifier }
+          %td #{ r.taken_at }
           - JSON.parse(r.data).each do |key, value|
-            %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+            - monitor_point = MonitorLimit.all.map{|m| m if m.monitor_point.name == key }.first
+            - if monitor_point.present? && monitor_point != nil
+              - if (value > monitor_point.upper_limit)
+                %td{ :style=> "text-align: center; padding: 10px; background-color: yellow;"} #{value}
+            - else
+              %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+

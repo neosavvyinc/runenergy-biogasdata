@@ -9,6 +9,10 @@ describe ExceptionNotification do
     )
   end
 
+  let :asset_column_name do
+    Readings.asset_column_name
+  end
+
   let :locations_monitor_class do
     FactoryGirl.create(:deluxe_locations_monitor_class)
   end
@@ -23,6 +27,10 @@ describe ExceptionNotification do
 
   let :reading do
     FactoryGirl.create(:reading)
+  end
+
+  let :date_columnn_name do
+    Readings.date_columnn_name
   end
 
   before(:each) do
@@ -51,7 +59,7 @@ describe ExceptionNotification do
 
     it 'should call the ExceptionMailer.monitor_limit_email' do
       expect(ExceptionMailer).to receive(:monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
-      exception_notification.lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
+      exception_notification.lower_limit_warning(asset, date_time, locations_monitor_class, monitor_point, monitor_limit, reading)
     end
 
   end
@@ -59,7 +67,7 @@ describe ExceptionNotification do
   describe 'upper_limit_warning' do
     it 'should call the ExceptionMailer.monitor_limit_email' do
       expect(ExceptionMailer).to receive(:monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
-      exception_notification.lower_limit_warning(locations_monitor_class, monitor_point, monitor_limit, reading)
+      exception_notification.lower_limit_warning(asset, date_time, locations_monitor_class, monitor_point, monitor_limit, reading)
     end
   end
 

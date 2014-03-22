@@ -42,6 +42,12 @@ group :development, :test do
   gem 'shoulda-matchers'
 end
 
+group :development do
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-nav'
+end
+
 gem 'haml', '~> 4.0.3'
 gem 'haml-rails', '~> 0.4'
 gem 'jquery-rails', '~> 2.3.0'
