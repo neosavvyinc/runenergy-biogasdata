@@ -1,45 +1,82 @@
 %div.email
-  %h3 Readings Above Limit Imported For #{@location.site_name}, #{@monitor_class.name}
+  %h2 Readings Above Limit Imported For #{@location.site_name}, #{@monitor_class.name}
+  %br
   %h3 Accepted Readings:
-  %table
-    %th
-      %tr
-      - unless @readings.nil? or @readings.empty?
-        %td Asset
-        %td Date/Time
-        - JSON.parse(@readings.first.data).each do |key, value|
-          %td{ :style=> "text-align: center; padding: 10px;"} #{key}
-    %tbody
-      - @readings.each do |r|
+  %br
+  - @readings.each do |log_id, log_readings|
+    -if log_id != nil
+      - log = FieldLog.find(del_id)
+      - taken_at = log.taken_at != nil ? log.taken_at : "Data not found"
+      - data = JSON.parse(log.data)
+      - name = data[:name] != nil ? data[:name] : "Unknown"
+      %h4 Field Log
+      %table
+        %tr
+          %td Date:
+          %td #{taken_at}
+        %tr
+          %td Readings completed by:
+          %td #{name}
+    %br
+    %h4 Readings
+    %table
+      %th
+        %tr
+        - unless log_readings.nil? or log_readings.empty?
+          %td Asset
+          %td Date/Time
+          - JSON.parse(log_readings.first.data).each do |key, value|
+            %td{ :style=> "text-align: center; padding: 10px;"} #{key}
+      %tbody
+      - log_readings.each do |r|
         %tr
           %td #{ r.asset.unique_identifier }
           %td #{ r.taken_at }
           - JSON.parse(r.data).each do |key, value|
             - monitor_point = MonitorLimit.all.map{|m| m if m.monitor_point.name == key }.first
-            - if monitor_point.present? && monitor_point != nil
+            - if monitor_point.present? && !monitor_point.nil?
               - if (value > monitor_point.upper_limit)
                 %td{ :style=> "text-align: center; padding: 10px; background-color: yellow;"} #{value}
             - else
               %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+  %br
   %h3 Deleted Readings:
-  %table
-    %th
-      %tr
-      - unless @deleted_readings.nil? or @deleted_readings.empty?
-        %td Asset
-        %td Date/Time
-        - JSON.parse(@deleted_readings.first.data).each do |key, value|
-          %td{ :style=> "text-align: center; padding: 10px;"} #{key}
-    %tbody
-      - @deleted_readings.each do |r|
+  - @deleted_readings.each do | del_id, del_readings |
+    - if del_id != nil
+      - log = FieldLog.find(del_id)
+      - taken_at = log.taken_at != nil ? log.taken_at : "Data not found"
+      - data = JSON.parse(log.data)
+      - name = data[:name] != nil ? data[:name] : "Unknown"
+      %br
+      %h4 Field Log
+      %table
         %tr
-          %td #{ r.asset.unique_identifier }
-          %td #{ r.taken_at }
-          - JSON.parse(r.data).each do |key, value|
-            - monitor_point = MonitorLimit.all.map{|m| m if m.monitor_point.name == key }.first
-            - if monitor_point.present? && monitor_point != nil
-              - if (value > monitor_point.upper_limit)
-                %td{ :style=> "text-align: center; padding: 10px; background-color: yellow;"} #{value}
-            - else
-              %td{ :style=> "text-align: center; padding: 10px;"} #{value}
-
+          %td Date:
+          %td #{taken_at}
+        %tr
+          %td Readings completed by:
+          %td #{name}
+      %br
+    %h4 Readings
+    %table
+      %th
+        %tr
+        - unless del_readings.nil? or del_readings.empty?
+          %td Asset
+          %td Date/Time
+          - JSON.parse(del_readings.first.data).each do |key, value|
+            %td{ :style=> "text-align: center; padding: 10px;"} #{key}
+      %tbody
+        - del_readings.each do |r|
+          %tr
+            %td #{ r.asset.unique_identifier }
+            %td #{ r.taken_at }
+            - JSON.parse(r.data).each do |key, value|
+              - del_monitor_point = MonitorLimit.all.map{|m| m if m.monitor_point.name == key }.first
+              - if del_monitor_point.present? && del_monitor_point != nil
+                - if (value > del_monitor_point.upper_limit)
+                  %td{ :style=> "text-align: center; padding: 10px; background-color: yellow;"} #{value}
+                - else
+                  %td{ :style=> "text-align: center; padding: 10px;"} #{value}
+              - else
+                %td{ :style=> "text-align: center; padding: 10px;"} #{value}

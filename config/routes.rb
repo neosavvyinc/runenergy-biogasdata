@@ -6,6 +6,8 @@ Biogasdata::Application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  # Mail Preview in Development
   #Field Api
   mount Field::API => '/field/'
 
@@ -77,6 +79,9 @@ Biogasdata::Application.routes.draw do
   #       get 'sold'
   #     end
   #   end
+  if Rails.env.development?
+    mount MailPreview => 'mail_view'
+  end
 
   # Sample resource route with sub-resources:
   #   resources :products do

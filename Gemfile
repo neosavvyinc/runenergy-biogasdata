@@ -46,6 +46,9 @@ group :development do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
+  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 gem 'haml', '~> 4.0.3'

@@ -21,9 +21,8 @@ class ExceptionMailer < ActionMailer::Base
     #View
     @location = location
     @monitor_class = monitor_class
-    @readings = readings
-    @deleted_readings = deleted
-
+    @readings = readings.group_by { |reading| reading.field_log_id }
+    @deleted_readings = deleted.group_by { |reading| reading.field_log_id }
     #Email
     primary_email = user.try(:email) || other_email_address
     if primary_email
