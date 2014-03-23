@@ -40,13 +40,13 @@ group :development, :test do
   gem 'guard-rspec', '~> 3.0.2'
   gem 'simplecov', '~> 0.7.1'
   gem 'shoulda-matchers'
+  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
 end
 
 group :development do
   gem 'pry'
   gem 'pry-remote'
   gem 'pry-nav'
-  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
   gem 'better_errors'
   gem 'binding_of_caller'
 end
