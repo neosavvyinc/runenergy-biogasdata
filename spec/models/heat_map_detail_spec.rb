@@ -2,11 +2,36 @@ require 'spec_helper'
 
 describe HeatMapDetail do
 
-  describe 'asset_map' do
+  describe 'self.asset_map' do
+    let :locations_monitor_class do
+      FactoryGirl.create(:deluxe_locations_monitor_class)
+    end
+
+    before(:each) do
+      10.times do
+        FactoryGirl.create(:asset, :location => locations_monitor_class.location, :monitor_class => locations_monitor_class.monitor_class)
+      end
+      5.times do
+        FactoryGirl.create(:asset, :location => locations_monitor_class.location)
+      end
+      3.times do
+        FactoryGirl.create(:asset, :monitor_class => locations_monitor_class.monitor_class)
+      end
+    end
+
+    it 'should return all the assets for a locations_monitor_class' do
+      asset_rows = HeatMapDetail.asset_map(:locations_monitor_class => locations_monitor_class)
+      asset_rows.size.should eq(10)
+    end
+
+    it 'should be able to return all the assets for a location and a monitor_class mapped to rows' do
+      asset_rows = HeatMapDetail.asset_map(:location => locations_monitor_class.location, :monitor_class => locations_monitor_class.monitor_class)
+      asset_rows.size.should eq(10)
+    end
 
   end
 
-  describe 'asset_row' do
+  describe 'self.asset_row' do
 
     let :asset do
       FactoryGirl.create(:asset, :heat_map_detail => FactoryGirl.create(:heat_map_detail), :unique_identifier => '25OR624')
@@ -29,11 +54,46 @@ describe HeatMapDetail do
     end
   end
 
-  describe 'reading_map' do
+  describe 'self.reading_map' do
+
+    let :locations_monitor_class do
+      FactoryGirl.create(:deluxe_locations_monitor_class)
+    end
+
+    let :monitor_point do
+      FactoryGirl.create(:monitor_point, :name => 'Urethane')
+    end
+
+    before(:each) do
+      7.times do
+        FactoryGirl.create(:reading, :data => {'Urethane' => rand(100)}, :asset =>
+            FactoryGirl.create(:asset, :location => locations_monitor_class.location, :monitor_class => locations_monitor_class.monitor_class))
+      end
+      6.times do
+        FactoryGirl.create(:reading, :data => {'Urethane' => rand(100)}, :asset =>
+            FactoryGirl.create(:asset, :location => locations_monitor_class.location))
+      end
+      2.times do
+        FactoryGirl.create(:reading, :data => {'Urethane' => rand(100)}, :asset =>
+            FactoryGirl.create(:asset, :monitor_class => locations_monitor_class.monitor_class))
+      end
+    end
+
+    it 'should return a reading row for each asset in the locations_monitor_class' do
+      HeatMapDetail.reading_map(:locations_monitor_class => locations_monitor_class, :monitor_point => monitor_point).size.should eq(7)
+    end
+
+    it 'should return a reading row for each asset in the location and monitor_class' do
+      HeatMapDetail.reading_map(
+          :location => locations_monitor_class.location,
+          :monitor_class => locations_monitor_class.monitor_class,
+          :monitor_point => monitor_point)
+      .size.should eq(7)
+    end
 
   end
 
-  describe 'reading_row' do
+  describe 'self.reading_row' do
 
     let :asset do
       FactoryGirl.create(:asset, :heat_map_detail => FactoryGirl.create(:heat_map_detail), :unique_identifier => '25OR624')
@@ -72,7 +132,7 @@ describe HeatMapDetail do
     it 'should be able to take both a start and end date' do
       HeatMapDetail.reading_row(asset, monitor_point, DateTime.new(2010, 10, 15), DateTime.new(2010, 10, 15))[:count].should eq('82.50')
     end
-    
+
   end
 
 end

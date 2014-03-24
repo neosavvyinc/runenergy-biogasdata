@@ -4,6 +4,17 @@ class HeatMapDetail < ActiveRecord::Base
 
   extend ActionView::Helpers::NumberHelper
 
+  def self.asset_map(options = {})
+    unless options[:locations_monitor_class].nil?
+      options[:location] = options[:locations_monitor_class].location
+      options[:monitor_class] = options[:locations_monitor_class].monitor_class
+    end
+
+    Asset.where(:location_id => options[:location].id,
+                :monitor_class_id => options[:monitor_class].id).
+        map { |a| self.asset_row(a) }
+  end
+
   def self.asset_row(asset)
     {
         x: asset.heat_map_detail.try(:x),
@@ -11,6 +22,17 @@ class HeatMapDetail < ActiveRecord::Base
         id: asset.id,
         uid: asset.unique_identifier
     }
+  end
+
+  def self.reading_map(options = {})
+    unless options[:locations_monitor_class].nil?
+      options[:location] = options[:locations_monitor_class].location
+      options[:monitor_class] = options[:locations_monitor_class].monitor_class
+    end
+
+    Asset.where(:location_id => options[:location].id,
+                :monitor_class_id => options[:monitor_class].id).
+        map { |a| self.reading_row(a, options[:monitor_point], options[:start_date], options[:end_date]) }
   end
 
   def self.reading_row(asset, monitor_point, start_date = nil, end_date = nil)
