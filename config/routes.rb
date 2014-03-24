@@ -43,6 +43,7 @@ Biogasdata::Application.routes.draw do
 
   #Visualizations
   match 'visualizations/monitor_point/:monitor_point_id', :to => 'visualizations#monitor_point_progress', :as => 'visualizations_monitor_point_progress'
+  match 'visualizations/heat_map/:monitor_point_id', :to => 'visualizations#heat_map', :as => 'visualizations_heat_map'
 
   #Mobile Rig
   match 'mobile_rig', :to => 'mobile_rig#index', :as => 'mobile_rig_index'

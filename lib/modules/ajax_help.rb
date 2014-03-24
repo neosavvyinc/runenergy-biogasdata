@@ -15,4 +15,12 @@ module AjaxHelp
       DateTime.strptime(date + time, '%Y-%m-%d%H:%M:%S')
     end
   end
+
+  def date_time_or_nil(date)
+    unless ajax_value_or_nil(date).nil?
+      DateTime.strptime(date.to_s, '%s')
+    else
+      nil
+    end
+  end
 end

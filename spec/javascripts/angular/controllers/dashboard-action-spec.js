@@ -141,6 +141,30 @@ describe("controllers.DashboardActionController", function () {
 
         });
 
+        describe('newDataValues.enable.plotMonitorPoint', function () {
+
+            it('Should set the newDataValues.enable.heatMap to false', function () {
+                newDataValues.enable.heatMap = true;
+                $scope.$digest();
+                newDataValues.enable.plotMonitorPoint = true;
+                $scope.$digest();
+                expect(newDataValues.enable.heatMap).toBeFalsy();
+            });
+
+        });
+
+        describe('newDataValues.enable.heatMap', function () {
+
+            it('Should set the newDataValues.enable.plotMonitorPoint to false', function () {
+                newDataValues.enable.plotMonitorPoint = true;
+                $scope.$digest();
+                newDataValues.enable.heatMap = true;
+                $scope.$digest();
+                expect(newDataValues.enable.plotMonitorPoint).toBeFalsy();
+            });
+
+        });
+
     });
 
     describe('Initialization', function () {

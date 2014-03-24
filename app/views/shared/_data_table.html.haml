@@ -5,7 +5,7 @@
     %thead
       %tr
         %th{'ng-repeat' => 'item in header | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'item[0] != "$$hashKey" && item[0] != "id"'}
-          %p.name{'ng-bind' => 'getColumnLabel(item[0], monitorPoints[item[0]])', 'ng-class' => 'newDataValues.enable.plotMonitorPoint | nsLogicalIf : "clickable" : ""', 'ng-click' => 'onPlotMonitorPoint(monitorPoints[item[0]])'}
+          %p.name{'ng-bind' => 'getColumnLabel(item[0], monitorPoints[item[0]])', 'ng-class' => 'newDataValues.enable.plotMonitorPoint || newDataValues.enable.heatMap | nsLogicalIf : "clickable" : ""', 'ng-click' => 'onPlotMonitorPoint(monitorPoints[item[0]])'}
       %tr{'ng-if' => 'filters && filters.length'}
         %th{'ng-repeat' => 'filter in filters'}
           %input.filter-field{'ng-model' => 'filter.expression', 'ng-keyup'=> 'onEditFilter(filter.key, filter.expression)', 'ng-if' => 'filter.key != "Date Time" && filter.key != "Asset" && filter.key != "id" && filter.key != "$$hashKey"'}

@@ -182,6 +182,15 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
                     } else {
                         throw "You cannot plot a monitor point without passing in a valid monitor point.";
                     }
+                } else if (newDataValues.enable.heatMap) {
+                    if (monitorPoint && monitorPoint.id) {
+                        window.location.href = new Neosavvy.Core.Builders.RequestUrlBuilder('/visualizations/heat_map/:monitor_point_id').
+                            addParam($location.search()).
+                            paramReplace(':monitor_point_id', monitorPoint.id).
+                            build();
+                    } else {
+                        throw "You cannot make a heat map without passing in a valid monitor point.";
+                    }
                 }
             };
 

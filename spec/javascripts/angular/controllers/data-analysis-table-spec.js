@@ -522,22 +522,46 @@ describe("controllers.DataAnalysisTable", function () {
 
         describe('onPlotMonitorPoint', function () {
 
-            beforeEach(function () {
-                newDataValues.enable.plotMonitorPoint = true;
-                locationSpy.search.andReturn({operator: 15, monitor_class: 12, site: 5});
+            describe('plot monitor point', function () {
+                beforeEach(function () {
+                    newDataValues.enable.heatMap = false;
+                    newDataValues.enable.plotMonitorPoint = true;
+                    locationSpy.search.andReturn({operator: 15, monitor_class: 12, site: 5});
+                });
+
+                it('Should throw an error when called without a monitor point', function () {
+                    expect(function () {
+                        $scope.onPlotMonitorPoint();
+                    }).toThrow();
+                });
+
+                it('Should throw an error if called with a monitorPoint without an id', function () {
+                    expect(function () {
+                        $scope.onPlotMonitorPoint({});
+                    }).toThrow();
+                });
             });
 
-            it('Should throw an error when called without a monitor point', function () {
-                expect(function () {
-                    $scope.onPlotMonitorPoint();
-                }).toThrow();
+            describe('heat map', function () {
+                beforeEach(function () {
+                    newDataValues.enable.heatMap = true;
+                    newDataValues.enable.plotMonitorPoint = false;
+                    locationSpy.search.andReturn({operator: 15, monitor_class: 12, site: 5});
+                });
+
+                it('Should throw an error if called without a monitor point for the heat map case', function () {
+                    expect(function () {
+                        $scope.onPlotMonitorPoint();
+                    }).toThrow();
+                });
+
+                it('Should throw an error if called without a monitor point id for the heat map case', function () {
+                    expect(function () {
+                        $scope.onPlotMonitorPoint({});
+                    }).toThrow();
+                });
             });
 
-            it('Should throw an error if called with a monitorPoint without an id', function () {
-                expect(function () {
-                    $scope.onPlotMonitorPoint({});
-                }).toThrow();
-            });
         });
 
     });

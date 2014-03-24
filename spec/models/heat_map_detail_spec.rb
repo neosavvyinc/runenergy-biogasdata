@@ -133,6 +133,16 @@ describe HeatMapDetail do
       HeatMapDetail.reading_row(asset, monitor_point, DateTime.new(2010, 10, 15), DateTime.new(2010, 10, 15))[:count].should eq('82.50')
     end
 
+    it 'should return nil in the case where the reading is nonexistent' do
+      HeatMapDetail.reading_row(asset, FactoryGirl.create(:monitor_point, :name => 'Urethane2'), DateTime.new(2010, 10, 15), DateTime.new(2010, 10, 15)).should be_nil
+    end
+
+    it 'should return nil in the case where there is an error with the reading bad characters, etc.' do
+      asset = FactoryGirl.create(:asset)
+      FactoryGirl.create(:reading, :asset => asset, :data => {'Methane' => 'HELLO'}, :taken_at => DateTime.new(2010, 9, 15))
+      HeatMapDetail.reading_row(asset, monitor_point, DateTime.new(2010, 10, 15), DateTime.new(2010, 10, 15)).should be_nil
+    end
+
   end
 
 end

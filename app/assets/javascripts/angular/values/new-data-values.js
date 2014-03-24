@@ -11,6 +11,7 @@ RunEnergy.Dashboard.Values.value('values.NewDataValues', {
 
     enable: {
         createMonitorPoint: false,
-        plotMonitorPoint: false
+        plotMonitorPoint: false,
+        heatMap: false
     }
 });

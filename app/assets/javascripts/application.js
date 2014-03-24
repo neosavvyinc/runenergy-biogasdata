@@ -31,6 +31,7 @@
 //= require bower_components/d3/d3.js
 //= require bower_components/nvd3/nv.d3.js
 //= require bower_components/angularjs-nvd3-directives/dist/angularjs-nvd3-directives.js
+//= require neosavvy/heatmap
 //= require neosavvy/ns-api-doc
 //= require angular/dashboard
 //= require_tree ./templates

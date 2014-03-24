@@ -66,4 +66,45 @@ describe VisualizationsController do
     end
   end
 
+  describe 'heat_map' do
+
+    let :monitor_point do
+      FactoryGirl.create(:monitor_point)
+    end
+
+    let :monitor_class do
+      FactoryGirl.create(:monitor_class)
+    end
+
+    let :location do
+      FactoryGirl.create(:location)
+    end
+
+    it 'should return a 400 error if no site is passed in' do
+      get :heat_map, :monitor_class => monitor_class.id, :monitor_point_id => monitor_point.id
+      response.status.should eq(400)
+    end
+
+    it 'should declare a 400 error if no monitor_class is passed in' do
+      get :heat_map, :site => location.id, :monitor_point_id => monitor_point.id
+      response.status.should eq(400)
+    end
+
+    it 'should set a @locations_monitor_class variable on the controller' do
+      get :heat_map, :site => location.id, :monitor_class => monitor_class.id, :monitor_point_id => monitor_point.id
+      controller.instance_variable_get(:@locations_monitor_class).should eq(LocationsMonitorClass.where(:location_id => location.id, :monitor_class_id => monitor_class.id).first)
+    end
+    
+    it 'should set an @asset_map instance variable on the controller' do
+      get :heat_map, :site => location.id, :monitor_class => monitor_class.id, :monitor_point_id => monitor_point.id
+      controller.instance_variable_get(:@asset_map).should eq([])
+    end
+
+    it 'should set a @reading_map instance variable on the controller' do
+      get :heat_map, :site => location.id, :monitor_class => monitor_class.id, :monitor_point_id => monitor_point.id
+      controller.instance_variable_get(:@reading_map).should eq([])
+    end
+    
+  end
+
 end

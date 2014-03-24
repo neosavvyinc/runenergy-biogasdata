@@ -32,7 +32,8 @@ class HeatMapDetail < ActiveRecord::Base
 
     Asset.where(:location_id => options[:location].id,
                 :monitor_class_id => options[:monitor_class].id).
-        map { |a| self.reading_row(a, options[:monitor_point], options[:start_date], options[:end_date]) }
+        map { |a| self.reading_row(a, options[:monitor_point], options[:start_date], options[:end_date]) }.
+        compact
   end
 
   def self.reading_row(asset, monitor_point, start_date = nil, end_date = nil)
@@ -43,16 +44,21 @@ class HeatMapDetail < ActiveRecord::Base
     unless end_date.nil?
       readings = readings.where('taken_at <= ?', end_date)
     end
-    readings = readings.map { |r| JSON.parse(r.data)[monitor_point.name] }.
-        compact
-    {
-        x: asset.heat_map_detail.try(:x),
-        y: asset.heat_map_detail.try(:y),
-        count: number_with_precision(
-            readings.reduce(:+) / readings.size,
-            precision: 2
-        )
-    }
+    readings = readings.map { |r| JSON.parse(r.data)[monitor_point.name].try(:to_f) }.reject(&:blank?).compact
+
+    unless readings.nil? or readings.empty?
+      begin
+        {
+            x: asset.heat_map_detail.try(:x),
+            y: asset.heat_map_detail.try(:y),
+            count: number_with_precision(readings.reduce(:+) / readings.size, precision: 2)
+        }
+      rescue Exception => e
+        nil
+      end
+    else
+      nil
+    end
   end
 
 end

@@ -117,6 +117,16 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
             $scope.$watch('newDataValues.selectedMonitorClass', _watchAssets);
             $scope.$watch('newDataValues.selectedSection', _watchAssets);
             $scope.$watch('newDataValues.selectedAsset', _chooseAccordingValues);
+            $scope.$watch('newDataValues.enable.plotMonitorPoint', function (val) {
+                if (val) {
+                    newDataValues.enable.heatMap = false;
+                }
+            });
+            $scope.$watch('newDataValues.enable.heatMap', function (val) {
+                if (val) {
+                    newDataValues.enable.plotMonitorPoint = false;
+                }
+            });
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {
