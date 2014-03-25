@@ -40,8 +40,10 @@ group :development, :test do
   gem 'guard-rspec', '~> 3.0.2'
   gem 'simplecov', '~> 0.7.1'
   gem 'shoulda-matchers'
-  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
 end
+
+#Needed to keep this in prod for some reason
+gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
 
 group :development do
   gem 'pry'
