@@ -18,6 +18,9 @@ describe MonitorPoint do
     monitor_limit.should_not be_nil
   end
 
+  describe 'admin' do
+    it { should ensure_exclusion_of(:name).in_array(['Date Time', 'Asset']) }
+  end
   describe 'self.lazy_load_from_schema' do
 
     it 'should grab the monitor point from params if it exists' do
@@ -37,7 +40,7 @@ describe MonitorPoint do
       MonitorLimit.last.locations_monitor_class_id.should eq(locations_monitor_class.id)
       MonitorLimit.last.monitor_point_id.should eq(mp.id)
     end
-    
+
   end
 
   describe 'monitor_limit_for_location' do
@@ -55,7 +58,7 @@ describe MonitorPoint do
     end
 
   end
-  
+
   describe 'snake_name' do
     it 'should return a snake case version of the name' do
       monitor_point.snake_name.should eq('methane_gas')

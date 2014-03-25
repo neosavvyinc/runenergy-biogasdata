@@ -8,6 +8,8 @@ class MonitorPoint < ActiveRecord::Base
   has_many :assets_monitor_points
   has_many :assets, :through => :assets_monitor_points
 
+  validates_exclusion_of :name, :in => ['Asset', 'Date Time']
+
   def self.lazy_load_from_schema(params)
     mp_params = params.reject { |k, v| [:locations_monitor_class_id, :upper_limit, :lower_limit].include?(k) }
     mp = self.where(mp_params).first || MonitorPoint.create(mp_params)

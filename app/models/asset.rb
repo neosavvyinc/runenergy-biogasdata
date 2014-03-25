@@ -6,6 +6,10 @@ class Asset < ActiveRecord::Base
   has_many :readings
   has_many :asset_property_values
 
+  validates_uniqueness_of :unique_identifier, :scope => [:location_id, :monitor_class_id]
+  validates_uniqueness_of :location_id, :scope => [:unique_identifier, :monitor_class_id]
+  validates_uniqueness_of :monitor_class_id, :scope => [:location_id, :unique_identifier]
+
   accepts_nested_attributes_for :asset_property_values, :allow_destroy => true
 
   def self.lazy_load(location_id, monitor_class_id, unique_identifier)
@@ -45,5 +49,4 @@ class Asset < ActiveRecord::Base
       Section.all
     end
   end
-
 end

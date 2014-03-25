@@ -14,6 +14,10 @@ gem 'kaminari', '~> 0.14.1'
 gem 'ffi', '~> 1.0.9'
 gem 'classy_enum', '~> 3.3.1'
 gem 'grape', '~> 0.6.1'
+gem 'delayed_job_active_record'
+gem 'delayed_job_web'
+gem 'daemons'
+gem 'whenever', :require => false
 
 # Gems used only for assets and not required
 # in production environments by default.
@@ -35,6 +39,16 @@ group :development, :test do
   gem 'rspec-rails', '~> 2.0'
   gem 'guard-rspec', '~> 3.0.2'
   gem 'simplecov', '~> 0.7.1'
+  gem 'shoulda-matchers'
+  gem 'mail_view', :git => 'https://github.com/basecamp/mail_view.git'
+end
+
+group :development do
+  gem 'pry'
+  gem 'pry-remote'
+  gem 'pry-nav'
+  gem 'better_errors'
+  gem 'binding_of_caller'
 end
 
 gem 'haml', '~> 4.0.3'
