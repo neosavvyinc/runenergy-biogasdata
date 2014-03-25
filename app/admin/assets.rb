@@ -34,6 +34,7 @@ ActiveAdmin.register Asset do
       f.inputs 'Heat Map Detail', :for => [:heat_map_detail, asset.heat_map_detail || HeatMapDetail.new] do |hmd|
         hmd.input :x
         hmd.input :y
+        hmd.input :symbol_id
       end
       f.has_many :asset_property_values, :allow_destroy => true do |apv|
         apv.input :asset_property, :as => :select, :collection => AssetProperty.all

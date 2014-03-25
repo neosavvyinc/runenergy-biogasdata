@@ -20,7 +20,8 @@ class HeatMapDetail < ActiveRecord::Base
         x: asset.heat_map_detail.try(:x),
         y: asset.heat_map_detail.try(:y),
         id: asset.id,
-        uid: asset.unique_identifier
+        uid: asset.unique_identifier,
+        label: asset.unique_identifier
     }
   end
 

@@ -38,15 +38,17 @@ RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
                 };
             };
 
+            var called = false;
             function _load(labeledPoints, heatReadings) {
-                if (labeledPoints && labeledPoints.length && heatReadings && heatReadings.length) {
+                if (!called && labeledPoints && labeledPoints.length && heatReadings && heatReadings.length) {
+                    called = true;
                     var orientedData = orientToCanvas({
                         heatReadings: heatReadings,
                         labeledPoints: labeledPoints
                     });
                     heatReadings = orientedData.heatReadings;
                     labeledPoints = orientedData.labeledPoints;
-                    var element = document.getElementsByClassName('heat-map-area');
+                    var element = document.getElementsByClassName('heat-map-area')[0];
 
                     // heatmap configuration
                     var config = {

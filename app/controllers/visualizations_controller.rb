@@ -21,7 +21,13 @@ class VisualizationsController < DataInterfaceController
                                                :start_date => date_time_or_nil(params[:start_date]),
                                                :end_date => date_time_or_nil(params[:end_date])
       )
-      puts 'Something'
+
+      #Can be more efficient and re-factored later, not sure if we will need this
+      #asset_group = @asset_map.group_by {|row|"X:#{row[:x]}Y:#{row[:y]}"}
+      #reading_group = @reading_map.group_by {|row| "X:#{row[:x]}Y:#{row[:y]}"}
+      #
+      #@asset_map.reject! {|row| reading_group["X:#{row[:x]}Y:#{row[:y]}"].nil?}
+      #@reading_map.reject! {|row| asset_group["X:#{row[:x]}Y:#{row[:y]}"].nil?}
     else
       render json: {:error => 'You must pass in a valid location and monitor class id.'}, :status => 400
     end

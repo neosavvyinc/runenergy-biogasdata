@@ -16,5 +16,19 @@ namespace :helpers do
         end
       end
     end
+    task :assign_heat_map_coordinates => :environment do
+      Asset.all.each do |a|
+        if a.heat_map_detail.nil?
+          a.update_attribute(:heat_map_detail, HeatMapDetail.create)
+        end
+        if a.heat_map_detail.x.nil?
+          a.heat_map_detail.update_attribute(:x, rand(2000))
+        end
+        if a.heat_map_detail.y.nil?
+          a.heat_map_detail.update_attribute(:y, rand(2000))
+        end
+        puts "ASSET #{a.unique_identifier} - X: #{a.heat_map_detail.x}, Y: #{a.heat_map_detail.y}"
+      end
+    end
   end
 end
