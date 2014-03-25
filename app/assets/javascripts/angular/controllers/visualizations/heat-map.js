@@ -1,6 +1,8 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
     ['$scope',
-        function ($scope) {
+        '$location',
+        function ($scope,
+                  $location) {
 
             /* Temporary UI Code */
             function orientToCanvas(dataToOrient) {
@@ -76,7 +78,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
 
                     // let's get some data
                     var data = {
-                        max: 80,
+                        max: $location.search().max ? parseInt($location.search().max) : 100,
                         data: heatReadings
                     };
 

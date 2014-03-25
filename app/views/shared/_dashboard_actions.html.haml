@@ -38,6 +38,7 @@
     - if params[:controller].include?('data_analysis')
       %a.btn{'ng-click' => 'newDataValues.enable.plotMonitorPoint = !newDataValues.enable.plotMonitorPoint', 'ng-class' => 'newDataValues.enable.plotMonitorPoint | nsLogicalIf : "btn-primary" : ""'} {{newDataValues.enable.plotMonitorPoint | nsLogicalIf : 'Disable Plot' : 'Plot Monitor Point'}}
       %a.btn{'ng-click' => 'newDataValues.enable.heatMap = !newDataValues.enable.heatMap', 'ng-class' => 'newDataValues.enable.heatMap | nsLogicalIf : "btn-primary" : ""'} {{newDataValues.enable.heatMap | nsLogicalIf : 'Disable Heat Map' : 'Heat Map'}}
+      %input.heat-map-max{:placeholder => 'Max', 'ng-model' => 'heatMapMax'}
   - else
     %a.btn{'ng-bind' => 'newDataValues.selectedLandfillOperator.name'}
     %a.btn{'ng-bind' => 'newDataValues.selectedSite.site_name'}

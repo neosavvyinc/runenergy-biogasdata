@@ -127,6 +127,11 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DashboardActionControlle
                     newDataValues.enable.plotMonitorPoint = false;
                 }
             });
+            $scope.$watch('heatMapMax', function (val) {
+                if (val) {
+                    $location.search('max', val);
+                }
+            });
 
             //Action Handlers
             $scope.onFirstUserInteract = function () {

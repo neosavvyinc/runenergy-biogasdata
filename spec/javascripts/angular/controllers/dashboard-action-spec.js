@@ -165,6 +165,22 @@ describe("controllers.DashboardActionController", function () {
 
         });
 
+        describe('heatMapMax', function () {
+
+            it('Should call the $location.search method with max when it has a value', function () {
+                $scope.heatMapMax = 102;
+                $scope.$digest();
+                expect(locationSpy.search).toHaveBeenCalledWith('max', 102);
+            });
+
+            it('Should not call $location.search when there is no value', function () {
+                $scope.heatMapMax = null;
+                $scope.$digest();
+                expect(locationSpy.search).not.toHaveBeenCalled();
+            });
+
+        });
+
     });
 
     describe('Initialization', function () {
