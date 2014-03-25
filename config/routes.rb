@@ -6,6 +6,8 @@ Biogasdata::Application.routes.draw do
 
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
+
+  # Mail Preview in Development
   #Field Api
   mount Field::API => '/field/'
 
@@ -51,6 +53,8 @@ Biogasdata::Application.routes.draw do
   match 'api/documentation', :to => 'mobile_rig#documentation', :as => 'api_documentation'
 
 
+  #Debugging for delayed jobs
+  match "/delayed_job" => DelayedJobWeb, :anchor => false, via: [:get, :post]
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -76,6 +80,9 @@ Biogasdata::Application.routes.draw do
   #       get 'sold'
   #     end
   #   end
+  if Rails.env.development?
+    mount MailPreview => 'mail_view'
+  end
 
   # Sample resource route with sub-resources:
   #   resources :products do
