@@ -38,8 +38,11 @@ ActiveAdmin.register Asset do
       end
       f.inputs 'FTP Detail', :for => [:ftp_detail, asset.ftp_detail || FtpDetail.new] do |fd|
         fd.input :url, :input_html => {:style => 'height: 40px;'}
+        fd.input :folder_path
         fd.input :username
         fd.input :password
+        fd.input :date_column_name
+        fd.input :minimum_date
         fd.has_many :ftp_column_monitor_points, :allow_destroy => true do |fcmp|
           fcmp.input :column_name
           fcmp.input :monitor_point, :as => :select, :collection => MonitorPoint.all

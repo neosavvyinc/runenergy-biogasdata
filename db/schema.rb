@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140325231456) do
+ActiveRecord::Schema.define(:version => 20140326031433) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -289,8 +289,20 @@ ActiveRecord::Schema.define(:version => 20140325231456) do
     t.string   "username"
     t.string   "password"
     t.text     "url"
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",          :null => false
+    t.datetime "updated_at",          :null => false
+    t.date     "minimum_date"
+    t.string   "folder_path"
+    t.string   "date_column_name"
+    t.boolean  "pause"
+    t.date     "last_date_collected"
+  end
+
+  create_table "ftp_import_logs", :force => true do |t|
+    t.integer  "ftp_detail_id"
+    t.text     "error"
+    t.datetime "created_at",    :null => false
+    t.datetime "updated_at",    :null => false
   end
 
   create_table "heat_map_details", :force => true do |t|
