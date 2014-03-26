@@ -48,6 +48,10 @@ class FtpDetail < ActiveRecord::Base
           #Loop through files and import
           files.select { |f| f[:date] >= self.minimum_date }.each do |f|
             import_file(ftp, f)
+
+            #Mark the data of the spreadsheet just collected as the last one collected
+            self.last_date_collected = f[:date]
+            self.save
           end
         end
       rescue Exception => e
