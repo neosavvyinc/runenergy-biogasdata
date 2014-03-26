@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140321111025) do
+ActiveRecord::Schema.define(:version => 20140325231456) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -273,6 +273,24 @@ ActiveRecord::Schema.define(:version => 20140321111025) do
     t.integer  "flare_collection_statistic_id"
     t.boolean  "pause"
     t.integer  "flare_data_mapping_id"
+  end
+
+  create_table "ftp_column_monitor_points", :force => true do |t|
+    t.integer  "ftp_detail_id"
+    t.integer  "monitor_point_id"
+    t.string   "format"
+    t.datetime "created_at",       :null => false
+    t.datetime "updated_at",       :null => false
+    t.string   "column_name"
+  end
+
+  create_table "ftp_details", :force => true do |t|
+    t.integer  "asset_id"
+    t.string   "username"
+    t.string   "password"
+    t.text     "url"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "heat_map_details", :force => true do |t|

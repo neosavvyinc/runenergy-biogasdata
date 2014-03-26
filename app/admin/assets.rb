@@ -36,6 +36,16 @@ ActiveAdmin.register Asset do
         hmd.input :y
         hmd.input :symbol_id
       end
+      f.inputs 'FTP Detail', :for => [:ftp_detail, asset.ftp_detail || FtpDetail.new] do |fd|
+        fd.input :url, :input_html => {:style => 'height: 40px;'}
+        fd.input :username
+        fd.input :password
+        fd.has_many :ftp_column_monitor_points, :allow_destroy => true do |fcmp|
+          fcmp.input :column_name
+          fcmp.input :monitor_point, :as => :select, :collection => MonitorPoint.all
+          fcmp.input :_destroy, :as => :boolean, :label => 'Remove From FTP Detail'
+        end
+      end
       f.has_many :asset_property_values, :allow_destroy => true do |apv|
         apv.input :asset_property, :as => :select, :collection => AssetProperty.all
         apv.input :value
