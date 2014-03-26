@@ -51,7 +51,7 @@ ActiveAdmin.register Asset do
         fd.input :url, :input_html => {:style => 'height: 40px;'}
         fd.input :folder_path
         fd.input :username
-        fd.input :password
+        fd.input :password, :input_html => {:type => 'text'}
         fd.input :date_column_name
         fd.input :time_column_name
         fd.input :minimum_date
@@ -77,5 +77,22 @@ ActiveAdmin.register Asset do
   member_action :clone, method: :get do
     @asset = Asset.find(params[:id]).try(:dup)
     render :new, layout: false
+  end
+
+  controller do
+
+    def update
+      if not params.nil? and not params[:asset].nil?
+        if params[:asset][:ftp_detail_attributes]
+          if params[:asset][:ftp_detail_attributes][:password].blank?
+            params[:asset][:ftp_detail_attributes].delete('password')
+          end
+        end
+        super
+      else
+        cancel
+      end
+    end
+
   end
 end
