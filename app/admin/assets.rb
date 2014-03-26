@@ -17,6 +17,17 @@ ActiveAdmin.register Asset do
       h6 asset.monitor_class.name
       h6 asset.section.try(:display_name)
     end
+    panel 'Heat Map Detail' do
+      h6 "X: #{asset.try(:heat_map_detail).try(:x)}"
+      h6 "Y: #{asset.try(:heat_map_detail).try(:y)}"
+    end
+    panel 'Ftp Detail' do
+      h6 asset.try(:ftp_detail).try(:url)
+      h6 asset.try(:ftp_detail).try(:folder_path)
+      h6 asset.try(:ftp_detail).try(:username)
+      h6 asset.try(:ftp_detail).try(:password)
+      h6 "Minimum Date: #{asset.try(:ftp_detail).try(:minimum_date)}"
+    end
     panel 'Properties' do
       asset.asset_property_values.each do |apv|
         h6 "#{apv.name} #{apv.value}"
