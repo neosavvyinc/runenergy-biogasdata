@@ -42,6 +42,7 @@ ActiveAdmin.register Asset do
         fd.input :username
         fd.input :password
         fd.input :date_column_name
+        fd.input :time_column_name
         fd.input :minimum_date
         fd.has_many :ftp_column_monitor_points, :allow_destroy => true do |fcmp|
           fcmp.input :column_name

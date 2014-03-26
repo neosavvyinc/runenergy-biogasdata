@@ -18,7 +18,11 @@ class DataCollision < ActiveRecord::Base
   end
 
   def self.collisions(reading)
-    Reading.where('asset_id = ? and taken_at = ? and id != ?', reading.asset_id, reading.taken_at, reading.id)
+    if reading.id.nil?
+      Reading.where('asset_id = ? and taken_at = ?', reading.asset_id, reading.taken_at)
+    else
+      Reading.where('asset_id = ? and taken_at = ? and id != ?', reading.asset_id, reading.taken_at, reading.id)
+    end
   end
 
   def self.check_for_existing(collisions, reading)

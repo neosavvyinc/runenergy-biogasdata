@@ -1,5 +1,5 @@
 class Asset < ActiveRecord::Base
-  attr_accessible :name, :section_id, :location_id, :monitor_class_id, :monitor_point_ids, :unique_identifier, :asset_property_values_attributes
+  attr_accessible :name, :section_id, :location_id, :monitor_class_id, :monitor_point_ids, :unique_identifier, :asset_property_values_attributes, :heat_map_detail_id, :heat_map_detail_attributes, :ftp_detail_id, :ftp_detail_attributes
   belongs_to :location
   belongs_to :section
   belongs_to :monitor_class
@@ -12,6 +12,8 @@ class Asset < ActiveRecord::Base
   validates_uniqueness_of :location_id, :scope => [:unique_identifier, :monitor_class_id]
   validates_uniqueness_of :monitor_class_id, :scope => [:location_id, :unique_identifier]
 
+  accepts_nested_attributes_for :heat_map_detail
+  accepts_nested_attributes_for :ftp_detail
   accepts_nested_attributes_for :asset_property_values, :allow_destroy => true
 
   def self.lazy_load(location_id, monitor_class_id, unique_identifier)

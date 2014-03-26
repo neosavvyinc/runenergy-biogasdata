@@ -46,6 +46,10 @@ describe DataCollision do
       reading_b = FactoryGirl.create(:reading, :asset => asset, :taken_at => taken_at)
     end
 
+    it 'should be able to return a collision for new elements without an id' do
+      DataCollision.collisions(Reading.new(:taken_at => taken_at, :asset_id => asset.id)).size.should eq(2)
+    end
+
     it 'should return an empty array if there are no collisions' do
       DataCollision.collisions(FactoryGirl.create(:reading, :asset => FactoryGirl.create(:asset), :taken_at => DateTime.now)).should eq([])
     end
