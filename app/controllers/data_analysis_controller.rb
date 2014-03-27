@@ -60,16 +60,17 @@ class DataAnalysisController < DataInterfaceController
     }
 
     #These are optional
-    if params[:section_id]
-      export_options[:section_id] = params[:section_id]
-    end
     if params[:asset_id]
       export_options[:asset_id] = params[:asset_id]
     end
 
     #Response
     respond_to do |format|
-      format.csv { send_data Reading.export_csv(export_options) }
+      format.csv { send_data Reading.export_csv(export_options,
+                                                params[:section_id],
+                                                date_time_or_nil(params[:start]),
+                                                date_time_or_nil(params[:end]),
+                                                nil) }
     end
   end
 

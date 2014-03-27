@@ -146,8 +146,18 @@ RunEnergy.Dashboard.Controllers.controller('controllers.DataAnalysisTable',
             $scope.$watch('newDataValues.selectedMonitorClass', _getData);
             $scope.$watch('newDataValues.selectedSection', _getData);
             $scope.$watch('newDataValues.selectedAsset', _getData);
-            $scope.$watch('startDateTime.getTime()', _getData);
-            $scope.$watch('endDateTime.getTime()', _getData);
+            $scope.$watch('startDateTime.getTime()', function (val) {
+                if (val) {
+                    $location.search('start', $filter('reDateToEpoch')($scope.startDateTime));
+                }
+                _getData();
+            });
+            $scope.$watch('endDateTime.getTime()', function (val) {
+                if (val) {
+                    $location.search('end', $filter('reDateToEpoch')($scope.endDateTime));
+                }
+                _getData();
+            });
             $scope.$watch('page', _getData);
 
             $scope.$watch('newDataValues.selectedSite', _getLocationsMonitorClass);

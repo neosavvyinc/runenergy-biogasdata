@@ -8,6 +8,7 @@ describe("controllers.DataAnalysisTable", function () {
         stripAngularKeysRequest,
         railsServiceSpy,
         locationSpy,
+        reDateToEpoch,
         $timeout;
 
     var hpGet = Neosavvy.Core.Utils.MapUtils.highPerformanceGet;
@@ -96,7 +97,7 @@ describe("controllers.DataAnalysisTable", function () {
             $location: locationSpy
         }));
 
-        inject(function ($injector) {
+        inject(function ($injector, $filter) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
             newDataValues = $injector.get('values.NewDataValues');
@@ -113,6 +114,7 @@ describe("controllers.DataAnalysisTable", function () {
             };
             stripAngularKeysRequest = $injector.get('service.transformer.UniversalStripAngularKeysRequest');
             notifications = $injector.get('values.Notifications');
+            reDateToEpoch = $filter('reDateToEpoch');
             controller = $injector.get('$controller')("controllers.DataAnalysisTable", {$scope: $scope});
         });
     });
@@ -418,6 +420,25 @@ describe("controllers.DataAnalysisTable", function () {
                         'offset': $scope.page
                     }
                 });
+            });
+        });
+
+        describe('startDateTime.getTime()', function () {
+
+            it('Should call the locationSpy.search with start and the time', function () {
+                $scope.startDateTime = new Date();
+                $scope.$digest();
+                expect(locationSpy.search).toHaveBeenCalledWith('start', reDateToEpoch($scope.startDateTime));
+            });
+
+        });
+
+        describe('endDateTime.getTime()', function () {
+
+            it('Should call the locationSpy.search with end and the time', function () {
+                $scope.endDateTime = new Date();
+                $scope.$digest();
+                expect(locationSpy.search).toHaveBeenCalledWith('end', reDateToEpoch($scope.endDateTime));
             });
         });
 

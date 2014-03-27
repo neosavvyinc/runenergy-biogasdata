@@ -109,9 +109,10 @@ class Reading < DataAsStringModel
     end
   end
 
-  def self.export_csv(options = {})
+  def self.export_csv(options = {}, section_id = nil, start_date = nil, end_date = nil, filters = nil)
     CSV.generate do |csv|
-      readings = Reading.where(options)
+      readings = apply_section_filter(apply_end_date(apply_start_date(Reading.where(options), start_date), end_date), section_id)
+      #Date Time Filters For Readings
       if readings.size > 0
         #Get the locations_monitor_class as it pertains to the first reading
         locations_monitor_class = LocationsMonitorClass.lazy_load(readings.first.location_id, readings.first.monitor_class.id)
@@ -128,7 +129,7 @@ class Reading < DataAsStringModel
         csv << header
 
         #Reading rows
-        date_asset_less_header = header.reject {|c| c == 'Asset' or c == 'Date Time'}
+        date_asset_less_header = header.reject { |c| c == 'Asset' or c == 'Date Time' }
         readings.each do |reading|
           row = reading.add_calculations_as_json(locations_monitor_class)[:data].values_at(*date_asset_less_header)
           row.insert(monitor_point_ordering['Asset'], reading.try(:asset).try(:unique_identifier) || '')
@@ -136,6 +137,31 @@ class Reading < DataAsStringModel
           csv << row
         end
       end
+    end
+  end
+
+  def self.apply_start_date(readings, start_date)
+    if start_date.nil?
+      readings
+    else
+      readings.where('taken_at >= ?', start_date)
+    end
+  end
+
+  def self.apply_end_date(readings, end_date)
+    if end_date.nil?
+      readings
+    else
+      readings.where('taken_at <= ?', end_date)
+    end
+  end
+
+  def self.apply_section_filter(readings, section_id)
+    if section_id.nil?
+      readings
+    else
+      assets = Asset.where(:section_id => section_id).group_by {|a| a.id.to_s}
+      readings.reject {|r| assets[r.asset_id.to_s].nil?}
     end
   end
 

@@ -1,6 +1,6 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.HeaderControlsController',
-    ['$scope', 'values.NewDataValues',
-        function ($scope, newDataValues) {
+    ['$scope', '$location', 'values.NewDataValues',
+        function ($scope, $location, newDataValues) {
             //Getters
             var _buildParameterized = function (base) {
                 try {
@@ -51,6 +51,12 @@ RunEnergy.Dashboard.Controllers.controller('controllers.HeaderControlsController
                 }
                 if (newDataValues.selectedAsset) {
                     builder.addParam("asset_id", newDataValues.selectedAsset.id);
+                }
+                if ($location.search()['start']) {
+                    builder.addParam("start", $location.search()['start']);
+                }
+                if ($location.search()['end']) {
+                    builder.addParam("end", $location.search()['end']);
                 }
                 return builder.build();
             };

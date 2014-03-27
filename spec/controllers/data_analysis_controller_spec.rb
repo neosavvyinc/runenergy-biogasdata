@@ -213,7 +213,10 @@ describe DataAnalysisController do
     end
 
     it 'should call Reading.export_csv when called' do
-      expect(Reading).to receive(:export_csv).once.with({:location_id => locations_monitor_class.location_id.to_s, :monitor_class_id => locations_monitor_class.monitor_class.id.to_s})
+      expect(Reading).to receive(:export_csv).once.with({
+                                                            :location_id => locations_monitor_class.location_id.to_s,
+                                                            :monitor_class_id => locations_monitor_class.monitor_class.id.to_s},
+                                                        nil, nil, nil, nil)
       get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id, :site_id => locations_monitor_class.location_id, :format => 'csv'
     end
 
@@ -221,9 +224,8 @@ describe DataAnalysisController do
       section = FactoryGirl.create(:section)
       expect(Reading).to receive(:export_csv).once.with({
                                                             :location_id => locations_monitor_class.location_id.to_s,
-                                                            :monitor_class_id => locations_monitor_class.monitor_class.id.to_s,
-                                                            :section_id => section.id.to_s
-                                                        })
+                                                            :monitor_class_id => locations_monitor_class.monitor_class.id.to_s
+                                                        }, section.id.to_s, nil, nil, nil)
       get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id,
           :site_id => locations_monitor_class.location_id,
           :section_id => section.id.to_s,
@@ -236,7 +238,7 @@ describe DataAnalysisController do
                                                             :location_id => locations_monitor_class.location_id.to_s,
                                                             :monitor_class_id => locations_monitor_class.monitor_class.id.to_s,
                                                             :asset_id => asset.id.to_s
-                                                        })
+                                                        }, nil, nil, nil, nil)
       get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id,
           :site_id => locations_monitor_class.location_id,
           :asset_id => asset.id.to_s,
