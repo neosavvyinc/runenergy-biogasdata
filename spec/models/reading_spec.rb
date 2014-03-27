@@ -128,7 +128,7 @@ describe Reading do
       data.should eq({'Charles Bronson' => 'Hello Friends'})
     end
   end
-  
+
   describe 'self.choose_reading_date' do
     data = nil, other_data = nil
 
@@ -159,6 +159,51 @@ describe Reading do
     it 'should not blow up if there is nothing at the index' do
       Reading.choose_reading_date(other_data, DateTime.now, 'Taken How').should be_nil
     end
+  end
+
+  describe 'self.export_csv' do
+
+    let :asset do
+      FactoryGirl.create(:asset, :unique_identifier => '25OR624')
+    end
+
+    let :ordered_monitor_class do
+      FactoryGirl.create(:monitor_class, :monitor_point_ordering => 'Oxygen, Methane')
+    end
+
+    let :reading do
+      FactoryGirl.create(:reading, :taken_at => DateTime.new(2013, 3, 17, 6, 17, 48), :data => {'Methane' => 65, 'Oxygen' => 19.5}, :monitor_class => FactoryGirl.create(:monitor_class), :asset => asset)
+    end
+
+    let :ordered_reading do
+      FactoryGirl.create(:reading, :taken_at => DateTime.new(2013, 7, 17, 6, 17, 48), :data => {'Methane' => 17, 'Oxygen' => 22.1}, :monitor_class => ordered_monitor_class, :asset => asset)
+    end
+
+    before(:each) do
+      FactoryGirl.create(:monitor_point, :name => 'Methane')
+      FactoryGirl.create(:monitor_point, :name => 'Oxygen')
+    end
+
+    it 'should return an empty csv if there are no readings by the options provided' do
+      Reading.export_csv(:id => -1).should eq('')
+    end
+
+    it 'should be able to throw a header on the csv, based on the first reading' do
+      Reading.export_csv(:id => FactoryGirl.create(:reading, :monitor_class => FactoryGirl.create(:monitor_class)).id).split(/\r?\n/).first.should eq('Asset,Date Time,index')
+    end
+
+    it 'should be able to do an ordered header' do
+      Reading.export_csv(:id => ordered_reading.id).split(/\r?\n/).first.should eq('Oxygen,Methane,Asset,Date Time')
+    end
+
+    it 'should be able to do the first row' do
+      Reading.export_csv(:id => reading.id).split(/\r?\n/)[1].should eq('25OR624,"17/03/2013, 06:17:48",65,19.5')
+    end
+
+    it 'should be able to do the ordered first row' do
+      Reading.export_csv(:id => ordered_reading.id).split(/\r?\n/)[1].should eq('22.1,17,25OR624,"17/07/2013, 06:17:48"')
+    end
+
   end
 
   let :reading do
@@ -353,11 +398,11 @@ describe Reading do
     end
 
     it 'should add the calculations to the readings data' do
-      reading.add_calculations_as_json(locations_monitor_class)[:data].should eq({"Balance Gas"=>78, "Methane"=>18, "Toxic Waste"=>1010.5, "Coolness"=>'15157.50', "Hottness"=> '6.00'})
+      reading.add_calculations_as_json(locations_monitor_class)[:data].should eq({"Balance Gas" => 78, "Methane" => 18, "Toxic Waste" => 1010.5, "Coolness" => '15157.50', "Hottness" => '6.00'})
     end
 
   end
-  
+
   describe 'as_json' do
     it 'should provide a parsed version of the data attribute' do
       reading.as_json['data'].should eq("{\"name\":\"Georgie\",\"location\":\"NYC\",\"age\":67}")

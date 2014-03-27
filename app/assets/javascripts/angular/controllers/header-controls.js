@@ -30,12 +30,29 @@ RunEnergy.Dashboard.Controllers.controller('controllers.HeaderControlsController
                 return _buildParameterized('/data_input/import#');
             };
 
-            $scope.getDataCreateLink = function() {
+            $scope.getDataCreateLink = function () {
                 return _buildParameterized('/data_input/create#');
             };
 
             $scope.getDataAnalysisLink = function () {
                 return _buildParameterized("/data_analysis#");
+            };
+
+            $scope.getExportCsvLink = function () {
+                var builder = new Neosavvy.Core.Builders.RequestUrlBuilder("data_analysis/export/readings/site/:site_id/monitorclass/:monitor_class_id.csv");
+                if (newDataValues.selectedSite) {
+                    builder.paramReplace(":site_id", newDataValues.selectedSite.id)
+                }
+                if (newDataValues.selectedMonitorClass) {
+                    builder.paramReplace(":monitor_class_id", newDataValues.selectedMonitorClass.id)
+                }
+                if (newDataValues.selectedSection) {
+                    builder.addParam("section_id", newDataValues.selectedSection.id);
+                }
+                if (newDataValues.selectedAsset) {
+                    builder.addParam("asset_id", newDataValues.selectedAsset.id);
+                }
+                return builder.build();
             };
 
 

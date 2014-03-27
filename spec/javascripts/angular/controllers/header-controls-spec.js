@@ -64,6 +64,37 @@ describe("controllers.HeaderControlsController", function () {
                 expect($scope.getDataAnalysisLink()).toEqual("/data_analysis#?asset=10");
             });
         });
+
+        describe('getExportCsvLink', function () {
+
+            beforeEach(function () {
+                newDataValues.selectedSite = {id: 8467};
+                newDataValues.selectedMonitorClass = {id: 684};
+                newDataValues.selectedSection = null;
+                newDataValues.selectedAsset = null;
+            });
+
+            it('Should return the empty url when none of the params are available', function () {
+                newDataValues.selectedSite = null;
+                newDataValues.selectedMonitorClass = null;
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/:site_id/monitorclass/:monitor_class_id.csv");
+            });
+
+            it('Should replace the site_id and monitor_class ids if that is available', function () {
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv");
+            });
+
+            it('Should add the section_id if that is available', function () {
+                newDataValues.selectedSection = {id: 187};
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv?section_id=187");
+            });
+
+            it('Should add the asset_id if that is available', function () {
+                newDataValues.selectedAsset = {id: 1666};
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv?asset_id=1666");
+            });
+
+        });
     });
 
     describe('Initialization', function () {

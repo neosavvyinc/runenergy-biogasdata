@@ -88,4 +88,28 @@ describe MonitorClass do
 
   end
 
+  describe 'grouped_monitor_point_ordering' do
+
+    it 'should work fine with just Asset and Date Time' do
+      FactoryGirl.create(:monitor_class).
+          grouped_monitor_point_ordering.should eq({
+                                                       'Asset' => 0,
+                                                       'Date Time' => 1,
+                                                   })
+    end
+
+    it 'should play nice with other monitor points as well' do
+      FactoryGirl.create(:monitor_point, :name => 'Methane')
+      FactoryGirl.create(:monitor_point, :name => 'Oxygen')
+      FactoryGirl.create(:monitor_class, :monitor_point_ordering => 'Methane, Date Time, Oxygen, Asset').
+          grouped_monitor_point_ordering.should eq({
+                                                       'Methane' => 0,
+                                                       'Date Time' => 1,
+                                                       'Oxygen' => 2,
+                                                       'Asset' => 3
+                                                   })
+    end
+
+  end
+
 end

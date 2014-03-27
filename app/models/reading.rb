@@ -109,6 +109,36 @@ class Reading < DataAsStringModel
     end
   end
 
+  def self.export_csv(options = {})
+    CSV.generate do |csv|
+      readings = Reading.where(options)
+      if readings.size > 0
+        #Get the locations_monitor_class as it pertains to the first reading
+        locations_monitor_class = LocationsMonitorClass.lazy_load(readings.first.location_id, readings.first.monitor_class.id)
+
+        #Get the correct ordering group
+        monitor_point_ordering = readings.first.try(:monitor_class).try(:grouped_monitor_point_ordering)
+
+        #Get the parsed version of the firsts data
+        first_data = readings.first.add_calculations_as_json(locations_monitor_class)[:data]
+
+        #Arrange the header with the added pieces
+        header = ['Asset', 'Date Time'].concat(first_data.map { |k, v| k })
+        header = header.sort_by { |n| (monitor_point_ordering.nil? or monitor_point_ordering[n].nil? ? header.size : monitor_point_ordering[n]) }
+        csv << header
+
+        #Reading rows
+        date_asset_less_header = header.reject {|c| c == 'Asset' or c == 'Date Time'}
+        readings.each do |reading|
+          row = reading.add_calculations_as_json(locations_monitor_class)[:data].values_at(*date_asset_less_header)
+          row.insert(monitor_point_ordering['Asset'], reading.try(:asset).try(:unique_identifier) || '')
+          row.insert(monitor_point_ordering['Date Time'], reading.try(:taken_at).try(:strftime, '%d/%m/%Y, %H:%M:%S') || '')
+          csv << row
+        end
+      end
+    end
+  end
+
   def taken_at_epoch
     taken_at.try(:to_f)
   end

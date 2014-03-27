@@ -206,4 +206,43 @@ describe DataAnalysisController do
     end
   end
 
+  describe 'csv' do
+
+    let :locations_monitor_class do
+      FactoryGirl.create(:deluxe_locations_monitor_class)
+    end
+
+    it 'should call Reading.export_csv when called' do
+      expect(Reading).to receive(:export_csv).once.with({:location_id => locations_monitor_class.location_id.to_s, :monitor_class_id => locations_monitor_class.monitor_class.id.to_s})
+      get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id, :site_id => locations_monitor_class.location_id, :format => 'csv'
+    end
+
+    it 'should be able to call with section_id' do
+      section = FactoryGirl.create(:section)
+      expect(Reading).to receive(:export_csv).once.with({
+                                                            :location_id => locations_monitor_class.location_id.to_s,
+                                                            :monitor_class_id => locations_monitor_class.monitor_class.id.to_s,
+                                                            :section_id => section.id.to_s
+                                                        })
+      get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id,
+          :site_id => locations_monitor_class.location_id,
+          :section_id => section.id.to_s,
+          :format => 'csv'
+    end
+
+    it 'should be able to call with asset_id' do
+      asset = FactoryGirl.create(:asset)
+      expect(Reading).to receive(:export_csv).once.with({
+                                                            :location_id => locations_monitor_class.location_id.to_s,
+                                                            :monitor_class_id => locations_monitor_class.monitor_class.id.to_s,
+                                                            :asset_id => asset.id.to_s
+                                                        })
+      get :csv, :monitor_class_id => locations_monitor_class.monitor_class.id,
+          :site_id => locations_monitor_class.location_id,
+          :asset_id => asset.id.to_s,
+          :format => 'csv'
+    end
+
+  end
+
 end

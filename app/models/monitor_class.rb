@@ -12,7 +12,7 @@ class MonitorClass < ActiveRecord::Base
   accepts_nested_attributes_for :asset_properties, :allow_destroy => true
 
   validates_each :monitor_point_ordering, allow_blank: true do |record, attr, value|
-    points  = value.split(',').map {|p| p.strip}
+    points = value.split(',').map { |p| p.strip }
     points.each do |p|
       if p != 'Asset' and p != 'Date Time' and MonitorPoint.where(:name => p).first.nil? and CustomMonitorCalculation.where(:name => p).first.nil?
         record.errors.add attr, "#{p} is not a monitor point or custom calculation."
@@ -32,6 +32,18 @@ class MonitorClass < ActiveRecord::Base
     end
     val = val.include?('Date Time') ? val : "#{val}, Date Time"
     val
+  end
+
+  def grouped_monitor_point_ordering
+    group = monitor_point_ordering.
+        split(',').
+        each_with_index.
+        map { |mpn, idx| {:name => mpn.strip, index: idx} }.
+        group_by { |item| item[:name] }
+    group.each do |k, v|
+      group[k] = v.first[:index]
+    end
+    group
   end
 
   def monitor_points_for_all_locations
