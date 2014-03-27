@@ -1,15 +1,20 @@
 describe("controllers.HeaderControlsController", function () {
     var $rootScope,
         $scope,
+        $location,
         newDataValues,
         controller;
 
     beforeEach(function () {
-        module.apply(module, RunEnergy.Dashboard.Dependencies);
+        module.apply(module, RunEnergy.Dashboard.Dependencies.concat({
+            $location: jasmine.createSpyObj('$location', ['search'])
+        }));
 
         inject(function ($injector) {
             $rootScope = $injector.get('$rootScope');
             $scope = $rootScope.$new();
+            $location = $injector.get('$location');
+            $location.search.andReturn({});
             newDataValues = $injector.get('values.NewDataValues');
             controller = $injector.get('$controller')("controllers.HeaderControlsController", {$scope: $scope});
         });
@@ -92,6 +97,16 @@ describe("controllers.HeaderControlsController", function () {
             it('Should add the asset_id if that is available', function () {
                 newDataValues.selectedAsset = {id: 1666};
                 expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv?asset_id=1666");
+            });
+
+            it('Should add the $location.search().start if it is available', function () {
+                $location.search.andReturn({start: 67947402});
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv?start=67947402");
+            });
+
+            it('Should add the $location.search().end if it is available', function () {
+                $location.search.andReturn({end: 91074793});
+                expect($scope.getExportCsvLink()).toEqual("data_analysis/export/readings/site/8467/monitorclass/684.csv?end=91074793");
             });
 
         });
