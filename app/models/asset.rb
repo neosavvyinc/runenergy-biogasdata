@@ -8,6 +8,7 @@ class Asset < ActiveRecord::Base
   has_many :readings
   has_many :asset_property_values
 
+  validates_presence_of :unique_identifier
   validates_uniqueness_of :unique_identifier, :scope => [:location_id, :monitor_class_id]
   validates_uniqueness_of :location_id, :scope => [:unique_identifier, :monitor_class_id]
   validates_uniqueness_of :monitor_class_id, :scope => [:location_id, :unique_identifier]

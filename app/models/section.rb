@@ -4,6 +4,10 @@ class Section < ActiveRecord::Base
   has_many :assets
   has_many :readings, :through => :assets
 
+  def self.lazy_load(options)
+    Section.where(options).first || Section.create(options)
+  end
+
   def display_name
     unless location.nil?
       "#{location.site_name} - #{name}"

@@ -4,7 +4,7 @@ ActiveAdmin.register Section do
   index do
     column :display_name
     column 'Assets' do |section|
-      section.assets.map {|asset| asset.name}
+      section.assets.map {|asset| asset.unique_identifier || asset.display_name}
     end
     default_actions
   end

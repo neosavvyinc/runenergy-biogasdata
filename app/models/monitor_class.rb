@@ -11,6 +11,7 @@ class MonitorClass < ActiveRecord::Base
 
   accepts_nested_attributes_for :asset_properties, :allow_destroy => true
 
+  validates_presence_of :name
   validates_each :monitor_point_ordering, allow_blank: true do |record, attr, value|
     points = value.split(',').map { |p| p.strip }
     points.each do |p|

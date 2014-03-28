@@ -16,6 +16,8 @@ class Location < ActiveRecord::Base
   has_many :users, :through => :locations_users
   has_many :assets
 
+  validates_presence_of :site_name
+
   def assets_monitored_within_date_range(start_date_time, end_date_time)
     Reading.where('taken_at >= ? AND taken_at <= ?', start_date_time, end_date_time).map {|r| r.asset}.uniq
   end
