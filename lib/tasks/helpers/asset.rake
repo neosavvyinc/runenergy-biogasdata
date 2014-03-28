@@ -51,36 +51,37 @@ namespace :helpers do
       idx = 0
       CSV.foreach(args[:file_path]) do |row|
         if idx > 1
-          location = Location.where(:site_name => row[LOCATION_IDX]).first || Location.create(:site_name => row[LOCATION_IDX])
-          monitor_class = MonitorClass.where(:name => row[MONITOR_CLASS_IDX]).first || MonitorClass.create(:name => row[MONITOR_CLASS_IDX])
+          unless row[LOCATION_IDX].blank? or row[MONITOR_CLASS_IDX].blank?
+            location = Location.where(:site_name => row[LOCATION_IDX]).first || Location.create(:site_name => row[LOCATION_IDX])
+            monitor_class = MonitorClass.where(:name => row[MONITOR_CLASS_IDX]).first || MonitorClass.create(:name => row[MONITOR_CLASS_IDX])
 
-          LocationsMonitorClass.lazy_load(location.id, monitor_class.id)
+            unless location.nil? or monitor_class.nil?
+              LocationsMonitorClass.lazy_load(location.id, monitor_class.id)
+              puts "Found location: #{row[LOCATION_IDX]}, monitor class: #{row[MONITOR_CLASS_IDX]}"
+              asset = Asset.where(:location_id => location.id, :monitor_class_id => monitor_class.id, :unique_identifier => row[UNIQUE_IDENTIFIER_IDX]).first || Asset.create(:location_id => location.id, :monitor_class_id => monitor_class.id, :unique_identifier => row[UNIQUE_IDENTIFIER_IDX])
+              unless asset.nil?
+                puts "Found asset: #{row[UNIQUE_IDENTIFIER_IDX]}"
 
-          unless location.nil? or monitor_class.nil?
-            puts "Found location: #{row[LOCATION_IDX]}, monitor class: #{row[MONITOR_CLASS_IDX]}"
-            asset = Asset.where(:location_id => location.id, :monitor_class_id => monitor_class.id, :unique_identifier => row[UNIQUE_IDENTIFIER_IDX]).first || Asset.create(:location_id => location.id, :monitor_class_id => monitor_class.id, :unique_identifier => row[UNIQUE_IDENTIFIER_IDX])
-            unless asset.nil?
-              puts "Found asset: #{row[UNIQUE_IDENTIFIER_IDX]}"
+                #Create section
+                section = Section.lazy_load(:name => row[SECTION_IDX], :location_id => location.id)
 
-              #Create section
-              section = Section.lazy_load(:name => row[SECTION_IDX], :location_id => location.id)
+                #Assign section to asset
+                asset.section = section
+                asset.heat_map_detail ||= HeatMapDetail.new
+                asset.heat_map_detail.x = row[X_IDX]
+                asset.heat_map_detail.y = row[Y_IDX]
 
-              #Assign section to asset
-              asset.section = section
-              asset.heat_map_detail ||= HeatMapDetail.new
-              asset.heat_map_detail.x = row[X_IDX]
-              asset.heat_map_detail.y = row[Y_IDX]
-
-              #Create properties for class if necessary
-              properties.each do |aph|
-                unless row[aph[:idx]].blank?
-                  asset_property = AssetProperty.where(:name => aph[:name], :monitor_class_id => monitor_class.id).first || AssetProperty.create(:name => aph[:name], :monitor_class_id => monitor_class.id)
-                  asset.asset_property_values << AssetPropertyValue.create(:asset_property_id => asset_property.id, :value => row[aph[:idx]])
+                #Create properties for class if necessary
+                properties.each do |aph|
+                  unless row[aph[:idx]].blank?
+                    asset_property = AssetProperty.where(:name => aph[:name], :monitor_class_id => monitor_class.id).first || AssetProperty.create(:name => aph[:name], :monitor_class_id => monitor_class.id)
+                    asset.asset_property_values << AssetPropertyValue.create(:asset_property_id => asset_property.id, :value => row[aph[:idx]])
+                  end
                 end
-              end
 
-              asset.save
-              puts "Saved asset #{asset.unique_identifier}"
+                asset.save
+                puts "Saved asset #{asset.unique_identifier}"
+              end
             end
           end
         else

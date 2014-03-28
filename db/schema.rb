@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20140326174137) do
+ActiveRecord::Schema.define(:version => 20140328235000) do
 
   create_table "active_admin_comments", :force => true do |t|
     t.string   "resource_id",   :null => false
@@ -307,8 +307,8 @@ ActiveRecord::Schema.define(:version => 20140326174137) do
   end
 
   create_table "heat_map_details", :force => true do |t|
-    t.integer  "x"
-    t.integer  "y"
+    t.string   "x"
+    t.string   "y"
     t.integer  "symbol_id"
     t.integer  "asset_id"
     t.datetime "created_at", :null => false
