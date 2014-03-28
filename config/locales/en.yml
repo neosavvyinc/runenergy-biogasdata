@@ -22,6 +22,8 @@ en:
     has_many_new: "Add New %{model}"
     has_many_delete: "Delete"
     has_many_remove: "Remove"
+    filter: "Filter"
+    clear_filters: "Clear Filters"
     filters:
       buttons:
         filter: "Filter"
