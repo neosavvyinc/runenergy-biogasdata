@@ -1,8 +1,7 @@
 RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
     ['$scope',
         '$location',
-        function ($scope,
-                  $location) {
+        function ($scope, $location) {
 
             /* Temporary UI Code */
             function orientToCanvas(dataToOrient) {
@@ -41,6 +40,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
             };
 
             var called = false;
+
             function _load(labeledPoints, heatReadings) {
                 if (!called && labeledPoints && labeledPoints.length && heatReadings && heatReadings.length) {
                     called = true;
@@ -90,8 +90,52 @@ RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
                 }
             }
 
+            function _maxPointValue(collection) {
+                var max = 0;
+                for (var i = 0; i < collection.length; i++) {
+                    var item = collection[i];
+                    var x = Math.abs(parseFloat(item.x));
+                    var y = Math.abs(parseFloat(item.y));
+                    if (x > max) {
+                        max = x
+                    }
+                    if (y > max) {
+                        max = y;
+                    }
+                }
+                return max;
+            }
+
+            function _minPropValue(collection, prop) {
+                var min;
+                for (var i = 0; i < collection.length; i++) {
+                    var val = Math.abs(parseFloat(collection[i][prop]));
+                    if (!min || val < min) {
+                        min = val;
+                    }
+                }
+                return min;
+            }
+
+            var _confineCollection = memoize(function (collection, minX, minY) {
+                if (collection && collection.length) {
+                    return _.filter(_.map(collection, function (item) {
+                        item.x = parseInt((parseFloat(item.x) - minX));
+                        item.y = parseInt((parseFloat(item.y) - minY));
+                        return item;
+                    }), function (item) {
+                        return item && item.x && item.y && item.x != NaN && item.y != NaN;
+                    });
+                }
+                return collection;
+            });
+
             function _handleData() {
-                _load($scope.assetMap, $scope.readingMap);
+                if ($scope.assetMap && $scope.readingMap && $scope.assetMap.length && $scope.readingMap.length) {
+                    var minX = _minPropValue($scope.assetMap.concat($scope.readingMap), 'x');
+                    var minY = _minPropValue($scope.assetMap.concat($scope.readingMap), 'y');
+                    _load(_confineCollection($scope.assetMap, minX, minY), _confineCollection($scope.readingMap, minX, minY));
+                }
             }
 
             var da = $scope.$watch('assetMap', _handleData);
