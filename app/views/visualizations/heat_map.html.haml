@@ -2,4 +2,4 @@
   %ns-serialize{'data' => @asset_map.to_json.html_safe, 'property' => 'assetMap'}
   %ns-serialize{'data' => @reading_map.to_json.html_safe, 'property' => 'readingMap'}
   %h2 #{@locations_monitor_class.display_name}
-  .heat-map-area &nbsp;
+  .heat-map-area{'re-heat-map' => true, 'labeled-points' => 'assetMap', 'heat-readings' => 'readingMap'}

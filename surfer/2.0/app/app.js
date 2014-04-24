@@ -113,7 +113,7 @@ RunEnergy.Dashboard.Directives
 
                         // let's get some data
                         var data = {
-                            max: 80,
+                            max: attrs.max || 80,
                             data: heatReadings
                         };
 
