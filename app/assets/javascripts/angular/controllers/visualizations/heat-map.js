@@ -78,7 +78,7 @@ RunEnergy.Dashboard.Controllers.controller('controllers.visualizations.HeatMap',
 
                     // let's get some data
                     var data = {
-                        max: $location.search().max ? parseInt($location.search().max) : 100,
+                        max: $location.search().max ? parseInt($location.search().max) : 1000,
                         data: heatReadings
                     };
 
