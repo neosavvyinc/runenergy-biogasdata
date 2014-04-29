@@ -6,8 +6,9 @@
     "angular-macgyver": "0.1.28",
     "ngQuickDate": "1.2.1",
     "angular-animate": "1.2.4",
-    "d3": "latest",
-    "nvd3": "latest",
-    "angularjs-nvd3-directives": "latest"
+    "d3": "3.4.2",
+    "nvd3": "1.1.14-beta",
+    "angularjs-nvd3-directives": "0.0.5-beta",
+    "lodash-math": "latest"
   }
 }

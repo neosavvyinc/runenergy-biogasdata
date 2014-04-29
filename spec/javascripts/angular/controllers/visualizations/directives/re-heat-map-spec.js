@@ -1,4 +1,4 @@
-ddescribe("reHeatMapUtils", function () {
+describe("reHeatMapUtils", function () {
     var factory;
 
     beforeEach(function () {

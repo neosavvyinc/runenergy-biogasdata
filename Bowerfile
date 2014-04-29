@@ -7,4 +7,5 @@ group :vendor, :assets_path => "assets/javascripts" do
     asset "d3", "3.4.2"
     asset "nvd3", "1.1.14-beta"
     asset "angularjs-nvd3-directives", "0.0.5-beta"
+    asset "lodash-math"
 end

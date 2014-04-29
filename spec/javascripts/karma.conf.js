@@ -16,6 +16,7 @@ module.exports = function (config) {
         files: [
             '../../vendor/assets/javascripts/bower_components/jquery/jquery.js',
             '../../vendor/assets/javascripts/bower_components/lodash/dist/lodash.js',
+            '../../vendor/assets/javascripts/bower_components/lodash-math/lodash.math.js',
             '../../vendor/assets/javascripts/bower_components/momentjs/moment.js',
             '../../vendor/assets/javascripts/bower_components/angular/angular.js',
             '../../vendor/assets/javascripts/bower_components/angular-route/angular-route.js',
