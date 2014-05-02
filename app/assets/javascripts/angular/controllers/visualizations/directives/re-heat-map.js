@@ -58,6 +58,15 @@ RunEnergy.Dashboard.Directives
                 var heatReadings = reHeatMapUtils.applyFloor(reHeatMapUtils.applyFloor(reHeatMapUtils.sanitizeReadings(dataToOrient.heatReadings), 'x', -500000), 'y');
                 var labeledPoints = reHeatMapUtils.applyFloor(reHeatMapUtils.applyFloor(reHeatMapUtils.sanitizeLabeledPoints(dataToOrient.labeledPoints), 'x', -500000), 'y');
 
+                /* Modifier for current data set */
+                var _xModFunction = function (reading) {
+                    reading.x = Math.abs(parseFloat(String(reading.x).slice(2))) * 1.5;
+                    return reading;
+                };
+
+                heatReadings = _.map(heatReadings, _xModFunction);
+                labeledPoints = _.map(labeledPoints, _xModFunction);
+
                 /* Existing interface starts here */
                 // sort rows in descending order by y value
                 heatReadings.sort(function (a, b) {
@@ -67,12 +76,12 @@ RunEnergy.Dashboard.Directives
                 /* Height Changes */
                 var MAXHEIGHT = heatReadings[0].y;
                 var MARGIN_LEFT = -800;
-                var MARGIN_TOP = 50;
+                var MARGIN_TOP = 70;
 
                 heatReadings = heatReadings.map(function (reading) {
                     return {
                         count: reading.count,
-                        x: reading.x + MARGIN_LEFT,
+                        x: reading.x,
                         y: -reading.y + MAXHEIGHT + MARGIN_TOP
                     };
                 });
@@ -80,7 +89,7 @@ RunEnergy.Dashboard.Directives
                 labeledPoints = labeledPoints.map(function (point) {
                     return {
                         label: point.label,
-                        x: point.x + MARGIN_LEFT,
+                        x: point.x,
                         y: -point.y + MAXHEIGHT + MARGIN_TOP
                     };
                 });
@@ -126,7 +135,7 @@ RunEnergy.Dashboard.Directives
 
                             // let's get some data
                             var data = {
-                                max: attrs.max || 535498,
+                                max: attrs.max || 2000,
                                 data: heatReadings
                             };
 
