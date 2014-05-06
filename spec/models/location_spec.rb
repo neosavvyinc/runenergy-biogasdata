@@ -70,6 +70,7 @@ describe Location do
     end
 
     it 'should return a combination of Unnamed with the state and country if undefined' do
+      location.site_name = nil
       location.display_name.should eq "Unnamed Texas, US"
     end
 

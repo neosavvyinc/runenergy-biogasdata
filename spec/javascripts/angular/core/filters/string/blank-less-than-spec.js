@@ -1,4 +1,4 @@
-ddescribe("reStrBlankLessThan", function () {
+describe("reStrBlankLessThan", function () {
     var filter;
 
     beforeEach(function () {
