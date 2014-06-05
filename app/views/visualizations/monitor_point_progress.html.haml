@@ -1,4 +1,4 @@
 .visualizations.monitor-point-progress{'ng-controller' => 'controllers.visualizations.MonitorPointProgress', 're-spinning-overlay' => '!data.length', 'style' => 'height: 600px;'}
   %ns-serialize{'data' => @monitor_point.to_json.html_safe, 'property' => 'monitorPoint'}
   %ns-serialize{'data' => @readings.to_json.html_safe, 'property' => 'values'}
-  %nvd3-line-chart{data: 'data', interactive: 'true', showxaxis: 'true', showyaxis: 'true', tooltips: 'true'}
+  %nvd3-line-chart{data: 'data', interactive: 'true', showxaxis: 'true', showyaxis: 'true', tooltips: 'true', forceY: [10, 11]}
