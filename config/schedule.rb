@@ -19,7 +19,7 @@
 
 # Learn more: http://github.com/javan/whenever
 
-set :output, '/runenergy-biogasdata/log/cron_log.log'
+set :output, '/opt/runenergy-biogasdata/log/cron_log.log'
 
 every 5.minutes do
   command 'cd /opt/runenergy-biogasdata && RAILS_ENV=production script/delayed_job restart'
