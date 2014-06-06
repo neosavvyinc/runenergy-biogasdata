@@ -22,5 +22,5 @@
 set :output, '/runenergy-biogasdata/log/cron_log.log'
 
 every 5.minutes do
-  command 'cd /runenergy-biogasdata && RAILS_ENV=production script/delayed_job restart'
+  command 'cd /opt/runenergy-biogasdata && RAILS_ENV=production script/delayed_job restart'
 end
