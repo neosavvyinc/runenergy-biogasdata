@@ -8,9 +8,9 @@ class VisualizationsController < DataInterfaceController
 
     #Asset and section optional filters
     if params[:asset]
-        @readings = @readings.where(:asset_id => params[:asset])
+      @readings = @readings.where(:asset_id => params[:asset])
     elsif params[:section]
-      puts "Need a section filter"
+      @readings = @readings.joins(:asset).where(:assets => {:section_id => params[:section]})
     end
 
     #Start and end date optional filters
@@ -24,6 +24,11 @@ class VisualizationsController < DataInterfaceController
     @readings = @readings.order('taken_at').map {
         |r| [(r.taken_at.try(:strftime, '%Y%m%d') || r.created_at.try(:strftime, '%Y%m%d')), JSON.parse(r.data)[@monitor_point.try(:name)]]
     }
+
+    #Constraints
+    hl = calculate_high_low_y_axis(@readings)
+    @high_y = hl[:high_y]
+    @low_y = hl[:low_y]
   end
 
   def heat_map
@@ -50,4 +55,27 @@ class VisualizationsController < DataInterfaceController
     end
   end
 
+  protected
+  def calculate_high_low_y_axis(readings)
+    unless readings.nil? or readings.empty?
+      low_y = nil
+      high_y = nil
+      readings.each do |r|
+        val = r[1].try(:to_f)
+        if low_y.nil? and high_y.nil?
+          low_y = high_y = val
+        elsif val > high_y
+          high_y = val
+        elsif val < low_y
+          low_y = val
+        end
+      end
+
+      margin = (high_y - low_y) / 5
+
+      {:high_y => (high_y + margin).round(2), :low_y => (low_y - margin).round(2)}
+    else
+      {:high_y => 0, :low_y => 0}
+    end
+  end
 end

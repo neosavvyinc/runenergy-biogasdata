@@ -27,12 +27,22 @@ describe VisualizationsController do
     readings = nil,
         two_months_ago = (Date.today.beginning_of_day - 2.months),
         month_ago = (Date.today.beginning_of_day - 1.months),
-        today = Date.today.beginning_of_day
+        today = Date.today.beginning_of_day,
+        section = nil,
+        asset_a = nil,
+        asset_b = nil,
+        asset_c = nil
 
     before(:each) do
-      FactoryGirl.create(:reading, :data => {'Methane' =>  57}, :taken_at => two_months_ago, :location => location, :monitor_class => monitor_class)
-      FactoryGirl.create(:reading, :data => {'Methane' =>  59}, :taken_at => month_ago, :location => location, :monitor_class => monitor_class)
-      FactoryGirl.create(:reading, :data => {'Methane' =>  36}, :taken_at => today, :location => location, :monitor_class => monitor_class)
+      section = FactoryGirl.create(:section)
+
+      asset_a = FactoryGirl.create(:asset, :section => section)
+      asset_b = FactoryGirl.create(:asset, :section => section)
+      asset_c = FactoryGirl.create(:asset)
+
+      FactoryGirl.create(:reading, :data => {'Methane' =>  57}, :taken_at => two_months_ago, :location => location, :monitor_class => monitor_class, :asset => asset_a)
+      FactoryGirl.create(:reading, :data => {'Methane' =>  59}, :taken_at => month_ago, :location => location, :monitor_class => monitor_class, :asset => asset_b)
+      FactoryGirl.create(:reading, :data => {'Methane' =>  36}, :taken_at => today, :location => location, :monitor_class => monitor_class, :asset => asset_c)
 
       #Non Matches
       FactoryGirl.create(:reading, :data => {'Methane' =>  390}, :taken_at => today, :location => location)
@@ -64,6 +74,57 @@ describe VisualizationsController do
       readings[1][0].should eq(month_ago.strftime('%Y%m%d'))
       readings[2][0].should eq(today.strftime('%Y%m%d'))
     end
+
+    it 'should be able to filter readings by section' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id, :section => section.id
+      readings = controller.instance_variable_get(:@readings)
+      readings.size.should eq(2)
+      readings[0][0].should eq(two_months_ago.strftime('%Y%m%d'))
+      readings[1][0].should eq(month_ago.strftime('%Y%m%d'))
+    end
+
+    it 'should be able to filter readings by asset' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id, :asset => asset_c.id
+      readings = controller.instance_variable_get(:@readings)
+      readings.size.should eq(1)
+      readings[0][0].should eq(today.strftime('%Y%m%d'))
+    end
+
+    it 'should be able to filter readings by start date' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id, :start => month_ago.to_i
+      readings = controller.instance_variable_get(:@readings)
+      readings.size.should eq(2)
+      readings[0][0].should eq(month_ago.strftime('%Y%m%d'))
+      readings[1][0].should eq(today.strftime('%Y%m%d'))
+    end
+
+    it 'should be able to filter readings by end date' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id, :end => two_months_ago.to_i
+      readings = controller.instance_variable_get(:@readings)
+      readings.size.should eq(1)
+      readings[0][0].should eq(two_months_ago.strftime('%Y%m%d'))
+    end
+
+    it 'should set a @high_y variable based on the highest y value + 1/5 of the margin between the high and the low' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id
+      controller.instance_variable_get(:@high_y).should eq(63.6)
+    end
+
+    it 'should set a @low_y variable based on the low y value - 1/5 of the margin between the high and the low' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id, :monitor_class => monitor_class.id
+      controller.instance_variable_get(:@low_y).should eq(31.4)
+    end
+
+    it 'should set the @high_y variable to 0 if there are no readings' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id + 1, :monitor_class => monitor_class.id + 2
+      controller.instance_variable_get(:@high_y).should eq(0)
+    end
+
+    it 'should set the @low_y variable to 0 if there are no readings' do
+      get :monitor_point_progress, :monitor_point_id => monitor_point.id, :site => location.id + 1, :monitor_class => monitor_class.id + 2
+      controller.instance_variable_get(:@low_y).should eq(0)
+    end
+
   end
 
   describe 'heat_map' do
