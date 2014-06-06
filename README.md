@@ -64,3 +64,14 @@ A coverage report will be generated at public/coverage/angular/{CHROME VERSION}/
 
 Open the report to see what still needs to be tested, should have a clickable file tree
 
+
+# Delayed Jobs
+
+Use this command to update the crontab on the server
+
+```./vendor/bundle/ruby/2.0.0/bin/whenever --update-crontab runenergy-biogasdata```
+
+Use this to check the updates:
+
+```crontab -l```
+
