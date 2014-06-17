@@ -1,11 +1,17 @@
 describe("reHeatMapUtils", function () {
-    var factory;
+    var factory, $location, $window;
 
     beforeEach(function () {
-        module.apply(module, RunEnergy.Dashboard.Dependencies);
+        module.apply(module, RunEnergy.Dashboard.Dependencies.concat({
+            $location: jasmine.createSpyObj('$location', ['search']),
+            $window: {location: {}}
+        }));
 
         inject(function ($injector) {
             factory = $injector.get('reHeatMapUtils');
+            $location = $injector.get('$location');
+            $window = $injector.get('$window');
+            $location.search.andReturn({});
         });
     });
 
@@ -238,6 +244,28 @@ describe("reHeatMapUtils", function () {
                     {x: 20},
                     {x: 67}
                 ], 'x', 0));
+        });
+    });
+
+    describe('max', function () {
+        it('Should return the $window.location.search param if it is defined', function () {
+            $window.location.search = '?max=890&something=blue';
+            expect(factory.max()).toEqual('890');
+        });
+
+        it('Should return 2000 if the max is not defined', function () {
+            expect(factory.max()).toEqual(2000);
+        });
+    });
+
+    describe('min', function () {
+        it('Should return the $window.location.search param if it is defined', function () {
+            $window.location.search = '?min=-29&something=blue';
+            expect(factory.min()).toEqual('-29');
+        });
+
+        it('Should return 0 if the min is not defined', function () {
+            expect(factory.min()).toEqual(0);
         });
     });
 });

@@ -1,7 +1,8 @@
 RunEnergy.Dashboard.Directives
-    .factory('reHeatMapUtils', function () {
+    .factory('reHeatMapUtils', ['$location', '$window', function ($location, $window) {
         /* Imports */
         var _isBlank = Neosavvy.Core.Utils.StringUtils.isBlank;
+        var QueryString = Neosavvy.Core.Utils.UrlUtils.QueryString;
 
         function _sharedSanitize(val) {
             return _(val).compact()
@@ -44,9 +45,15 @@ RunEnergy.Dashboard.Directives
                     node[prop] = (node[prop] - minProp) + base;
                     return node;
                 })
+            },
+            max: function () {
+                return new QueryString($window.location.search ? $window.location.search.substr(1) : $window.location.search).get('max') || 2000;
+            },
+            min: function () {
+                return new QueryString($window.location.search ? $window.location.search.substr(1) : $window.location.search).get('min') || 0;
             }
         };
-    });
+    }]);
 
 RunEnergy.Dashboard.Directives
     .directive('reHeatMap', ['reHeatMapUtils',
@@ -135,7 +142,7 @@ RunEnergy.Dashboard.Directives
 
                             // let's get some data
                             var data = {
-                                max: attrs.max || 2000,
+                                max: reHeatMapUtils.max(),
                                 data: heatReadings
                             };
 
