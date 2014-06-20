@@ -66,14 +66,14 @@ describe ExceptionNotification do
   describe 'batch_lower_limit_warning' do
     it 'should call the batch_monitor_limit_email method' do
       expect(ExceptionMailer).to receive(:batch_monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
-      exception_notification.batch_lower_limit_warning(locations_monitor_class, [reading], [])
+      exception_notification.batch_lower_limit_warning(locations_monitor_class, [], [reading], [])
     end
   end
 
   describe 'batch_lower_limit_warning' do
     it 'should call the batch_monitor_limit_email method' do
       expect(ExceptionMailer).to receive(:batch_monitor_limit_email).and_return(Hashie::Mash.new({:deliver => nil}))
-      exception_notification.batch_upper_limit_warning(locations_monitor_class, [reading], [])
+      exception_notification.batch_upper_limit_warning(locations_monitor_class, [], [reading], [])
     end
   end
 
