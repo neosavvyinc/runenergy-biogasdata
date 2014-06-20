@@ -28,7 +28,8 @@ RunEnergy.Dashboard.Controllers.controller('controllers.helpers.DataTable',
                         url: routes.DATA_INPUT.APPROVE_LIMIT_BREAKING_SET,
                         data: _.merge({
                             readings: $scope.data,
-                            type: $scope.limitKey
+                            type: $scope.limitKey,
+                            monitorLimitIds: _.map($scope.monitorLimits, 'id')
                         }, $scope.readingMods)
                     }).then(function (result) {
                         $scope.loading = false;

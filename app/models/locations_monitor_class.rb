@@ -75,14 +75,14 @@ class LocationsMonitorClass < ActiveRecord::Base
     end
   end
 
-  def notifications_for_batch(readings, deleted, type)
+  def notifications_for_batch(readings, monitor_points, deleted, type)
     if exception_notifications and (type == UPPER_LIMIT_WARNING or type == LOWER_LIMIT_WARNING)
       unless readings.size == 1 and (deleted.nil? or deleted.empty?)
         exception_notifications.each do |en|
           if type == UPPER_LIMIT_WARNING
-            en.batch_upper_limit_warning(self, readings, deleted)
+            en.batch_upper_limit_warning(self, monitor_points, readings, deleted)
           else
-            en.batch_lower_limit_warning(self, readings, deleted)
+            en.batch_lower_limit_warning(self, monitor_points, readings, deleted)
           end
         end
       else

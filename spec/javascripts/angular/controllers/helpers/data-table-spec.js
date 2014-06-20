@@ -65,6 +65,7 @@ describe("controllers.helpers.DataTable", function () {
             describe('with data', function () {
                 beforeEach(function () {
                     $scope.readingMods.deletedIds = {'2': true};
+                    $scope.monitorLimits = [{id: 17}, {id:29}];
                 });
 
                 it('Should call the railsService', function () {
@@ -75,6 +76,7 @@ describe("controllers.helpers.DataTable", function () {
                         data: {
                             readings: [{id: 1}, {id: 2}, {id: 3}],
                             deletedIds: $scope.readingMods.deletedIds,
+                            monitorLimitIds: [17, 29],
                             type: undefined
                         }});
                 });

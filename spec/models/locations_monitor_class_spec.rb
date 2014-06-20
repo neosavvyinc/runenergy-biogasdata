@@ -149,7 +149,7 @@ describe LocationsMonitorClass do
 
     it 'should call notifications_for with the first reading if the reading collection has one element' do
       expect(locations_monitor_class).to receive(:notifications_for)
-      locations_monitor_class.notifications_for_batch([readings[0]], nil, LocationsMonitorClass::UPPER_LIMIT_WARNING)
+      locations_monitor_class.notifications_for_batch([readings[0]], [], nil, LocationsMonitorClass::UPPER_LIMIT_WARNING)
     end
 
   end

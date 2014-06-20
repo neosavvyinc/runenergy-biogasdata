@@ -125,12 +125,12 @@ class DataInputController < DataInterfaceController
     unless params[:readings].nil? or params[:readings].empty? or params[:reading_mods].nil? or
         params[:site_id].blank? or params[:monitor_class_id].blank? or params[:asset_column_name].blank?
       locations_monitor_class = LocationsMonitorClass.create_caches(params[:site_id].to_i,
-                                          params[:monitor_class_id].to_i,
-                                          params[:reading_mods][:column_to_monitor_point_mappings],
-                                          params[:reading_mods][:deleted_columns],
-                                          params[:asset_column_name],
-                                          params[:reading_mods][:date_column_name],
-                                          params[:reading_mods][:date_format])
+                                                                    params[:monitor_class_id].to_i,
+                                                                    params[:reading_mods][:column_to_monitor_point_mappings],
+                                                                    params[:reading_mods][:deleted_columns],
+                                                                    params[:asset_column_name],
+                                                                    params[:reading_mods][:date_column_name],
+                                                                    params[:reading_mods][:date_format])
       monitor_limit_cache = {}
       reading_date = nil
       if params[:reading_mods][:date_column_name]
@@ -173,7 +173,7 @@ class DataInputController < DataInterfaceController
   end
 
   def approve_limit_breaking_set
-    if params[:readings] and params[:deleted_ids] and params[:type]
+    if params[:readings] and params[:deleted_ids] and params[:type] and params[:monitor_limit_ids]
       deleted = []
       readings = Reading.find(params[:readings].map { |r| r['id'] })
       params[:deleted_ids].each do |k, v|
@@ -188,7 +188,7 @@ class DataInputController < DataInterfaceController
         locations_monitor_class = LocationsMonitorClass.where(
             :location_id => readings.first.location_id,
             :monitor_class_id => readings.first.monitor_class_id).first
-        locations_monitor_class.notifications_for_batch(readings, deleted, params[:type])
+        locations_monitor_class.notifications_for_batch(readings, params[:monitor_limit_ids].map { |id| MonitorLimit.find(id).try(:monitor_point) }, deleted, params[:type])
       end
 
       render json: {
