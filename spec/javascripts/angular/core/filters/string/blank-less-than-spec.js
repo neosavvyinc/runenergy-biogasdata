@@ -44,4 +44,11 @@ describe("reStrBlankLessThan", function () {
         expect(filter('51.243', '0.1')).toEqual('51.243');
     });
 
+    it('Should be able to take an additional condition to evaluate before evaluating the filter', function () {
+        expect(filter('50.67', '51', false)).toEqual('50.67');
+    });
+
+    it('Should be able to take an additional condition to evaluate before evaluating the filter', function () {
+        expect(filter('50.5', '51', true)).toEqual('');
+    });
 });

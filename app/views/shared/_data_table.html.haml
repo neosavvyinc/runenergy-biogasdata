@@ -11,8 +11,8 @@
           %input.filter-field{'ng-model' => 'filter.expression', 'ng-keyup'=> 'onEditFilter(filter.key, filter.expression)', 'ng-if' => 'filter.key != "Date Time" && filter.key != "Asset" && filter.key != "id" && filter.key != "$$hashKey"'}
     %tbody
       %tr.re-grid-row{'ng-repeat' => 'item in data', 'ng-click' => 'onEditRow(item)'}
-        %td{'ng-bind' => 'value[1] | reStrBlankLessThan', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
+        %td{'ng-bind' => 'value[1] | reStrBlankLessThan : 0 : !isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)', 'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && !getEdit(item)'}
         - if edit_allowed
           %td{'ng-repeat' => 'value in item | reCollectionOrderedPairs : newDataValues.selectedMonitorClass.monitor_point_ordering', 'ng-if' => 'value[0] != "$$hashKey" && value[0] != "id" && getEdit(item)'}
             %input{'ng-model' => 'rowUnderEdit[value[0]]', 'ng-if' => 'isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)'}
-            %span{'ng-bind' => 'value[1] | reStrBlankLessThan', 'ng-if' => '!isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)'}
+            %span{'ng-bind' => 'value[1] | reStrBlankLessThan : 0 : !isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)', 'ng-if' => '!isEditableKey(value[0], newDataValues.selectedLocationsMonitorClass)'}
