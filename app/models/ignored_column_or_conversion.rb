@@ -25,18 +25,44 @@ class IgnoredColumnOrConversion < ActiveRecord::Base
             data[icc.convert_to] = column_value_map[data[icc.convert_to]]
           end
         end
+
+        #Comments can still apply for ignored and deleted nodes
+        comment_value_map = icc.comment_value_map
+        if comment_value_map and comment_value_map[(data[icc.convert_to] || data[icc.column_name]).try(:to_s)]
+          data['Comments'] ||= ''
+          data['Comments'] = "#{data['Comments']}#{comment_value_map[(data[icc.convert_to] || data[icc.column_name]).try(:to_s)]} "
+        end
       end
-      data
-    else
-      data
+
+      #Strip leading and trailing whitespace
+      unless data['Comments'].nil? or data['Comments'].blank?
+        data['Comments'] = data['Comments'].strip
+      end
     end
+    data
   end
 
   def column_value_map
     unless self.column_conversion_mappings.empty?
       map = {}
       self.column_conversion_mappings.each do |ccm|
-        map[ccm.from] = ccm.to
+        if ccm.comment_entry.nil? or ccm.comment_entry.blank?
+          map[ccm.from] = ccm.to
+        end
+      end
+      map
+    else
+      nil
+    end
+  end
+
+  def comment_value_map
+    unless self.column_conversion_mappings.empty?
+      map = {}
+      self.column_conversion_mappings.each do |ccm|
+        if ccm.comment_entry
+          map[ccm.from] = ccm.comment_entry
+        end
       end
       map
     else
