@@ -68,11 +68,21 @@ describe IgnoredColumnOrConversion do
     end
 
     it 'should be able to use a column_name with no convert_to for comments' do
-      
+      ignored_column_or_conversion.update_attributes(:column_name => 'name', :convert_to => nil)
+      ignored_column_or_conversion.monitor_classes << monitor_class
+      ignored_column_or_conversion.column_conversion_mappings << FactoryGirl.create(:column_conversion_mapping, :from => 'Lemmy', :comment_entry => 'Dude wheres my car?')
+      ignored_column_or_conversion.save
+
+      IgnoredColumnOrConversion.process({'name' => 'Lemmy', 'age' => 65}, monitor_class.id).should eq({'name' => 'Lemmy', 'age' => 65, 'Comments' => 'Dude wheres my car?'})
     end
 
     it 'should be able to do an ignore with comments added' do
+      ignored_column_or_conversion.update_attributes(:column_name => 'name', :convert_to => nil, :ignore => true)
+      ignored_column_or_conversion.monitor_classes << monitor_class
+      ignored_column_or_conversion.column_conversion_mappings << FactoryGirl.create(:column_conversion_mapping, :from => 'Lemmy', :comment_entry => 'Dude wheres my car?')
+      ignored_column_or_conversion.save
 
+      IgnoredColumnOrConversion.process({'name' => 'Lemmy', 'age' => 65}, monitor_class.id).should eq({'age' => 65, 'Comments' => 'Dude wheres my car?'})
     end
 
   end
