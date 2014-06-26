@@ -70,6 +70,11 @@ describe IgnoredColumnOrConversion do
       ignored_column_or_conversion.display_name.should eq('None specified')
     end
 
+    it 'should just return the column name if there is no convert_to' do
+      ignored_column_or_conversion.convert_to = nil
+      ignored_column_or_conversion.display_name.should eq(ignored_column_or_conversion.column_name)
+    end
+
     it 'should return the display_name as computed from the column_name to the convert_to value' do
       ignored_column_or_conversion.display_name.should eq("#{ignored_column_or_conversion.column_name} > #{ignored_column_or_conversion.convert_to}")
     end

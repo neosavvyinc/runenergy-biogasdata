@@ -47,6 +47,8 @@ class IgnoredColumnOrConversion < ActiveRecord::Base
   def display_name
     if self.column_name and self.convert_to
       "#{self.column_name} > #{self.convert_to}"
+    elsif self.column_name
+      self.column_name
     else
       'None specified'
     end

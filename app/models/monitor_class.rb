@@ -1,5 +1,5 @@
 class MonitorClass < ActiveRecord::Base
-  attr_accessible :name, :monitor_point_ids, :field_log_point_ids, :asset_ids, :location_ids, :asset_property_ids, :asset_properties_attributes, :monitor_point_ordering
+  attr_accessible :name, :monitor_point_ids, :field_log_point_ids, :asset_ids, :location_ids, :asset_property_ids, :ignored_column_or_conversion_ids, :asset_properties_attributes, :monitor_point_ordering
   has_many :readings
   has_many :monitor_classes_monitor_points
   has_many :monitor_points, through: :monitor_classes_monitor_points
