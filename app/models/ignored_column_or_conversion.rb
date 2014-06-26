@@ -10,6 +10,8 @@ class IgnoredColumnOrConversion < ActiveRecord::Base
     unless monitor_class_id.nil? or data.nil?
       iccs = MonitorClass.find(monitor_class_id).ignored_column_or_conversions
       iccs.each do |icc|
+        value = (data[icc.convert_to] || data[icc.column_name]).try(:to_s)
+
         if icc.ignore
           data.delete(icc.column_name)
         else
@@ -21,16 +23,16 @@ class IgnoredColumnOrConversion < ActiveRecord::Base
           end
 
           column_value_map = icc.column_value_map
-          if column_value_map and column_value_map[data[icc.convert_to]]
-            data[icc.convert_to] = column_value_map[data[icc.convert_to]]
+          if column_value_map and column_value_map[value]
+            data[(icc.convert_to || icc.column_name)] = column_value_map[value]
           end
         end
 
         #Comments can still apply for ignored and deleted nodes
         comment_value_map = icc.comment_value_map
-        if comment_value_map and comment_value_map[(data[icc.convert_to] || data[icc.column_name]).try(:to_s)]
+        if comment_value_map and comment_value_map[value]
           data['Comments'] ||= ''
-          data['Comments'] = "#{data['Comments']}#{comment_value_map[(data[icc.convert_to] || data[icc.column_name]).try(:to_s)]} "
+          data['Comments'] = "#{data['Comments']}#{comment_value_map[value]} "
         end
       end
 

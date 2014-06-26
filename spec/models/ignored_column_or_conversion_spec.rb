@@ -59,7 +59,12 @@ describe IgnoredColumnOrConversion do
     end
 
     it 'should be able to use a column_name with no covert_to for conversions' do
-      
+      ignored_column_or_conversion.update_attributes(:column_name => 'name', :convert_to => nil)
+      ignored_column_or_conversion.monitor_classes << monitor_class
+      ignored_column_or_conversion.column_conversion_mappings << FactoryGirl.create(:column_conversion_mapping, :from => 'Lemmy', :to => 'Ronnie')
+      ignored_column_or_conversion.save
+
+      IgnoredColumnOrConversion.process({'name' => 'Lemmy', 'age' => 65}, monitor_class.id).should eq({'name' => 'Ronnie', 'age' => 65})
     end
 
     it 'should be able to use a column_name with no convert_to for comments' do
