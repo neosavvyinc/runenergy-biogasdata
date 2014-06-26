@@ -8,6 +8,8 @@ class MonitorClass < ActiveRecord::Base
   has_many :monitor_classes_field_log_points
   has_many :field_log_points, through: :monitor_classes_field_log_points
   has_many :asset_properties
+  has_many :ignored_columns_or_conversions_monitor_classes
+  has_many :ignored_column_or_conversions, :through => :ignored_columns_or_conversions_monitor_classes
 
   accepts_nested_attributes_for :asset_properties, :allow_destroy => true
 

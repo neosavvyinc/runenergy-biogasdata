@@ -33,6 +33,7 @@ ActiveAdmin.register MonitorClass do
       f.input :locations, :as => :select, :collection => Location.all, :input_html => {:style => 'height: 300px; width: 300px;'}
       f.input :monitor_point_ordering
       f.input :asset_properties, :as => :select, :collection => AssetProperty.all, :input_html => {:style => 'height: 300px; width: 300px;'}
+      f.input :ignored_column_or_conversions, :as => :select, :collection => IgnoredColumnOrConversion.all, :input_html => {:style => 'height: 300px; width: 300px;'}
       f.has_many :asset_properties, :allow_destroy => true, :heading => 'Asset Properties', :new_record => false do |ap|
         ap.input :name
       end
