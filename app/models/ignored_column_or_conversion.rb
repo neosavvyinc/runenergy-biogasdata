@@ -1,5 +1,5 @@
 class IgnoredColumnOrConversion < ActiveRecord::Base
-  attr_accessible :column_name, :convert_to, :ignore, :column_conversion_mappings_attributes
+  attr_accessible :column_name, :convert_to, :ignore, :column_conversion_mappings_attributes, :monitor_class_ids
   has_many :ignored_columns_or_conversions_monitor_classes
   has_many :monitor_classes, :through => :ignored_columns_or_conversions_monitor_classes
   has_many :column_conversion_mappings

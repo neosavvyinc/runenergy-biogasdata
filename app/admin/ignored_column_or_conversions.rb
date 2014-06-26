@@ -7,6 +7,7 @@ ActiveAdmin.register IgnoredColumnOrConversion do
       f.input :ignore
       f.input :column_name
       f.input :convert_to
+      f.input :monitor_classes, :as => :select, :collection => MonitorClass.all, :input_html => {:style => 'height: 300px; width: 300px;'}
       f.has_many :column_conversion_mappings, :allow_destroy => true do |cmc|
         cmc.input :from
         cmc.input :to
